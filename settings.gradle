@@ -1,0 +1,5 @@
+rootProject.name = 'koala'
+include 'module-core'
+include 'module-admin'
+include 'module-user'
+
