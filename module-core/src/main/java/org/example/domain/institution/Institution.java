@@ -1,0 +1,50 @@
+package org.example.domain.institution;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.example.domain.institution.enums.InstitutionType;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
+public class Institution {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  private String name;
+  private String description;
+  @Enumerated(value = EnumType.STRING)
+  private InstitutionType type;
+
+  @CreatedDate
+  @Column(updatable = false)
+  private LocalDateTime createdTime;
+  @LastModifiedDate
+  private LocalDateTime updatedTime;
+
+  @Builder
+  public Institution(String name, String description, InstitutionType type) {
+    this.name = name;
+    this.description = description;
+    this.type = type;
+  }
+}
