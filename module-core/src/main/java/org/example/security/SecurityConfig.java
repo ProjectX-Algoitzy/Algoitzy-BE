@@ -35,7 +35,8 @@ public class SecurityConfig {
           auth
             .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
-            .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/member/login/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/sign-up/**")).permitAll()
             .anyRequest().authenticated()
       )
       .csrf(AbstractHttpConfigurer::disable)
