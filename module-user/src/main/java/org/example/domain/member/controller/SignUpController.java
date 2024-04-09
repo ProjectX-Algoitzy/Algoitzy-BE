@@ -33,7 +33,7 @@ public class SignUpController {
   @Operation(summary = "이메일 인증")
   public ApiResponse<Void> validateEmail(@RequestBody ValidateEmailRequest request) {
     memberService.validateEmail(request);
-    return ApiResponse.onCreate();
+    return ApiResponse.onSuccess();
   }
 
   @PostMapping("/handle")

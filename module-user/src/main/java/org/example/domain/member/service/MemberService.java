@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -16,6 +18,7 @@ public class MemberService {
   public void validateHandle(ValidateHandleRequest request) {
     createMemberService.validateHandle(request);
   }
+
   public void validateEmail(ValidateEmailRequest request) {
     createMemberService.validateEmail(request);
   }

@@ -3,17 +3,7 @@ server:
 
 spring:
   config:
-    activate:
-      on-profile: dev
-
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
+    import: application-core-dev.yml
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

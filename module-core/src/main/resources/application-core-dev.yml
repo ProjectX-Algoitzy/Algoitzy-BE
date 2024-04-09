@@ -1,10 +1,4 @@
-server:
-  port: 8081
-
 spring:
-  config:
-    activate:
-      on-profile: dev
 
   jpa:
     open-in-view: false

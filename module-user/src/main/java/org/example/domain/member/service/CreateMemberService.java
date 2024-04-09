@@ -1,6 +1,7 @@
 package org.example.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.controller.request.CreateMemberRequest;
@@ -11,6 +12,7 @@ import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
 import org.example.util.http_request.HttpRequest;
 import org.example.util.http_request.Url;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional
 public class CreateMemberService {
 
   private final MemberRepository memberRepository;
   private final PasswordEncoder encoder;
+  private final StringRedisTemplate redisTemplate;
+
   /**
    * 회원 가입
    */
@@ -43,6 +48,17 @@ public class CreateMemberService {
    */
   public void validateEmail(ValidateEmailRequest request) {
 
+    String code = redisTemplate.opsForValue().get(request.email());
+    if (code == null) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 이메일과 매칭되는 인증코드가 없습니다.");
+    }
+
+    if (!code.equals(request.code())) {
+      System.out.println("code = " + code);
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
+    }
+    log.info("이메일 인증 성공");
+    redisTemplate.delete(request.email());
   }
 
   /**
