@@ -32,7 +32,11 @@ public class EmailService {
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
       helper.setTo(request.getEmail());
       helper.setSubject(EmailType.CERTIFICATION.getSubject());
-      helper.setText(code);
+      helper.setText(
+        "<body>\n"
+          + "    <h2>Email 전송 폼</h2>\n"
+          + code
+          + "</body>\n", true);
       mailSender.send(mimeMessage);
     } catch (Exception e) {
       String errMsg = "인증코드 전송 중 오류가 발생했습니다.";
