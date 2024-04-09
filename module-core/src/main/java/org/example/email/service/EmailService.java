@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.email.controller.request.CertificateEmailRequest;
+import org.example.email.controller.request.CertificationEmailRequest;
 import org.example.email.enums.EmailType;
 import org.example.util.RandomUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -29,24 +29,22 @@ public class EmailService {
   private final StringRedisTemplate redisTemplate;
   private final JavaMailSender mailSender;
 
-  public void sendCertificateCode(CertificateEmailRequest request) {
+  public void sendCertificationEmail(CertificationEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
-    redisTemplate.opsForValue().set(request.getEmail(), code);
+    redisTemplate.opsForValue().set(request.email(), code);
+    String html = htmlToString(CERTIFICATION.getPath()).replace("${code}", code);
 
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-      helper.setTo(request.getEmail());
+      helper.setTo(request.email());
       helper.setSubject(CERTIFICATION.getSubject());
-      String html = htmlToString(CERTIFICATION.getPath()).replace("${code}", code);
       helper.setText(html, true);
       mailSender.send(mimeMessage);
     } catch (Exception e) {
-      String errMsg = "인증코드 전송 중 오류가 발생했습니다.";
       log.error(e.getMessage());
-      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, errMsg);
+      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "인증코드 전송 중 오류가 발생했습니다.");
     }
-
   }
 
   private String htmlToString(String path) {

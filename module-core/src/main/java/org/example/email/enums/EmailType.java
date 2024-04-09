@@ -1,8 +1,11 @@
 package org.example.email.enums;
 
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 
 @Getter
 @NoArgsConstructor
@@ -15,4 +18,12 @@ public enum EmailType {
 
   private String subject;
   private String path;
+
+  public static String getSubject(String emailType) {
+    return Arrays.stream(EmailType.values())
+      .filter(type -> type.subject.equals(emailType))
+      .findFirst().orElseThrow(() ->
+        new GeneralException(ErrorStatus.BAD_REQUEST, "Email Type이 존재하지 않습니다."))
+      .subject;
+  }
 }

@@ -1,11 +1,8 @@
 package org.example.email.controller.request;
 
 import jakarta.validation.constraints.Email;
-import lombok.Getter;
 
-@Getter
-public class CertificateEmailRequest {
-
+public record CertificationEmailRequest(
   @Email
-  String email;
+  String email) {
 }

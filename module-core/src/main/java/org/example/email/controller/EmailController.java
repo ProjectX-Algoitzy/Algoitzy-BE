@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.ApiResponse;
-import org.example.email.controller.request.CertificateEmailRequest;
+import org.example.email.controller.request.CertificationEmailRequest;
 import org.example.email.service.EmailService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +22,10 @@ public class EmailController {
 
   private final EmailService emailService;
 
-  @PostMapping("/certificate")
+  @PostMapping("/certification")
   @Operation(summary = "이메일 인증코드 전송")
-  public ApiResponse<Void> sendCertificateCode(@RequestBody @Valid CertificateEmailRequest request) {
-    log.info("controller");
-    emailService.sendCertificateCode(request);
+  public ApiResponse<Void> sendCertificationEmail(@RequestBody @Valid CertificationEmailRequest request) {
+    emailService.sendCertificationEmail(request);
     return ApiResponse.onSuccess();
   }
 
