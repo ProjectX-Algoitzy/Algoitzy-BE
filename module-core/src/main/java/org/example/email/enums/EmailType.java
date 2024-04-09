@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public enum EmailType {
-  CERTIFICATION("이메일 인증 코드"),
-  DOCUMENT_RESULT("서류 결과 발표"),
-  INTERVIEW_DATE("면접 일정 안내"),
-  INTERVIEW_RESULT("면접 결과 발표");
+  CERTIFICATION("KOALA 이메일 인증 코드", "module-core/src/main/java/org/example/email/html/certification.html"),
+  DOCUMENT_RESULT("KOALA 서류 전형 안내", "module-core/src/main/java/org/example/email/html/certification.html"),
+  INTERVIEW_DATE("KOALA 면접 일정 안내", "module-core/src/main/java/org/example/email/html/certification.html"),
+  INTERVIEW_RESULT("KOALA 면접 결과 발표", "module-core/src/main/java/org/example/email/html/certification.html");
 
   private String subject;
+  private String path;
 }
