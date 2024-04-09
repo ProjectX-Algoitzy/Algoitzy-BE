@@ -8,6 +8,7 @@ import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.member.Member;
+import org.example.domain.member.controller.request.ValidatePhoneNumberRequest;
 import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
 import org.example.util.http_request.HttpRequest;
@@ -47,17 +48,14 @@ public class CreateMemberService {
    * 이메일 인증
    */
   public void validateEmail(ValidateEmailRequest request) {
-
     String code = redisTemplate.opsForValue().get(request.email());
     if (code == null) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 이메일과 매칭되는 인증코드가 없습니다.");
     }
 
     if (!code.equals(request.code())) {
-      System.out.println("code = " + code);
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
-    log.info("이메일 인증 성공");
     redisTemplate.delete(request.email());
   }
 
@@ -69,5 +67,20 @@ public class CreateMemberService {
     if (!response.getStatusCode().is2xxSuccessful()) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "백준 핸들이 유효하지 않습니다.");
     }
+  }
+
+  /**
+   * 휴대전화 인증
+   */
+  public void validatePhoneNumber(ValidatePhoneNumberRequest request) {
+    String code = redisTemplate.opsForValue().get(request.phoneNumber());
+    if (code == null) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 번호와 매칭되는 인증코드가 없습니다.");
+    }
+
+    if (!code.equals(request.code())) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
+    }
+    redisTemplate.delete(request.phoneNumber());
   }
 }

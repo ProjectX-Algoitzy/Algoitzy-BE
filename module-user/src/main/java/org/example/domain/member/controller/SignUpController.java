@@ -46,7 +46,8 @@ public class SignUpController {
   @PostMapping("/phone-number")
   @Operation(summary = "휴대전화 인증")
   public ApiResponse<Void> validatePhoneNumber(@RequestBody ValidatePhoneNumberRequest request) {
-    return ApiResponse.onCreate();
+    memberService.validatePhoneNumber(request);
+    return ApiResponse.onSuccess();
   }
 
 }

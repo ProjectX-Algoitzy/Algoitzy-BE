@@ -38,6 +38,7 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/member/login/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sign-up/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/email/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/sms/**")).permitAll()
             .anyRequest().authenticated()
       )
       .csrf(AbstractHttpConfigurer::disable)

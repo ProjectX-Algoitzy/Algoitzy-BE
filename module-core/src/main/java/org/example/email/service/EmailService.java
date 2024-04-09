@@ -7,12 +7,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.email.controller.request.CertificationEmailRequest;
-import org.example.email.enums.EmailType;
 import org.example.util.RandomUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,7 +31,7 @@ public class EmailService {
 
   public void sendCertificationEmail(CertificationEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
-    redisTemplate.opsForValue().set(request.email(), code);
+    redisTemplate.opsForValue().set(request.email(), code, Duration.ofSeconds(180));
     String html = htmlToString(CERTIFICATION.getPath()).replace("${code}", code);
 
     try {
@@ -43,7 +43,7 @@ public class EmailService {
       mailSender.send(mimeMessage);
     } catch (Exception e) {
       log.error(e.getMessage());
-      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "인증코드 전송 중 오류가 발생했습니다.");
+      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "Email 인증코드 전송 중 오류가 발생했습니다.");
     }
   }
 
