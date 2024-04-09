@@ -2,9 +2,6 @@ server:
   port: 8082
 
 spring:
-  config:
-    activate:
-      on-profile: local
 
   jpa:
     open-in-view: false
@@ -20,6 +17,18 @@ spring:
     url: ${DB_URL_LOCAL}
     username: ${DB_USERNAME_LOCAL}
     password: ${DB_PW_LOCAL}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PW}
+    properties:
+      mail:
+        debug: true
+        smtp.auth: true
+        smtp.timeout: 50000
+        smtp.starttls.enable: true
 
   data:
     redis:

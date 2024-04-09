@@ -55,6 +55,7 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-webflux'
         runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.108.Final:osx-aarch_64'
         implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'org.springframework.boot:spring-boot-starter-mail'
 
         implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
         runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
@@ -73,23 +74,22 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-project(':module-admin') {
-    dependencies {
-        compileOnly project(':module-core')
-    }
-}
-
-project(':module-user') {
-    dependencies {
-        compileOnly project(':module-core')
-    }
-}
-
 project(':module-core') {
     bootJar { enabled = false }
     jar { enabled = true }
 }
 
+project(':module-admin') {
+    dependencies {
+        implementation project(':module-core')
+    }
+}
+
+project(':module-user') {
+    dependencies {
+        implementation project(':module-core')
+    }
+}
 
 clean {
     delete file('src/main/generated')

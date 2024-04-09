@@ -2,6 +2,10 @@ server:
   port: 8180
 
 spring:
+  profiles:
+    include: core-local
+
+
   servlet:
     multipart:
       max-file-size: 200MB

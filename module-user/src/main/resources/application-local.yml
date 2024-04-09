@@ -2,9 +2,6 @@ server:
   port: 8282
 
 spring:
-  config:
-    activate:
-      on-profile: local
 
   jpa:
     open-in-view: false

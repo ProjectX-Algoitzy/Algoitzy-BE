@@ -18,6 +18,7 @@ public class MemberService {
   public void validateHandle(ValidateHandleRequest request) {
     createMemberService.validateHandle(request);
   }
+
   public void validateEmail(ValidateEmailRequest request) {
     createMemberService.validateEmail(request);
   }

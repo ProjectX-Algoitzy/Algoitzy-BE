@@ -37,6 +37,7 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/member/login/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sign-up/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/email/**")).permitAll()
             .anyRequest().authenticated()
       )
       .csrf(AbstractHttpConfigurer::disable)
