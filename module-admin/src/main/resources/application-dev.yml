@@ -3,8 +3,7 @@ server:
 
 spring:
   config:
-    activate:
-      on-profile: dev
+    import: application-core-dev.yml
 
   jpa:
     open-in-view: false

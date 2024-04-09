@@ -2,23 +2,5 @@ server:
   port: 8180
 
 spring:
-  profiles:
-    include: core-local
-
-
-  servlet:
-    multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
-
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-
-jwt:
-  secret: ${JWT}
+  config:
+    import: application-core.yml
