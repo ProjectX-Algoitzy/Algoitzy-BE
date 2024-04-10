@@ -2,11 +2,16 @@ package org.example.domain.select_question.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
+import org.example.domain.field.controller.request.CreateFieldRequest;
 
 public record CreateSelectQuestionRequest(
 
   @NotBlank
   @Schema(description = "객관식 질문", example = "가능한 면접 일자를 선택해주세요.")
-  String question
+  String question,
+
+  @Schema(description = "객관식 필드")
+  List<CreateFieldRequest> createFieldRequestList
 ) {
 }

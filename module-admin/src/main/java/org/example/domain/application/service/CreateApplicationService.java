@@ -26,17 +26,12 @@ public class CreateApplicationService {
    */
   public void createApplication(CreateApplicationRequest request) {
 
-    // 지원서 틀
     Application application = applicationRepository.save(Application.builder()
       .study(coreStudyRepository.findById(request.studyId()))
       .title(request.title())
       .build()
     );
-
-    // 주관식
     createTextQuestionService.createTextQuestion(application, request.createTextQuestionRequestList());
-
-    // 객관식
     createSelectQuestionService.createSelectQuestion(application, request.createSelectQuestionRequestList());
   }
 }

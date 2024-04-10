@@ -34,7 +34,7 @@ public class Field {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "select_question_id")
   private SelectQuestion selectQuestion;
-  private LocalDate datetimeField;
+  private LocalDate dateField;
   private String stringField;
 
   @CreatedDate
@@ -44,9 +44,9 @@ public class Field {
   private LocalDateTime updatedTime;
 
   @Builder
-  public Field(SelectQuestion selectQuestion, LocalDate datetimeField, String stringField) {
+  public Field(SelectQuestion selectQuestion, LocalDate dateField, String stringField) {
     this.selectQuestion = selectQuestion;
-    this.datetimeField = datetimeField;
+    this.dateField = dateField;
     this.stringField = stringField;
   }
 }

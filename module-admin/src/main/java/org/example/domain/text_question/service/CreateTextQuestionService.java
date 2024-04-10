@@ -17,12 +17,14 @@ public class CreateTextQuestionService {
   private final TextQuestionRepository textQuestionRepository;
 
   public void createTextQuestion(Application application, List<CreateTextQuestionRequest> requestList) {
-    requestList
-      .forEach(request -> textQuestionRepository.save(
+    List<TextQuestion> textQuestionList = requestList.stream()
+      .map(request -> textQuestionRepository.save(
         TextQuestion.builder()
           .application(application)
           .question(request.question())
           .build()
-      ));
+      )).toList();
+
+    application.setTextQuestionList(textQuestionList);
   }
 }

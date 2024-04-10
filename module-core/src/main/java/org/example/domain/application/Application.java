@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.domain.select_question.SelectQuestion;
 import org.example.domain.study.Study;
 import org.example.domain.text_question.TextQuestion;
@@ -42,9 +43,11 @@ public class Application {
   @JoinColumn(name = "study_id")
   private Study study;
 
+  @Setter
   @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TextQuestion> textQuestionList = new ArrayList<>();
 
+  @Setter
   @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SelectQuestion> selectQuestionList = new ArrayList<>();
 
@@ -65,10 +68,8 @@ public class Application {
   private String updatedBy;
 
   @Builder
-  public Application(Study study, String title, List<TextQuestion> textQuestionList, List<SelectQuestion> selectQuestionList) {
+  public Application(Study study, String title) {
     this.study = study;
     this.title = title;
-    this.textQuestionList = textQuestionList;
-    this.selectQuestionList = selectQuestionList;
   }
 }
