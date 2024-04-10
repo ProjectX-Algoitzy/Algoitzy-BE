@@ -19,10 +19,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.domain.select_question.SelectQuestion;
 import org.example.domain.study.Study;
 import org.example.domain.text_question.TextQuestion;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -40,22 +43,33 @@ public class Application {
   @JoinColumn(name = "study_id")
   private Study study;
 
+  @Setter
   @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TextQuestion> textQuestionList = new ArrayList<>();
 
+  @Setter
   @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SelectQuestion> selectQuestionList = new ArrayList<>();
+
+  private String title;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
 
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
+
+  @LastModifiedBy
+  private String updatedBy;
+
   @Builder
-  public Application(Study study, List<TextQuestion> textQuestionList, List<SelectQuestion> selectQuestionList) {
+  public Application(Study study, String title) {
     this.study = study;
-    this.textQuestionList = textQuestionList;
-    this.selectQuestionList = selectQuestionList;
+    this.title = title;
   }
 }

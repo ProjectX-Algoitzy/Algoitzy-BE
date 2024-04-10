@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.domain.application.Application;
 import org.example.domain.field.Field;
 import org.springframework.data.annotation.CreatedDate;
@@ -39,6 +40,7 @@ public class SelectQuestion {
   @JoinColumn(name = "application_id")
   private Application application;
 
+  @Setter
   @OneToMany(mappedBy = "selectQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Field> fieldList = new ArrayList<>();
 
@@ -52,9 +54,8 @@ public class SelectQuestion {
   private LocalDateTime updatedTime;
 
   @Builder
-  public SelectQuestion(Application application, String question, List<Field> fieldList) {
+  public SelectQuestion(Application application, String question) {
     this.application = application;
     this.question = question;
-    this.fieldList = fieldList;
   }
 }

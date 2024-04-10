@@ -15,6 +15,7 @@ public enum ErrorStatus implements BaseErrorCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON4000"),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "COMMON4001"),
     NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON4002"),
+    KEY_NOT_EXIST(HttpStatus.BAD_REQUEST, "COMMON4003"),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5000"),
     DATA_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5001");
     private final HttpStatus httpStatus;
