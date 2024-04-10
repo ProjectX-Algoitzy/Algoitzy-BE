@@ -1,9 +1,11 @@
 package org.example.domain.application.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import org.example.domain.select_question.controller.request.CreateSelectQuestionRequest;
 import org.example.domain.text_question.controller.request.CreateTextQuestionRequest;
 
 public record CreateApplicationRequest(
@@ -17,7 +19,10 @@ public record CreateApplicationRequest(
   String title,
 
   @Schema(description = "주관식 문항 생성 요청 list")
-  List<CreateTextQuestionRequest> createTextQuestionRequestList
+  List<@Valid CreateTextQuestionRequest> createTextQuestionRequestList,
+
+  @Schema(description = "객관식 문항 생성 요청 list")
+  List<@Valid CreateSelectQuestionRequest> createSelectQuestionRequestList
 ) {
 
 }
