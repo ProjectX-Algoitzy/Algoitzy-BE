@@ -2,6 +2,7 @@ package org.example.domain.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.ApiResponse;
@@ -24,7 +25,7 @@ public class MemberController {
 
   @PostMapping("/login")
   @Operation(summary = "로그인")
-  public ApiResponse<LoginResponse> login(@RequestBody LoginRequest request) {
+  public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
     return ApiResponse.onCreate(coreMemberService.login(request));
   }
 }

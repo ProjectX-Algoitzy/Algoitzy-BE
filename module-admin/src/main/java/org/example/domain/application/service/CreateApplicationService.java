@@ -26,10 +26,11 @@ public class CreateApplicationService {
    */
   public void createApplication(CreateApplicationRequest request) {
 
-    Application application = applicationRepository.save(Application.builder()
-      .study(coreStudyRepository.findById(request.studyId()))
-      .title(request.title())
-      .build()
+    Application application = applicationRepository.save(
+      Application.builder()
+        .study(coreStudyRepository.findById(request.studyId()))
+        .title(request.title())
+        .build()
     );
     createTextQuestionService.createTextQuestion(application, request.createTextQuestionRequestList());
     createSelectQuestionService.createSelectQuestion(application, request.createSelectQuestionRequestList());
