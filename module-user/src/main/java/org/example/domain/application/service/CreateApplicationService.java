@@ -15,11 +15,11 @@ public class CreateApplicationService {
   private final CreateTextAnswerService createTextAnswerService;
   private final CreateSelectAnswerService createSelectAnswerService;
 
-
   /**
    * 지원서 작성
    */
   public void createApplication(CreateApplicationRequest request) {
-
+    createTextAnswerService.createTextAnswer(request.createTextAnswerRequestList());
+    createSelectAnswerService.createSelectAnswer(request.createSelectAnswerRequestList());
   }
 }

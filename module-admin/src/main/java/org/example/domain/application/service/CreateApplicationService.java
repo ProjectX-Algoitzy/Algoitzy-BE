@@ -5,7 +5,7 @@ import org.example.domain.application.controller.request.CreateApplicationReques
 import org.example.domain.application.Application;
 import org.example.domain.application.repository.ApplicationRepository;
 import org.example.domain.select_question.service.CreateSelectQuestionService;
-import org.example.domain.study.repository.CoreStudyRepository;
+import org.example.domain.study.service.CoreStudyService;
 import org.example.domain.text_question.service.CreateTextQuestionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CreateApplicationService {
 
-  private final CoreStudyRepository coreStudyRepository;
+  private final CoreStudyService coreStudyService;
   private final ApplicationRepository applicationRepository;
   private final CreateTextQuestionService createTextQuestionService;
   private final CreateSelectQuestionService createSelectQuestionService;
@@ -28,7 +28,7 @@ public class CreateApplicationService {
 
     Application application = applicationRepository.save(
       Application.builder()
-        .study(coreStudyRepository.findById(request.studyId()))
+        .study(coreStudyService.findById(request.studyId()))
         .title(request.title())
         .build()
     );

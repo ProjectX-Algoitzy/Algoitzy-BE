@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -14,8 +15,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.field.Field;
+import org.example.domain.select_question.SelectQuestion;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,16 +34,25 @@ public class SelectAnswer {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private Field field;
+  @JoinColumn(name = "select_question_id")
+  private SelectQuestion selectQuestion;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
 
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
+
+  @LastModifiedBy
+  private String updatedBy;
+
   @Builder
-  public SelectAnswer(Field field) {
-    this.field = field;
+  public SelectAnswer(SelectQuestion selectQuestion) {
+    this.selectQuestion = selectQuestion;
   }
 }

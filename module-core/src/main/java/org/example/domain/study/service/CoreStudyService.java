@@ -1,16 +1,17 @@
-package org.example.domain.study.repository;
+package org.example.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.study.Study;
+import org.example.domain.study.repository.StudyRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CoreStudyRepository {
+public class CoreStudyService {
 
   private final StudyRepository studyRepository;
 
