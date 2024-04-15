@@ -23,7 +23,7 @@ public class EmailController {
   private final EmailService emailService;
 
   @PostMapping("/certification")
-  @Operation(summary = "이메일 인증코드 전송")
+  @Operation(summary = "[USER] 이메일 인증코드 전송")
   public ApiResponse<Void> sendCertificationEmail(@RequestBody @Valid CertificationEmailRequest request) {
     emailService.sendCertificationEmail(request);
     return ApiResponse.onSuccess();

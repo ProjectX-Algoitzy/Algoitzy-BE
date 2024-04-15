@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 public record CreateTextQuestionRequest(
 
   @NotBlank
-  @Schema(description = "주관식 질문", example = "KOALA에 지원한 계기를 작성해주세요. (300자)")
+  @Schema(description = "주관식 문항", example = "KOALA에 지원한 계기를 작성해주세요. (300자)")
   String question
 ) {
 

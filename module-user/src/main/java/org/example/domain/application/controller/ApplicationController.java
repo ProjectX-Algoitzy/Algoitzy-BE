@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/application")
 @RequiredArgsConstructor
-@Tag(name = "ApplicationController", description = "[ADMIN] 지원서 관련 API")
+@Tag(name = "ApplicationController", description = "[USER] 지원서 관련 API")
 public class ApplicationController {
 
   private final ApplicationService applicationService;
 
   @PostMapping()
-  @Operation(summary = "지원서 생성")
+  @Operation(summary = "지원서 작성")
   public ApiResponse<Void> createApplication(@RequestBody @Valid CreateApplicationRequest request) {
     applicationService.createApplication(request);
     return ApiResponse.onSuccess();

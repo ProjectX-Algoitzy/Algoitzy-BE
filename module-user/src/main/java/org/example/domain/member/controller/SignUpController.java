@@ -2,6 +2,7 @@ package org.example.domain.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.CreateMemberRequest;
@@ -24,28 +25,28 @@ public class SignUpController {
 
   @PostMapping()
   @Operation(summary = "회원 가입")
-  public ApiResponse<Void> createMember(@RequestBody CreateMemberRequest request) {
+  public ApiResponse<Void> createMember(@RequestBody @Valid CreateMemberRequest request) {
     memberService.createMember(request);
     return ApiResponse.onCreate();
   }
 
   @PostMapping("/email")
   @Operation(summary = "이메일 인증")
-  public ApiResponse<Void> validateEmail(@RequestBody ValidateEmailRequest request) {
+  public ApiResponse<Void> validateEmail(@RequestBody @Valid ValidateEmailRequest request) {
     memberService.validateEmail(request);
     return ApiResponse.onSuccess();
   }
 
   @PostMapping("/handle")
   @Operation(summary = "백준 유효 계정 인증")
-  public ApiResponse<Void> validateHandle(@RequestBody ValidateHandleRequest request) {
+  public ApiResponse<Void> validateHandle(@RequestBody @Valid ValidateHandleRequest request) {
     memberService.validateHandle(request);
     return ApiResponse.onSuccess();
   }
 
   @PostMapping("/phone-number")
   @Operation(summary = "휴대전화 인증")
-  public ApiResponse<Void> validatePhoneNumber(@RequestBody ValidatePhoneNumberRequest request) {
+  public ApiResponse<Void> validatePhoneNumber(@RequestBody @Valid ValidatePhoneNumberRequest request) {
     memberService.validatePhoneNumber(request);
     return ApiResponse.onSuccess();
   }

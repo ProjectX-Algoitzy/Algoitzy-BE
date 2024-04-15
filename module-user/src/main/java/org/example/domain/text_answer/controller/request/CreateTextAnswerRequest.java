@@ -1,0 +1,18 @@
+package org.example.domain.text_answer.controller.request;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateTextAnswerRequest(
+
+  @NotNull
+  @Schema(description = "주관식 문항 id")
+  Long textQuestionId,
+
+  @NotBlank
+  @Schema(description = "주관식 답변 내용", example = "제가 최고입니다.")
+  String answer
+) {
+
+}

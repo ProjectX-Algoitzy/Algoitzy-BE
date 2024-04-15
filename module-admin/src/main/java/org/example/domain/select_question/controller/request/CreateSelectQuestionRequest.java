@@ -1,6 +1,7 @@
 package org.example.domain.select_question.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import org.example.domain.field.controller.request.CreateFieldRequest;
@@ -12,6 +13,6 @@ public record CreateSelectQuestionRequest(
   String question,
 
   @Schema(description = "객관식 필드")
-  List<CreateFieldRequest> createFieldRequestList
+  List<@Valid CreateFieldRequest> createFieldRequestList
 ) {
 }
