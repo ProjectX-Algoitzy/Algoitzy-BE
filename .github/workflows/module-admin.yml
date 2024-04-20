@@ -46,11 +46,9 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p module-admin/deploy
-          cp module-admin/build/libs/*.jar module-admin/deploy/application.jar
+          cp module-admin/build/libs/module-admin-0.0.1-SNAPSHOT.jar module-admin/deploy/application.jar
           cp -r .ebextensions module-admin/deploy/.ebextensions
-          cp -r .platform module-admin/deploy/.platform
           cd module-admin/deploy && zip -r deploy.zip .
-
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
