@@ -46,8 +46,7 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p deploy
-          cp build/libs/*.jar deploy/application.jar
-          cp Procfile deploy/Procfile
+          cp module-user/build/libs/*.jar module-user/deploy/application.jar
           cp -r .ebextensions deploy/.ebextensions
           cp -r .platform deploy/.platform
           cd deploy && zip -r deploy.zip .
@@ -61,5 +60,5 @@ jobs:
           environment_name: Koala-dev-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
+          deployment_package: module-user/deploy/deploy.zip
           wait_for_environment_recovery: false
