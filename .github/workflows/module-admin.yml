@@ -47,9 +47,9 @@ jobs:
         run: |
           mkdir -p deploy/admin
           cp module-admin/build/libs/module-admin-0.0.1-SNAPSHOT.jar deploy/admin/module-admin.jar
+          cp Procfile deploy/admin/Procfile
           cp -r .ebextensions deploy/admin/.ebextensions
           cd deploy/admin && zip -r deploy-admin.zip ./*
-
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
