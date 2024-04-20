@@ -83,14 +83,21 @@ project(':module-admin') {
     dependencies {
         implementation project(':module-core')
     }
+    jar {
+        enabled = false
+    }
 }
 
 project(':module-user') {
     dependencies {
         implementation project(':module-core')
     }
+    jar {
+        enabled = false
+    }
 }
 
 clean {
     delete file('src/main/generated')
 }
+
