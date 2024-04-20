@@ -2,6 +2,7 @@ package org.example.domain.text_answer.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.answer.Answer;
 import org.example.domain.text_answer.TextAnswer;
 import org.example.domain.text_answer.controller.request.CreateTextAnswerRequest;
 import org.example.domain.text_answer.repository.TextAnswerRepository;
@@ -20,12 +21,15 @@ public class CreateTextAnswerService {
   /**
    * 주관식 답변 생성
    */
-  public void createTextAnswer(List<CreateTextAnswerRequest> requestList) {
-    requestList
-      .forEach(request -> textAnswerRepository.save(TextAnswer.builder()
+  public void createTextAnswer(Answer answer, List<CreateTextAnswerRequest> requestList) {
+    List<TextAnswer> textAnswerList = requestList.stream()
+      .map(request -> textAnswerRepository.save(TextAnswer.builder()
+        .answer(answer)
         .textQuestion(coreTextQuestionService.findById(request.textQuestionId()))
-        .answer(request.answer())
+        .text(request.text())
         .build())
-      );
+      ).toList();
+
+    answer.setTextAnswerList(textAnswerList);
   }
 }
