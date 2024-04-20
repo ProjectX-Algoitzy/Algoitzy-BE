@@ -60,6 +60,6 @@ jobs:
           environment_name: Koala-dev-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: module-admin/deploy/deploy.zip
+          deployment_package: deploy/admin/deploy-admin.zip
           wait_for_environment_recovery: false
 
