@@ -1,5 +1,5 @@
 server:
-  port: 8181
+  port: ${ADMIN_PORT_DEV}
 
 spring:
   config:
