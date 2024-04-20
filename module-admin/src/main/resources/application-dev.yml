@@ -10,3 +10,9 @@ spring:
     url: ${DB_URL_DEV}
     username: ${DB_USERNAME_DEV}
     password: ${DB_PW_DEV}
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 300MB
