@@ -1,6 +1,9 @@
-name: admin Dev CI/CD
+name: user Dev CI/CD
 
 on:
+  push:
+    paths:
+      - 'module-user/**'
   pull_request:
     types: [closed]
   workflow_dispatch: #(2). 수동 실행도 가능하도록 option
@@ -24,8 +27,9 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash # (6). 권한 부여
 
+      # Run ./gradlew clean build -x test
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew :module-user:build
         shell: bash # (7). build 시작
 
       - name: Get current time
@@ -47,7 +51,7 @@ jobs:
           cp -r .ebextensions deploy/.ebextensions
           cp -r .platform deploy/.platform
           cd deploy && zip -r deploy.zip .
-          
+
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
         with:
