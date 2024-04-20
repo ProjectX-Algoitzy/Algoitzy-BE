@@ -47,6 +47,7 @@ jobs:
         run: |
           mkdir -p deploy/user
           cp module-user/build/libs/module-user-0.0.1-SNAPSHOT.jar deploy/user/module-user.jar
+          cp Procfile deploy/user/Procfile
           cp -r .ebextensions deploy/user/.ebextensions
           cd deploy/user && zip -r deploy-user.zip ./*
 
