@@ -45,10 +45,10 @@ jobs:
 
       - name: Generate deployment package
         run: |
-          mkdir -p module-user/deploy
-          cp module-user/build/libs/module-user-0.0.1-SNAPSHOT.jar module-user/deploy/application.jar
-          cp -r .ebextensions module-user/deploy/.ebextensions
-          cd module-user/deploy && zip -r deploy.zip .
+          mkdir -p deploy/user
+          cp module-user/build/libs/module-user-0.0.1-SNAPSHOT.jar deploy/user/module-user.jar
+          cp -r .ebextensions deploy/user/.ebextensions
+          cd deploy/user && zip -r deploy-user.zip ./*
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
