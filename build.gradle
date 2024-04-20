@@ -83,6 +83,10 @@ project(':module-admin') {
     dependencies {
         implementation project(':module-core')
     }
+    bootJar {
+        enabled = false
+    }
+
     jar {
         enabled = false
     }
@@ -92,7 +96,7 @@ project(':module-user') {
     dependencies {
         implementation project(':module-core')
     }
-    jar {
+    bootJar {
         enabled = false
     }
 }
