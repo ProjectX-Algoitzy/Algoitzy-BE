@@ -12,7 +12,7 @@ public record CreateTextAnswerRequest(
 
   @NotBlank
   @Schema(description = "주관식 답변 내용", example = "제가 최고입니다.")
-  String answer
+  String text
 ) {
 
 }
