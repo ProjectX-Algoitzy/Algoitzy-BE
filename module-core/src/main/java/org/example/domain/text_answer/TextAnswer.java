@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.answer.Answer;
 import org.example.domain.text_question.TextQuestion;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,10 +35,14 @@ public class TextAnswer {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "answer_id")
+  private Answer answer;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "text_question_id")
   private TextQuestion textQuestion;
 
-  private String answer;
+  private String text;
 
   @CreatedDate
   @Column(updatable = false)
@@ -54,8 +59,9 @@ public class TextAnswer {
   private String updatedBy;
 
   @Builder
-  public TextAnswer(TextQuestion textQuestion, String answer) {
-    this.textQuestion = textQuestion;
+  public TextAnswer(Answer answer, TextQuestion textQuestion, String text) {
     this.answer = answer;
+    this.textQuestion = textQuestion;
+    this.text = text;
   }
 }

@@ -1,5 +1,6 @@
 package org.example.domain.answer;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -9,17 +10,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.field.Field;
-import org.example.domain.member.Member;
-import org.example.domain.select_question.SelectQuestion;
+import lombok.Setter;
+import org.example.domain.application.Application;
+import org.example.domain.select_answer.SelectAnswer;
+import org.example.domain.text_answer.TextAnswer;
 import org.example.domain.text_question.TextQuestion;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,36 +41,33 @@ public class Answer {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "text_question_id")
-  private TextQuestion textQuestion;
+  @Setter
+  @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TextAnswer> textAnswerList = new ArrayList<>();
 
+  @Setter
+  @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<SelectAnswer> selectAnswerList = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "select_question_id")
-  private SelectQuestion selectQuestion;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "field_id")
-  private Field field;
-
-  private String textAnswer;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private Member member;
+  @JoinColumn(name = "application_id")
+  private Application application;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
 
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
+
+  @LastModifiedBy
+  private String updatedBy;
+
   @Builder
-  public Answer(TextQuestion textQuestion, SelectQuestion selectQuestion, Field field, String textAnswer, Member member) {
-    this.textQuestion = textQuestion;
-    this.selectQuestion = selectQuestion;
-    this.field = field;
-    this.textAnswer = textAnswer;
-    this.member = member;
+  public Answer(Application application) {
+    this.application = application;
   }
 }
