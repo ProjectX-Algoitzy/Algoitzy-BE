@@ -15,8 +15,8 @@ public class SwaggerConfig {
   @Bean
   public OpenAPI KoalaServerAPI() {
     Info info = new Info()
-      .title("KOALA API")
-      .description("KOALA API 명세서")
+      .title("KOALA ADMIN API")
+      .description("관리자 API 명세서")
       .version("v3");
 
     String jwtSchemeName = "JWT TOKEN";
