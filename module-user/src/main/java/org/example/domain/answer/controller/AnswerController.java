@@ -6,7 +6,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.answer.controller.request.CreateAnswerRequest;
+import org.example.domain.answer.controller.request.SearchAnswerRequest;
+import org.example.domain.answer.controller.response.ListAnswerResponse;
 import org.example.domain.answer.service.AnswerService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,5 +33,12 @@ public class AnswerController {
     @RequestBody @Valid CreateAnswerRequest request) {
     answerService.createAnswer(applicationId, request);
     return ApiResponse.onSuccess();
+  }
+
+  @GetMapping()
+  @Operation(summary = "작성한 지원서 목록 조회")
+  public ApiResponse<ListAnswerResponse> getAnswerList(
+    @ParameterObject @ModelAttribute SearchAnswerRequest request) {
+    return ApiResponse.onSuccess(answerService.getAnswerList(request));
   }
 }

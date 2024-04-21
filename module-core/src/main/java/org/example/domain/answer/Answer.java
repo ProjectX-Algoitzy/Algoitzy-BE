@@ -23,7 +23,6 @@ import lombok.Setter;
 import org.example.domain.application.Application;
 import org.example.domain.select_answer.SelectAnswer;
 import org.example.domain.text_answer.TextAnswer;
-import org.example.domain.text_question.TextQuestion;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -48,6 +47,7 @@ public class Answer {
   @Setter
   @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SelectAnswer> selectAnswerList = new ArrayList<>();
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "application_id")
   private Application application;
