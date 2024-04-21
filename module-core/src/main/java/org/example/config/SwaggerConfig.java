@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
   @Bean
-  public OpenAPI AlgoitzyServerAPI() {
+  public OpenAPI KoalaServerAPI() {
     Info info = new Info()
-      .title("Algoitzy API")
-      .description("Algoitzy API 명세서")
+      .title("KOALA API")
+      .description("KOALA API 명세서")
       .version("v3");
 
     String jwtSchemeName = "JWT TOKEN";
