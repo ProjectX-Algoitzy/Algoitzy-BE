@@ -4,9 +4,8 @@ import static org.example.email.enums.EmailType.CERTIFICATION;
 
 import jakarta.mail.internet.MimeMessage;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,16 +47,17 @@ public class EmailService {
   }
 
   private String htmlToString(String path) {
-    String absolutePath = System.getProperty("user.dir") + File.separator + path;
     StringBuilder html = new StringBuilder();
+
     try {
-      BufferedReader in = new BufferedReader(new FileReader(absolutePath));
+      URL url = new URL(path);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
       String line;
-      while ((line = in.readLine()) != null) {
+      while ((line = reader.readLine()) != null) {
         html.append(line);
       }
-      in.close();
-    } catch (IOException e) {
+      reader.close();
+    } catch (Exception e) {
       log.error(e.getMessage());
       throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "HTML을 String으로 변환 중 오류가 발생했습니다.");
     }

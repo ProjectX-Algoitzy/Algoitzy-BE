@@ -11,10 +11,10 @@ import org.example.api_response.status.ErrorStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 public enum EmailType {
-  CERTIFICATION("KOALA 이메일 인증 코드", "module-core/src/main/java/org/example/email/html/certification.html"),
-  DOCUMENT_RESULT("KOALA 서류 전형 안내", "module-core/src/main/java/org/example/email/html/certification.html"),
-  INTERVIEW_DATE("KOALA 면접 일정 안내", "module-core/src/main/java/org/example/email/html/certification.html"),
-  INTERVIEW_RESULT("KOALA 면접 결과 발표", "module-core/src/main/java/org/example/email/html/certification.html");
+  CERTIFICATION("KOALA 이메일 인증 코드", "https://kau-koala.s3.ap-northeast-2.amazonaws.com/certification.html"),
+  DOCUMENT_RESULT("KOALA 서류 전형 안내", "https://kau-koala.s3.ap-northeast-2.amazonaws.com/certification.html"),
+  INTERVIEW_DATE("KOALA 면접 일정 안내", "https://kau-koala.s3.ap-northeast-2.amazonaws.com/certification.html"),
+  INTERVIEW_RESULT("KOALA 면접 결과 발표", "https://kau-koala.s3.ap-northeast-2.amazonaws.com/certification.html");
 
   private String subject;
   private String path;
