@@ -12,26 +12,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    @Bean
-    public OpenAPI AlgoitzyServerAPI() {
-        Info info = new Info()
-            .title("Algoitzy API")
-            .description("Algoitzy API 명세서")
-            .version("v3");
+  @Bean
+  public OpenAPI AlgoitzyServerAPI() {
+    Info info = new Info()
+      .title("Algoitzy API")
+      .description("Algoitzy API 명세서")
+      .version("v3");
 
-        String jwtSchemeName = "JWT TOKEN";
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
-        Components components = new Components()
-            .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
-                .name(jwtSchemeName)
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT"));
+    String jwtSchemeName = "JWT TOKEN";
+    SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
+    Components components = new Components()
+      .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
+        .name(jwtSchemeName)
+        .type(SecurityScheme.Type.HTTP)
+        .scheme("bearer")
+        .bearerFormat("JWT"));
 
-        return new OpenAPI()
-            .addServersItem(new Server().url("/"))
-            .info(info)
-            .addSecurityItem(securityRequirement)
-            .components(components);
-    }
+    return new OpenAPI()
+      .addServersItem(new Server().url("/"))
+      .info(info)
+      .addSecurityItem(securityRequirement)
+      .components(components);
+  }
 }
