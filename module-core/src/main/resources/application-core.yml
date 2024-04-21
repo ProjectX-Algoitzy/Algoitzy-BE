@@ -27,3 +27,16 @@ spring:
 
 jwt:
   secret: ${JWT}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    s3:
+      bucket: kau-koala
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
