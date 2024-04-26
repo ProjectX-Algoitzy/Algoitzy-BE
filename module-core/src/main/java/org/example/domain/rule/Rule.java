@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.study.Study;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -32,14 +33,18 @@ public class Rule {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "study_id")
   private Study study;
+
+  @Comment("규칙 내용")
   private String content;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
 

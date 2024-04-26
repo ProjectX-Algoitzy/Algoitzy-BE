@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import org.example.domain.institution.Institution;
 import org.example.domain.problem.Problem;
 import org.example.domain.study.Study;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -45,11 +46,15 @@ public class Workbook {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "problem_id")
   private Problem problem;
+
+  @Column(nullable = false)
+  @Comment("주차")
   private Integer week;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
 

@@ -28,6 +28,7 @@ import org.example.domain.interview.Interview;
 import org.example.domain.member.Member;
 import org.example.domain.study.Study;
 import org.example.domain.study_member.enums.StudyMemberRole;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -63,6 +64,8 @@ public class StudyMember {
   private List<Attendance> attendanceList = new ArrayList<>();
 
   @Enumerated(value = EnumType.STRING)
+  @Column(nullable = false)
+  @Comment("스터디원 역할")
   private StudyMemberRole role;
 
   @CreatedDate

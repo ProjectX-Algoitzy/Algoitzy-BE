@@ -33,6 +33,7 @@ public class AttendanceRequest {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "study_member_id")
   private StudyMember studyMember;

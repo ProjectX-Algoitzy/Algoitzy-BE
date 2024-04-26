@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.study_member.StudyMember;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -36,6 +37,9 @@ public class Interview {
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "study_member_id")
   private StudyMember studyMember;
+
+  @Column(nullable = false)
+  @Comment("면접 시간")
   private LocalDateTime time;
 
   @CreatedDate

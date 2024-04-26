@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.rule.Rule;
 import org.example.domain.study.enums.StudyType;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -39,16 +40,23 @@ public class Study {
   @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Rule> ruleList;
 
+  @Column(nullable = false)
+  @Comment("스터디 이름")
   private String name;
 
   @Enumerated(value = EnumType.STRING)
+  @Column(nullable = false)
+  @Comment("모의테스트 참여 여부")
   private StudyType type;
 
+  @Column(nullable = false)
+  @Comment("모집 대상")
   private String target;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
 

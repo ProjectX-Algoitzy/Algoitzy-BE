@@ -44,6 +44,7 @@ public class ProblemAlgorithm {
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
 

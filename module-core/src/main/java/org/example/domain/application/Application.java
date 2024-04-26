@@ -53,7 +53,7 @@ public class Application {
   private List<SelectQuestion> selectQuestionList = new ArrayList<>();
 
   @Column(nullable = false)
-  @Comment("스터디 이름")
+  @Comment("지원서 제목")
   private String title;
 
   @CreatedDate

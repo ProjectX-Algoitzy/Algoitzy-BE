@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.select_question.SelectQuestion;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -36,7 +37,11 @@ public class Field {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "select_question_id")
   private SelectQuestion selectQuestion;
+
+  @Comment("날짜형 필드")
   private LocalDate dateField;
+
+  @Comment("문자형 필드")
   private String stringField;
 
   @CreatedDate
