@@ -23,6 +23,7 @@ import lombok.Setter;
 import org.example.domain.select_question.SelectQuestion;
 import org.example.domain.study.Study;
 import org.example.domain.text_question.TextQuestion;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -51,6 +52,8 @@ public class Application {
   @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SelectQuestion> selectQuestionList = new ArrayList<>();
 
+  @Column(nullable = false)
+  @Comment("스터디 이름")
   private String title;
 
   @CreatedDate
