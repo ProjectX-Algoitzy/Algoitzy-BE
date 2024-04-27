@@ -17,7 +17,8 @@ public enum ErrorStatus implements BaseErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON4002"),
     KEY_NOT_EXIST(HttpStatus.BAD_REQUEST, "COMMON4003"),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5000"),
-    DATA_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5001");
+    DATA_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5001"),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized401");
     private final HttpStatus httpStatus;
     private final String code;
     private String message;

@@ -2,6 +2,8 @@ package org.example.domain.answer.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.answer.Answer;
 import org.example.domain.answer.controller.response.DetailAnswerResponse;
 import org.example.domain.answer.repository.DetailAnswerRepository;
@@ -9,6 +11,7 @@ import org.example.domain.select_answer.response.DetailSelectAnswerDto;
 import org.example.domain.select_answer.service.ListSelectAnswerService;
 import org.example.domain.text_answer.response.DetailTextAnswerDto;
 import org.example.domain.text_answer.service.ListTextAnswerService;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,10 @@ public class DetailAnswerService {
    */
   public DetailAnswerResponse getAnswer(Long answerId) {
     Answer answer = coreAnswerService.findById(answerId);
+    if (!SecurityUtils.isAdminOrMine(answer.getCreatedBy())) {
+      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "접근 불가능한 지원서입니다.");
+    }
+
     DetailAnswerResponse response = detailAnswerRepository.getAnswer(answerId);
     List<DetailSelectAnswerDto> selectAnswerList = listSelectAnswerService.getSelectAnswerList(answer);
     List<DetailTextAnswerDto> textAnswerList = listTextAnswerService.getTextAnswerList(answerId);
