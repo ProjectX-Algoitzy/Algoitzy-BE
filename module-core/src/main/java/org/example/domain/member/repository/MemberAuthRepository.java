@@ -1,6 +1,7 @@
 package org.example.domain.member.repository;
 
-import static org.example.domain.member.QMember.member;
+
+import static org.example.domain.member.QMember.*;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;

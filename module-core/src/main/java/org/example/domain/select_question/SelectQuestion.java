@@ -39,6 +39,7 @@ public class SelectQuestion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "application_id")
   private Application application;

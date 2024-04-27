@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 public record ValidatePhoneNumberRequest(
 
   @NotBlank
-  @Schema(description = "이메일", example = "engus525@naver.com")
+  @Schema(description = "핸드폰 번호", example = "01012341234")
   String phoneNumber,
 
   @NotBlank

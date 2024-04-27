@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -38,11 +37,8 @@ public class Field {
   @JoinColumn(name = "select_question_id")
   private SelectQuestion selectQuestion;
 
-  @Comment("날짜형 필드")
-  private LocalDate dateField;
-
-  @Comment("문자형 필드")
-  private String stringField;
+  @Comment("필드 내용")
+  private String context;
 
   @CreatedDate
   @Column(updatable = false)
@@ -59,9 +55,8 @@ public class Field {
   private String updatedBy;
 
   @Builder
-  public Field(SelectQuestion selectQuestion, LocalDate dateField, String stringField) {
+  public Field(SelectQuestion selectQuestion, String context) {
     this.selectQuestion = selectQuestion;
-    this.dateField = dateField;
-    this.stringField = stringField;
+    this.context = context;
   }
 }

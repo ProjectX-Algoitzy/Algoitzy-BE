@@ -15,10 +15,10 @@ public class ListAnswerDto {
   @Schema(description = "작성한 지원서 대상 스터디 이름")
   private String studyName;
 
-  @Schema(description = "작성자")
-  private String updatedByName;
+  @Schema(description = "작성자 이름")
+  private String submitName;
 
   @Schema(description = "제출일")
-  private LocalDateTime updatedTime;
+  private LocalDateTime submitTime;
 
 }
