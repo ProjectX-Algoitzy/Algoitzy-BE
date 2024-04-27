@@ -16,7 +16,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.study_member.StudyMember;
+import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,16 +37,36 @@ public class Attendance {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "study_member_id")
   private StudyMember studyMember;
+
+  @Column(nullable = false)
+  @Comment("주차")
   private Integer week;
+
+  @Column(nullable = false)
+  @Comment("문제 할당량 충족 여부")
   private Boolean solvedProblem;
+
+  @Column(nullable = false)
+  @Comment("블로그 포스팅 여부")
   private Boolean postedBlog;
+
+  @Column(nullable = false)
+  @Comment("모의테스트 참여 여부")
   private Boolean tookTest;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
+
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
+
+  @LastModifiedBy
+  private String updatedBy;
 
   @Builder
   public Attendance(StudyMember studyMember, Integer week, Boolean solvedProblem, Boolean postedBlog, Boolean tookTest) {

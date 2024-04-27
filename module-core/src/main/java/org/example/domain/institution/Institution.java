@@ -15,7 +15,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.institution.enums.InstitutionType;
+import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -33,13 +36,22 @@ public class Institution {
   private String name;
   private String description;
   @Enumerated(value = EnumType.STRING)
+  @Comment("기관 유형")
   private InstitutionType type;
 
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
+
   @LastModifiedDate
   private LocalDateTime updatedTime;
+
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
+
+  @LastModifiedBy
+  private String updatedBy;
 
   @Builder
   public Institution(String name, String description, InstitutionType type) {

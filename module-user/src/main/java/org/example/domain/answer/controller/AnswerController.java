@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.answer.controller.request.CreateAnswerRequest;
 import org.example.domain.answer.controller.request.SearchAnswerRequest;
+import org.example.domain.answer.controller.response.DetailAnswerResponse;
 import org.example.domain.answer.controller.response.ListAnswerResponse;
 import org.example.domain.answer.service.AnswerService;
 import org.springdoc.core.annotations.ParameterObject;
@@ -40,5 +41,11 @@ public class AnswerController {
   public ApiResponse<ListAnswerResponse> getAnswerList(
     @ParameterObject @ModelAttribute @Valid SearchAnswerRequest request) {
     return ApiResponse.onSuccess(answerService.getAnswerList(request));
+  }
+
+  @GetMapping("/{answer-id}")
+  @Operation(summary = "작성한 지원서 상세 조회")
+  public ApiResponse<DetailAnswerResponse> getAnswer(@PathVariable("answer-id") Long answerId) {
+    return ApiResponse.onSuccess(answerService.getAnswer(answerId));
   }
 }

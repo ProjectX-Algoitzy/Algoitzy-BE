@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.member.enums.Role;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,12 +31,28 @@ public class Member {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true, nullable = false)
+  @Comment("이메일")
   private String email;
+
+  @Column(unique = true, nullable = false)
+  @Comment("비밀번호")
   private String password;
+
+  @Column(nullable = false)
+  @Comment("이름")
   private String name;
+
+  @Column(unique = true, nullable = false)
+  @Comment("백준 닉네임")
   private String handle;
+
+  @Column(unique = true, nullable = false)
+  @Comment("핸드폰 번호")
   private String phoneNumber;
+
   @Enumerated(value = EnumType.STRING)
+  @Comment("역할")
   private Role role;
 
   @CreatedDate

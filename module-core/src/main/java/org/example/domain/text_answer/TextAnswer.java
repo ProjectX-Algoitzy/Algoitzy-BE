@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.answer.Answer;
 import org.example.domain.text_question.TextQuestion;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -42,6 +43,7 @@ public class TextAnswer {
   @JoinColumn(name = "text_question_id")
   private TextQuestion textQuestion;
 
+  @Comment("답변")
   private String text;
 
   @CreatedDate

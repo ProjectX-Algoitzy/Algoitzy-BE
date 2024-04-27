@@ -28,7 +28,10 @@ import org.example.domain.interview.Interview;
 import org.example.domain.member.Member;
 import org.example.domain.study.Study;
 import org.example.domain.study_member.enums.StudyMemberRole;
+import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -61,6 +64,8 @@ public class StudyMember {
   private List<Attendance> attendanceList = new ArrayList<>();
 
   @Enumerated(value = EnumType.STRING)
+  @Column(nullable = false)
+  @Comment("스터디원 역할")
   private StudyMemberRole role;
 
   @CreatedDate
@@ -68,6 +73,13 @@ public class StudyMember {
   private LocalDateTime createdTime;
   @LastModifiedDate
   private LocalDateTime updatedTime;
+
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
+
+  @LastModifiedBy
+  private String updatedBy;
 
   @Builder
   public StudyMember(Study study, Member member, Interview interview, List<AttendanceRequest> attendanceRequestList, List<Attendance> attendanceList,

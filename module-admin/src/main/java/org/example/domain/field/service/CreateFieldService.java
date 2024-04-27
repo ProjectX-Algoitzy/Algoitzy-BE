@@ -8,7 +8,6 @@ import org.example.domain.field.repository.FieldRepository;
 import org.example.domain.select_question.SelectQuestion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +22,7 @@ public class CreateFieldService {
       .map(request -> fieldRepository.save(
         Field.builder()
           .selectQuestion(selectQuestion)
-          .stringField(ObjectUtils.isEmpty(request.stringField()) ? null : request.stringField())
-          .dateField(ObjectUtils.isEmpty(request.dateField()) ? null : request.dateField())
+          .context(request.context())
           .build()
       )).toList();
 

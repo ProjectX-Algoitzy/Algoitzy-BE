@@ -22,7 +22,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.domain.application.Application;
 import org.example.domain.field.Field;
+import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -36,6 +39,7 @@ public class SelectQuestion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "application_id")
   private Application application;
@@ -44,6 +48,8 @@ public class SelectQuestion {
   @OneToMany(mappedBy = "selectQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Field> fieldList = new ArrayList<>();
 
+  @Column(nullable = false)
+  @Comment("문항 내용")
   private String question;
 
   @CreatedDate
@@ -52,6 +58,13 @@ public class SelectQuestion {
 
   @LastModifiedDate
   private LocalDateTime updatedTime;
+
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
+
+  @LastModifiedBy
+  private String updatedBy;
 
   @Builder
   public SelectQuestion(Application application, String question) {

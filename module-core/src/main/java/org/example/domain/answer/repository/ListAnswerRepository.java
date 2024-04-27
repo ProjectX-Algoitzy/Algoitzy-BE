@@ -1,9 +1,10 @@
 package org.example.domain.answer.repository;
 
+
 import static org.example.domain.answer.QAnswer.*;
-import static org.example.domain.application.QApplication.application;
-import static org.example.domain.member.QMember.member;
-import static org.example.domain.study.QStudy.study;
+import static org.example.domain.application.QApplication.*;
+import static org.example.domain.member.QMember.*;
+import static org.example.domain.study.QStudy.*;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -29,8 +30,8 @@ public class ListAnswerRepository {
       .select(Projections.fields(ListAnswerDto.class,
           answer.id.as("answerId"),
           study.name.as("studyName"),
-          member.name.as("updatedByName"),
-          answer.updatedTime
+          member.name.as("submitName"),
+          answer.updatedTime.as("submitTime")
         )
       )
       .from(answer)
