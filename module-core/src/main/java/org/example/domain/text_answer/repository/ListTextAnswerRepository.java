@@ -17,6 +17,9 @@ public class ListTextAnswerRepository {
 
   private final JPAQueryFactory queryFactory;
 
+  /**
+   * 지원서 상세 주관식 답변 목록 조회
+   */
   public List<DetailTextAnswerDto> getTextAnswerList(Long answerId) {
     return queryFactory
       .select(Projections.fields(DetailTextAnswerDto.class,

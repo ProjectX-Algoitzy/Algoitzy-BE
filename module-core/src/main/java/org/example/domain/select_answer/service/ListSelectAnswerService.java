@@ -26,6 +26,9 @@ public class ListSelectAnswerService {
   private final SelectQuestionRepository selectQuestionRepository;
   private final FieldRepository fieldRepository;
 
+  /**
+   * 지원서 상세 객관식 답변 목록 조회
+   */
   public List<DetailSelectAnswerDto> getSelectAnswerList(Answer answer) {
     List<DetailSelectAnswerDto> selectAnswerList = new ArrayList<>();
 

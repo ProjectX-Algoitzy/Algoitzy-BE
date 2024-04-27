@@ -15,6 +15,9 @@ public class ListSelectAnswerFieldService {
 
   private final ListSelectAnswerFieldRepository listSelectAnswerFieldRepository;
 
+  /**
+   * 지원서 상세 객관식 문항 선택한 필드 목록 조회
+   */
   public List<SelectAnswerField> getSelectAnswerFieldList(Answer answer) {
     return listSelectAnswerFieldRepository.getSelectAnswerFieldList(answer);
   }

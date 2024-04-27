@@ -14,6 +14,9 @@ public class ListTextAnswerService {
 
   private final ListTextAnswerRepository listTextAnswerRepository;
 
+  /**
+   * 지원서 상세 주관식 답변 목록 조회
+   */
   public List<DetailTextAnswerDto> getTextAnswerList(Long answerId) {
     return listTextAnswerRepository.getTextAnswerList(answerId);
   }
