@@ -44,9 +44,13 @@ public class Study {
   @Comment("스터디 이름")
   private String name;
 
+  @Column(nullable = false)
+  @Comment("스터디 기수")
+  private Integer generation;
+
   @Enumerated(value = EnumType.STRING)
   @Column(nullable = false)
-  @Comment("모의테스트 참여 여부")
+  @Comment("스터디 유형")
   private StudyType type;
 
   @Column(nullable = false)

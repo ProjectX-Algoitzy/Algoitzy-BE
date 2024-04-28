@@ -6,7 +6,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.application.controller.request.CreateApplicationRequest;
+import org.example.domain.application.controller.request.SearchApplicationRequest;
+import org.example.domain.application.controller.response.ListApplicationResponse;
 import org.example.domain.application.service.ApplicationService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +30,12 @@ public class ApplicationController {
   public ApiResponse<Void> createApplication(@RequestBody @Valid CreateApplicationRequest request) {
     applicationService.createApplication(request);
     return ApiResponse.onSuccess();
+  }
+
+  @GetMapping()
+  @Operation(summary = "지원서 양식 목록 조회")
+  public ApiResponse<ListApplicationResponse> getApplicationList(
+    @ParameterObject @ModelAttribute @Valid SearchApplicationRequest request) {
+    return ApiResponse.onSuccess(applicationService.getApplicationList(request));
   }
 }
