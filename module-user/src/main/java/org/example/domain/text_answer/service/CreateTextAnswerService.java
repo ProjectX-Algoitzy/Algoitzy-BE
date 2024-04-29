@@ -36,7 +36,7 @@ public class CreateTextAnswerService {
     List<Long> requestTextQuestionIdList = requestList.stream().map(CreateTextAnswerRequest::textQuestionId).toList();
     boolean allRequiredAnswered = new HashSet<>(requestTextQuestionIdList).containsAll(requiredTextQuestionIdList);
     if (!allRequiredAnswered) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "필수 문항에 응답해주세요.");
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "주관식 필수 문항에 응답해주세요.");
     }
 
     List<TextAnswer> textAnswerList = requestList.stream()
