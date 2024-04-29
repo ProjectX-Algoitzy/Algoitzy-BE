@@ -44,11 +44,15 @@ public class CreateSelectAnswerService {
 
     List<SelectAnswer> selectAnswerList = new ArrayList<>();
     for (CreateSelectAnswerRequest request : requestList) {
+      SelectQuestion selectQuestion = coreSelectQuestionService.findById(request.selectQuestionId());
+      if (!selectQuestion.getIsMultiSelect() && request.fieldIdList().size() > 1) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "다중 선택이 불가능한 문항입니다.");
+      }
 
       SelectAnswer selectAnswer = selectAnswerRepository.save(
         SelectAnswer.builder()
           .answer(answer)
-          .selectQuestion(coreSelectQuestionService.findById(request.selectQuestionId()))
+          .selectQuestion(selectQuestion)
           .build()
       );
       selectAnswerList.add(selectAnswer);

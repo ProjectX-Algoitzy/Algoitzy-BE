@@ -58,6 +58,10 @@ public class SelectQuestion {
   @Comment("필수 여부")
   private Boolean isRequired;
 
+  @Convert(converter = BooleanToYNConverter.class)
+  @Comment("다중 선택 가능 여부")
+  private Boolean isMultiSelect;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -73,9 +77,10 @@ public class SelectQuestion {
   private String updatedBy;
 
   @Builder
-  public SelectQuestion(Application application, String question, Boolean isRequired) {
+  public SelectQuestion(Application application, String question, Boolean isRequired, Boolean isMultiSelect) {
     this.application = application;
     this.question = question;
     this.isRequired = isRequired;
+    this.isMultiSelect = isMultiSelect;
   }
 }

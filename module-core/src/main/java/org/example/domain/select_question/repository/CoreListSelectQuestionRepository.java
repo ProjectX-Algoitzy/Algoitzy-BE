@@ -21,7 +21,8 @@ public class CoreListSelectQuestionRepository {
       .select(Projections.fields(DetailSelectQuestionDto.class,
         selectQuestion.id.as("selectQuestionId"),
         selectQuestion.question,
-        selectQuestion.isRequired
+        selectQuestion.isRequired,
+        selectQuestion.isMultiSelect
         )
       )
       .from(selectQuestion)

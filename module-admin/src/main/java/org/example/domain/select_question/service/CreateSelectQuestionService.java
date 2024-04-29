@@ -30,6 +30,7 @@ public class CreateSelectQuestionService {
           .application(application)
           .question(request.question())
           .isRequired(request.isRequired())
+          .isMultiSelect(request.isMultiSelect())
           .build()
       );
       selectQuestionList.add(selectQuestion);
