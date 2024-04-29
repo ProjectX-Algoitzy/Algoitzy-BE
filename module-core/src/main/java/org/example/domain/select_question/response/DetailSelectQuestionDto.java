@@ -21,6 +21,12 @@ public class DetailSelectQuestionDto {
   @Schema(description = "문항 내용")
   private String question;
 
+  @Schema(description = "필수 여부")
+  private boolean isRequired;
+
+  @Schema(description = "다중 선택 가능 여부")
+  private boolean isMultiSelect;
+
   @Schema(description = "필드 list")
   private List<DetailFieldDto> fieldList;
 }

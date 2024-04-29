@@ -22,6 +22,7 @@ public class CreateTextQuestionService {
         TextQuestion.builder()
           .application(application)
           .question(request.question())
+          .isRequired(request.isRequired())
           .build()
       )).toList();
 

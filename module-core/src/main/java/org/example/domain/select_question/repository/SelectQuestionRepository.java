@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SelectQuestionRepository extends JpaRepository<SelectQuestion, Long> {
 
   List<SelectQuestion> findAllByApplication(Application application);
+
+  List<SelectQuestion> findAllByApplicationAndIsRequiredIsTrue(Application application);
 }

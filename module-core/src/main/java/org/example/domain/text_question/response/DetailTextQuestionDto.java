@@ -18,4 +18,7 @@ public class DetailTextQuestionDto {
 
   @Schema(description = "문항 내용")
   private String question;
+
+  @Schema(description = "필수 여부")
+  private boolean isRequired;
 }
