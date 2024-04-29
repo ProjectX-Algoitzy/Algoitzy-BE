@@ -20,5 +20,5 @@ public class DetailTextQuestionDto {
   private String question;
 
   @Schema(description = "필수 여부")
-  boolean isRequired;
+  private boolean isRequired;
 }

@@ -24,6 +24,7 @@ public class ListTextAnswerRepository {
     return queryFactory
       .select(Projections.fields(DetailTextAnswerDto.class,
           textQuestion.question,
+          textQuestion.isRequired,
           textAnswer.text
         )
       )

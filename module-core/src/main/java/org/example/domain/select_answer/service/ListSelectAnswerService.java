@@ -53,6 +53,7 @@ public class ListSelectAnswerService {
 
       selectAnswerList.add(DetailSelectAnswerDto.builder()
         .question(selectQuestion.getQuestion())
+        .isRequired(selectQuestion.getIsRequired())
         .selectAnswerFieldList(selectAnswerFieldDtoList)
         .build()
       );

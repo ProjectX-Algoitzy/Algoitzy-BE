@@ -19,6 +19,9 @@ public class DetailSelectAnswerDto {
   @Schema(description = "문항 내용")
   private String question;
 
+  @Schema(description = "필수 여부")
+  private boolean isRequired;
+
   @Schema(description = "객관식 문항 필드 상세 응답 객체 list")
   private List<DetailSelectAnswerFieldDto> selectAnswerFieldList = new ArrayList<>();
 
