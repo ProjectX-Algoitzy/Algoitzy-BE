@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public record CreateTextAnswerRequest(
 
   @NotNull
-  @Schema(description = "주관식 문항 id")
+  @Schema(description = "주관식 문항 ID")
   Long textQuestionId,
 
   @NotBlank
