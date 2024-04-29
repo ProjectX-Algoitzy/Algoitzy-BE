@@ -1,6 +1,7 @@
 package org.example.domain.text_question;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.application.Application;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
@@ -42,6 +44,10 @@ public class TextQuestion {
   @Comment("문항 내용")
   private String question;
 
+  @Convert(converter = BooleanToYNConverter.class)
+  @Comment("필수 여부")
+  private Boolean isRequired;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -57,8 +63,9 @@ public class TextQuestion {
   private String updatedBy;
 
   @Builder
-  public TextQuestion(Application application, String question) {
+  public TextQuestion(Application application, String question, Boolean isRequired) {
     this.application = application;
     this.question = question;
+    this.isRequired = isRequired;
   }
 }

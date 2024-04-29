@@ -7,7 +7,10 @@ public record CreateTextQuestionRequest(
 
   @NotBlank
   @Schema(description = "주관식 문항", example = "KOALA에 지원한 계기를 작성해주세요. (300자)")
-  String question
+  String question,
+
+  @Schema(description = "필수 여부", example = "true")
+  boolean isRequired
 ) {
 
 }

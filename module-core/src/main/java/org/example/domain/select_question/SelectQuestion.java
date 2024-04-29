@@ -2,6 +2,7 @@ package org.example.domain.select_question;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -20,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.application.Application;
 import org.example.domain.field.Field;
 import org.hibernate.annotations.Comment;
@@ -52,6 +54,10 @@ public class SelectQuestion {
   @Comment("문항 내용")
   private String question;
 
+  @Convert(converter = BooleanToYNConverter.class)
+  @Comment("필수 여부")
+  private Boolean isRequired;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -67,8 +73,9 @@ public class SelectQuestion {
   private String updatedBy;
 
   @Builder
-  public SelectQuestion(Application application, String question) {
+  public SelectQuestion(Application application, String question, Boolean isRequired) {
     this.application = application;
     this.question = question;
+    this.isRequired = isRequired;
   }
 }

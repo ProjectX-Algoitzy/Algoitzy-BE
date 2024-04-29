@@ -29,6 +29,7 @@ public class CreateSelectQuestionService {
         SelectQuestion.builder()
           .application(application)
           .question(request.question())
+          .isRequired(request.isRequired())
           .build()
       );
       selectQuestionList.add(selectQuestion);

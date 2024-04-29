@@ -20,7 +20,8 @@ public class CoreListSelectQuestionRepository {
     return queryFactory
       .select(Projections.fields(DetailSelectQuestionDto.class,
         selectQuestion.id.as("selectQuestionId"),
-        selectQuestion.question
+        selectQuestion.question,
+        selectQuestion.isRequired
         )
       )
       .from(selectQuestion)
