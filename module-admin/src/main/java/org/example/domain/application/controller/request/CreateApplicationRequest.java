@@ -8,6 +8,7 @@ import java.util.List;
 import org.example.domain.select_question.controller.request.CreateSelectQuestionRequest;
 import org.example.domain.text_question.controller.request.CreateTextQuestionRequest;
 
+@Schema(description = "지원서 양식 생성 요청 객체")
 public record CreateApplicationRequest(
 
   @NotNull

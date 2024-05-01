@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@Schema(description = "작성한 지원서 목록 응답 객체")
 public class ListAnswerDto {
 
   @Schema(description = "답변 ID")

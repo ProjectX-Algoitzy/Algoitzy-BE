@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(description = "이메일 인증번호 검증 요청 객체")
 public record ValidateEmailRequest(
 
   @Email

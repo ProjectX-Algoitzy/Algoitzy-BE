@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
+@Schema(description = "작성한 지원서 목록 응답 객체")
 public record ListAnswerResponse(
 
   @Schema(description = "작성한 지원서 목록 객체 리스트")

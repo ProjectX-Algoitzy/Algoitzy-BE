@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.PageRequest;
 
+@Schema(description = "작성한 지원서 목록 검색 요청 객체")
 public record SearchAnswerRequest(
 
   @Min(1)

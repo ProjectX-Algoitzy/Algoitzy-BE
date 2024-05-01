@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import org.example.domain.field.controller.request.CreateFieldRequest;
 
+@Schema(description = "객관식 문항 생성 요청 객체")
 public record CreateSelectQuestionRequest(
 
   @NotBlank

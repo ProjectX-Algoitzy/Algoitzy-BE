@@ -5,13 +5,16 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(description = "회원가입 요청 객체")
 public record CreateMemberRequest(
 
   @Email
   @Schema(description = "이메일", example = "engus525@naver.com")
   String email,
+
   @Schema(description = "비밀번호")
   String password,
+
   @Schema(description = "비밀번호 확인")
   String checkPassword,
 
@@ -33,6 +36,12 @@ public record CreateMemberRequest(
   @Schema(hidden = true)
   public boolean getPasswordValidate() {
     return password.equals(checkPassword);
+  }
+
+  @AssertTrue(message = "핸드폰 번호를 확인해주세요.")
+  @Schema(hidden = true)
+  public boolean getPhoneNumberValidate() {
+    return phoneNumber.length() == 11 && phoneNumber.matches("[0-9]+");
   }
 
 }

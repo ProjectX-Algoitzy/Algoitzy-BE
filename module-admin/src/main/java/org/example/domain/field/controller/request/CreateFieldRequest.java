@@ -3,6 +3,7 @@ package org.example.domain.field.controller.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(description = "필드 생성 요청 객체")
 public record CreateFieldRequest(
 
   @NotBlank

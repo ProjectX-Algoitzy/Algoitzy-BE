@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
+@Schema(description = "객관식 문항 답변 요청 객체")
 public record CreateSelectAnswerRequest(
 
   @NotNull
