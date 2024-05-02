@@ -16,6 +16,9 @@ public class CreateFieldService {
 
   private final FieldRepository fieldRepository;
 
+  /**
+   * 객관식 문항 필드 생성
+   */
   public void createField(SelectQuestion selectQuestion, List<CreateFieldRequest> requestList) {
 
     List<Field> fieldList = requestList.stream()
@@ -28,5 +31,21 @@ public class CreateFieldService {
 
     //양방향
     selectQuestion.setFieldList(fieldList);
+  }
+
+  /**
+   * 객관식 문항 필드 복사
+   */
+  public void copyField(SelectQuestion selectQuestion, List<Field> fieldList) {
+    List<Field> newFieldList = fieldList.stream()
+      .map(field -> fieldRepository.save(
+        Field.builder()
+          .selectQuestion(selectQuestion)
+          .context(field.getContext())
+          .build()
+      )).toList();
+
+    //양방향
+    selectQuestion.setFieldList(newFieldList);
   }
 }
