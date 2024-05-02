@@ -18,4 +18,11 @@ public class ListStudyService {
   public Integer getStudyCount() {
     return listStudyRepository.getStudyCount();
   }
+
+  /**
+   * 스터디 최신 기수
+   */
+  public Integer getMaxStudyGeneration() {
+    return listStudyRepository.getMaxStudyGeneration();
+  }
 }

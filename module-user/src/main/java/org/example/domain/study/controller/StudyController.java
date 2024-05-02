@@ -22,4 +22,10 @@ public class StudyController {
   public ApiResponse<Integer> getStudyCount() {
     return ApiResponse.onSuccess(studyService.getStudyCount());
   }
+
+  @GetMapping("/max-generation")
+  @Operation(summary = "스터디 최신 기수")
+  public ApiResponse<Integer> getMaxStudyGeneration() {
+    return ApiResponse.onSuccess(studyService.getMaxStudyGeneration());
+  }
 }
