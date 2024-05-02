@@ -16,6 +16,9 @@ public class CreateTextQuestionService {
 
   private final TextQuestionRepository textQuestionRepository;
 
+  /**
+   * 주관식 문항 생성
+   */
   public void createTextQuestion(Application application, List<CreateTextQuestionRequest> requestList) {
     List<TextQuestion> textQuestionList = requestList.stream()
       .map(request -> textQuestionRepository.save(
@@ -27,5 +30,21 @@ public class CreateTextQuestionService {
       )).toList();
 
     application.setTextQuestionList(textQuestionList);
+  }
+
+  /**
+   * 주관식 문항 복사
+   */
+  public void copyTextQuestion(Application newApplication, List<TextQuestion> textQuestionList) {
+    List<TextQuestion> newTextQuestionList = textQuestionList.stream()
+      .map(textQuestion -> textQuestionRepository.save(
+        TextQuestion.builder()
+          .application(newApplication)
+          .question(textQuestion.getQuestion())
+          .isRequired(textQuestion.getIsRequired())
+          .build()
+      )).toList();
+
+    newApplication.setTextQuestionList(newTextQuestionList);
   }
 }

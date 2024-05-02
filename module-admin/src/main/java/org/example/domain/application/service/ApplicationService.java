@@ -1,6 +1,7 @@
 package org.example.domain.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.application.controller.request.CopyApplicationRequest;
 import org.example.domain.application.controller.request.CreateApplicationRequest;
 import org.example.domain.application.controller.request.SearchApplicationRequest;
 import org.example.domain.application.controller.response.ListApplicationResponse;
@@ -19,5 +20,9 @@ public class ApplicationService {
 
   public ListApplicationResponse getApplicationList(SearchApplicationRequest request) {
     return listApplicationService.getApplicationList(request);
+  }
+
+  public void copyApplication(CopyApplicationRequest request) {
+    createApplicationService.copyApplication(request);
   }
 }

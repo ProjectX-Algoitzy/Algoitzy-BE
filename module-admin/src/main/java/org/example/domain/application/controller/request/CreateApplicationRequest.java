@@ -12,7 +12,7 @@ import org.example.domain.text_question.controller.request.CreateTextQuestionReq
 public record CreateApplicationRequest(
 
   @NotNull
-  @Schema(description = "지원서 대상 스터디 ID", example = "1")
+  @Schema(description = "지원서 대상 스터디 ID")
   Long studyId,
 
   @NotBlank

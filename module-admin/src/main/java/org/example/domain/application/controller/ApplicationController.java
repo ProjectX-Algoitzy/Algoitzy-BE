@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
+import org.example.domain.application.controller.request.CopyApplicationRequest;
 import org.example.domain.application.controller.request.CreateApplicationRequest;
 import org.example.domain.application.controller.request.SearchApplicationRequest;
 import org.example.domain.application.controller.response.ListApplicationResponse;
@@ -48,5 +49,12 @@ public class ApplicationController {
   public ApiResponse<DetailApplicationResponse> getApplication(
     @PathVariable("application-id") Long applicationId) {
     return ApiResponse.onSuccess(coreApplicationService.getApplication(applicationId));
+  }
+
+  @PostMapping("/copy")
+  @Operation(summary = "지원서 복사")
+  public ApiResponse<Void> copyApplication(@Valid @RequestBody CopyApplicationRequest request) {
+    applicationService.copyApplication(request);
+    return ApiResponse.onSuccess();
   }
 }
