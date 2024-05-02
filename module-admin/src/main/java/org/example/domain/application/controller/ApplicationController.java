@@ -13,6 +13,7 @@ import org.example.domain.application.response.DetailApplicationResponse;
 import org.example.domain.application.service.ApplicationService;
 import org.example.domain.application.service.CoreApplicationService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,14 @@ public class ApplicationController {
   @Operation(summary = "지원서 복사")
   public ApiResponse<Void> copyApplication(@Valid @RequestBody CopyApplicationRequest request) {
     applicationService.copyApplication(request);
+    return ApiResponse.onSuccess();
+  }
+
+  @DeleteMapping("/{application-id}")
+  @Operation(summary = "지원서 삭제")
+  public ApiResponse<Void> copyApplication(
+    @PathVariable("application-id") Long applicationId) {
+    applicationService.deleteApplication(applicationId);
     return ApiResponse.onSuccess();
   }
 }

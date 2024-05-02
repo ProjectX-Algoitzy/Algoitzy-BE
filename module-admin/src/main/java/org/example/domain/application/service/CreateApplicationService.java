@@ -51,4 +51,12 @@ public class CreateApplicationService {
     createTextQuestionService.copyTextQuestion(newApplication, application.getTextQuestionList());
     createSelectQuestionService.copySelectQuestion(newApplication, application.getSelectQuestionList());
   }
+
+  /**
+   * 지원서 삭제
+   */
+  public void deleteApplication(Long applicationId) {
+    coreApplicationService.findById(applicationId);
+    applicationRepository.deleteById(applicationId);
+  }
 }

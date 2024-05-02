@@ -25,4 +25,8 @@ public class ApplicationService {
   public void copyApplication(CopyApplicationRequest request) {
     createApplicationService.copyApplication(request);
   }
+
+  public void deleteApplication(Long applicationId) {
+    createApplicationService.deleteApplication(applicationId);
+  }
 }
