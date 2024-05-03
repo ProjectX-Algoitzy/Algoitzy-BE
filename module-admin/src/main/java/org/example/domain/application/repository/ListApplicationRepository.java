@@ -6,9 +6,9 @@ import static org.example.domain.study.QStudy.study;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.application.controller.request.SearchApplicationRequest;
-import org.example.domain.application.controller.response.ListApplicationDto;
+import org.example.domain.application.controller.response.ListApplicationByGenerationDto;
 import org.example.domain.member.QMember;
 import org.springframework.stereotype.Repository;
 
@@ -21,16 +21,19 @@ public class ListApplicationRepository {
   private final QMember update = new QMember("update");
 
 
-  public List<ListApplicationDto> getApplicationList(SearchApplicationRequest request) {
+  /**
+   * 기수별 지원서 양식 목록 조회
+   */
+  public List<ListApplicationByGenerationDto> getApplicationList(int generation) {
     return queryFactory
-      .select(Projections.fields(ListApplicationDto.class,
-        application.id.as("applicationId"),
-        application.title,
-        study.name.as("studyName"),
-        create.name.as("createdName"),
-        application.createdTime,
-        update.name.as("updatedName"),
-        application.updatedTime
+      .select(Projections.fields(ListApplicationByGenerationDto.class,
+          application.id.as("applicationId"),
+          application.title,
+          study.name.as("studyName"),
+          create.name.as("createdName"),
+          application.createdTime,
+          update.name.as("updatedName"),
+          application.updatedTime
         )
       )
       .from(application)
@@ -38,8 +41,16 @@ public class ListApplicationRepository {
       .innerJoin(create).on(application.createdBy.eq(create.email))
       .innerJoin(update).on(application.updatedBy.eq(update.email))
       .where(
-        study.generation.eq(request.generation())
+        study.generation.eq(generation)
       )
       .fetch();
+  }
+
+  public int getMaxStudyGeneration() {
+    return Objects.requireNonNull(queryFactory
+      .select(study.generation.max())
+      .from(study)
+      .fetchOne()
+    );
   }
 }
