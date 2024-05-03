@@ -3,7 +3,6 @@ package org.example.domain.application.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
 import org.example.domain.application.controller.request.CreateApplicationRequest;
-import org.example.domain.application.controller.request.SearchApplicationRequest;
 import org.example.domain.application.controller.response.ListApplicationResponse;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +17,8 @@ public class ApplicationService {
     createApplicationService.createApplication(request);
   }
 
-  public ListApplicationResponse getApplicationList(SearchApplicationRequest request) {
-    return listApplicationService.getApplicationList(request);
+  public ListApplicationResponse getApplicationList() {
+    return listApplicationService.getApplicationList();
   }
 
   public void copyApplication(CopyApplicationRequest request) {
