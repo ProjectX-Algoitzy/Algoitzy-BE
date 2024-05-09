@@ -14,7 +14,7 @@ spring:
         format_sql: true
 
   mail:
-    host: smtp.gmail.com
+    host: smtp.naver.com
     port: ${MAIL_PORT}
     username: ${MAIL_USERNAME}
     password: ${MAIL_PW}
@@ -22,8 +22,8 @@ spring:
       mail:
         debug: true
         smtp.auth: true
-        smtp.timeout: 50000
-        smtp.starttls.enable: true
+        smtp.ssl.enable: true
+        smtp.ssl.trust: smtp.naver.com
 
 jwt:
   secret: ${JWT}
