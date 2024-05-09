@@ -13,6 +13,7 @@ import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.email.controller.request.CertificationEmailRequest;
 import org.example.util.RandomUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,6 +28,8 @@ public class EmailService {
 
   private final StringRedisTemplate redisTemplate;
   private final JavaMailSender mailSender;
+  @Value("${spring.mail.username}")
+  private String mailFrom;
 
   public void sendCertificationEmail(CertificationEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
@@ -36,6 +39,7 @@ public class EmailService {
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+      helper.setFrom(mailFrom);
       helper.setTo(request.email());
       helper.setSubject(CERTIFICATION.getSubject());
       helper.setText(html, true);
