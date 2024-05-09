@@ -21,7 +21,8 @@ public class CoreListTextQuestionRepository {
       .select(Projections.fields(DetailTextQuestionDto.class,
         textQuestion.id.as("textQuestionId"),
         textQuestion.question,
-        textQuestion.isRequired
+        textQuestion.isRequired,
+        textQuestion.sequence
         )
       )
       .from(textQuestion)

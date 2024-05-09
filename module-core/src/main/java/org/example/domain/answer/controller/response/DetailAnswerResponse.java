@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.select_answer.response.DetailSelectAnswerDto;
@@ -33,9 +34,11 @@ public class DetailAnswerResponse {
   @Schema(description = "작성자 핸드폰 번호")
   private String phoneNumber;
 
+  @Default
   @Schema(description = "객관식 답변 list")
   private List<DetailSelectAnswerDto> selectAnswerList = new ArrayList<>();
 
+  @Default
   @Schema(description = "주관식 답변 list")
   private List<DetailTextAnswerDto> textAnswerList = new ArrayList<>();
 

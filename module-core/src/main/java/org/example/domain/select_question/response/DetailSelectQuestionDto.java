@@ -27,6 +27,9 @@ public class DetailSelectQuestionDto {
   @Schema(description = "다중 선택 가능 여부")
   private boolean isMultiSelect;
 
+  @Schema(description = "문항 번호")
+  private int sequence;
+
   @Schema(description = "필드 list")
   private List<DetailFieldDto> fieldList;
 }
