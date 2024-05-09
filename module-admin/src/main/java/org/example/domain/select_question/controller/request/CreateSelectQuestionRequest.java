@@ -19,6 +19,9 @@ public record CreateSelectQuestionRequest(
   @Schema(description = "다중 선택 가능 여부", example = "true")
   boolean isMultiSelect,
 
+  @Schema(description = "문항 번호")
+  int sequence,
+
   @Schema(description = "객관식 필드")
   List<@Valid CreateFieldRequest> createFieldRequestList
 ) {

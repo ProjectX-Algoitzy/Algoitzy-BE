@@ -11,7 +11,10 @@ public record CreateTextQuestionRequest(
   String question,
 
   @Schema(description = "필수 여부", example = "true")
-  boolean isRequired
+  boolean isRequired,
+
+  @Schema(description = "문항 번호")
+  int sequence
 ) {
 
 }

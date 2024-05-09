@@ -48,6 +48,10 @@ public class TextQuestion {
   @Comment("필수 여부")
   private Boolean isRequired;
 
+  @Column(nullable = false)
+  @Comment("문항 번호")
+  private Integer sequence;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -63,9 +67,10 @@ public class TextQuestion {
   private String updatedBy;
 
   @Builder
-  public TextQuestion(Application application, String question, Boolean isRequired) {
+  public TextQuestion(Application application, String question, Boolean isRequired, Integer sequence) {
     this.application = application;
     this.question = question;
     this.isRequired = isRequired;
+    this.sequence = sequence;
   }
 }

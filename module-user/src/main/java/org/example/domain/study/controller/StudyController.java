@@ -17,7 +17,7 @@ public class StudyController {
 
   private final StudyService studyService;
 
-  @GetMapping
+  @GetMapping("/count")
   @Operation(summary = "최신 기수 스터디 개수")
   public ApiResponse<Integer> getStudyCount() {
     return ApiResponse.onSuccess(studyService.getStudyCount());
