@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ public class ListApplicationDto {
   @Schema(description = "지원서 대상 스터디 기수")
   private int generation;
 
+  @Default
   @Schema(description = "기수별 지원서 양식 list")
   private List<ListApplicationByGenerationDto> applicationByGenerationList = new ArrayList<>();
 }
