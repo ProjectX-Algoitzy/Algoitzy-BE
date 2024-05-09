@@ -22,7 +22,8 @@ public class CoreListSelectQuestionRepository {
         selectQuestion.id.as("selectQuestionId"),
         selectQuestion.question,
         selectQuestion.isRequired,
-        selectQuestion.isMultiSelect
+        selectQuestion.isMultiSelect,
+        selectQuestion.sequence
         )
       )
       .from(selectQuestion)

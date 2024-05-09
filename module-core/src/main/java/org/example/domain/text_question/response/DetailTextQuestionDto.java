@@ -21,4 +21,7 @@ public class DetailTextQuestionDto {
 
   @Schema(description = "필수 여부")
   private boolean isRequired;
+
+  @Schema(description = "문항 번호")
+  private int sequence;
 }

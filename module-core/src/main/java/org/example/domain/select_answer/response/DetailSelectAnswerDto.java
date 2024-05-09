@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.select_answer_field.response.DetailSelectAnswerFieldDto;
@@ -25,6 +26,7 @@ public class DetailSelectAnswerDto {
   @Schema(description = "다중 선택 가능 여부")
   private boolean isMultiSelect;
 
+  @Default
   @Schema(description = "객관식 문항 필드 상세 응답 객체 list")
   private List<DetailSelectAnswerFieldDto> selectAnswerFieldList = new ArrayList<>();
 
