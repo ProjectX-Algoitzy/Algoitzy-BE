@@ -35,14 +35,14 @@ public class EmailService {
 
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
-      MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+      MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
       helper.setTo(request.email());
       helper.setSubject(CERTIFICATION.getSubject());
       helper.setText(html, true);
       mailSender.send(mimeMessage);
     } catch (Exception e) {
       log.error(e.getMessage());
-      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "Email 인증코드 전송 중 오류가 발생했습니다.");
+      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "Email 인증코드 전송 중 오류가 발생했습니다 : " + e.getMessage());
     }
   }
 
