@@ -13,11 +13,18 @@ public class ListAnswerDto {
   @Schema(description = "답변 ID")
   private Long answerId;
 
+  @Schema(description = "작성자 이름")
+  private String submitName;
+
+  @Schema(description = "작성자 학년")
+  private int grade;
+
+  @Schema(description = "작성자 학과")
+  private String major;
+
   @Schema(description = "작성한 지원서 대상 스터디 이름")
   private String studyName;
 
-  @Schema(description = "작성자 이름")
-  private String submitName;
 
   @Schema(description = "제출일")
   private LocalDateTime submitTime;

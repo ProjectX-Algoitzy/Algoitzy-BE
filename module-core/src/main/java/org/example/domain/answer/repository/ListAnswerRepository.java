@@ -30,6 +30,8 @@ public class ListAnswerRepository {
       .select(Projections.fields(ListAnswerDto.class,
           answer.id.as("answerId"),
           study.name.as("studyName"),
+          member.grade,
+          member.major,
           member.name.as("submitName"),
           answer.updatedTime.as("submitTime")
         )
