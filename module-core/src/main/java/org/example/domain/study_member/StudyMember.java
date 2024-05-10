@@ -28,6 +28,7 @@ import org.example.domain.interview.Interview;
 import org.example.domain.member.Member;
 import org.example.domain.study.Study;
 import org.example.domain.study_member.enums.StudyMemberRole;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -68,6 +69,11 @@ public class StudyMember {
   @Comment("스터디원 역할")
   private StudyMemberRole role;
 
+  @Enumerated(value = EnumType.STRING)
+  @Column(nullable = false)
+  @Comment("스터디원 상태")
+  private StudyMemberStatus status;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -83,12 +89,13 @@ public class StudyMember {
 
   @Builder
   public StudyMember(Study study, Member member, Interview interview, List<AttendanceRequest> attendanceRequestList, List<Attendance> attendanceList,
-    StudyMemberRole role) {
+    StudyMemberRole role, StudyMemberStatus status) {
     this.study = study;
     this.member = member;
     this.interview = interview;
     this.attendanceRequestList = attendanceRequestList;
     this.attendanceList = attendanceList;
     this.role = role;
+    this.status = status;
   }
 }

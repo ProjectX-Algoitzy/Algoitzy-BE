@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ListAnswerService {
+public class CoreListAnswerService {
 
   private final ListAnswerRepository listAnswerRepository;
 
