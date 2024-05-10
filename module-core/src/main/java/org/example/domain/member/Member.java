@@ -43,6 +43,14 @@ public class Member {
   @Comment("이름")
   private String name;
 
+  @Column(nullable = false)
+  @Comment("학년")
+  private Integer grade;
+
+  @Column(nullable = false)
+  @Comment("학과")
+  private String major;
+
   @Column(unique = true, nullable = false)
   @Comment("백준 닉네임")
   private String handle;
@@ -63,12 +71,15 @@ public class Member {
   private LocalDateTime updatedTime;
 
   @Builder
-  public Member(String email, String password, String name, String handle, String phoneNumber, Role role) {
+  public Member(String email, String password, String name, String handle, String phoneNumber, Role role,
+    Integer grade, String major) {
     this.email = email;
     this.password = password;
     this.name = name;
     this.handle = handle;
     this.phoneNumber = phoneNumber;
     this.role = role;
+    this.grade = grade;
+    this.major = major;
   }
 }

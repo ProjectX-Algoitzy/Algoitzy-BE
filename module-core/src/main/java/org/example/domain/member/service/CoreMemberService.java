@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class CoreMemberService {
 
   private final MemberRepository memberRepository;
-  private final LoginService loginService;
+  private final CoreLoginService coreLoginService;
 
   public Member findByEmail(String email) {
     return memberRepository.findByEmail(email)
@@ -22,6 +22,6 @@ public class CoreMemberService {
   }
 
   public LoginResponse login(LoginRequest request) {
-    return loginService.login(request);
+    return coreLoginService.login(request);
   }
 }
