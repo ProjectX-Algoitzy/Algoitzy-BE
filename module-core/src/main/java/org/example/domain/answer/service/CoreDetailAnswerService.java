@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DetailAnswerService {
+public class CoreDetailAnswerService {
 
   private final DetailAnswerRepository detailAnswerRepository;
   private final ListSelectAnswerService listSelectAnswerService;
