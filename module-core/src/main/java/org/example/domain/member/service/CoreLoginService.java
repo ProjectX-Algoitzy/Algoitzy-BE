@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class LoginService {
+public class CoreLoginService {
 
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
   private final JwtTokenProvider jwtTokenProvider;

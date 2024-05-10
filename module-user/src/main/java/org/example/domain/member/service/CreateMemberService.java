@@ -33,11 +33,17 @@ public class CreateMemberService {
    * 회원 가입
    */
   public void createMember(CreateMemberRequest request) {
+    if (memberRepository.findByEmail(request.email()).isPresent()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 가입된 이메일입니다.");
+    }
+
     memberRepository.save(
       Member.builder()
         .email(request.email())
         .password(encoder.encode(request.password()))
         .name(request.name())
+        .grade(request.grade())
+        .major(request.major())
         .handle(request.handle())
         .phoneNumber(request.phoneNumber())
         .role(Role.ROLE_USER)

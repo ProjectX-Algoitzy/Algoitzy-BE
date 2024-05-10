@@ -3,7 +3,10 @@ package org.example.domain.member.controller.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "회원가입 요청 객체")
 public record CreateMemberRequest(
@@ -21,6 +24,16 @@ public record CreateMemberRequest(
   @NotBlank
   @Schema(description = "이름", example = "김두현")
   String name,
+
+  @NotNull
+  @Min(1)
+  @Max(5)
+  @Schema(description = "학년")
+  int grade,
+
+  @NotBlank
+  @Schema(description = "학과", example = "소프트웨어학과")
+  String major,
 
   @NotBlank
   @Schema(description = "백준 핸들", example = "engus525")
