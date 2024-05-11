@@ -39,6 +39,7 @@ public class ListAnswerRepository {
           member.grade,
           member.major,
           member.name.as("submitName"),
+          member.email.as("submitEmail"),
           studyMember.status.stringValue().as("status"),
           answer.updatedTime.as("submitTime")
         )
