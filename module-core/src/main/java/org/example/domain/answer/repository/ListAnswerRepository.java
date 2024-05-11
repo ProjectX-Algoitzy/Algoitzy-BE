@@ -5,6 +5,7 @@ import static org.example.domain.answer.QAnswer.*;
 import static org.example.domain.application.QApplication.*;
 import static org.example.domain.member.QMember.*;
 import static org.example.domain.study.QStudy.*;
+import static org.example.domain.study_member.QStudyMember.studyMember;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -33,6 +34,7 @@ public class ListAnswerRepository {
           member.grade,
           member.major,
           member.name.as("submitName"),
+          studyMember.status.stringValue().as("status"),
           answer.updatedTime.as("submitTime")
         )
       )
@@ -40,6 +42,10 @@ public class ListAnswerRepository {
       .innerJoin(application).on(answer.application.eq(application))
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
+      .innerJoin(studyMember).on(
+        member.eq(studyMember.member),
+        study.eq(studyMember.study)
+      )
       .where(
         memberAuthRepository.emailEq()
       )

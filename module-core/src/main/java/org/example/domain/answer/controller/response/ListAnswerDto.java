@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 
 @Getter
 @NoArgsConstructor
@@ -25,8 +26,13 @@ public class ListAnswerDto {
   @Schema(description = "작성한 지원서 대상 스터디 이름")
   private String studyName;
 
+  @Schema(description = "전형 단계")
+  private String status;
 
   @Schema(description = "제출일")
   private LocalDateTime submitTime;
 
+  public void updateStatus(String name) {
+    this.status = StudyMemberStatus.valueOf(name).getStatus();
+  }
 }
