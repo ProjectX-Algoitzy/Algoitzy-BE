@@ -17,6 +17,9 @@ public class ListAnswerDto {
   @Schema(description = "작성자 이름")
   private String submitName;
 
+  @Schema(description = "작성자 이메일")
+  private String submitEmail;
+
   @Schema(description = "작성자 학년")
   private int grade;
 
