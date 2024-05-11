@@ -28,6 +28,9 @@ public class ListAnswerRepository {
   private final MemberAuthRepository memberAuthRepository;
   private final JPAQueryFactory queryFactory;
 
+  /**
+   * 작성한 지원서 목록 조회
+   */
   public Page<ListAnswerDto> getAnswerList(SearchAnswerRequest request) {
     List<ListAnswerDto> answerList = queryFactory
       .select(Projections.fields(ListAnswerDto.class,
@@ -44,9 +47,7 @@ public class ListAnswerRepository {
       .innerJoin(application).on(answer.application.eq(application))
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
-      .innerJoin(studyMember).on(
-        member.eq(studyMember.member)
-      )
+      .innerJoin(studyMember).on(member.eq(studyMember.member))
       .where(
         statusEq(request.status()),
         memberAuthRepository.emailEq()
@@ -60,7 +61,10 @@ public class ListAnswerRepository {
       .from(answer)
       .innerJoin(application).on(answer.application.eq(application))
       .innerJoin(study).on(application.study.eq(study))
+      .innerJoin(member).on(answer.createdBy.eq(member.email))
+      .innerJoin(studyMember).on(member.eq(studyMember.member))
       .where(
+        statusEq(request.status()),
         memberAuthRepository.emailEq()
       )
       .offset(request.pageRequest().getOffset())
