@@ -51,4 +51,8 @@ public class CreateAnswerService {
 
     createStudyMemberService.createStudyMember(study, member);
   }
+
+  public void deleteAnswer(Long answerId) {
+    answerRepository.deleteById(answerId);
+  }
 }
