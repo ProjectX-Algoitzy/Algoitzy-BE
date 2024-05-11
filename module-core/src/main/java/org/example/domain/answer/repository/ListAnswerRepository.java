@@ -7,6 +7,7 @@ import static org.example.domain.member.QMember.*;
 import static org.example.domain.study.QStudy.*;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.answer.controller.request.SearchAnswerRequest;
 import org.example.domain.answer.controller.response.ListAnswerDto;
 import org.example.domain.member.repository.MemberAuthRepository;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -43,10 +45,10 @@ public class ListAnswerRepository {
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
       .innerJoin(studyMember).on(
-        member.eq(studyMember.member),
-        study.eq(studyMember.study)
+        member.eq(studyMember.member)
       )
       .where(
+        statusEq(request.status()),
         memberAuthRepository.emailEq()
       )
       .offset(request.pageRequest().getOffset())
@@ -65,6 +67,13 @@ public class ListAnswerRepository {
       .limit(request.pageRequest().getPageSize());
 
     return PageableExecutionUtils.getPage(answerList, request.pageRequest(), countQuery::fetchOne);
+  }
+
+  private Predicate statusEq(StudyMemberStatus status) {
+    if (status == null) {
+      return null;
+    }
+    return studyMember.status.eq(status);
   }
 
 }
