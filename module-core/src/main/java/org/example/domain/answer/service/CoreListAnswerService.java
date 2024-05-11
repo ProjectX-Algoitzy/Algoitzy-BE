@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ListAnswerService {
+public class CoreListAnswerService {
 
   private final ListAnswerRepository listAnswerRepository;
 
@@ -21,6 +21,8 @@ public class ListAnswerService {
    */
   public ListAnswerResponse getAnswerList(SearchAnswerRequest request) {
     Page<ListAnswerDto> page = listAnswerRepository.getAnswerList(request);
+    // 전형 단계 enum to string
+    page.getContent().forEach(dto -> dto.updateStatus(dto.getStatus()));
 
     return ListAnswerResponse.builder()
       .answerList(page.getContent())

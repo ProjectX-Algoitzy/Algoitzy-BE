@@ -1,11 +1,18 @@
 package org.example.domain.answer.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.answer.Answer;
 import org.example.domain.answer.controller.request.CreateAnswerRequest;
 import org.example.domain.answer.repository.AnswerRepository;
 import org.example.domain.application.service.CoreApplicationService;
+import org.example.domain.member.Member;
+import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.select_answer.service.CreateSelectAnswerService;
+import org.example.domain.study.Study;
+import org.example.domain.study_member.repository.StudyMemberRepository;
+import org.example.domain.study_member.service.CreateStudyMemberService;
 import org.example.domain.text_answer.service.CreateTextAnswerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CreateAnswerService {
 
+  private final CoreMemberService coreMemberService;
   private final CoreApplicationService coreApplicationService;
   private final CreateTextAnswerService createTextAnswerService;
   private final CreateSelectAnswerService createSelectAnswerService;
+  private final CreateStudyMemberService createStudyMemberService;
   private final AnswerRepository answerRepository;
+  private final StudyMemberRepository studyMemberRepository;
 
   /**
    * 지원서 작성
@@ -30,7 +40,19 @@ public class CreateAnswerService {
         .build()
     );
 
+    Study study = answer.getApplication().getStudy();
+    Member member = coreMemberService.findByEmail(answer.getCreatedBy());
+    if (studyMemberRepository.findByStudyAndMember(study, member).isPresent()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 지원한 스터디입니다.");
+    }
+
     createTextAnswerService.createTextAnswer(answer, request.createTextAnswerRequestList());
     createSelectAnswerService.createSelectAnswer(answer, request.createSelectAnswerRequestList());
+
+    createStudyMemberService.createStudyMember(study, member);
+  }
+
+  public void deleteAnswer(Long answerId) {
+    answerRepository.deleteById(answerId);
   }
 }
