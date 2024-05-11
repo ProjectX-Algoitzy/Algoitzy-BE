@@ -35,4 +35,8 @@ public class AnswerService {
   public DetailAnswerResponse getAnswer(Long answerId) {
     return coreDetailAnswerService.getAnswer(answerId);
   }
+
+  public void deleteAnswer(Long answerId) {
+    createAnswerService.deleteAnswer(answerId);
+  }
 }

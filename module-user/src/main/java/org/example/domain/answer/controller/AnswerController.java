@@ -11,6 +11,7 @@ import org.example.domain.answer.controller.response.DetailAnswerResponse;
 import org.example.domain.answer.controller.response.ListAnswerResponse;
 import org.example.domain.answer.service.AnswerService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,5 +48,13 @@ public class AnswerController {
   @Operation(summary = "작성한 지원서 상세 조회")
   public ApiResponse<DetailAnswerResponse> getAnswer(@PathVariable("answer-id") Long answerId) {
     return ApiResponse.onSuccess(answerService.getAnswer(answerId));
+  }
+
+  @Deprecated
+  @DeleteMapping("/{answer-id}")
+  @Operation(summary = "작성한 지원서 삭제")
+  public ApiResponse<Void> deleteAnswer(@PathVariable("answer-id") Long answerId) {
+    answerService.deleteAnswer(answerId);
+    return ApiResponse.onSuccess();
   }
 }
