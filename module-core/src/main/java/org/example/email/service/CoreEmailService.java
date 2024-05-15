@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class EmailService {
+public class CoreEmailService {
 
   private final CoreMemberService coreMemberService;
   private final StringRedisTemplate redisTemplate;
@@ -52,52 +52,58 @@ public class EmailService {
 
   private void sendCertificateEmail(SendEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
-    redisTemplate.opsForValue().set(request.email(), code, Duration.ofSeconds(180));
+    redisTemplate.opsForValue().set(request.emailList().get(0), code, Duration.ofSeconds(180));
     String html = htmlToString(CERTIFICATION.getPath()).replace("${code}", code);
-    send(request, html);
+    send(request.emailList().get(0), request.type(), html);
   }
 
   private void sendDocumentEmail(SendEmailRequest request, boolean isPass) {
-    String name = coreMemberService.findByEmail(request.email()).getName();
-    String html;
-    if (isPass) {
-      html = htmlToString(DOCUMENT_PASS.getPath()).replace("${name}", name);
-    } else {
-      html = htmlToString(DOCUMENT_FAIL.getPath()).replace("${name}", name);
+    for (String email : request.emailList()) {
+      String name = coreMemberService.findByEmail(email).getName();
+      String html;
+      if (isPass) {
+        html = htmlToString(DOCUMENT_PASS.getPath()).replace("${name}", name);
+      } else {
+        html = htmlToString(DOCUMENT_FAIL.getPath()).replace("${name}", name);
+      }
+      send(email, request.type(), html);
     }
-    send(request, html);
   }
 
   private void sendInterviewEmail(SendEmailRequest request) {
-    String name = coreMemberService.findByEmail(request.email()).getName();
-    // todo time
-    String html = htmlToString(INTERVIEW.getPath()).replace("${name}", name).replace("${time}", "time");
-    send(request, html);
+    for (String email : request.emailList()) {
+      String name = coreMemberService.findByEmail(email).getName();
+      // todo time
+      String html = htmlToString(INTERVIEW.getPath()).replace("${name}", name).replace("${time}", "time");
+      send(email, request.type(), html);
+    }
   }
 
   private void sendResultEmail(SendEmailRequest request, boolean isPass) {
-    String name = coreMemberService.findByEmail(request.email()).getName();
-    String html;
-    if (isPass) {
-      html = htmlToString(PASS.getPath()).replace("${name}", name);
-    } else {
-      html = htmlToString(FAIL.getPath()).replace("${name}", name);
+    for (String email : request.emailList()) {
+      String name = coreMemberService.findByEmail(email).getName();
+      String html;
+      if (isPass) {
+        html = htmlToString(PASS.getPath()).replace("${name}", name);
+      } else {
+        html = htmlToString(FAIL.getPath()).replace("${name}", name);
+      }
+      send(email, request.type(), html);
     }
-    send(request, html);
   }
 
-  private void send(SendEmailRequest request, String html) {
+  private void send(String email, String type, String html) {
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
       helper.setFrom(mailFrom);
-      helper.setTo(request.email());
-      helper.setSubject(EmailType.getSubject(request.type()));
+      helper.setTo(email);
+      helper.setSubject(EmailType.getSubject(type));
       helper.setText(html, true);
       mailSender.send(mimeMessage);
     } catch (Exception e) {
       log.error(e.getMessage());
-      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, request.type() + " EMAIL 전송 중 오류가 발생했습니다 : " + e.getMessage());
+      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, type + " EMAIL 전송 중 오류가 발생했습니다 : " + e.getMessage());
     }
   }
 
