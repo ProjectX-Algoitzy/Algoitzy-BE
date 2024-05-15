@@ -24,6 +24,10 @@ spring:
         smtp.auth: true
         smtp.ssl.enable: true
         smtp.ssl.trust: smtp.naver.com
+  data:
+    redis:
+      repositories:
+        enabled: false
 
 jwt:
   secret: ${JWT}
