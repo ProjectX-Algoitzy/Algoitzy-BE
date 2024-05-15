@@ -32,6 +32,9 @@ public class ListAnswerDto {
   @Schema(description = "전형 단계")
   private String status;
 
+  @Schema(description = "면접 일자")
+  private String interviewTime;
+
   @Schema(description = "제출일")
   private LocalDateTime submitTime;
 
