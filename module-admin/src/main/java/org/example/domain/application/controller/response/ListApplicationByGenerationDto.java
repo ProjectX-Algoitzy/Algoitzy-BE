@@ -1,5 +1,7 @@
 package org.example.domain.application.controller.response;
 
+import static java.time.temporal.ChronoUnit.*;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -32,6 +34,20 @@ public class ListApplicationByGenerationDto {
   @Schema(description = "최종 수정자")
   private String updatedName;
 
-  @Schema(description = "최종 수정일")
   private LocalDateTime updatedTime;
+
+  @Schema(description = "최종 수정일")
+  public String getUpdatedTime() {
+    long hourGap = HOURS.between(updatedTime, LocalDateTime.now());
+    long dayGap = DAYS.between(updatedTime, LocalDateTime.now());
+    if (hourGap < 1) {
+      return MINUTES.between(updatedTime, LocalDateTime.now()) + "분 전";
+    } else if (dayGap < 1) {
+      return hourGap + "시간 전";
+    } else if (dayGap >= 365) {
+      return (dayGap / 365) + "년 전";
+    }
+
+    return dayGap + "일 전";
+  }
 }
