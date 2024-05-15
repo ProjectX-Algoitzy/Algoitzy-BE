@@ -40,7 +40,7 @@ public class Interview {
 
   @Column(nullable = false)
   @Comment("면접 시간")
-  private LocalDateTime time;
+  private String time;
 
   @CreatedDate
   @Column(updatable = false)
@@ -57,7 +57,7 @@ public class Interview {
   private String updatedBy;
 
   @Builder
-  public Interview(StudyMember studyMember, LocalDateTime time) {
+  public Interview(StudyMember studyMember, String time) {
     this.studyMember = studyMember;
     this.time = time;
   }

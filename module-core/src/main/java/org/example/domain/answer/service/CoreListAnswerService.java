@@ -22,7 +22,9 @@ public class CoreListAnswerService {
   public ListAnswerResponse getAnswerList(SearchAnswerRequest request) {
     Page<ListAnswerDto> page = listAnswerRepository.getAnswerList(request);
     // 전형 단계 enum to string
-    page.getContent().forEach(dto -> dto.updateStatus(dto.getStatus()));
+    for (ListAnswerDto dto : page.getContent()) {
+      dto.updateStatus(dto.getStatus());
+    }
 
     return ListAnswerResponse.builder()
       .answerList(page.getContent())

@@ -11,6 +11,7 @@ import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.select_answer.service.CreateSelectAnswerService;
 import org.example.domain.study.Study;
+import org.example.domain.study_member.StudyMember;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.domain.study_member.service.CreateStudyMemberService;
 import org.example.domain.text_answer.service.CreateTextAnswerService;
@@ -46,10 +47,10 @@ public class CreateAnswerService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 지원한 스터디입니다.");
     }
 
+    StudyMember studyMember = createStudyMemberService.createStudyMember(study, member);
     createTextAnswerService.createTextAnswer(answer, request.createTextAnswerRequestList());
-    createSelectAnswerService.createSelectAnswer(answer, request.createSelectAnswerRequestList());
+    createSelectAnswerService.createSelectAnswer(answer, request.createSelectAnswerRequestList(), studyMember);
 
-    createStudyMemberService.createStudyMember(study, member);
   }
 
   public void deleteAnswer(Long answerId) {

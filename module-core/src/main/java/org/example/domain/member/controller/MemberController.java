@@ -26,6 +26,6 @@ public class MemberController {
   @PostMapping("/login")
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-    return ApiResponse.onCreate(coreMemberService.login(request));
+    return ApiResponse.onSuccess(coreMemberService.login(request));
   }
 }
