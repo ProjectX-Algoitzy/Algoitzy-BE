@@ -3,6 +3,7 @@ package org.example.domain.answer.repository;
 
 import static org.example.domain.answer.QAnswer.*;
 import static org.example.domain.application.QApplication.*;
+import static org.example.domain.interview.QInterview.interview;
 import static org.example.domain.member.QMember.*;
 import static org.example.domain.study.QStudy.*;
 import static org.example.domain.study_member.QStudyMember.studyMember;
@@ -41,7 +42,8 @@ public class ListAnswerRepository {
           member.name.as("submitName"),
           member.email.as("submitEmail"),
           studyMember.status.stringValue().as("status"),
-          answer.updatedTime.as("submitTime")
+          answer.updatedTime.as("submitTime"),
+          interview.time.as("interviewTime")
         )
       )
       .from(answer)
@@ -49,6 +51,7 @@ public class ListAnswerRepository {
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
       .innerJoin(studyMember).on(member.eq(studyMember.member))
+      .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
         statusEq(request.status()),
         memberAuthRepository.emailEq()
@@ -64,6 +67,7 @@ public class ListAnswerRepository {
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
       .innerJoin(studyMember).on(member.eq(studyMember.member))
+      .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
         statusEq(request.status()),
         memberAuthRepository.emailEq()

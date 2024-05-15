@@ -19,9 +19,10 @@ public class CreateStudyMemberService {
 
   /**
    * 스터디원 생성
+   *
    */
-  public void createStudyMember(Study study, Member member) {
-    studyMemberRepository.save(
+  public StudyMember createStudyMember(Study study, Member member) {
+    return studyMemberRepository.save(
       StudyMember.builder()
         .study(study)
         .member(member)

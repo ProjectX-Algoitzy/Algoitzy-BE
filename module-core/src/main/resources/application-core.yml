@@ -6,7 +6,7 @@ spring:
 
   jpa:
     open-in-view: false
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -24,6 +24,10 @@ spring:
         smtp.auth: true
         smtp.ssl.enable: true
         smtp.ssl.trust: smtp.naver.com
+  data:
+    redis:
+      repositories:
+        enabled: false
 
 jwt:
   secret: ${JWT}
