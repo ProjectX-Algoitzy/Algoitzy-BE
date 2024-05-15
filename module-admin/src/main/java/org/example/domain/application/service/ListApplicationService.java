@@ -26,10 +26,11 @@ public class ListApplicationService {
     int maxGeneration = listApplicationRepository.getMaxStudyGeneration();
     for (int generation = maxGeneration; generation >= maxGeneration - 3; generation--) {
       List<ListApplicationByGenerationDto> applicationByGenerationList = listApplicationRepository.getApplicationList(generation);
-      applicationList.add(ListApplicationDto.builder()
-        .generation(generation)
-        .applicationByGenerationList(applicationByGenerationList)
-        .build()
+      applicationList.add(
+        ListApplicationDto.builder()
+          .generation(generation)
+          .applicationByGenerationList(applicationByGenerationList)
+          .build()
       );
     }
 
