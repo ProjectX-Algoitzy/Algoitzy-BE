@@ -34,7 +34,6 @@ public class CoreS3FileController {
         return ApiResponse.onCreate(coreS3FileService.uploadS3File(multipartFileList));
     }
 
-
     /*
     *  S3에서 파일 삭제
     * */

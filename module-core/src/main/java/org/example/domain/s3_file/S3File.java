@@ -7,6 +7,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,6 +20,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class S3File {
 
@@ -22,7 +30,9 @@ public class S3File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // todo originName, fileUrl
+    private String originalName;
+
+    private String fileUrl;
 
     @CreatedDate
     @Column(updatable = false)
@@ -38,6 +48,9 @@ public class S3File {
     @LastModifiedBy
     private String updatedBy;
 
-
-    // todo @Builder 생성자
+    @Builder
+    public S3File(String originalName, String fileUrl) {
+        this.originalName = originalName;
+        this.fileUrl = fileUrl;
+    }
 }
