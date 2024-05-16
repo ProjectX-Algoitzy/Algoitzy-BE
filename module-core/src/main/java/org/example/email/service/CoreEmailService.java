@@ -1,5 +1,6 @@
 package org.example.email.service;
 
+import static org.example.domain.study_member.enums.StudyMemberStatus.*;
 import static org.example.email.enums.EmailType.CERTIFICATION;
 import static org.example.email.enums.EmailType.DOCUMENT_FAIL;
 import static org.example.email.enums.EmailType.DOCUMENT_PASS;
@@ -12,11 +13,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
+import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.email.controller.request.SendEmailRequest;
 import org.example.email.enums.EmailType;
 import org.example.util.RandomUtils;
@@ -34,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CoreEmailService {
 
   private final CoreMemberService coreMemberService;
+  private final StudyMemberRepository studyMemberRepository;
   private final StringRedisTemplate redisTemplate;
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
@@ -59,12 +66,14 @@ public class CoreEmailService {
 
   private void sendDocumentEmail(SendEmailRequest request, boolean isPass) {
     for (String email : request.emailList()) {
-      String name = coreMemberService.findByEmail(email).getName();
+      Member member = coreMemberService.findByEmail(email);
+      changeStatus(request, member);
+
       String html;
       if (isPass) {
-        html = htmlToString(DOCUMENT_PASS.getPath()).replace("${name}", name);
+        html = htmlToString(DOCUMENT_PASS.getPath()).replace("${name}", member.getName());
       } else {
-        html = htmlToString(DOCUMENT_FAIL.getPath()).replace("${name}", name);
+        html = htmlToString(DOCUMENT_FAIL.getPath()).replace("${name}", member.getName());
       }
       send(email, request.type(), html);
     }
@@ -72,21 +81,25 @@ public class CoreEmailService {
 
   private void sendInterviewEmail(SendEmailRequest request) {
     for (String email : request.emailList()) {
-      String name = coreMemberService.findByEmail(email).getName();
+      Member member = coreMemberService.findByEmail(email);
+      changeStatus(request, member);
+
       // todo time
-      String html = htmlToString(INTERVIEW.getPath()).replace("${name}", name).replace("${time}", "time");
+      String html = htmlToString(INTERVIEW.getPath()).replace("${name}", member.getName()).replace("${time}", "time");
       send(email, request.type(), html);
     }
   }
 
   private void sendResultEmail(SendEmailRequest request, boolean isPass) {
     for (String email : request.emailList()) {
-      String name = coreMemberService.findByEmail(email).getName();
+      Member member = coreMemberService.findByEmail(email);
+      changeStatus(request, member);
+
       String html;
       if (isPass) {
-        html = htmlToString(PASS.getPath()).replace("${name}", name);
+        html = htmlToString(PASS.getPath()).replace("${name}", member.getName());
       } else {
-        html = htmlToString(FAIL.getPath()).replace("${name}", name);
+        html = htmlToString(FAIL.getPath()).replace("${name}", member.getName());
       }
       send(email, request.type(), html);
     }
@@ -126,4 +139,19 @@ public class CoreEmailService {
     return html.toString();
   }
 
+  /**
+   * 전형 단계 갱신
+   */
+  private void changeStatus(SendEmailRequest request, Member member) {
+    List<StudyMember> studyMemberList = studyMemberRepository.findAllByMember(member);
+    Optional<StudyMember> optionalStudyMember = studyMemberList.stream()
+      .filter(studyMember -> studyMember.getStatus().getOrder() == valueOf(request.type()).getOrder() - 1)
+      .findFirst();
+    if (optionalStudyMember.isEmpty()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "전형 단계를 확인해주세요.");
+    }
+
+    StudyMember studyMember = optionalStudyMember.get();
+    studyMember.updateStatus(valueOf(request.type()));
+  }
 }
