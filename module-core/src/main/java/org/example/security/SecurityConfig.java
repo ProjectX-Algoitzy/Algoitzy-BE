@@ -40,6 +40,11 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/email/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sms/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/health")).permitAll()
+            // 랜딩 페이지
+            .requestMatchers(new AntPathRequestMatcher("/study/count")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/study/max-generation")).permitAll()
+
+            .requestMatchers(new AntPathRequestMatcher("/s3/**")).permitAll()
             .anyRequest().authenticated()
       )
       .csrf(AbstractHttpConfigurer::disable)
