@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -30,8 +31,16 @@ public class S3File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    @Comment("원본 파일명")
     private String originalName;
 
+    @Column(nullable = false)
+    @Comment("S3 파일명")
+    private String fileName;
+
+    @Column(nullable = false)
+    @Comment("S3 파일 경로")
     private String fileUrl;
 
     @CreatedDate
@@ -49,8 +58,9 @@ public class S3File {
     private String updatedBy;
 
     @Builder
-    public S3File(String originalName, String fileUrl) {
+    public S3File(String originalName, String fileName, String fileUrl) {
         this.originalName = originalName;
+        this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
 }
