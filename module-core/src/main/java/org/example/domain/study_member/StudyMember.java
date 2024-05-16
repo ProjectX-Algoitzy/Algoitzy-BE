@@ -98,4 +98,8 @@ public class StudyMember {
     this.role = role;
     this.status = status;
   }
+
+  public void updateStatus(StudyMemberStatus status) {
+    this.status = status;
+  }
 }

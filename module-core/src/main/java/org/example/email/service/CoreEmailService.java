@@ -1,5 +1,6 @@
 package org.example.email.service;
 
+import static org.example.domain.study_member.enums.StudyMemberStatus.*;
 import static org.example.email.enums.EmailType.CERTIFICATION;
 import static org.example.email.enums.EmailType.DOCUMENT_FAIL;
 import static org.example.email.enums.EmailType.DOCUMENT_PASS;
@@ -12,11 +13,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
+import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.email.controller.request.SendEmailRequest;
 import org.example.email.enums.EmailType;
 import org.example.util.RandomUtils;
@@ -31,9 +37,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class EmailService {
+public class CoreEmailService {
 
   private final CoreMemberService coreMemberService;
+  private final StudyMemberRepository studyMemberRepository;
   private final StringRedisTemplate redisTemplate;
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
@@ -52,52 +59,64 @@ public class EmailService {
 
   private void sendCertificateEmail(SendEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
-    redisTemplate.opsForValue().set(request.email(), code, Duration.ofSeconds(180));
+    redisTemplate.opsForValue().set(request.emailList().get(0), code, Duration.ofSeconds(180));
     String html = htmlToString(CERTIFICATION.getPath()).replace("${code}", code);
-    send(request, html);
+    send(request.emailList().get(0), request.type(), html);
   }
 
   private void sendDocumentEmail(SendEmailRequest request, boolean isPass) {
-    String name = coreMemberService.findByEmail(request.email()).getName();
-    String html;
-    if (isPass) {
-      html = htmlToString(DOCUMENT_PASS.getPath()).replace("${name}", name);
-    } else {
-      html = htmlToString(DOCUMENT_FAIL.getPath()).replace("${name}", name);
+    for (String email : request.emailList()) {
+      Member member = coreMemberService.findByEmail(email);
+      changeStatus(request, member);
+
+      String html;
+      if (isPass) {
+        html = htmlToString(DOCUMENT_PASS.getPath()).replace("${name}", member.getName());
+      } else {
+        html = htmlToString(DOCUMENT_FAIL.getPath()).replace("${name}", member.getName());
+      }
+      send(email, request.type(), html);
     }
-    send(request, html);
   }
 
   private void sendInterviewEmail(SendEmailRequest request) {
-    String name = coreMemberService.findByEmail(request.email()).getName();
-    // todo time
-    String html = htmlToString(INTERVIEW.getPath()).replace("${name}", name).replace("${time}", "time");
-    send(request, html);
+    for (String email : request.emailList()) {
+      Member member = coreMemberService.findByEmail(email);
+      changeStatus(request, member);
+
+      // todo time
+      String html = htmlToString(INTERVIEW.getPath()).replace("${name}", member.getName()).replace("${time}", "time");
+      send(email, request.type(), html);
+    }
   }
 
   private void sendResultEmail(SendEmailRequest request, boolean isPass) {
-    String name = coreMemberService.findByEmail(request.email()).getName();
-    String html;
-    if (isPass) {
-      html = htmlToString(PASS.getPath()).replace("${name}", name);
-    } else {
-      html = htmlToString(FAIL.getPath()).replace("${name}", name);
+    for (String email : request.emailList()) {
+      Member member = coreMemberService.findByEmail(email);
+      changeStatus(request, member);
+
+      String html;
+      if (isPass) {
+        html = htmlToString(PASS.getPath()).replace("${name}", member.getName());
+      } else {
+        html = htmlToString(FAIL.getPath()).replace("${name}", member.getName());
+      }
+      send(email, request.type(), html);
     }
-    send(request, html);
   }
 
-  private void send(SendEmailRequest request, String html) {
+  private void send(String email, String type, String html) {
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
       helper.setFrom(mailFrom);
-      helper.setTo(request.email());
-      helper.setSubject(EmailType.getSubject(request.type()));
+      helper.setTo(email);
+      helper.setSubject(EmailType.getSubject(type));
       helper.setText(html, true);
       mailSender.send(mimeMessage);
     } catch (Exception e) {
       log.error(e.getMessage());
-      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, request.type() + " EMAIL 전송 중 오류가 발생했습니다 : " + e.getMessage());
+      throw new GeneralException(ErrorStatus.INTERNAL_ERROR, type + " EMAIL 전송 중 오류가 발생했습니다 : " + e.getMessage());
     }
   }
 
@@ -120,4 +139,19 @@ public class EmailService {
     return html.toString();
   }
 
+  /**
+   * 전형 단계 갱신
+   */
+  private void changeStatus(SendEmailRequest request, Member member) {
+    List<StudyMember> studyMemberList = studyMemberRepository.findAllByMember(member);
+    Optional<StudyMember> optionalStudyMember = studyMemberList.stream()
+      .filter(studyMember -> studyMember.getStatus().getOrder() == valueOf(request.type()).getOrder() - 1)
+      .findFirst();
+    if (optionalStudyMember.isEmpty()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "전형 단계를 확인해주세요.");
+    }
+
+    StudyMember studyMember = optionalStudyMember.get();
+    studyMember.updateStatus(valueOf(request.type()));
+  }
 }
