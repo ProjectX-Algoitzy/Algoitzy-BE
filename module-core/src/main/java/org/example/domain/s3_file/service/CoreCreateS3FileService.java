@@ -1,90 +1,93 @@
 package org.example.domain.s3_file.service;
 
+import static com.amazonaws.services.s3.model.CannedAccessControlList.*;
+
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.s3_file.S3File;
 import org.example.domain.s3_file.repository.S3FileRepository;
+import org.example.util.FileUtils;
+import org.example.util.RandomUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CoreCreateS3FileService {
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+  @Value("${cloud.aws.s3.bucket}")
+  private String bucket;
+  private final AmazonS3 amazonS3;
+  private final AmazonS3Client amazonS3Client;
+  private final S3FileRepository s3FileRepository;
 
-    private final AmazonS3 amazonS3;
-    private final S3FileRepository s3FileRepository;
 
+  /**
+   * S3 파일 업로드
+   */
+  public List<String> uploadS3File(List<MultipartFile> multipartFileList) {
+    List<String> fileUrlList = new ArrayList<>();
+    for (MultipartFile multipartFile : multipartFileList) {
+      String fileName = generateRandomFileName(multipartFile.getOriginalFilename());
 
-    public List<String> uploadFile(List<MultipartFile> multipartFileList) {
+      try (InputStream inputStream = multipartFile.getInputStream()) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
+        PutObjectRequest request = new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+          .withCannedAcl(PublicRead);
+        amazonS3.putObject(request);
+      } catch (IOException e) {
+        throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "파일 업로드에 실패했습니다.");
+      }
 
-        List<String> fileList = new ArrayList<>();
-
-        multipartFileList.forEach(multipartFile -> {
-            String fileUrl = generateRandomFileName(multipartFile.getOriginalFilename());
-
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(multipartFile.getSize());
-            objectMetadata.setContentType(multipartFile.getContentType());
-
-            s3FileRepository.save(
-                S3File.builder()
-                    .originalName(multipartFile.getOriginalFilename())
-                    .fileUrl(fileUrl)
-                    .build());
-
-            try (InputStream inputStream = multipartFile.getInputStream()) {
-                amazonS3.putObject(
-                    new PutObjectRequest(bucket, fileUrl, inputStream, objectMetadata)
-                        .withCannedAcl(CannedAccessControlList.PublicRead));
-            } catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "파일 업로드에 실패했습니다.");
-
-            }
-            fileList.add(fileUrl);
-        });
-
-        return fileList;
+      S3Object file = amazonS3Client.getObject(bucket, fileName);
+      // todo sebin
+      //  fileUrl(ex : https://kau-koala.s3.ap-northeast-2.amazonaws.com/c6d1c2ef-6397-44ec-bbc7-eba100baefd4.pdf)
+      //  도 저장되도록 -> amazonS3Client을 이용하는 것이 힌트!
+      String fileUrl = "";
+      s3FileRepository.save(
+        S3File.builder()
+          .originalName(multipartFile.getOriginalFilename())
+          .fileName(fileName)
+          .fileUrl(fileUrl)
+          .build());
+      fileUrlList.add(fileUrl);
     }
 
-    public void deleteFileFromS3(String fileUrl) {
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileUrl));
-        s3FileRepository.deleteByFileUrl(fileUrl);
-    }
+    return fileUrlList;
+  }
 
-    /*
-    * 중복 방지를 위한 파일명 난수화
-    */
-    private String generateRandomFileName(String fileUrl) {
-        return UUID.randomUUID().toString().concat(extractFileExtension(fileUrl));
-    }
+  /**
+   * S3 파일 삭제
+   */
+  public void deleteS3File(String fileName) {
+    amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+    s3FileRepository.deleteByFileUrl(fileName);
+  }
 
-    /*
-    * 파일이 유효한지 검사
-    * 모든 파일을 구분없이 받기 위해 .확장자 검사
-    * */
-    private String extractFileExtension(String fileUrl) {
-        if (fileUrl == null || !fileUrl.contains(".")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileUrl + ") 입니다.");
-        }
-        return fileUrl.substring(fileUrl
-            .lastIndexOf("."));
-    }
+  /**
+   * 중복 방지를 위한 파일명 난수화
+   */
+  private String generateRandomFileName(String originalName) {
+    String fileName = RandomUtils.getRandomString().concat(FileUtils.getFileExtension(originalName));
+    // todo sebin s3file 에 없는 이름일 때까지(중복 방지) 반복해서 생성 후 return
+
+    return fileName;
+  }
+
 }
