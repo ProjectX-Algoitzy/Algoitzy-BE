@@ -48,6 +48,8 @@ public class CoreCreateS3FileService {
                     "파일 업로드에 실패했습니다.");
             }
             fileList.add(fileName);
+
+            // todo s3File entity 저장
         });
 
         return fileList;
@@ -55,6 +57,7 @@ public class CoreCreateS3FileService {
 
     public void deleteFileFromS3(String fileName) {
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        // todo s3File entity 삭제
     }
 
     /*
