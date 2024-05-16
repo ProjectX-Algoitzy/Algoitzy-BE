@@ -28,10 +28,10 @@ public class CoreS3FileController {
     /*
      * Amazon S3에 파일 업로드
      * */
-    @PostMapping(value ="/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,  MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value ="/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "S3에 파일 업로드")
     public ApiResponse<List<String>> uploadFile(@RequestPart List<MultipartFile> multipartFileList) {
-        return ApiResponse.onSuccess(coreS3FileService.uploadS3File(multipartFileList));
+        return ApiResponse.onCreate(coreS3FileService.uploadS3File(multipartFileList));
     }
 
 
