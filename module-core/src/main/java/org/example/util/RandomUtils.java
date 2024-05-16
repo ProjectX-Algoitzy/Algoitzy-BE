@@ -1,9 +1,8 @@
 package org.example.util;
 
 import java.security.SecureRandom;
-import lombok.extern.slf4j.Slf4j;
+import java.util.UUID;
 
-@Slf4j
 public class RandomUtils {
 
   /**
@@ -17,5 +16,12 @@ public class RandomUtils {
       result.append(num);
     }
     return result.toString();
+  }
+
+  /**
+   * 16자리 문자열 생성
+   */
+  public static String getRandomString() {
+    return UUID.randomUUID().toString().substring(0, 16);
   }
 }
