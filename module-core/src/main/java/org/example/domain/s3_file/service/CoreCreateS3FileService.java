@@ -82,8 +82,10 @@ public class CoreCreateS3FileService {
    * 중복 방지를 위한 파일명 난수화
    */
   private String generateRandomFileName(String originalName) {
-    String fileName = RandomUtils.getRandomString().concat(FileUtils.getFileExtension(originalName));
-    // todo sebin s3file 에 없는 이름일 때까지(중복 방지) 반복해서 생성 후 return
+    String fileName;
+    do {
+      fileName = RandomUtils.getRandomString().concat(FileUtils.getFileExtension(originalName));
+    } while (s3FileRepository.existsByFileName(fileName));
 
     return fileName;
   }
