@@ -7,7 +7,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +54,6 @@ public class CoreCreateS3FileService {
         throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "파일 업로드에 실패했습니다.");
       }
 
-      S3Object file = amazonS3Client.getObject(bucket, fileName);
       String fileUrl = amazonS3Client.getUrl(bucket, fileName).toString();
 
       s3FileRepository.save(
