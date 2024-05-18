@@ -6,8 +6,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.email.controller.request.SendEmailRequest;
-import org.example.email.service.EmailService;
-import org.example.email.controller.request.SendEmailRequest;
 import org.example.email.service.CoreEmailService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,10 +20,6 @@ public class EmailController {
 
   private final CoreEmailService coreEmailService;
 
-  @PostMapping()
-  @Operation(summary = "이메일 전송")
-  public ApiResponse<Void> sendEmail(@RequestBody @Valid SendEmailRequest request) {
-    emailService.sendEmail(request);
   @PostMapping()
   @Operation(summary = "이메일 전송")
   public ApiResponse<Void> sendEmail(@RequestBody @Valid SendEmailRequest request) {
