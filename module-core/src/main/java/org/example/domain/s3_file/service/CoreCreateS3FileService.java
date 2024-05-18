@@ -56,10 +56,8 @@ public class CoreCreateS3FileService {
       }
 
       S3Object file = amazonS3Client.getObject(bucket, fileName);
-      // todo sebin
-      //  fileUrl(ex : https://kau-koala.s3.ap-northeast-2.amazonaws.com/c6d1c2ef-6397-44ec-bbc7-eba100baefd4.pdf)
-      //  도 저장되도록 -> amazonS3Client을 이용하는 것이 힌트!
-      String fileUrl = "";
+      String fileUrl = amazonS3Client.getUrl(bucket, fileName).toString();
+
       s3FileRepository.save(
         S3File.builder()
           .originalName(multipartFile.getOriginalFilename())
