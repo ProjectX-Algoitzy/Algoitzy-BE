@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study_member.enums.StudyMemberRole;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -53,7 +54,7 @@ public class DetailStudyRepository {
               .from(studyMember)
               .where(
                 studyMember.study.eq(study),
-                studyMember.role.eq(StudyMemberRole.LEADER)
+                studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               )
             , "memberRole")
         )
