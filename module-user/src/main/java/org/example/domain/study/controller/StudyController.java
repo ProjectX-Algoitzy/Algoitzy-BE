@@ -6,9 +6,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
+import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListTempStudyResponse;
 import org.example.domain.study.service.StudyService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +48,14 @@ public class StudyController {
   @Operation(summary = "자율 스터디 목록 조회")
   public ApiResponse<ListTempStudyResponse> getTempStudyList() {
     return ApiResponse.onCreate(studyService.getTempStudyList());
+  }
+
+  @GetMapping("/{study-id}")
+  @Operation(summary = "자율 스터디 상세 조회")
+  public ApiResponse<DetailTempStudyResponse> getTempStudy(
+    @PathVariable("study-id") Long studyId
+  ) {
+    return ApiResponse.onCreate(studyService.getTempStudy(studyId));
   }
 
 }

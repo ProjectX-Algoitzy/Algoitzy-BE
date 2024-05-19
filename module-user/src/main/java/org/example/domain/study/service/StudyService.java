@@ -2,6 +2,7 @@ package org.example.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
+import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListTempStudyResponse;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,12 @@ public class StudyService {
    */
   public ListTempStudyResponse getTempStudyList() {
     return listStudyService.getTempStudyList();
+  }
+
+  /**
+   * 자율 스터디 상세 조회
+   */
+  public DetailTempStudyResponse getTempStudy(Long studyId) {
+    return detailStudyService.getTempStudy(studyId);
   }
 }
