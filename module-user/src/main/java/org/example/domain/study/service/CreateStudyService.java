@@ -1,12 +1,19 @@
 package org.example.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.member.Member;
+import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.s3_file.service.CoreS3FileService;
 import org.example.domain.study.Study;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.repository.ListStudyRepository;
 import org.example.domain.study.repository.StudyRepository;
+import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.enums.StudyMemberRole;
+import org.example.domain.study_member.enums.StudyMemberStatus;
+import org.example.domain.study_member.repository.StudyMemberRepository;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -17,7 +24,9 @@ import org.springframework.util.StringUtils;
 public class CreateStudyService {
 
   private final CoreS3FileService coreS3FileService;
+  private final CoreMemberService coreMemberService;
   private final StudyRepository studyRepository;
+  private final StudyMemberRepository studyMemberRepository;
   private final ListStudyRepository listStudyRepository;
 
   /**
@@ -28,7 +37,7 @@ public class CreateStudyService {
       coreS3FileService.findByFileUrl(request.imageUrl());
     }
 
-    studyRepository.save(
+    Study study = studyRepository.save(
       Study.builder()
         .imageUrl(request.imageUrl())
         .name(request.name())
@@ -40,5 +49,16 @@ public class CreateStudyService {
         .generation(listStudyRepository.getMaxStudyGeneration())
         .build()
     );
+
+    Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
+    studyMemberRepository.save(
+      StudyMember.builder()
+        .study(study)
+        .member(member)
+        .role(StudyMemberRole.LEADER)
+        .status(StudyMemberStatus.PASS)
+        .build()
+    );
+
   }
 }

@@ -8,7 +8,7 @@ import lombok.Builder;
 @Schema(description = "자율 스터디 생성 요청 객체")
 public record CreateTempStudyRequest(
 
-  @Schema(description = "스터디 대표 이미지")
+  @Schema(description = "스터디 대표 이미지 URL")
   String imageUrl,
 
   @NotBlank

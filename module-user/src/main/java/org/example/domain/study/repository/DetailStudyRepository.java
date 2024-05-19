@@ -7,26 +7,23 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.study.controller.response.ListTempStudyDto;
-import org.example.domain.study.enums.StudyType;
+import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study_member.enums.StudyMemberRole;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ListStudyRepository {
+public class DetailStudyRepository {
 
   private final JPAQueryFactory queryFactory;
 
   /**
-   * 자율 스터디 목록 조회
+   * 자율 스터디 상세 조회
    */
-  public List<ListTempStudyDto> getTempStudyList() {
+  public DetailTempStudyResponse getTempStudy(Long studyId) {
     return queryFactory
-      .select(Projections.fields(ListTempStudyDto.class,
-          study.id.as("studyId"),
+      .select(Projections.fields(DetailTempStudyResponse.class,
           study.imageUrl,
           Expressions.as(
             JPAExpressions
@@ -47,36 +44,24 @@ public class ListStudyRepository {
                 studyMember.role.eq(StudyMemberRole.LEADER)
               )
             , "leaderName"),
-          study.createdTime
+          study.createdTime,
+          study.subject,
+          study.target,
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.role.stringValue())
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study),
+                studyMember.role.eq(StudyMemberRole.LEADER)
+              )
+            , "memberRole")
         )
       )
       .from(study)
       .where(
-        study.type.eq(StudyType.TEMP)
+        study.id.eq(studyId)
       )
-      .orderBy(study.createdTime.desc())
-      .fetch();
-  }
-
-  /**
-   * 최신 기수 스터디 개수
-   */
-  public Integer getStudyCount() {
-    return queryFactory
-      .selectFrom(study)
-      .where(
-        study.generation.eq(getMaxStudyGeneration())
-      )
-      .fetch().size();
-  }
-
-  /**
-   * 스터디 최신 기수
-   */
-  public Integer getMaxStudyGeneration() {
-    return queryFactory
-      .select(study.generation.max())
-      .from(study)
       .fetchOne();
   }
 }
