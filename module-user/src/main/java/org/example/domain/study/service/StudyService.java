@@ -1,12 +1,14 @@
 package org.example.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.study.controller.request.CreateTempStudyRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class StudyService {
 
+  private final CreateStudyService createStudyService;
   private final ListStudyService listStudyService;
 
   /**
@@ -21,5 +23,12 @@ public class StudyService {
    */
   public Integer getMaxStudyGeneration() {
     return listStudyService.getMaxStudyGeneration();
+  }
+
+  /**
+   * 자율 스터디 생성
+   */
+  public void createTempStudy(CreateTempStudyRequest request) {
+    createStudyService.createTempStudy(request);
   }
 }
