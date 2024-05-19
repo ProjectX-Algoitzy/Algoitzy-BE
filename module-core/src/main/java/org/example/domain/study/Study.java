@@ -40,9 +40,21 @@ public class Study {
   @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Rule> ruleList;
 
+  @Comment("스터디 대표 이미지 URL")
+  private String imageUrl;
+
   @Column(nullable = false)
   @Comment("스터디 이름")
   private String name;
+
+  @Comment("진행 방식")
+  private String way;
+
+  @Comment("주제")
+  private String subject;
+
+  @Comment("모집 인원")
+  private Integer memberLimit;
 
   @Column(nullable = false)
   @Comment("스터디 기수")
@@ -72,10 +84,17 @@ public class Study {
   private String updatedBy;
 
   @Builder
-  public Study(String name, StudyType type, String target, List<Rule> ruleList) {
+  public Study(String imageUrl, String name, String way, String subject,
+    StudyType type, String target, Integer memberLimit, List<Rule> ruleList,
+    Integer generation) {
+    this.imageUrl = imageUrl;
     this.name = name;
+    this.way = way;
+    this.subject = subject;
     this.type = type;
     this.target = target;
+    this.memberLimit = memberLimit;
     this.ruleList = ruleList;
+    this.generation = generation;
   }
 }
