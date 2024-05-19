@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
+import org.example.domain.study.controller.response.ListTempStudyResponse;
 import org.example.domain.study.service.StudyService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,12 @@ public class StudyController {
     @RequestBody @Valid CreateTempStudyRequest request) {
     studyService.createTempStudy(request);
     return ApiResponse.onCreate();
+  }
+
+  @GetMapping
+  @Operation(summary = "자율 스터디 목록 조회")
+  public ApiResponse<ListTempStudyResponse> getTempStudyList() {
+    return ApiResponse.onCreate(studyService.getTempStudyList());
   }
 
 }
