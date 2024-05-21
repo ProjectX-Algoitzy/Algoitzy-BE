@@ -7,12 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
 import org.example.domain.application.controller.request.CreateApplicationRequest;
+import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.controller.response.ListApplicationResponse;
 import org.example.domain.application.response.DetailApplicationResponse;
 import org.example.domain.application.service.ApplicationService;
 import org.example.domain.application.service.CoreApplicationService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +32,14 @@ public class ApplicationController {
 
   @PostMapping()
   @Operation(summary = "지원서 생성")
-  public ApiResponse<Void> createApplication(@RequestBody @Valid CreateApplicationRequest request) {
-    applicationService.createApplication(request);
+  public ApiResponse<CreateApplicationResponse> createApplication() {
+    return ApiResponse.onCreate(applicationService.createApplication());
+  }
+
+  @PatchMapping()
+  @Operation(summary = "지원서 임시저장")
+  public ApiResponse<Void> updateApplication(@RequestBody @Valid CreateApplicationRequest request) {
+    applicationService.updateApplication(request);
     return ApiResponse.onSuccess();
   }
 

@@ -19,7 +19,7 @@ public class CreateTextQuestionService {
   /**
    * 주관식 문항 생성
    */
-  public void createTextQuestion(Application application, List<CreateTextQuestionRequest> requestList) {
+  public void updateTextQuestion(Application application, List<CreateTextQuestionRequest> requestList) {
     List<TextQuestion> textQuestionList = requestList.stream()
       .map(request -> textQuestionRepository.save(
         TextQuestion.builder()

@@ -22,7 +22,27 @@ public class CreateSelectQuestionService {
   /**
    * 객관식 문항 생성
    */
-  public void createSelectQuestion(Application application, List<CreateSelectQuestionRequest> requestList) {
+  public void createSelectQuestion(Application application) {
+    List<SelectQuestion> selectQuestionList = new ArrayList<>();
+
+    // 객관식 문항 틀
+    SelectQuestion selectQuestion = selectQuestionRepository.save(
+      SelectQuestion.builder()
+        .application(application)
+        .question("가능한 면접 일자를 선택해주세요.")
+        .isRequired(true)
+        .isMultiSelect(true)
+        .sequence(1)
+        .build()
+    );
+    selectQuestionList.add(selectQuestion);
+    application.setSelectQuestionList(selectQuestionList);
+  }
+
+  /**
+   * 객관식 문항 생성
+   */
+  public void updateSelectQuestion(Application application, List<CreateSelectQuestionRequest> requestList) {
     List<SelectQuestion> selectQuestionList = new ArrayList<>();
     for (CreateSelectQuestionRequest request : requestList) {
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
 import org.example.domain.application.controller.request.CreateApplicationRequest;
 import org.example.domain.application.Application;
+import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.repository.ApplicationRepository;
 import org.example.domain.select_question.service.CreateSelectQuestionService;
 import org.example.domain.study.service.CoreStudyService;
@@ -26,7 +27,24 @@ public class CreateApplicationService {
   /**
    * 지원서 생성
    */
-  public void createApplication(CreateApplicationRequest request) {
+  public CreateApplicationResponse createApplication() {
+    Application application = applicationRepository.save(
+      Application.builder()
+        .title("새 지원서")
+        .build()
+    );
+    createSelectQuestionService.createSelectQuestion(application);
+
+    System.out.println("application.getId() = " + application.getId());
+    return CreateApplicationResponse.builder()
+      .applicationId(application.getId())
+      .build();
+  }
+
+  /**
+   * 지원서 임시저장
+   */
+  public void updateApplication(CreateApplicationRequest request) {
 
     Application application = applicationRepository.save(
       Application.builder()
@@ -34,8 +52,8 @@ public class CreateApplicationService {
         .title(request.title())
         .build()
     );
-    createTextQuestionService.createTextQuestion(application, request.createTextQuestionRequestList());
-    createSelectQuestionService.createSelectQuestion(application, request.createSelectQuestionRequestList());
+    createTextQuestionService.updateTextQuestion(application, request.createTextQuestionRequestList());
+    createSelectQuestionService.updateSelectQuestion(application, request.createSelectQuestionRequestList());
   }
 
   /**
