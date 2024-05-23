@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
-import org.example.domain.application.controller.request.CreateApplicationRequest;
+import org.example.domain.application.controller.request.UpdateApplicationRequest;
 import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.controller.response.ListApplicationResponse;
 import org.example.domain.application.response.DetailApplicationResponse;
@@ -36,10 +36,12 @@ public class ApplicationController {
     return ApiResponse.onCreate(applicationService.createApplication());
   }
 
-  @PatchMapping()
+  @PatchMapping("/{application-id}")
   @Operation(summary = "지원서 임시저장")
-  public ApiResponse<Void> updateApplication(@RequestBody @Valid CreateApplicationRequest request) {
-    applicationService.updateApplication(request);
+  public ApiResponse<Void> updateApplication(
+    @PathVariable("application-id") Long applicationId,
+    @RequestBody @Valid UpdateApplicationRequest request) {
+    applicationService.updateApplication(applicationId, request);
     return ApiResponse.onSuccess();
   }
 

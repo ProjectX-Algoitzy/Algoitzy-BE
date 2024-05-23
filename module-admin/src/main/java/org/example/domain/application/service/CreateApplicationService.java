@@ -2,7 +2,7 @@ package org.example.domain.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
-import org.example.domain.application.controller.request.CreateApplicationRequest;
+import org.example.domain.application.controller.request.UpdateApplicationRequest;
 import org.example.domain.application.Application;
 import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.repository.ApplicationRepository;
@@ -44,7 +44,9 @@ public class CreateApplicationService {
   /**
    * 지원서 임시저장
    */
-  public void updateApplication(CreateApplicationRequest request) {
+  public void updateApplication(Long applicationId, UpdateApplicationRequest request) {
+    // todo delete query 성능 개선
+    applicationRepository.deleteById(applicationId);
 
     Application application = applicationRepository.save(
       Application.builder()
@@ -52,8 +54,8 @@ public class CreateApplicationService {
         .title(request.title())
         .build()
     );
-    createTextQuestionService.updateTextQuestion(application, request.createTextQuestionRequestList());
-    createSelectQuestionService.updateSelectQuestion(application, request.createSelectQuestionRequestList());
+    createTextQuestionService.updateTextQuestion(application, request.updateTextQuestionList());
+    createSelectQuestionService.updateSelectQuestion(application, request.updateSelectQuestionList());
   }
 
   /**

@@ -2,7 +2,7 @@ package org.example.domain.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
-import org.example.domain.application.controller.request.CreateApplicationRequest;
+import org.example.domain.application.controller.request.UpdateApplicationRequest;
 import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.controller.response.ListApplicationResponse;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class ApplicationService {
     return createApplicationService.createApplication();
   }
 
-  public void updateApplication(CreateApplicationRequest request) {
-    createApplicationService.updateApplication(request);
+  public void updateApplication(Long applicationId, UpdateApplicationRequest request) {
+    createApplicationService.updateApplication(applicationId, request);
   }
 
   public ListApplicationResponse getApplicationList() {

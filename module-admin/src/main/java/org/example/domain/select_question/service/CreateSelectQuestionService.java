@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.application.Application;
 import org.example.domain.field.service.CreateFieldService;
 import org.example.domain.select_question.SelectQuestion;
-import org.example.domain.select_question.controller.request.CreateSelectQuestionRequest;
+import org.example.domain.select_question.controller.request.UpdateSelectQuestionRequest;
 import org.example.domain.select_question.repository.SelectQuestionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,9 +42,9 @@ public class CreateSelectQuestionService {
   /**
    * 객관식 문항 생성
    */
-  public void updateSelectQuestion(Application application, List<CreateSelectQuestionRequest> requestList) {
+  public void updateSelectQuestion(Application application, List<UpdateSelectQuestionRequest> requestList) {
     List<SelectQuestion> selectQuestionList = new ArrayList<>();
-    for (CreateSelectQuestionRequest request : requestList) {
+    for (UpdateSelectQuestionRequest request : requestList) {
 
       // 객관식 문항 틀
       SelectQuestion selectQuestion = selectQuestionRepository.save(
@@ -57,7 +57,7 @@ public class CreateSelectQuestionService {
           .build()
       );
       selectQuestionList.add(selectQuestion);
-      createFieldService.createField(selectQuestion, request.createFieldRequestList());
+      createFieldService.createField(selectQuestion, request.updateFieldRequestList());
     }
 
     application.setSelectQuestionList(selectQuestionList);
