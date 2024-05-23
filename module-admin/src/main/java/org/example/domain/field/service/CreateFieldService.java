@@ -3,7 +3,7 @@ package org.example.domain.field.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.field.Field;
-import org.example.domain.field.controller.request.CreateFieldRequest;
+import org.example.domain.field.controller.request.UpdateFieldRequest;
 import org.example.domain.field.repository.FieldRepository;
 import org.example.domain.select_question.SelectQuestion;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class CreateFieldService {
   /**
    * 객관식 문항 필드 생성
    */
-  public void createField(SelectQuestion selectQuestion, List<CreateFieldRequest> requestList) {
+  public void createField(SelectQuestion selectQuestion, List<UpdateFieldRequest> requestList) {
 
     List<Field> fieldList = requestList.stream()
       .map(request -> fieldRepository.save(

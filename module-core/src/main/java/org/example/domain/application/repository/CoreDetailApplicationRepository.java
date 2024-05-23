@@ -27,7 +27,7 @@ public class CoreDetailApplicationRepository {
         )
       )
       .from(application)
-      .innerJoin(study).on(application.study.eq(study))
+      .leftJoin(study).on(application.study.eq(study))
       .where(
         application.id.eq(applicationId)
       )

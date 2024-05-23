@@ -1,9 +1,12 @@
 package org.example.domain.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
-import org.example.domain.application.controller.request.CreateApplicationRequest;
+import org.example.domain.application.controller.request.UpdateApplicationRequest;
 import org.example.domain.application.Application;
+import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.repository.ApplicationRepository;
 import org.example.domain.select_question.service.CreateSelectQuestionService;
 import org.example.domain.study.service.CoreStudyService;
@@ -26,16 +29,39 @@ public class CreateApplicationService {
   /**
    * 지원서 생성
    */
-  public void createApplication(CreateApplicationRequest request) {
+  public CreateApplicationResponse createApplication() {
+    Application application = applicationRepository.save(
+      Application.builder()
+        .title("새 지원서")
+        .build()
+    );
+    createSelectQuestionService.createSelectQuestion(application);
+
+    return CreateApplicationResponse.builder()
+      .applicationId(application.getId())
+      .build();
+  }
+
+  /**
+   * 지원서 저장
+   */
+  public void updateApplication(Long applicationId, UpdateApplicationRequest request) {
+    if (coreApplicationService.findById(applicationId).getConfirmYN()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "확정된 지원서는 수정할 수 없습니다.");
+    }
+
+    // todo delete query 성능 개선
+    applicationRepository.deleteById(applicationId);
 
     Application application = applicationRepository.save(
       Application.builder()
         .study(coreStudyService.findById(request.studyId()))
         .title(request.title())
+        .confirmYN(request.confirmYN())
         .build()
     );
-    createTextQuestionService.createTextQuestion(application, request.createTextQuestionRequestList());
-    createSelectQuestionService.createSelectQuestion(application, request.createSelectQuestionRequestList());
+    createTextQuestionService.updateTextQuestion(application, request.updateTextQuestionList());
+    createSelectQuestionService.updateSelectQuestion(application, request.updateSelectQuestionList());
   }
 
   /**
@@ -56,7 +82,9 @@ public class CreateApplicationService {
    * 지원서 삭제
    */
   public void deleteApplication(Long applicationId) {
-    coreApplicationService.findById(applicationId);
+    if (coreApplicationService.findById(applicationId).getConfirmYN()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "확정된 지원서는 삭제할 수 없습니다.");
+    }
     applicationRepository.deleteById(applicationId);
   }
 }
