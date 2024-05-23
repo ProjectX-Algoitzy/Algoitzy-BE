@@ -21,6 +21,10 @@ public record UpdateApplicationRequest(
   @Schema(description = "지원서 제목", example = "지원서 제목")
   String title,
 
+  @NotNull
+  @Schema(description = "양식 확정 여부")
+  boolean confirmYN,
+
   @Schema(description = "주관식 문항 생성 요청 list")
   List<@Valid UpdateTextQuestionRequest> updateTextQuestionList,
 

@@ -37,7 +37,7 @@ public class ApplicationController {
   }
 
   @PatchMapping("/{application-id}")
-  @Operation(summary = "지원서 임시저장")
+  @Operation(summary = "지원서 저장")
   public ApiResponse<Void> updateApplication(
     @PathVariable("application-id") Long applicationId,
     @RequestBody @Valid UpdateApplicationRequest request) {

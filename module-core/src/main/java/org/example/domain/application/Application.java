@@ -2,6 +2,7 @@ package org.example.domain.application;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -20,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.select_question.SelectQuestion;
 import org.example.domain.study.Study;
 import org.example.domain.text_question.TextQuestion;
@@ -57,6 +59,11 @@ public class Application {
   @Comment("지원서 제목")
   private String title;
 
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  @Comment("확정 여부")
+  private Boolean confirmYN;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -72,8 +79,9 @@ public class Application {
   private String updatedBy;
 
   @Builder
-  public Application(Study study, String title) {
+  public Application(Study study, String title, boolean confirmYN) {
     this.study = study;
     this.title = title;
+    this.confirmYN = confirmYN;
   }
 }
