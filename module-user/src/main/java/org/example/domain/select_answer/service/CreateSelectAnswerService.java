@@ -1,5 +1,7 @@
 package org.example.domain.select_answer.service;
 
+import static org.example.util.ValueUtils.INTERVIEW_QUESTION;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +62,7 @@ public class CreateSelectAnswerService {
       }
 
       // 면접 일정 문항 로직
-      if (selectQuestion.getQuestion().equals("가능한 면접 일자를 선택해주세요.")) {
+      if (selectQuestion.getQuestion().equals(INTERVIEW_QUESTION)) {
         List<Field> fieldList = fieldRepository.findAllById(request.fieldIdList());
 
         // 선택한 날짜 중 면접자가 최소인 날짜로 배정

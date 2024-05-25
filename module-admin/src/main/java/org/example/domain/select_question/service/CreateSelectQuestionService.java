@@ -1,5 +1,7 @@
 package org.example.domain.select_question.service;
 
+import static org.example.util.ValueUtils.INTERVIEW_QUESTION;
+
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,7 @@ public class CreateSelectQuestionService {
     SelectQuestion selectQuestion = selectQuestionRepository.save(
       SelectQuestion.builder()
         .application(application)
-        .question("가능한 면접 일자를 선택해주세요.")
+        .question(INTERVIEW_QUESTION)
         .isRequired(true)
         .isMultiSelect(true)
         .sequence(1)
