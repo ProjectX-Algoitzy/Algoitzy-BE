@@ -18,13 +18,12 @@ public record UpdateInterviewRequest(
 
 ) {
 
-  @AssertTrue(message = "MM월 DD일 오전/오후 HH시 MM분 형식이어야 합니다.")
+  @AssertTrue(message = "MM월 DD일 HH:MM 형식이어야 합니다.")
   public boolean getTimeValidate() {
-    return time.contains("월")
+    return time.length() >= 10
+      && time.contains("월")
       && time.contains("일")
-      && (time.contains("오후") || time.contains("오전"))
-      && time.contains("시")
-      && time.contains("분");
+      && time.contains(":");
   }
 
 }
