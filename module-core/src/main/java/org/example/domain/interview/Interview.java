@@ -61,4 +61,8 @@ public class Interview {
     this.studyMember = studyMember;
     this.time = time;
   }
+
+  public void updateTime(String time) {
+    this.time = time;
+  }
 }

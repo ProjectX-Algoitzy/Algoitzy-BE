@@ -1,7 +1,11 @@
 package org.example.domain.field.service;
 
+import static org.example.util.ValueUtils.INTERVIEW_QUESTION;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.field.Field;
 import org.example.domain.field.controller.request.UpdateFieldRequest;
 import org.example.domain.field.repository.FieldRepository;
@@ -20,6 +24,14 @@ public class CreateFieldService {
    * 객관식 문항 필드 생성
    */
   public void createField(SelectQuestion selectQuestion, List<UpdateFieldRequest> requestList) {
+    if (selectQuestion.getQuestion().equals(INTERVIEW_QUESTION)) {
+      for (UpdateFieldRequest request : requestList) {
+        String context = request.context();
+        if (!context.contains("월") || !context.contains("일")) {
+          throw new GeneralException(ErrorStatus.BAD_REQUEST, "면접 일자는 MM월 DD일 형식이어야 합니다.");
+        }
+      }
+    }
 
     List<Field> fieldList = requestList.stream()
       .map(request -> fieldRepository.save(
