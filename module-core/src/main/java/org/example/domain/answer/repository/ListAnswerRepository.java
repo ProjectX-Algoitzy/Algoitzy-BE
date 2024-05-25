@@ -43,6 +43,7 @@ public class ListAnswerRepository {
           member.email.as("submitEmail"),
           studyMember.status.stringValue().as("status"),
           answer.updatedTime.as("submitTime"),
+          interview.id.as("interviewId"),
           interview.time.as("interviewTime")
         )
       )

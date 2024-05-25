@@ -1,10 +1,11 @@
 package org.example.domain.member.controller;
 
+import static org.example.domain.member.enums.Role.ROLE_USER;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.response.LoginResponse;
@@ -17,8 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
-@Slf4j
-@Tag(name = "MemberController", description = "멤버 관련 API")
+@Tag(name = "MemberController", description = "[USER] 멤버 관련 API")
 public class MemberController {
 
   private final CoreMemberService coreMemberService;
@@ -26,6 +26,6 @@ public class MemberController {
   @PostMapping("/login")
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-    return ApiResponse.onSuccess(coreMemberService.login(request));
+    return ApiResponse.onSuccess(coreMemberService.login(ROLE_USER, request));
   }
 }

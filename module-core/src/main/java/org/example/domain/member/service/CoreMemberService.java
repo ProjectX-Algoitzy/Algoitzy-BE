@@ -6,6 +6,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.response.LoginResponse;
+import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class CoreMemberService {
       .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않는 Email 입니다."));
   }
 
-  public LoginResponse login(LoginRequest request) {
-    return coreLoginService.login(request);
+  public LoginResponse login(Role role, LoginRequest request) {
+    return coreLoginService.login(role, request);
   }
 }
