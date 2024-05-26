@@ -21,7 +21,7 @@ public class RandomUtils {
   /**
    * 16자리 문자열 생성
    */
-  public static String getRandomString() {
-    return UUID.randomUUID().toString().substring(0, 16);
+  public static String getRandomString(int length) {
+    return UUID.randomUUID().toString().substring(0, length).replace("-","X");
   }
 }

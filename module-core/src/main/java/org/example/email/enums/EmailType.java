@@ -23,6 +23,7 @@ public enum EmailType {
   PASS("KOALA 면접 결과 발표", "https://kau-koala.s3.ap-northeast-2.amazonaws.com/pass.html"),
 
   // 비밀번호 찾기
+  // todo html
   FIND_PASSWORD("KOALA 비밀번호 안내", "https://kau-koala.s3.ap-northeast-2.amazonaws.com/certification.html");
 
   private String subject;

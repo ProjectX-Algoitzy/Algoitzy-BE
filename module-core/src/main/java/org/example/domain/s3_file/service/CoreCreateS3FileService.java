@@ -82,7 +82,7 @@ public class CoreCreateS3FileService {
   private String generateRandomFileName(String originalName) {
     String fileName;
     do {
-      fileName = RandomUtils.getRandomString().concat(FileUtils.getFileExtension(originalName));
+      fileName = RandomUtils.getRandomString(16).concat(FileUtils.getFileExtension(originalName));
     } while (s3FileRepository.existsByFileName(fileName));
 
     return fileName;

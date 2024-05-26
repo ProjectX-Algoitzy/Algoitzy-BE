@@ -5,6 +5,7 @@ import static org.example.email.enums.EmailType.CERTIFICATION;
 import static org.example.email.enums.EmailType.DOCUMENT_FAIL;
 import static org.example.email.enums.EmailType.DOCUMENT_PASS;
 import static org.example.email.enums.EmailType.FAIL;
+import static org.example.email.enums.EmailType.FIND_PASSWORD;
 import static org.example.email.enums.EmailType.INTERVIEW;
 import static org.example.email.enums.EmailType.PASS;
 
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class CoreEmailService {
 
   private final CoreMemberService coreMemberService;
   private final StudyMemberRepository studyMemberRepository;
+  private final PasswordEncoder encoder;
   private final StringRedisTemplate redisTemplate;
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
@@ -54,6 +57,7 @@ public class CoreEmailService {
       case INTERVIEW -> sendInterviewEmail(request);
       case PASS -> sendResultEmail(request, true);
       case FAIL -> sendResultEmail(request, false);
+      case FIND_PASSWORD -> sendPasswordEmail(request);
     }
   }
 
@@ -103,6 +107,16 @@ public class CoreEmailService {
       }
       send(email, request.type(), html);
     }
+  }
+
+  private void sendPasswordEmail(SendEmailRequest request) {
+    // todo ${password}
+    String password = RandomUtils.getRandomString(11);
+    String html = htmlToString(FIND_PASSWORD.getPath()).replace("${code}", password);
+    send(request.emailList().get(0), request.type(), html);
+
+    Member member = coreMemberService.findByEmail(request.emailList().get(0));
+    member.updatePassword(encoder.encode(password));
   }
 
   private void send(String email, String type, String html) {
