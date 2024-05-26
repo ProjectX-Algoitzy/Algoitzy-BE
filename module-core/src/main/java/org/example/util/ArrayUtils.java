@@ -7,7 +7,7 @@ import java.util.Set;
 public class ArrayUtils {
 
   /**
-   *
+   * 배열 중복 원소 검사
    */
   public static <T> boolean isUniqueArray(List<T> array) {
     Set<T> set = new HashSet<>();
