@@ -44,3 +44,6 @@ cloud:
       auto: false
     stack:
       auto: false
+
+url:
+  s3: https://kau-koala.s3.ap-northeast-2.amazonaws.com

@@ -82,4 +82,8 @@ public class Member {
     this.grade = grade;
     this.major = major;
   }
+
+  public void updatePassword(String password) {
+    this.password = password;
+  }
 }

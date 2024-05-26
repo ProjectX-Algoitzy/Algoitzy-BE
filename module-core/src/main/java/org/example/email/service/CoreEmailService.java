@@ -5,6 +5,7 @@ import static org.example.email.enums.EmailType.CERTIFICATION;
 import static org.example.email.enums.EmailType.DOCUMENT_FAIL;
 import static org.example.email.enums.EmailType.DOCUMENT_PASS;
 import static org.example.email.enums.EmailType.FAIL;
+import static org.example.email.enums.EmailType.FIND_PASSWORD;
 import static org.example.email.enums.EmailType.INTERVIEW;
 import static org.example.email.enums.EmailType.PASS;
 
@@ -19,9 +20,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.interview.Interview;
+import org.example.domain.interview.repository.InterviewRepository;
 import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.email.controller.request.SendEmailRequest;
 import org.example.email.enums.EmailType;
@@ -30,6 +34,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,10 +46,14 @@ public class CoreEmailService {
 
   private final CoreMemberService coreMemberService;
   private final StudyMemberRepository studyMemberRepository;
+  private final InterviewRepository interviewRepository;
+  private final PasswordEncoder encoder;
   private final StringRedisTemplate redisTemplate;
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
   private String mailFrom;
+  @Value("${url.s3}")
+  private String s3Url;
 
   public void sendEmail(SendEmailRequest request) {
     switch (EmailType.valueOf(request.type())) {
@@ -54,13 +63,14 @@ public class CoreEmailService {
       case INTERVIEW -> sendInterviewEmail(request);
       case PASS -> sendResultEmail(request, true);
       case FAIL -> sendResultEmail(request, false);
+      case FIND_PASSWORD -> sendPasswordEmail(request);
     }
   }
 
   private void sendCertificateEmail(SendEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
     redisTemplate.opsForValue().set(request.emailList().get(0), code, Duration.ofSeconds(180));
-    String html = htmlToString(CERTIFICATION.getPath()).replace("${code}", code);
+    String html = htmlToString(s3Url + CERTIFICATION.getPath()).replace("${code}", code);
     send(request.emailList().get(0), request.type(), html);
   }
 
@@ -71,9 +81,9 @@ public class CoreEmailService {
 
       String html;
       if (isPass) {
-        html = htmlToString(DOCUMENT_PASS.getPath()).replace("${name}", member.getName());
+        html = htmlToString(s3Url + DOCUMENT_PASS.getPath()).replace("${name}", member.getName());
       } else {
-        html = htmlToString(DOCUMENT_FAIL.getPath()).replace("${name}", member.getName());
+        html = htmlToString(s3Url + DOCUMENT_FAIL.getPath()).replace("${name}", member.getName());
       }
       send(email, request.type(), html);
     }
@@ -82,10 +92,15 @@ public class CoreEmailService {
   private void sendInterviewEmail(SendEmailRequest request) {
     for (String email : request.emailList()) {
       Member member = coreMemberService.findByEmail(email);
+      StudyMember studyMember = studyMemberRepository.findByMemberAndStatus(member, StudyMemberStatus.DOCUMENT_PASS)
+        .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 회원은 서류 합격 단계가 아닙니다."));
+      Interview interview = interviewRepository.findByStudyMember(studyMember)
+        .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 스터디원의 면접 일정이 존재하지 않습니다."));
       changeStatus(request, member);
 
       // todo time
-      String html = htmlToString(INTERVIEW.getPath()).replace("${name}", member.getName()).replace("${time}", "time");
+      String html = htmlToString(s3Url + INTERVIEW.getPath())
+        .replace("${name}", member.getName()).replace("${time}", interview.getTime());
       send(email, request.type(), html);
     }
   }
@@ -97,12 +112,21 @@ public class CoreEmailService {
 
       String html;
       if (isPass) {
-        html = htmlToString(PASS.getPath()).replace("${name}", member.getName());
+        html = htmlToString(s3Url + PASS.getPath()).replace("${name}", member.getName());
       } else {
-        html = htmlToString(FAIL.getPath()).replace("${name}", member.getName());
+        html = htmlToString(s3Url + FAIL.getPath()).replace("${name}", member.getName());
       }
       send(email, request.type(), html);
     }
+  }
+
+  private void sendPasswordEmail(SendEmailRequest request) {
+    String password = RandomUtils.getRandomString(11);
+    String html = htmlToString(s3Url + FIND_PASSWORD.getPath()).replace("${password}", password);
+    send(request.emailList().get(0), request.type(), html);
+
+    Member member = coreMemberService.findByEmail(request.emailList().get(0));
+    member.updatePassword(encoder.encode(password));
   }
 
   private void send(String email, String type, String html) {
