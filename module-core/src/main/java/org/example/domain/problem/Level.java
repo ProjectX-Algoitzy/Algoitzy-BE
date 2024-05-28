@@ -1,42 +1,42 @@
 package org.example.domain.problem;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@RequiredArgsConstructor
 public enum Level {
 
-  BRONZE5,
-  BRONZE4,
-  BRONZE3,
-  BRONZE2,
-  BRONZE1,
+  BRONZE5(1),
+  BRONZE4(2),
+  BRONZE3(3),
+  BRONZE2(4),
+  BRONZE1(5),
 
-  SILVER5,
-  SILVER4,
-  SILVER3,
-  SILVER2,
-  SILVER1,
+  SILVER5(6),
+  SILVER4(7),
+  SILVER3(8),
+  SILVER2(9),
+  SILVER1(10),
 
-  GOLD5,
-  GOLD4,
-  GOLD3,
-  GOLD2,
-  GOLD1,
+  GOLD5(11),
+  GOLD4(12),
+  GOLD3(13),
+  GOLD2(14),
+  GOLD1(15),
 
-  PLATINUM5,
-  PLATINUM4,
-  PLATINUM3,
-  PLATINUM2,
-  PLATINUM1,
+  PLATINUM5(16),
+  PLATINUM4(17),
+  PLATINUM3(18),
+  PLATINUM2(19),
+  PLATINUM1(20),
 
-  DIAMOND5,
-  DIAMOND4,
-  DIAMOND3,
-  DIAMOND2,
-  DIAMOND1,
+  DIAMOND5(21),
+  DIAMOND4(22),
+  DIAMOND3(23),
+  DIAMOND2(24),
+  DIAMOND1(25);
 
-  RUBY5,
-  RUBY4,
-  RUBY3,
-  RUBY2,
-  RUBY1
-
+  private final int level;
 
 }
