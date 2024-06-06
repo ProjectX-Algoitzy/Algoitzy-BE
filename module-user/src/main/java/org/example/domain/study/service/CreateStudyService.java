@@ -33,14 +33,15 @@ public class CreateStudyService {
    * 자율 스터디 생성
    */
   public void createTempStudy(CreateTempStudyRequest request) {
-    if (StringUtils.hasText(request.imageUrl())) {
-      coreS3FileService.findByFileUrl(request.imageUrl());
+    if (StringUtils.hasText(request.profileUrl())) {
+      coreS3FileService.findByFileUrl(request.profileUrl());
     }
 
     Study study = studyRepository.save(
       Study.builder()
-        .imageUrl(request.imageUrl())
+        .profileUrl(request.profileUrl())
         .name(request.name())
+        .content(request.content())
         .memberLimit(request.memberLimit())
         .way(request.way())
         .subject(request.subject())
