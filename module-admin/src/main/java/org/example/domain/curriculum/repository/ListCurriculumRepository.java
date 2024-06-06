@@ -53,6 +53,7 @@ public class ListCurriculumRepository {
         )
       )
       .from(curriculum)
+      .orderBy(curriculum.week.asc())
       .fetch();
   }
 }
