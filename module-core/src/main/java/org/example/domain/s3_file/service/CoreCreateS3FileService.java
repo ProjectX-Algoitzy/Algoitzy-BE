@@ -8,11 +8,13 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.s3_file.S3File;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -30,6 +33,8 @@ public class CoreCreateS3FileService {
 
   @Value("${cloud.aws.s3.bucket}")
   private String bucket;
+  @Value("${spring.profiles.name}")
+  private String profile;
   private final AmazonS3 amazonS3;
   private final AmazonS3Client amazonS3Client;
   private final S3FileRepository s3FileRepository;
@@ -72,8 +77,9 @@ public class CoreCreateS3FileService {
    * S3 파일 삭제
    */
   public void deleteS3File(String fileName) {
+    fileName = profile + File.separator + fileName;
     amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
-    s3FileRepository.deleteByFileUrl(fileName);
+    s3FileRepository.deleteByFileName(fileName);
   }
 
   /**
@@ -85,7 +91,7 @@ public class CoreCreateS3FileService {
       fileName = RandomUtils.getRandomString(16).concat(FileUtils.getFileExtension(originalName));
     } while (s3FileRepository.existsByFileName(fileName));
 
-    return fileName;
+    return profile + File.separator + fileName;
   }
 
 }

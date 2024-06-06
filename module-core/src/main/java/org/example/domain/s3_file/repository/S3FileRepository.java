@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface S3FileRepository extends JpaRepository<S3File, Long> {
 
-    void deleteByFileUrl(String fileUrl);
+    void deleteByFileName(String fileName);
 
     boolean existsByFileName(String fileName);
 
