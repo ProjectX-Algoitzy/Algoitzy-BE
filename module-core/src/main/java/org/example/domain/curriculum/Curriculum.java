@@ -45,6 +45,7 @@ public class Curriculum {
   private Integer week;
 
   @Comment("내용(에디터)")
+  @Column(length = 1000000)
   private String content;
 
   @CreatedDate

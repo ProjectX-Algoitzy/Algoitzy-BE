@@ -1,4 +1,5 @@
-package org.example.domain.application.controller.response;
+package org.example.domain.curriculum.controller.response;
+
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -12,13 +13,13 @@ import org.example.util.ValueUtils;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "지원서 양식 목록 응답 객체")
-public class ListApplicationByGenerationDto {
+@Schema(description = "커리큘럼 목록 조회 응답 dto")
+public class ListCurriculumDto {
 
-  @Schema(description = "지원서 ID")
-  private Long applicationId;
+  @Schema(description = "커리큘럼 ID")
+  private long curriculumId;
 
-  @Schema(description = "지원서 제목")
+  @Schema(description = "커리큘럼 제목")
   private String title;
 
   @Schema(description = "대상 스터디 이름")

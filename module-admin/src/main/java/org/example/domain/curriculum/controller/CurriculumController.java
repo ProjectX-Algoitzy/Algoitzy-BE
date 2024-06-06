@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
 import org.example.domain.curriculum.controller.response.DetailCurriculumResponse;
+import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,12 @@ public class CurriculumController {
   public ApiResponse<Void> createCurriculum(@RequestBody @Valid CreateCurriculumRequest request) {
     curriculumService.createCurriculum(request);
     return ApiResponse.onCreate();
+  }
+
+  @GetMapping()
+  @Operation(summary = "커리큘럼 목록 조회")
+  public ApiResponse<ListCurriculumResponse> getCurriculumList() {
+    return ApiResponse.onSuccess(curriculumService.getCurriculumList());
   }
 
   @GetMapping("/{curriculum-id}")
