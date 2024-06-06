@@ -18,7 +18,7 @@ public class ListTempStudyDto {
   long studyId;
 
   @Schema(description = "스터디 대표 이미지 URL")
-  String imageUrl;
+  String profileUrl;
 
   @Schema(description = "스터디 이름")
   String studyName;

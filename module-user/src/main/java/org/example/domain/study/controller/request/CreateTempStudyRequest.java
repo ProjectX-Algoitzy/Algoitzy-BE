@@ -9,11 +9,15 @@ import lombok.Builder;
 public record CreateTempStudyRequest(
 
   @Schema(description = "스터디 대표 이미지 URL")
-  String imageUrl,
+  String profileUrl,
 
   @NotBlank
   @Schema(description = "스터디 이름")
   String name,
+
+  @NotBlank
+  @Schema(description = "내용(에디터)")
+  String content,
 
   @Min(0)
   @Schema(description = "모집 인원")

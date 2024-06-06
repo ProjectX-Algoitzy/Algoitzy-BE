@@ -15,13 +15,16 @@ import lombok.NoArgsConstructor;
 public class DetailTempStudyResponse {
 
   @Schema(description = "스터디 대표 이미지 URL")
-  String imageUrl;
+  String profileUrl;
 
   @Schema(description = "스터디 이름")
   String studyName;
 
   @Schema(description = "현재 스터디원 수")
   long memberCount;
+
+  @Schema(description = "내용")
+  String content;
 
   @Schema(description = "모집 인원")
   int memberLimit;

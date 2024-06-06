@@ -25,7 +25,7 @@ public class DetailStudyRepository {
   public DetailTempStudyResponse getTempStudy(Long studyId) {
     return queryFactory
       .select(Projections.fields(DetailTempStudyResponse.class,
-          study.imageUrl,
+          study.profileUrl,
           Expressions.as(
             JPAExpressions
               .select(studyMember.count())
@@ -35,6 +35,7 @@ public class DetailStudyRepository {
               )
             , "memberCount"),
           study.name.as("studyName"),
+          study.content,
           study.memberLimit,
           Expressions.as(
             JPAExpressions

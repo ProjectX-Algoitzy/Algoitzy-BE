@@ -41,7 +41,7 @@ public class Study {
   private List<Rule> ruleList;
 
   @Comment("스터디 대표 이미지 URL")
-  private String imageUrl;
+  private String profileUrl;
 
   @Column(nullable = false)
   @Comment("스터디 이름")
@@ -59,6 +59,10 @@ public class Study {
   @Column(nullable = false)
   @Comment("스터디 기수")
   private Integer generation;
+
+  @Comment("내용(에디터)")
+  @Column(length = 1000000)
+  private String content;
 
   @Enumerated(value = EnumType.STRING)
   @Column(nullable = false)
@@ -84,11 +88,12 @@ public class Study {
   private String updatedBy;
 
   @Builder
-  public Study(String imageUrl, String name, String way, String subject,
+  public Study(String profileUrl, String name, String content, String way, String subject,
     StudyType type, String target, Integer memberLimit, List<Rule> ruleList,
     Integer generation) {
-    this.imageUrl = imageUrl;
+    this.profileUrl = profileUrl;
     this.name = name;
+    this.content = content;
     this.way = way;
     this.subject = subject;
     this.type = type;

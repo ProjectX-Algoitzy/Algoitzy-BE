@@ -27,7 +27,7 @@ public class ListStudyRepository {
     return queryFactory
       .select(Projections.fields(ListTempStudyDto.class,
           study.id.as("studyId"),
-          study.imageUrl,
+          study.profileUrl,
           Expressions.as(
             JPAExpressions
               .select(studyMember.count())
