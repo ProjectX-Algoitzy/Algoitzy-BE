@@ -13,18 +13,17 @@ import org.example.api_response.status.ErrorStatus;
 public enum EmailType {
 
   // 회원가입 인증
-  CERTIFICATION("KOALA 이메일 인증 코드", "/certification.html"),
+  CERTIFICATION("KOALA 이메일 인증 코드", "certification.html"),
 
   // 지원 전형 안내
-  DOCUMENT_PASS("KOALA 서류 전형 안내", "/document-pass.html"),
-  DOCUMENT_FAIL("KOALA 서류 전형 안내", "/document-fail.html"),
-  INTERVIEW("KOALA 면접 일정 안내", "/interview.html"),
-  FAIL("KOALA 면접 결과 발표", "/fail.html"),
-  PASS("KOALA 면접 결과 발표", "/pass.html"),
+  DOCUMENT_PASS("KOALA 서류 전형 안내", "document-pass.html"),
+  DOCUMENT_FAIL("KOALA 서류 전형 안내", "document-fail.html"),
+  INTERVIEW("KOALA 면접 일정 안내", "interview.html"),
+  FAIL("KOALA 면접 결과 발표", "fail.html"),
+  PASS("KOALA 면접 결과 발표", "pass.html"),
 
-  // 비밀번호 찾기
-  // todo html
-  FIND_PASSWORD("KOALA 비밀번호 안내", "/find-password.html");
+  // 비밀번호 재설정
+  FIND_PASSWORD("KOALA 비밀번호 안내", "reset-password.html");
 
   private String subject;
   private String path;

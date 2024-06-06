@@ -52,7 +52,7 @@ public class CoreEmailService {
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
   private String mailFrom;
-  @Value("${url.s3}")
+  @Value("${url.s3-email}")
   private String s3Url;
 
   public void sendEmail(SendEmailRequest request) {
@@ -98,7 +98,6 @@ public class CoreEmailService {
         .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 스터디원의 면접 일정이 존재하지 않습니다."));
       changeStatus(request, member);
 
-      // todo time
       String html = htmlToString(s3Url + INTERVIEW.getPath())
         .replace("${name}", member.getName()).replace("${time}", interview.getTime());
       send(email, request.type(), html);
