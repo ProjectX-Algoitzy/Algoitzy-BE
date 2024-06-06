@@ -31,23 +31,11 @@ public class Algorithm {
   private Long id;
 
   @Column(unique = true, nullable = false)
-  @Comment("유형 이름")
-  private String name;
+  @Comment("유형 한글명")
+  private String koreanName;
 
-  @Comment("설명")
-  private String description;
-
-  @Comment("이론 YouTube Url")
-  private String theoryUrl;
-
-  @Comment("GitBook Url")
-  private String gitbookUrl;
-
-  @Comment("C++ 강의 Url")
-  private String cppUrl;
-
-  @Comment("Python 강의 Url")
-  private String pythonUrl;
+  @Comment("유형 영어명")
+  private String englishName;
 
   @CreatedDate
   @Column(updatable = false)
@@ -63,12 +51,8 @@ public class Algorithm {
   private String updatedBy;
 
   @Builder
-  public Algorithm(String name, String description, String theoryUrl, String gitbookUrl, String cppUrl, String pythonUrl) {
-    this.name = name;
-    this.description = description;
-    this.theoryUrl = theoryUrl;
-    this.gitbookUrl = gitbookUrl;
-    this.cppUrl = cppUrl;
-    this.pythonUrl = pythonUrl;
+  public Algorithm(String koreanName, String englishName) {
+    this.koreanName = koreanName;
+    this.englishName = englishName;
   }
 }
