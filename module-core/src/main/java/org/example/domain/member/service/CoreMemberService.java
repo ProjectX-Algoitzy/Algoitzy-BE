@@ -17,6 +17,11 @@ public class CoreMemberService {
   private final MemberRepository memberRepository;
   private final CoreLoginService coreLoginService;
 
+  public Member findById(Long memberId) {
+    return memberRepository.findById(memberId)
+      .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않는 ID 입니다."));
+  }
+
   public Member findByEmail(String email) {
     return memberRepository.findByEmail(email)
       .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않는 Email 입니다."));

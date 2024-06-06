@@ -86,4 +86,8 @@ public class Member {
   public void updatePassword(String password) {
     this.password = password;
   }
+
+  public void updateRole() {
+    this.role = role.equals(Role.ROLE_ADMIN) ? Role.ROLE_USER : Role.ROLE_ADMIN;
+  }
 }
