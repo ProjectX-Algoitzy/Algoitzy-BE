@@ -8,9 +8,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.LoginRequest;
+import org.example.domain.member.controller.request.SearchMemberRequest;
+import org.example.domain.member.controller.response.ListMemberResponse;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.member.service.MemberService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +36,20 @@ public class MemberController {
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
     return ApiResponse.onSuccess(coreMemberService.login(ROLE_ADMIN, request));
+  }
+
+  @GetMapping("/admin")
+  @Operation(summary = "관리자 목록 조회")
+  public ApiResponse<ListMemberResponse> getAdminMemberList() {
+    return ApiResponse.onSuccess(memberService.getAdminMemberList());
+  }
+
+  @GetMapping("/user")
+  @Operation(summary = "스터디원 목록 조회")
+  public ApiResponse<ListMemberResponse> getUserMemberList(
+    @ParameterObject @ModelAttribute @Valid SearchMemberRequest request
+  ) {
+    return ApiResponse.onSuccess(memberService.getUserMemberList(request));
   }
 
   @PatchMapping("/{member-id}/role")
