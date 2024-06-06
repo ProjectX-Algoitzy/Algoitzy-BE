@@ -1,6 +1,7 @@
 package org.example.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.study.controller.request.CreateRegularStudyRequest;
 import org.example.domain.study.controller.response.ListRegularStudyResponse;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StudyService {
 
+  private final CreateStudyService createStudyService;
   private final ListStudyService listStudyService;
 
   /**
@@ -15,5 +17,12 @@ public class StudyService {
    */
   public ListRegularStudyResponse getRegularStudyList() {
     return listStudyService.getRegularStudyList();
+  }
+
+  /**
+   * 정규 스터디 생성
+   */
+  public void createRegularStudy(CreateRegularStudyRequest request) {
+    createStudyService.createRegularStudy(request);
   }
 }
