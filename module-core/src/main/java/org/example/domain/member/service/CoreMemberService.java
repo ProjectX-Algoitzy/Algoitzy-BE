@@ -6,6 +6,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.response.LoginResponse;
+import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class CoreMemberService {
 
   private final MemberRepository memberRepository;
   private final CoreLoginService coreLoginService;
+  private final CoreDetailMemberService coreDetailMemberService;
 
   public Member findById(Long memberId) {
     return memberRepository.findById(memberId)
@@ -29,5 +31,12 @@ public class CoreMemberService {
 
   public LoginResponse login(Role role, LoginRequest request) {
     return coreLoginService.login(role, request);
+  }
+
+  /**
+   * 로그인 멤버 정보
+   */
+  public MemberInfoResponse getMemberInfo() {
+    return coreDetailMemberService.getMemberInfo();
   }
 }

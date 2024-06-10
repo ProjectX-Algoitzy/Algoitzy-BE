@@ -31,6 +31,9 @@ public class Member {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Comment("프로필 이미지")
+  private String profileUrl;
+
   @Column(unique = true, nullable = false)
   @Comment("이메일")
   private String email;

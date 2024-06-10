@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.response.LoginResponse;
+import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.service.CoreMemberService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +29,11 @@ public class MemberController {
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
     return ApiResponse.onSuccess(coreMemberService.login(ROLE_USER, request));
+  }
+
+  @GetMapping("/info")
+  @Operation(summary = "로그인 멤버 정보")
+  public ApiResponse<MemberInfoResponse> getLoginMemberInfo() {
+    return ApiResponse.onSuccess(coreMemberService.getMemberInfo());
   }
 }
