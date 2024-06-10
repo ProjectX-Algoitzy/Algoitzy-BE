@@ -45,6 +45,10 @@ public record CreateMemberRequest(
 
 ) {
 
+  public CreateMemberRequest {
+    phoneNumber = phoneNumber.replace("-", "");
+  }
+
   @AssertTrue(message = "비밀번호가 일치하지 않습니다.")
   @Schema(hidden = true)
   public boolean getPasswordValidate() {
@@ -54,6 +58,7 @@ public record CreateMemberRequest(
   @AssertTrue(message = "핸드폰 번호를 확인해주세요.")
   @Schema(hidden = true)
   public boolean getPhoneNumberValidate() {
+    System.out.println("phoneNumber = " + phoneNumber);
     return phoneNumber.length() == 11 && phoneNumber.matches("[0-9]+");
   }
 
