@@ -25,6 +25,9 @@ public class DetailApplicationResponse {
   @Schema(description = "대상 스터디 이름")
   private String studyName;
 
+  @Schema(description = "확정 여부")
+  private boolean confirmYN;
+
   @Schema(description = "객관식 문항 list")
   private List<DetailSelectQuestionDto> selectQuestionList;
 

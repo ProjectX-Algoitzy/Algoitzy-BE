@@ -23,7 +23,8 @@ public class CoreDetailApplicationRepository {
       .select(Projections.fields(DetailApplicationResponse.class,
         application.title,
         study.generation,
-        study.name.as("studyName")
+        study.name.as("studyName"),
+        application.confirmYN
         )
       )
       .from(application)
