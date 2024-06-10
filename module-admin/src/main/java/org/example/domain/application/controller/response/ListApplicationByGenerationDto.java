@@ -24,6 +24,9 @@ public class ListApplicationByGenerationDto {
   @Schema(description = "대상 스터디 이름")
   private String studyName;
 
+  @Schema(description = "확정 여부")
+  private boolean confirmYN;
+
   @Schema(description = "최초 제작자")
   private String createdName;
 

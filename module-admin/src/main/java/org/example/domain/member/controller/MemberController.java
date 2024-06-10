@@ -11,6 +11,7 @@ import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.SearchMemberRequest;
 import org.example.domain.member.controller.response.ListMemberResponse;
 import org.example.domain.member.controller.response.LoginResponse;
+import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.member.service.MemberService;
 import org.springdoc.core.annotations.ParameterObject;
@@ -57,5 +58,11 @@ public class MemberController {
   public ApiResponse<LoginResponse> updateMemberRole(@PathVariable("member-id") Long memberId) {
     memberService.updateMemberRole(memberId);
     return ApiResponse.onSuccess();
+  }
+
+  @GetMapping("/info")
+  @Operation(summary = "로그인 멤버 정보")
+  public ApiResponse<MemberInfoResponse> getLoginMemberInfo() {
+    return ApiResponse.onSuccess(coreMemberService.getMemberInfo());
   }
 }

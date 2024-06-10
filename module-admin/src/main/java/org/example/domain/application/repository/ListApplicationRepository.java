@@ -30,6 +30,7 @@ public class ListApplicationRepository {
           application.id.as("applicationId"),
           application.title,
           study.name.as("studyName"),
+          application.confirmYN,
           create.name.as("createdName"),
           application.createdTime,
           update.name.as("updatedName"),
@@ -43,7 +44,7 @@ public class ListApplicationRepository {
       .where(
         study.generation.eq(generation)
       )
-      .orderBy(study.updatedTime.desc())
+      .orderBy(application.updatedTime.desc())
       .fetch();
   }
 
