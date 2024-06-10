@@ -43,7 +43,7 @@ public class ListApplicationRepository {
       .where(
         study.generation.eq(generation)
       )
-      .orderBy(study.updatedTime.desc())
+      .orderBy(application.updatedTime.desc())
       .fetch();
   }
 
