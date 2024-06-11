@@ -1,16 +1,21 @@
 package org.example.schedule;
 
-
+import feign.Headers;
+import java.util.List;
+import org.example.config.FeignClientConfig;
+import org.example.domain.problem.Problem;
+import org.example.domain.problem.response.ProblemResponse;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@org.springframework.cloud.openfeign.FeignClient(name = "solved.ac-problems-api", url = "https://solved.ac/api/v3/search/problem", configuration = SolvedAcProblemSearchClient.class)
+@FeignClient(name = "${feign.svc1.name}", url = "${feign.svc1.url}", configuration = FeignClientConfig.class)
 public interface SolvedAcProblemSearchClient {
 
-    @GetMapping
-    Object searchProblems(
-        @RequestParam("query") String query,
+    @GetMapping()
+    ProblemResponse<List<Problem>> searchProblems(
         @RequestParam("page") int page,
+        @RequestParam("query") String query,
         @RequestParam("sort") String sort,
         @RequestParam("direction") String direction
     );

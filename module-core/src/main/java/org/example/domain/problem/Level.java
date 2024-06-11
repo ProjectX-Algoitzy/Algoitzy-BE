@@ -40,4 +40,5 @@ public enum Level {
   private final int level;
   private final String imageUrl;
 
+
 }
