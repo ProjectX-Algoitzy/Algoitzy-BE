@@ -17,11 +17,11 @@ public class SchedulerConfig {
   /**
    * 매주 수요일 문제 크롤링
    */
-//  @Async
-////  @Scheduled(cron = "0 0 4 * * WED")
-//  @Scheduled(cron = "*/5 * * * * *")
-//  public void crawlingProblem() {
-//    log.info("=========백준 문제 크롤링 실행=========");
-//    createProblemService.crawlingProblem();
-//  }
+  @Async
+//  @Scheduled(cron = "0 0 4 * * WED")
+  @Scheduled(cron = "* */5 * * * *")
+  public void crawlingProblem() {
+    log.info("=========백준 문제 크롤링 실행=========");
+    createProblemService.searchProblems();
+  }
 }

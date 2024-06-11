@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableJpaAuditing
 @EnableScheduling
-@EnableFeignClients
 @SpringBootApplication
+@EnableFeignClients
 public class AdminApplication {
 
   public static void main(String[] args) {

@@ -4,3 +4,9 @@ server:
 spring:
   config:
     import: application-core-local.yml
+
+
+feign:
+  svc1:
+    name: solved-ac-feign-client
+    url: https://solved.ac/api/v3/search/problem
