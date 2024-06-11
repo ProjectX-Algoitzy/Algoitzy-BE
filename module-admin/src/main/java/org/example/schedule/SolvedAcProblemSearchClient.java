@@ -1,10 +1,7 @@
 package org.example.schedule;
 
-import feign.Headers;
-import java.util.List;
 import org.example.config.FeignClientConfig;
-import org.example.domain.problem.Problem;
-import org.example.domain.problem.response.ProblemResponse;
+import org.example.schedule.solved_ac_response.ProblemResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface SolvedAcProblemSearchClient {
 
     @GetMapping()
-    ProblemResponse<List<Problem>> searchProblems(
+    ProblemResponse searchProblems(
         @RequestParam("page") int page,
         @RequestParam("query") String query,
         @RequestParam("sort") String sort,
