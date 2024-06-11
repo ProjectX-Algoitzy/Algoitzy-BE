@@ -19,7 +19,7 @@ public class SchedulerConfig {
    */
   @Async
 //  @Scheduled(cron = "0 0 4 * * WED")
-  @Scheduled(cron = "* */5 * * * *")
+  @Scheduled(cron = "*/5 * * * * *")
   public void crawlingProblem() {
     log.info("=========백준 문제 크롤링 실행=========");
     createProblemService.searchProblems();
