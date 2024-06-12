@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,6 +43,7 @@ public class Problem {
   @Column(nullable = false)
   @Comment("문제 이름")
   private String name;
+
   @Enumerated(value = EnumType.STRING)
   @Column(nullable = false)
   @Comment("난이도")
@@ -49,7 +51,7 @@ public class Problem {
 
   @Convert(converter = StringListToStringConverter.class)
   @Comment("지원하는 언어 목록")
-  private List<String> languageList;
+  private Set<String> languageList;
 
   @CreatedDate
   @Column(updatable = false)
@@ -66,7 +68,7 @@ public class Problem {
   private String updatedBy;
 
   @Builder
-  public Problem(Integer number, String name, Level level, List<String> languageList) {
+  public Problem(Integer number, String name, Level level, Set<String> languageList) {
     this.number = number;
     this.name = name;
     this.level = level;

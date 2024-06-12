@@ -1,13 +1,15 @@
 package org.example.domain.problem.service;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.problem.Level;
+import org.example.domain.problem.Problem;
 import org.example.domain.problem.repository.ProblemRepository;
-import org.example.domain.problem_algorithm.repository.ProblemAlgorithmRepository;
-import org.example.schedule.SolvedAcProblemSearchClient;
-import org.example.schedule.solved_ac_response.ProblemResponse;
+import org.example.schedule.solved_ac_response.LanguageDto;
+import org.example.schedule.solved_ac_response.ProblemDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,23 +17,29 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CreateProblemService {
 
-  private final SolvedAcProblemSearchClient solvedAcProblemSearchClient;
-
   private final ProblemRepository problemRepository;
-  private final ProblemAlgorithmRepository problemAlgorithmRepository;
 
-  public void searchProblems() {
+  // 2. problem table에 저장
+  public void saveProblemList(List<ProblemDto> problemDtoList) {
+    for (ProblemDto problemDto : problemDtoList) {
+      Problem problem = createProblem(problemDto);
+      problemRepository.save(problem);
+    }
+  }
 
-    int page = 1;
-    String query = "";
-    String sort = "id";
-    String direction = "asc";
-    String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+  private Problem createProblem(ProblemDto problemDto) {
+    return Problem.builder()
+          .number(problemDto.getNumber())
+          .name(problemDto.getName())
+          .level(Level.valueOf(String.valueOf(problemDto.getLevel())))
+          .languageList(getLanguageList(problemDto.getLanguageList()))
+          .build();
+  }
 
-
-    ProblemResponse response = solvedAcProblemSearchClient.searchProblems(page, query, sort, direction);
-    System.out.println("problemList = " + response);
-
+  private Set<String> getLanguageList(List<LanguageDto> languageDtoList) {
+    return languageDtoList.stream()
+        .map(LanguageDto::getLanguage)
+        .collect(Collectors.toSet());
   }
 
 }
