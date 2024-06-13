@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.language.bm.Lang;
 import org.example.domain.problem.Level;
 import org.example.domain.problem.Problem;
 import org.example.domain.problem.repository.ProblemRepository;
@@ -28,18 +29,23 @@ public class CreateProblemService {
   }
 
   private Problem createProblem(ProblemDto problemDto) {
+
+    List<String> languageList = problemDto.getLanguageList().stream()
+        .map(LanguageDto::getLanguage)
+        .collect(Collectors.toList());
+
     return Problem.builder()
           .number(problemDto.getNumber())
           .name(problemDto.getName())
-          .level(Level.valueOf(String.valueOf(problemDto.getLevel())))
-          .languageList(getLanguageList(problemDto.getLanguageList()))
+          .level(Level.BRONZE1)
+          .languageList(languageList)
           .build();
   }
 
-  private Set<String> getLanguageList(List<LanguageDto> languageDtoList) {
+  private List<String> getLanguageList(List<LanguageDto> languageDtoList) {
     return languageDtoList.stream()
         .map(LanguageDto::getLanguage)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
   }
 
 }
