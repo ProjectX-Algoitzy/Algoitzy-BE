@@ -7,9 +7,11 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
@@ -49,7 +51,8 @@ public class JwtTokenProvider {
       .compact();
 
     String refreshToken = Jwts.builder()
-      .setExpiration(DateUtils.ONE_DAY)
+      .setExpiration(new Date(DateUtils.ONE_DAY.getTime() * 10))
+      .claim("email", email)
       .signWith(key)
       .compact();
 
@@ -82,10 +85,12 @@ public class JwtTokenProvider {
         .build()
         .parseClaimsJws(token);
       return true;
-    } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-      log.error("유효하지 않은 토큰입니다.");
+    } catch (SignatureException | SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+      log.error("유효하지 않은 토큰입니다 : {}", e.getMessage());
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
+    } catch (ExpiredJwtException e) {
+      throw new GeneralException(ErrorStatus.TOKEN_EXPIRED, "만료된 Access Token입니다.");
     }
-    return false;
   }
 
   private Claims parseClaims(String token) {

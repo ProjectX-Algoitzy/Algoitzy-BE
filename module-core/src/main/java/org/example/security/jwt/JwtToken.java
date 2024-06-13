@@ -9,4 +9,7 @@ public record JwtToken(
   String refreshToken
 ) {
 
+  public static String toRedisKey(String email) {
+    return email + "_TOKEN";
+  }
 }

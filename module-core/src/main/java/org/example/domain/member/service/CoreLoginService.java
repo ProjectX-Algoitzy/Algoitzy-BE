@@ -3,6 +3,7 @@ package org.example.domain.member.service;
 import static org.example.domain.member.enums.Role.ROLE_ADMIN;
 import static org.example.domain.member.enums.Role.ROLE_USER;
 
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
@@ -11,6 +12,7 @@ import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.enums.Role;
 import org.example.security.jwt.JwtToken;
 import org.example.security.jwt.JwtTokenProvider;
+import org.example.util.RedisUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ public class CoreLoginService {
 
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
   private final JwtTokenProvider jwtTokenProvider;
+  private final RedisUtils redisUtils;
 
   /**
    * 로그인
@@ -37,6 +40,7 @@ public class CoreLoginService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "관리자만 접근할 수 있습니다.");
     }
     JwtToken jwtToken = jwtTokenProvider.generateToken(authentication, request.email());
+    redisUtils.save(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));
 
     return LoginResponse
       .builder()
