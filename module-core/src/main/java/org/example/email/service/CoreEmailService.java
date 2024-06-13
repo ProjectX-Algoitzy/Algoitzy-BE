@@ -30,8 +30,8 @@ import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.email.controller.request.SendEmailRequest;
 import org.example.email.enums.EmailType;
 import org.example.util.RandomUtils;
+import org.example.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,7 +48,7 @@ public class CoreEmailService {
   private final StudyMemberRepository studyMemberRepository;
   private final InterviewRepository interviewRepository;
   private final PasswordEncoder encoder;
-  private final StringRedisTemplate redisTemplate;
+  private final RedisUtils redisUtils;
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
   private String mailFrom;
@@ -69,7 +69,7 @@ public class CoreEmailService {
 
   private void sendCertificateEmail(SendEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
-    redisTemplate.opsForValue().set(request.emailList().get(0), code, Duration.ofSeconds(180));
+    redisUtils.save(request.emailList().get(0), code, Duration.ofSeconds(180));
     String html = htmlToString(s3Url + CERTIFICATION.getPath()).replace("${code}", code);
     send(request.emailList().get(0), request.type(), html);
   }

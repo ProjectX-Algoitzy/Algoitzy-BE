@@ -11,9 +11,9 @@ import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.ValidatePhoneNumberRequest;
 import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
+import org.example.util.RedisUtils;
 import org.example.util.http_request.HttpRequest;
 import org.example.util.http_request.Url;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class CreateMemberService {
 
   private final MemberRepository memberRepository;
   private final PasswordEncoder encoder;
-  private final StringRedisTemplate redisTemplate;
+  private final RedisUtils redisUtils;
 
   /**
    * 회원 가입
@@ -54,7 +54,7 @@ public class CreateMemberService {
    * 이메일 인증
    */
   public void validateEmail(ValidateEmailRequest request) {
-    String code = redisTemplate.opsForValue().get(request.email());
+    String code = redisUtils.getValue(request.email());
     if (code == null) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 이메일과 매칭되는 인증코드가 없습니다.");
     }
@@ -62,7 +62,7 @@ public class CreateMemberService {
     if (!code.equals(request.code())) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
-    redisTemplate.delete(request.email());
+    redisUtils.delete(request.email());
   }
 
   /**
@@ -79,7 +79,7 @@ public class CreateMemberService {
    * 휴대전화 인증
    */
   public void validatePhoneNumber(ValidatePhoneNumberRequest request) {
-    String code = redisTemplate.opsForValue().get(request.phoneNumber());
+    String code = redisUtils.getValue(request.phoneNumber());
     if (code == null) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 번호와 매칭되는 인증코드가 없습니다.");
     }
@@ -87,6 +87,6 @@ public class CreateMemberService {
     if (!code.equals(request.code())) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
-    redisTemplate.delete(request.phoneNumber());
+    redisUtils.delete(request.phoneNumber());
   }
 }

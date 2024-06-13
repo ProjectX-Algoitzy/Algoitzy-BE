@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.util.ValueUtils;
+import org.example.util.DateUtils;
 
 @Builder
 @Getter
@@ -40,6 +40,6 @@ public class ListApplicationByGenerationDto {
 
   @Schema(description = "최종 수정일")
   public String getUpdatedTime() {
-    return ValueUtils.getUpdatedTime(updatedTime);
+    return DateUtils.getUpdatedTime(updatedTime);
   }
 }

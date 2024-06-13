@@ -10,11 +10,11 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.util.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,18 +40,16 @@ public class JwtTokenProvider {
       .map(GrantedAuthority::getAuthority)
       .collect(Collectors.joining(","));
 
-    long now = (new Date()).getTime();
-
-    String accessToken = Jwts.builder()
+      String accessToken = Jwts.builder()
       .setSubject(authentication.getName())
       .claim("auth", authorities)
       .claim("email", email)
-      .setExpiration(new Date(now + 3600000))
+      .setExpiration(DateUtils.ONE_HOUR)
       .signWith(key)
       .compact();
 
     String refreshToken = Jwts.builder()
-      .setExpiration(new Date(now + 86400000))
+      .setExpiration(DateUtils.ONE_DAY)
       .signWith(key)
       .compact();
 
