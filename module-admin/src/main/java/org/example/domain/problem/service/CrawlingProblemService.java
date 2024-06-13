@@ -15,7 +15,7 @@ public class CrawlingProblemService {
 
     private final SolvedAcProblemSearchClient solvedAcProblemSearchClient;
 
-    public void searchProblems() {
+    public List<ProblemDto> searchProblems() {
 
         int page = 1;
         String query = "*b..*d";
@@ -23,9 +23,6 @@ public class CrawlingProblemService {
         String direction = "asc";
 
         ProblemResponse problemResponse = solvedAcProblemSearchClient.searchProblems(page, query, sort, direction);
-        List<ProblemDto> problemDtoList = problemResponse.getProblemList();
-
-        // saveProblemList(problemDtoList);
-
+        return problemResponse.getProblemList();
     }
 }
