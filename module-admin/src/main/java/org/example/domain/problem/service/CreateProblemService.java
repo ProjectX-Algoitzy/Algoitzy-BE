@@ -37,7 +37,7 @@ public class CreateProblemService {
     return Problem.builder()
           .number(problemDto.getNumber())
           .name(problemDto.getName())
-          .level(Level.BRONZE1)
+          .level(Level.valueOf(String.valueOf(problemDto.getLevel())))
           .languageList(languageList)
           .build();
   }
