@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.example.domain.problem.Level;
 
 @Builder
 @Getter
@@ -26,7 +27,7 @@ public class ProblemDto {
   private String name;
 
   @Schema(description = "백준 문제 난이도")
-  private int level;
+  private Level level;
 
   @Schema(description = "지원 언어 목록")
   @JsonProperty("titles")
