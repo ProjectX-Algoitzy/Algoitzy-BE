@@ -2,6 +2,7 @@ package org.example.security;
 
 import lombok.RequiredArgsConstructor;
 import org.example.security.jwt.JwtAuthenticationFilter;
+import org.example.security.jwt.JwtExceptionFilter;
 import org.example.security.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
   private final JwtTokenProvider jwtTokenProvider;
+  private final JwtExceptionFilter jwtExceptionFilter;
 
   @Bean
   public PasswordEncoder bCryptPasswordEncoder() {
@@ -50,6 +52,7 @@ public class SecurityConfig {
       .csrf(AbstractHttpConfigurer::disable)
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+      .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
       .build();
   }
 }

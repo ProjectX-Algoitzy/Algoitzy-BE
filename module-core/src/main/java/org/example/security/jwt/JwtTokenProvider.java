@@ -2,6 +2,7 @@ package org.example.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -42,11 +43,11 @@ public class JwtTokenProvider {
       .map(GrantedAuthority::getAuthority)
       .collect(Collectors.joining(","));
 
-      String accessToken = Jwts.builder()
+    String accessToken = Jwts.builder()
       .setSubject(authentication.getName())
       .claim("auth", authorities)
       .claim("email", email)
-      .setExpiration(DateUtils.ONE_HOUR)
+      .setExpiration(new Date(10))
       .signWith(key)
       .compact();
 
@@ -85,11 +86,24 @@ public class JwtTokenProvider {
         .build()
         .parseClaimsJws(token);
       return true;
-    } catch (SignatureException | SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-      log.error("유효하지 않은 토큰입니다 : {}", e.getMessage());
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
+    } catch (SignatureException e) {
+      log.error("사용자 인증에 실패했습니다. : {}", e.getMessage());
+      throw new JwtException("사용자 인증에 실패했습니다.");
     } catch (ExpiredJwtException e) {
-      throw new GeneralException(ErrorStatus.TOKEN_EXPIRED, "만료된 Access Token입니다.");
+      log.error("만료된 토큰입니다 : {}", e.getMessage());
+      throw new JwtException("만료된 토큰입니다.");
+    } catch (SecurityException e) {
+      log.error("허가되지 않는 사용자입니다. : {}", e.getMessage());
+      throw new JwtException("허가되지 않는 사용자입니다.");
+    } catch (MalformedJwtException e) {
+      log.error("올바르지 않은 토큰 형식입니다. : {}", e.getMessage());
+      throw new JwtException("올바르지 않은 토큰 형식입니다.");
+    } catch (UnsupportedJwtException e) {
+      log.error("지원되지 않는 토큰입니다. : {}", e.getMessage());
+      throw new JwtException("지원되지 않는 토큰입니다.");
+    }catch (IllegalArgumentException e) {
+      log.error("올바르지 않은 토큰 값입니다. : {}", e.getMessage());
+      throw new JwtException("올바르지 않은 토큰 값입니다.");
     }
   }
 
