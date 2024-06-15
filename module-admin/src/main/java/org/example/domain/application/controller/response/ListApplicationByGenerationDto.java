@@ -33,6 +33,9 @@ public class ListApplicationByGenerationDto {
   @Schema(description = "최초 제작일")
   private LocalDateTime createdTime;
 
+  @Schema(description = "최종 수정자 프로필 이미지")
+  private String updatedMemberProfileUrl;
+
   @Schema(description = "최종 수정자")
   private String updatedName;
 
