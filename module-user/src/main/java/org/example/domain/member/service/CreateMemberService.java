@@ -39,6 +39,7 @@ public class CreateMemberService {
 
     memberRepository.save(
       Member.builder()
+        .profileUrl(request.profileUrl())
         .email(request.email())
         .password(encoder.encode(request.password()))
         .name(request.name())

@@ -74,8 +74,9 @@ public class Member {
   private LocalDateTime updatedTime;
 
   @Builder
-  public Member(String email, String password, String name, String handle, String phoneNumber, Role role,
+  public Member(String profileUrl, String email, String password, String name, String handle, String phoneNumber, Role role,
     Integer grade, String major) {
+    this.profileUrl = profileUrl;
     this.email = email;
     this.password = password;
     this.name = name;
