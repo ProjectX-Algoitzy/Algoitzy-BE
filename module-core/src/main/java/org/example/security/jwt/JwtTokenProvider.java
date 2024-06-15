@@ -2,11 +2,13 @@ package org.example.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.member.enums.Role;
+import org.example.util.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,23 +39,19 @@ public class JwtTokenProvider {
     this.key = Keys.hmacShaKeyFor(keyBytes);
   }
 
-  public JwtToken generateToken(Authentication authentication, String email) {
-    String authorities = authentication.getAuthorities().stream()
-      .map(GrantedAuthority::getAuthority)
-      .collect(Collectors.joining(","));
-
-    long now = (new Date()).getTime();
+  public JwtToken generateToken(Role role, String email) {
 
     String accessToken = Jwts.builder()
-      .setSubject(authentication.getName())
-      .claim("auth", authorities)
+      .setSubject(email)
+      .claim("auth", role)
       .claim("email", email)
-      .setExpiration(new Date(now + 3600000))
+      .setExpiration(new Date(10))
       .signWith(key)
       .compact();
 
     String refreshToken = Jwts.builder()
-      .setExpiration(new Date(now + 86400000))
+      .setExpiration(new Date(DateUtils.ONE_DAY.getTime() * 10))
+      .claim("email", email)
       .signWith(key)
       .compact();
 
@@ -84,13 +84,28 @@ public class JwtTokenProvider {
         .build()
         .parseClaimsJws(token);
       return true;
-    } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-      log.error("유효하지 않은 토큰입니다.");
+    } catch (SignatureException e) {
+      log.error("사용자 인증에 실패했습니다. : {}", e.getMessage());
+      throw new JwtException("사용자 인증에 실패했습니다.");
+    } catch (ExpiredJwtException e) {
+      log.error("만료된 토큰입니다 : {}", e.getMessage());
+      throw new JwtException("만료된 토큰입니다.");
+    } catch (SecurityException e) {
+      log.error("허가되지 않는 사용자입니다. : {}", e.getMessage());
+      throw new JwtException("허가되지 않는 사용자입니다.");
+    } catch (MalformedJwtException e) {
+      log.error("올바르지 않은 토큰 형식입니다. : {}", e.getMessage());
+      throw new JwtException("올바르지 않은 토큰 형식입니다.");
+    } catch (UnsupportedJwtException e) {
+      log.error("지원되지 않는 토큰입니다. : {}", e.getMessage());
+      throw new JwtException("지원되지 않는 토큰입니다.");
+    } catch (IllegalArgumentException e) {
+      log.error("올바르지 않은 토큰 값입니다. : {}", e.getMessage());
+      throw new JwtException("올바르지 않은 토큰 값입니다.");
     }
-    return false;
   }
 
-  private Claims parseClaims(String token) {
+  public Claims parseClaims(String token) {
     try {
       return Jwts.parserBuilder()
         .setSigningKey(key)
