@@ -38,6 +38,7 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/member/login/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/member/refresh-token")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sign-up/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/email/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sms/**")).permitAll()

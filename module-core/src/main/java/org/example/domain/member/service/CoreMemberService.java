@@ -5,6 +5,7 @@ import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.LoginRequest;
+import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.enums.Role;
@@ -31,6 +32,13 @@ public class CoreMemberService {
 
   public LoginResponse login(Role role, LoginRequest request) {
     return coreLoginService.login(role, request);
+  }
+
+  /**
+   * Access Token 재발급
+   */
+  public LoginResponse refreshAccessToken(RefreshAccessTokenRequest request) {
+    return coreLoginService.refreshAccessToken(request);
   }
 
   /**

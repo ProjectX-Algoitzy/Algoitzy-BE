@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.member.enums.Role;
 import org.example.util.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,14 +39,11 @@ public class JwtTokenProvider {
     this.key = Keys.hmacShaKeyFor(keyBytes);
   }
 
-  public JwtToken generateToken(Authentication authentication, String email) {
-    String authorities = authentication.getAuthorities().stream()
-      .map(GrantedAuthority::getAuthority)
-      .collect(Collectors.joining(","));
+  public JwtToken generateToken(Role role, String email) {
 
     String accessToken = Jwts.builder()
-      .setSubject(authentication.getName())
-      .claim("auth", authorities)
+      .setSubject(email)
+      .claim("auth", role)
       .claim("email", email)
       .setExpiration(new Date(10))
       .signWith(key)
@@ -101,13 +99,13 @@ public class JwtTokenProvider {
     } catch (UnsupportedJwtException e) {
       log.error("지원되지 않는 토큰입니다. : {}", e.getMessage());
       throw new JwtException("지원되지 않는 토큰입니다.");
-    }catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       log.error("올바르지 않은 토큰 값입니다. : {}", e.getMessage());
       throw new JwtException("올바르지 않은 토큰 값입니다.");
     }
   }
 
-  private Claims parseClaims(String token) {
+  public Claims parseClaims(String token) {
     try {
       return Jwts.parserBuilder()
         .setSigningKey(key)
