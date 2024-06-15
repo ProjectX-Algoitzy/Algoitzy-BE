@@ -45,7 +45,7 @@ public class JwtTokenProvider {
       .setSubject(email)
       .claim("auth", role)
       .claim("email", email)
-      .setExpiration(new Date(10))
+      .setExpiration(DateUtils.ONE_HOUR)
       .signWith(key)
       .compact();
 

@@ -33,6 +33,7 @@ public class ListApplicationRepository {
           application.confirmYN,
           create.name.as("createdName"),
           application.createdTime,
+          update.profileUrl.as("updatedMemberProfileUrl"),
           update.name.as("updatedName"),
           application.updatedTime
         )

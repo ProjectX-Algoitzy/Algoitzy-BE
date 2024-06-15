@@ -40,6 +40,15 @@ public class ListStudyRepository {
           study.memberLimit,
           Expressions.as(
             JPAExpressions
+              .select(studyMember.member.profileUrl)
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study),
+                studyMember.role.eq(StudyMemberRole.LEADER)
+              )
+            , "leaderProfileUrl"),
+        Expressions.as(
+            JPAExpressions
               .select(studyMember.member.name)
               .from(studyMember)
               .where(

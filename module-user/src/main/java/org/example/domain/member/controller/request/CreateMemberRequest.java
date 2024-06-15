@@ -11,6 +11,9 @@ import jakarta.validation.constraints.NotNull;
 @Schema(description = "회원가입 요청 객체")
 public record CreateMemberRequest(
 
+  @Schema(description = "프로필 이미지")
+  String profileUrl,
+
   @Email
   @Schema(description = "이메일", example = "engus525@naver.com")
   String email,
@@ -46,6 +49,7 @@ public record CreateMemberRequest(
 ) {
 
   public CreateMemberRequest {
+    // todo 기본 프로필 이미지
     phoneNumber = phoneNumber.replace("-", "");
   }
 
