@@ -30,6 +30,9 @@ public class CoreMemberService {
       .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않는 Email 입니다."));
   }
 
+  /**
+   * 로그인
+   */
   public LoginResponse login(Role role, LoginRequest request) {
     return coreLoginService.login(role, request);
   }

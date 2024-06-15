@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.LoginRequest;
+import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
 import org.example.domain.member.controller.request.SearchMemberRequest;
 import org.example.domain.member.controller.response.ListMemberResponse;
 import org.example.domain.member.controller.response.LoginResponse;
@@ -37,6 +38,12 @@ public class MemberController {
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
     return ApiResponse.onSuccess(coreMemberService.login(ROLE_ADMIN, request));
+  }
+
+  @PostMapping("/refresh-token")
+  @Operation(summary = "Access Token 재발급")
+  public ApiResponse<LoginResponse> refreshAccessToken(@RequestBody @Valid RefreshAccessTokenRequest request) {
+    return ApiResponse.onSuccess(coreMemberService.refreshAccessToken(request));
   }
 
   @GetMapping("/admin")
