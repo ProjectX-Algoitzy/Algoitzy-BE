@@ -29,6 +29,9 @@ public class ListTempStudyDto {
   @Schema(description = "모집 인원")
   int memberLimit;
 
+  @Schema(description = "스터디장 프로필 이미지")
+  String leaderProfileUrl;
+
   @Schema(description = "스터디장 이름")
   String leaderName;
 
