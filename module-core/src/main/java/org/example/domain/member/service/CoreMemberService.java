@@ -38,6 +38,13 @@ public class CoreMemberService {
   }
 
   /**
+   * 로그아웃
+   */
+  public void logout() {
+    coreLoginService.logout();
+  }
+
+  /**
    * Access Token 재발급
    */
   public LoginResponse refreshAccessToken(RefreshAccessTokenRequest request) {

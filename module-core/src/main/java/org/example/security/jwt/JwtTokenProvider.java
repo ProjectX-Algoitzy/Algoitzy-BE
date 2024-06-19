@@ -45,7 +45,8 @@ public class JwtTokenProvider {
       .setSubject(email)
       .claim("auth", role)
       .claim("email", email)
-      .setExpiration(DateUtils.ONE_HOUR)
+      // todo ONE_HOUR (현재 1분)
+      .setExpiration(new Date((new Date()).getTime() + 60000))
       .signWith(key)
       .compact();
 
@@ -79,6 +80,7 @@ public class JwtTokenProvider {
 
   public boolean validateToken(String token) {
     try {
+      log.info("validateToken : {}", token);
       Jwts.parserBuilder()
         .setSigningKey(key)
         .build()

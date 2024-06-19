@@ -16,6 +16,7 @@ import org.example.domain.member.repository.MemberRepository;
 import org.example.security.jwt.JwtToken;
 import org.example.security.jwt.JwtTokenProvider;
 import org.example.util.RedisUtils;
+import org.example.util.SecurityUtils;
 import org.example.util.ValueUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -52,6 +53,14 @@ public class CoreLoginService {
       .builder()
       .accessToken(jwtToken.accessToken())
       .build();
+  }
+
+  /**
+   * 로그아웃
+   */
+  public void logout() {
+    String email = SecurityUtils.getCurrentMemberEmail();
+    redisUtils.delete(JwtToken.toRedisKey(email));
   }
 
   /**
