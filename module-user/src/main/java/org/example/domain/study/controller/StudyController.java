@@ -9,8 +9,7 @@ import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
-import org.example.domain.study.controller.response.ListRegularStudyResponse;
-import org.example.domain.study.controller.response.ListTempStudyResponse;
+import org.example.domain.study.controller.response.ListStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +39,8 @@ public class StudyController {
     return ApiResponse.onSuccess(studyService.getMaxStudyGeneration());
   }
 
+  /************* 자율 스터디 *************/
+
   @PostMapping
   @Operation(summary = "자율 스터디 생성")
   public ApiResponse<Void> createTempStudy(
@@ -50,7 +51,7 @@ public class StudyController {
 
   @GetMapping("/temp")
   @Operation(summary = "자율 스터디 목록 조회")
-  public ApiResponse<ListTempStudyResponse> getTempStudyList() {
+  public ApiResponse<ListStudyResponse> getTempStudyList() {
     return ApiResponse.onSuccess(studyService.getTempStudyList());
   }
 
@@ -62,9 +63,11 @@ public class StudyController {
     return ApiResponse.onSuccess(studyService.getTempStudy(studyId));
   }
 
+  /************* 정규 스터디 *************/
+
   @GetMapping("/regular")
   @Operation(summary = "정규 스터디 목록 조회")
-  public ApiResponse<ListRegularStudyResponse> getRegularStudyList() {
+  public ApiResponse<ListStudyResponse> getRegularStudyList() {
     return ApiResponse.onSuccess(studyService.getRegularStudyList());
   }
 
