@@ -5,8 +5,7 @@ import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
-import org.example.domain.study.controller.response.ListRegularStudyResponse;
-import org.example.domain.study.controller.response.ListTempStudyResponse;
+import org.example.domain.study.controller.response.ListStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class StudyService {
   /**
    * 자율 스터디 목록 조회
    */
-  public ListTempStudyResponse getTempStudyList() {
+  public ListStudyResponse getTempStudyList() {
     return listStudyService.getTempStudyList();
   }
 
@@ -56,8 +55,8 @@ public class StudyService {
   /**
    * 정규 스터디 목록 조회
    */
-  public ListRegularStudyResponse getRegularStudyList() {
-    return null;
+  public ListStudyResponse getRegularStudyList() {
+    return listStudyService.getRegularStudyList();
   }
 
   /**

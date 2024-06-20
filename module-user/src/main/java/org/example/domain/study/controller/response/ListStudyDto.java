@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "자율 스터디 목록 응답 객체")
-public class ListTempStudyDto {
+@Schema(description = "스터디 목록 응답 객체")
+public class ListStudyDto {
 
   @Schema(description = "스터디 ID")
   long studyId;

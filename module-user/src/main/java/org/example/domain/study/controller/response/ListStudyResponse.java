@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "자율 스터디 목록 응답 객체")
-public class ListTempStudyResponse {
+public class ListStudyResponse {
 
   @Default
-  List<ListTempStudyDto> studyList = new ArrayList<>();
+  List<ListStudyDto> studyList = new ArrayList<>();
 }

@@ -9,7 +9,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.study.controller.response.ListTempStudyDto;
+import org.example.domain.study.controller.response.ListStudyDto;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.enums.StudyMemberRole;
 import org.springframework.stereotype.Repository;
@@ -21,11 +21,11 @@ public class ListStudyRepository {
   private final JPAQueryFactory queryFactory;
 
   /**
-   * 자율 스터디 목록 조회
+   * 스터디 목록 조회
    */
-  public List<ListTempStudyDto> getTempStudyList() {
+  public List<ListStudyDto> getStudyList(StudyType studyType) {
     return queryFactory
-      .select(Projections.fields(ListTempStudyDto.class,
+      .select(Projections.fields(ListStudyDto.class,
           study.id.as("studyId"),
           study.profileUrl,
           Expressions.as(
@@ -60,7 +60,7 @@ public class ListStudyRepository {
       )
       .from(study)
       .where(
-        study.type.eq(StudyType.TEMP)
+        study.type.eq(studyType)
       )
       .orderBy(study.createdTime.desc())
       .fetch();
