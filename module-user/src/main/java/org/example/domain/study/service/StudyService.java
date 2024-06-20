@@ -70,7 +70,7 @@ public class StudyService {
    * 정규 스터디 홈 조회
    */
   public String getContent(Long studyId) {
-    return null;
+    return detailStudyService.getContent(studyId);
   }
 
   /**
