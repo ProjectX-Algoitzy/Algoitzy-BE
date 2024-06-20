@@ -62,8 +62,8 @@ public class StudyService {
   /**
    * 정규 스터디 정보 조회
    */
-  public RegularStudyInfoResponse getRegularStudyInfo() {
-    return null;
+  public RegularStudyInfoResponse getRegularStudyInfo(Long studyId) {
+    return detailStudyService.getRegularStudyInfo(studyId);
   }
 
   /**
