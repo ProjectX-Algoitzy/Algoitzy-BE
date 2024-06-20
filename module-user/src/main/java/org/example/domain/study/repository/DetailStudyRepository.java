@@ -9,6 +9,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
+import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study_member.enums.StudyMemberRole;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
@@ -36,6 +37,59 @@ public class DetailStudyRepository {
             , "memberCount"),
           study.name.as("studyName"),
           study.content,
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.member.profileUrl)
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study),
+                studyMember.role.eq(StudyMemberRole.LEADER)
+              )
+            , "leaderProfileUrl"),
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.member.name)
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study),
+                studyMember.role.eq(StudyMemberRole.LEADER)
+              )
+            , "leaderName"),
+          study.createdTime,
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.role.stringValue())
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study),
+                studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+              )
+            , "memberRole")
+        )
+      )
+      .from(study)
+      .where(
+        study.id.eq(studyId)
+      )
+      .fetchOne();
+  }
+
+  /**
+   * 정규 스터디 정보 조회
+   */
+  public RegularStudyInfoResponse getRegularStudyInfo(Long studyId) {
+    return queryFactory
+      .select(Projections.fields(RegularStudyInfoResponse.class,
+          study.profileUrl,
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.count())
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study)
+              )
+            , "memberCount"),
+          study.name.as("studyName"),
           Expressions.as(
             JPAExpressions
               .select(studyMember.member.profileUrl)

@@ -76,7 +76,7 @@ public class StudyController {
   public ApiResponse<RegularStudyInfoResponse> getRegularStudyInfo(
     @PathVariable("study-id") Long studyId
   ) {
-    return ApiResponse.onSuccess(studyService.getRegularStudyInfo());
+    return ApiResponse.onSuccess(studyService.getRegularStudyInfo(studyId));
   }
 
   @GetMapping("/{study-id}/home")
