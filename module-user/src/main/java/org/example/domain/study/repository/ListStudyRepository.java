@@ -37,7 +37,6 @@ public class ListStudyRepository {
               )
             , "memberCount"),
           study.name.as("studyName"),
-          study.memberLimit,
           Expressions.as(
             JPAExpressions
               .select(studyMember.member.profileUrl)
