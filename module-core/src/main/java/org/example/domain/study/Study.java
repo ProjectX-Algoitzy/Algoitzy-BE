@@ -47,15 +47,6 @@ public class Study {
   @Comment("스터디 이름")
   private String name;
 
-  @Comment("진행 방식")
-  private String way;
-
-  @Comment("주제")
-  private String subject;
-
-  @Comment("모집 인원")
-  private Integer memberLimit;
-
   @Column(nullable = false)
   @Comment("스터디 기수")
   private Integer generation;
@@ -88,17 +79,13 @@ public class Study {
   private String updatedBy;
 
   @Builder
-  public Study(String profileUrl, String name, String content, String way, String subject,
-    StudyType type, String target, Integer memberLimit, List<Rule> ruleList,
-    Integer generation) {
+  public Study(String profileUrl, String name, String content, StudyType type, String target
+    , List<Rule> ruleList, Integer generation) {
     this.profileUrl = profileUrl;
     this.name = name;
     this.content = content;
-    this.way = way;
-    this.subject = subject;
     this.type = type;
     this.target = target;
-    this.memberLimit = memberLimit;
     this.ruleList = ruleList;
     this.generation = generation;
   }

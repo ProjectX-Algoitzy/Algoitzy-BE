@@ -36,7 +36,6 @@ public class DetailStudyRepository {
             , "memberCount"),
           study.name.as("studyName"),
           study.content,
-          study.memberLimit,
           Expressions.as(
             JPAExpressions
               .select(studyMember.member.profileUrl)
@@ -56,8 +55,6 @@ public class DetailStudyRepository {
               )
             , "leaderName"),
           study.createdTime,
-          study.subject,
-          study.target,
           Expressions.as(
             JPAExpressions
               .select(studyMember.role.stringValue())

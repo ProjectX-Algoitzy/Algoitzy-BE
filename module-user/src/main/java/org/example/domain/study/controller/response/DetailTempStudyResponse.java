@@ -26,9 +26,6 @@ public class DetailTempStudyResponse {
   @Schema(description = "내용")
   String content;
 
-  @Schema(description = "모집 인원")
-  int memberLimit;
-
   @Schema(description = "스터디장 프로필 이미지")
   String leaderProfileUrl;
 
@@ -37,12 +34,6 @@ public class DetailTempStudyResponse {
 
   @Schema(description = "최초 제작일")
   LocalDateTime createdTime;
-
-  @Schema(description = "주제")
-  String subject;
-
-  @Schema(description = "대상")
-  String target;
 
   @Schema(description = "스터디원 역할")
   String memberRole;

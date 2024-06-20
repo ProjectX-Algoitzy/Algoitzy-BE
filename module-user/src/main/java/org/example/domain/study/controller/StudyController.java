@@ -47,7 +47,7 @@ public class StudyController {
   @GetMapping
   @Operation(summary = "자율 스터디 목록 조회")
   public ApiResponse<ListTempStudyResponse> getTempStudyList() {
-    return ApiResponse.onCreate(studyService.getTempStudyList());
+    return ApiResponse.onSuccess(studyService.getTempStudyList());
   }
 
   @GetMapping("/{study-id}")
@@ -55,7 +55,7 @@ public class StudyController {
   public ApiResponse<DetailTempStudyResponse> getTempStudy(
     @PathVariable("study-id") Long studyId
   ) {
-    return ApiResponse.onCreate(studyService.getTempStudy(studyId));
+    return ApiResponse.onSuccess(studyService.getTempStudy(studyId));
   }
 
 }
