@@ -87,6 +87,7 @@ public class StudyController {
     return ApiResponse.onSuccess(studyService.getContent(studyId));
   }
 
+  @Deprecated
   @GetMapping("/{study-id}/curriculum")
   @Operation(summary = "정규 스터디 커리큘럼 조회")
   public ApiResponse<ListCurriculumResponse> getCurriculumList(
@@ -95,6 +96,7 @@ public class StudyController {
     return ApiResponse.onSuccess(studyService.getCurriculumList(studyId));
   }
 
+  @Deprecated
   @GetMapping("/{study-id}/attendance")
   @Operation(summary = "정규 스터디 출석부 조회")
   public ApiResponse<ListAttendanceResponse> getAttendanceList(
