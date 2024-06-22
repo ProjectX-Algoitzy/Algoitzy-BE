@@ -8,12 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
 import org.example.domain.curriculum.controller.request.SearchCurriculumRequest;
+import org.example.domain.curriculum.controller.request.UpdateCurriculumRequest;
 import org.example.domain.curriculum.controller.response.DetailCurriculumResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +48,16 @@ public class CurriculumController {
   @Operation(summary = "커리큘럼 상세 조회")
   public ApiResponse<DetailCurriculumResponse> getCurriculum(@PathVariable("curriculum-id") Long curriculumId) {
     return ApiResponse.onSuccess(curriculumService.getCurriculum(curriculumId));
+  }
+
+  @PatchMapping("/{curriculum-id}")
+  @Operation(summary = "커리큘럼 수정")
+  public ApiResponse<Void> updateCurriculum(
+    @PathVariable("curriculum-id") Long curriculumId,
+    @RequestBody @Valid UpdateCurriculumRequest request
+  ) {
+    curriculumService.updateCurriculum(curriculumId, request);
+    return ApiResponse.onSuccess();
   }
 
 }
