@@ -1,6 +1,5 @@
 package org.example.domain.study;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -9,15 +8,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.rule.Rule;
 import org.example.domain.study.enums.StudyType;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
@@ -36,9 +32,6 @@ public class Study {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Rule> ruleList;
 
   @Comment("스터디 대표 이미지 URL")
   private String profileUrl;
@@ -80,13 +73,12 @@ public class Study {
 
   @Builder
   public Study(String profileUrl, String name, String content, StudyType type, String target
-    , List<Rule> ruleList, Integer generation) {
+    , Integer generation) {
     this.profileUrl = profileUrl;
     this.name = name;
     this.content = content;
     this.type = type;
     this.target = target;
-    this.ruleList = ruleList;
     this.generation = generation;
   }
 }

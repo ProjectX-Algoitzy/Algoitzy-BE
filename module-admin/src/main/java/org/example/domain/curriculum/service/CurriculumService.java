@@ -3,6 +3,7 @@ package org.example.domain.curriculum.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
 import org.example.domain.curriculum.controller.request.SearchCurriculumRequest;
+import org.example.domain.curriculum.controller.request.UpdateCurriculumRequest;
 import org.example.domain.curriculum.controller.response.DetailCurriculumResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,12 @@ public class CurriculumService {
    */
   public ListCurriculumResponse getCurriculumList(SearchCurriculumRequest request) {
     return listCurriculumService.getCurriculumList(request);
+  }
+
+  /**
+   * 커리큘럼 수정
+   */
+  public void updateCurriculum(Long curriculumId, UpdateCurriculumRequest request) {
+    createCurriculumService.updateCurriculum(curriculumId, request);
   }
 }

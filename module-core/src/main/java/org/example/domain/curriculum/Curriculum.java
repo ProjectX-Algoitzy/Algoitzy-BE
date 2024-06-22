@@ -22,6 +22,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -68,5 +69,12 @@ public class Curriculum {
     this.title = title;
     this.week = week;
     this.content = content;
+  }
+
+  public void update(Study study, String title, Integer week, String content) {
+    if (study != null) this.study = study;
+    if (StringUtils.hasText(title)) this.title = title;
+    if (week != null) this.week = week;
+    if (StringUtils.hasText(content)) this.content = content;
   }
 }
