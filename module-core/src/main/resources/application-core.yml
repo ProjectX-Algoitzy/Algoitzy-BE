@@ -49,3 +49,7 @@ cloud:
 
 url:
   s3-email: https://kau-koala.s3.ap-northeast-2.amazonaws.com/email/
+
+logging:
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,Asia/Seoul
