@@ -45,11 +45,13 @@ public class JwtTokenProvider {
       .setSubject(email)
       .claim("auth", role)
       .claim("email", email)
-      .setExpiration(DateUtils.ONE_HOUR)
+      .setIssuedAt(new Date(System.currentTimeMillis()))
+      .setExpiration(new Date(new Date().getTime() + 1000 * 60 * 5))
       .signWith(key)
       .compact();
 
     String refreshToken = Jwts.builder()
+      .setIssuedAt(new Date(System.currentTimeMillis()))
       .setExpiration(new Date(DateUtils.ONE_DAY.getTime() * 10))
       .claim("email", email)
       .signWith(key)
