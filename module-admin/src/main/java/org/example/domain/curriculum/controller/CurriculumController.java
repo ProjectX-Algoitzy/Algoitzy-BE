@@ -13,6 +13,7 @@ import org.example.domain.curriculum.controller.response.DetailCurriculumRespons
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -57,6 +58,15 @@ public class CurriculumController {
     @RequestBody @Valid UpdateCurriculumRequest request
   ) {
     curriculumService.updateCurriculum(curriculumId, request);
+    return ApiResponse.onSuccess();
+  }
+
+  @DeleteMapping("/{curriculum-id}")
+  @Operation(summary = "커리큘럼 삭제")
+  public ApiResponse<Void> deleteCurriculum(
+    @PathVariable("curriculum-id") Long curriculumId
+  ) {
+    curriculumService.deleteCurriculum(curriculumId);
     return ApiResponse.onSuccess();
   }
 

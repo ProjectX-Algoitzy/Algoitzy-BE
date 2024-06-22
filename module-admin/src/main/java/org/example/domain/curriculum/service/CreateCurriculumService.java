@@ -61,4 +61,12 @@ public class CreateCurriculumService {
       request.content()
     );
   }
+
+  /**
+   * 커리큘럼 삭제
+   */
+  public void deleteCurriculum(Long curriculumId) {
+    Curriculum curriculum = coreCurriculumService.findById(curriculumId);
+    curriculumRepository.delete(curriculum);
+  }
 }

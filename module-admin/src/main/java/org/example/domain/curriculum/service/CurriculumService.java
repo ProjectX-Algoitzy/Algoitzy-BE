@@ -43,4 +43,11 @@ public class CurriculumService {
   public void updateCurriculum(Long curriculumId, UpdateCurriculumRequest request) {
     createCurriculumService.updateCurriculum(curriculumId, request);
   }
+
+  /**
+   * 커리큘럼 삭제
+   */
+  public void deleteCurriculum(Long curriculumId) {
+    createCurriculumService.deleteCurriculum(curriculumId);
+  }
 }
