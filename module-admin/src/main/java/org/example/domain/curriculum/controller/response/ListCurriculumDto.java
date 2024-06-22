@@ -16,20 +16,14 @@ import org.example.util.DateUtils;
 @Schema(description = "커리큘럼 목록 조회 응답 dto")
 public class ListCurriculumDto {
 
+  @Schema(description = "주차")
+  private int week;
+
   @Schema(description = "커리큘럼 ID")
   private long curriculumId;
 
   @Schema(description = "커리큘럼 제목")
   private String title;
-
-  @Schema(description = "대상 스터디 이름")
-  private String studyName;
-
-  @Schema(description = "최초 제작자")
-  private String createdName;
-
-  @Schema(description = "최초 제작일")
-  private LocalDateTime createdTime;
 
   @Schema(description = "최종 수정자")
   private String updatedName;
