@@ -2,7 +2,6 @@ package org.example.domain.curriculum.repository;
 
 import static org.example.domain.curriculum.QCurriculum.curriculum;
 import static org.example.domain.member.QMember.member;
-import static org.example.domain.study.QStudy.study;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
@@ -10,6 +9,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.curriculum.controller.request.SearchCurriculumRequest;
 import org.example.domain.curriculum.controller.response.ListCurriculumDto;
 import org.springframework.stereotype.Repository;
 
@@ -22,26 +22,12 @@ public class ListCurriculumRepository {
   /**
    * 커리큘럼 목록 조회
    */
-  public List<ListCurriculumDto> getCurriculumList() {
+  public List<ListCurriculumDto> getCurriculumList(SearchCurriculumRequest request) {
     return queryFactory
       .select(Projections.fields(ListCurriculumDto.class,
+        curriculum.week,
         curriculum.id.as("curriculumId"),
         curriculum.title,
-        Expressions.as(
-          JPAExpressions
-            .select(study.name)
-            .from(study)
-            .where(study.eq(curriculum.study)
-            )
-          , "studyName"),
-        Expressions.as(
-          JPAExpressions
-            .select(member.name)
-            .from(member)
-            .where(member.email.eq(curriculum.createdBy)
-            )
-          , "createdName"),
-        curriculum.createdTime,
         Expressions.as(
           JPAExpressions
             .select(member.name)
@@ -53,7 +39,11 @@ public class ListCurriculumRepository {
         )
       )
       .from(curriculum)
-      .orderBy(curriculum.week.asc())
+      .where(curriculum.study.id.eq(request.studyId()))
+      .orderBy(
+        curriculum.week.asc(),
+        curriculum.id.asc()
+      )
       .fetch();
   }
 }
