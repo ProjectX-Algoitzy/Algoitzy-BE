@@ -40,6 +40,13 @@ public class MemberController {
     return ApiResponse.onSuccess(coreMemberService.login(ROLE_ADMIN, request));
   }
 
+  @PostMapping("/logout")
+  @Operation(summary = "로그아웃")
+  public ApiResponse<Void> logout() {
+    coreMemberService.logout();
+    return ApiResponse.onSuccess();
+  }
+
   @PostMapping("/refresh-token")
   @Operation(summary = "Access Token 재발급")
   public ApiResponse<LoginResponse> refreshAccessToken(@RequestBody @Valid RefreshAccessTokenRequest request) {

@@ -7,17 +7,33 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
+@Slf4j
 public class JwtExceptionFilter extends OncePerRequestFilter {
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) {
+    String[] excludePath = {
+      "/v3/api-docs",
+      "/swagger-ui",
+      "/sign-up",
+      "/member/login"
+    };
+    String path = request.getRequestURI();
+    return Arrays.stream(excludePath).anyMatch(path::startsWith);
+  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
     try {
+      log.info("JwtExceptionFilter Request URI : {}", request.getRequestURI());
       chain.doFilter(request, response);
     } catch (JwtException ex) {
       try {
