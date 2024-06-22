@@ -1,9 +1,13 @@
 package org.example.domain.curriculum.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.curriculum.Curriculum;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
 import org.example.domain.curriculum.repository.CurriculumRepository;
+import org.example.domain.study.Study;
+import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.service.CoreStudyService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +24,14 @@ public class CreateCurriculumService {
    * 커리큘럼 생성
    */
   public void createCurriculum(CreateCurriculumRequest request) {
+    Study study = coreStudyService.findById(request.studyId());
+    if (study.getType().equals(StudyType.TEMP)) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "자율 스터디는 커리큘럼을 생성할 수 없습니다.");
+    }
+
     curriculumRepository.save(
       Curriculum.builder()
-        .study(coreStudyService.findById(request.studyId()))
+        .study(study)
         .title(request.title())
         .week(request.week())
         .content(request.content())
