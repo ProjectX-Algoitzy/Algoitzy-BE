@@ -24,7 +24,13 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
       "/v3/api-docs",
       "/swagger-ui",
       "/sign-up",
-      "/member/login"
+      "/member/login",
+      "/email",
+      "/sms",
+      "/health",
+      "/study/count",
+      "/study/max-generation",
+      "/s3"
     };
     String path = request.getRequestURI();
     return Arrays.stream(excludePath).anyMatch(path::startsWith);

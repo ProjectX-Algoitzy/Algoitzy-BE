@@ -5,14 +5,12 @@ import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.application.Application;
 import org.example.domain.application.repository.ApplicationRepository;
-import org.example.domain.application.response.DetailApplicationResponse;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class CoreApplicationService {
 
-  private final CoreDetailApplicationService coreDetailApplicationService;
   private final ApplicationRepository applicationRepository;
 
   public Application findById(Long id) {
@@ -20,10 +18,4 @@ public class CoreApplicationService {
       .orElseThrow(() -> new GeneralException(ErrorStatus.KEY_NOT_EXIST, "존재하지 않는 application id 입니다."));
   }
 
-  /**
-   * 지원서 양식 상세 조회
-   */
-  public DetailApplicationResponse getApplication(Long applicationId) {
-    return coreDetailApplicationService.getApplication(applicationId);
-  }
 }

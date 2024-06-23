@@ -2,8 +2,8 @@ package org.example.domain.application.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.application.repository.CoreDetailApplicationRepository;
-import org.example.domain.application.response.DetailApplicationResponse;
+import org.example.domain.application.controller.response.DetailApplicationResponse;
+import org.example.domain.application.repository.DetailApplicationRepository;
 import org.example.domain.select_question.response.DetailSelectQuestionDto;
 import org.example.domain.select_question.service.CoreListSelectQuestionService;
 import org.example.domain.text_question.response.DetailTextQuestionDto;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CoreDetailApplicationService {
+public class DetailApplicationService {
 
-  private final CoreDetailApplicationRepository coreDetailApplicationRepository;
+  private final DetailApplicationRepository detailApplicationRepository;
   private final CoreListSelectQuestionService coreListSelectQuestionService;
   private final CoreListTextQuestionService coreListTextQuestionService;
 
@@ -24,7 +24,7 @@ public class CoreDetailApplicationService {
    * 지원서 양식 상세 조회
    */
   public DetailApplicationResponse getApplication(Long applicationId) {
-    DetailApplicationResponse response = coreDetailApplicationRepository.getApplication(applicationId);
+    DetailApplicationResponse response = detailApplicationRepository.getApplication(applicationId);
     List<DetailSelectQuestionDto> selectQuestionList = coreListSelectQuestionService.getSelectQuestionList(applicationId);
     List<DetailTextQuestionDto> textQuestionList = coreListTextQuestionService.getTextQuestionList(applicationId);
 
