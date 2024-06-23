@@ -22,6 +22,9 @@ public class DetailApplicationResponse {
   @Schema(description = "대상 스터디 기수")
   private int generation;
 
+  @Schema(description = "대상 스터디 ID")
+  private long studyId;
+
   @Schema(description = "대상 스터디 이름")
   private String studyName;
 

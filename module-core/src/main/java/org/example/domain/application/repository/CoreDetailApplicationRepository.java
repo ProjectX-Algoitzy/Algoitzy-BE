@@ -23,6 +23,7 @@ public class CoreDetailApplicationRepository {
       .select(Projections.fields(DetailApplicationResponse.class,
         application.title,
         study.generation,
+        study.id.as("studyId"),
         study.name.as("studyName"),
         application.confirmYN
         )
