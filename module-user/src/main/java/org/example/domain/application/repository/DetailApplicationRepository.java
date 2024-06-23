@@ -28,7 +28,8 @@ public class DetailApplicationRepository {
       .from(application)
       .leftJoin(study).on(application.study.eq(study))
       .where(
-        application.id.eq(applicationId)
+        application.id.eq(applicationId),
+        application.confirmYN.isTrue()
       )
       .fetchOne();
   }
