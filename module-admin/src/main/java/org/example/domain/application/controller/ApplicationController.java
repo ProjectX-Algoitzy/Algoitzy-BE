@@ -8,10 +8,9 @@ import org.example.api_response.ApiResponse;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
 import org.example.domain.application.controller.request.UpdateApplicationRequest;
 import org.example.domain.application.controller.response.CreateApplicationResponse;
+import org.example.domain.application.controller.response.DetailApplicationResponse;
 import org.example.domain.application.controller.response.ListApplicationResponse;
-import org.example.domain.application.response.DetailApplicationResponse;
 import org.example.domain.application.service.ApplicationService;
-import org.example.domain.application.service.CoreApplicationService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "ApplicationController", description = "[ADMIN] 지원서 관련 API")
 public class ApplicationController {
 
-  private final CoreApplicationService coreApplicationService;
   private final ApplicationService applicationService;
 
   @PostMapping()
@@ -55,7 +53,7 @@ public class ApplicationController {
   @Operation(summary = "지원서 양식 상세 조회")
   public ApiResponse<DetailApplicationResponse> getApplication(
     @PathVariable("application-id") Long applicationId) {
-    return ApiResponse.onSuccess(coreApplicationService.getApplication(applicationId));
+    return ApiResponse.onSuccess(applicationService.getApplication(applicationId));
   }
 
   @PostMapping("/copy")

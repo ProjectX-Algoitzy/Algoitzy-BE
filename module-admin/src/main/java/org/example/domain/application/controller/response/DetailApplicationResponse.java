@@ -1,4 +1,4 @@
-package org.example.domain.application.response;
+package org.example.domain.application.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

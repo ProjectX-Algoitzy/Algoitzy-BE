@@ -6,12 +6,12 @@ import static org.example.domain.study.QStudy.study;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.application.response.DetailApplicationResponse;
+import org.example.domain.application.controller.response.DetailApplicationResponse;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CoreDetailApplicationRepository {
+public class DetailApplicationRepository {
 
   private final JPAQueryFactory queryFactory;
 
