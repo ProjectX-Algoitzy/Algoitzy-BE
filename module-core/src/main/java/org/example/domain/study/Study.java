@@ -53,10 +53,6 @@ public class Study {
   @Comment("스터디 유형")
   private StudyType type;
 
-  @Column(nullable = false)
-  @Comment("모집 대상")
-  private String target;
-
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -72,13 +68,11 @@ public class Study {
   private String updatedBy;
 
   @Builder
-  public Study(String profileUrl, String name, String content, StudyType type, String target
-    , Integer generation) {
+  public Study(String profileUrl, String name, String content, StudyType type, Integer generation) {
     this.profileUrl = profileUrl;
     this.name = name;
     this.content = content;
     this.type = type;
-    this.target = target;
     this.generation = generation;
   }
 }

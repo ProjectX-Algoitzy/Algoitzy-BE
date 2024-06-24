@@ -43,7 +43,6 @@ public class CreateStudyService {
         .name(request.name())
         .content(request.content())
         .type(StudyType.TEMP)
-        .target(request.target())
         .generation(listStudyRepository.getMaxStudyGeneration())
         .build()
     );
