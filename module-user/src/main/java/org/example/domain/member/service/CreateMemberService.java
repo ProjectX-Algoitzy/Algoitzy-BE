@@ -14,10 +14,12 @@ import org.example.domain.member.repository.MemberRepository;
 import org.example.util.RedisUtils;
 import org.example.util.http_request.HttpRequest;
 import org.example.util.http_request.Url;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,9 @@ public class CreateMemberService {
   private final PasswordEncoder encoder;
   private final RedisUtils redisUtils;
 
+  @Value("${s3.basic-image.member-profile}")
+  private String basicProfileImage;
+
   /**
    * 회원 가입
    */
@@ -39,7 +44,7 @@ public class CreateMemberService {
 
     memberRepository.save(
       Member.builder()
-        .profileUrl(request.profileUrl())
+        .profileUrl(StringUtils.hasText(request.profileUrl()) ? request.profileUrl() : basicProfileImage)
         .email(request.email())
         .password(encoder.encode(request.password()))
         .name(request.name())
