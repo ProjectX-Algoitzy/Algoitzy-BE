@@ -14,6 +14,7 @@ import org.example.domain.study_member.enums.StudyMemberRole;
 import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.util.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -29,6 +30,9 @@ public class CreateStudyService {
   private final StudyMemberRepository studyMemberRepository;
   private final ListStudyRepository listStudyRepository;
 
+  @Value("${s3.basic-image.study}")
+  private String basicStudyImage;
+
   /**
    * 자율 스터디 생성
    */
@@ -39,7 +43,7 @@ public class CreateStudyService {
 
     Study study = studyRepository.save(
       Study.builder()
-        .profileUrl(request.profileUrl())
+        .profileUrl(StringUtils.hasText(request.profileUrl()) ? request.profileUrl() : basicStudyImage)
         .name(request.name())
         .content(request.content())
         .type(StudyType.TEMP)
