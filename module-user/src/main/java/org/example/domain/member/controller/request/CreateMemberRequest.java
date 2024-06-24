@@ -49,7 +49,6 @@ public record CreateMemberRequest(
 ) {
 
   public CreateMemberRequest {
-    // todo 기본 프로필 이미지
     phoneNumber = phoneNumber.replace("-", "");
   }
 
@@ -62,7 +61,6 @@ public record CreateMemberRequest(
   @AssertTrue(message = "핸드폰 번호를 확인해주세요.")
   @Schema(hidden = true)
   public boolean getPhoneNumberValidate() {
-    System.out.println("phoneNumber = " + phoneNumber);
     return phoneNumber.length() == 11 && phoneNumber.matches("[0-9]+");
   }
 
