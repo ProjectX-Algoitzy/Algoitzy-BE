@@ -13,6 +13,9 @@ public record SearchAnswerRequest(
     allowableValues = {"DOCUMENT", "DOCUMENT_PASS", "DOCUMENT_FAIL", "INTERVIEW", "FAIL", "PASS"})
   StudyMemberStatus status,
 
+  @Schema(description = "스터디 기수", requiredMode = RequiredMode.REQUIRED)
+  int generation,
+
   @Min(1)
   @Schema(description = "페이지 번호", type = "integer", requiredMode = RequiredMode.REQUIRED)
   int page,

@@ -5,12 +5,8 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class DateUtils {
-
-  public final static Date ONE_HOUR = new Date((new Date()).getTime() + 3600000);
-  public final static Date ONE_DAY = new Date((new Date()).getTime() + 86400000);
 
   public static String getUpdatedTime(LocalDateTime updatedTime) {
     long minGap = MINUTES.between(updatedTime, LocalDateTime.now());

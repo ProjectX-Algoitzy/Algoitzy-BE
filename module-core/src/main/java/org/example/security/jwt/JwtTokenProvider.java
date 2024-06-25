@@ -10,6 +10,11 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import java.security.Key;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -18,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.enums.Role;
-import org.example.util.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,19 +45,26 @@ public class JwtTokenProvider {
 
   public JwtToken generateToken(Role role, String email) {
 
+    Date issuedAt = Date.from(Instant.now().truncatedTo(ChronoUnit.SECONDS));
+
+    LocalDateTime now = LocalDateTime.now();
+    ZonedDateTime expireZone = now.plus(1, ChronoUnit.HOURS).atZone(ZoneId.systemDefault());
+
     String accessToken = Jwts.builder()
       .setSubject(email)
       .claim("auth", role)
       .claim("email", email)
-      .setIssuedAt(new Date(System.currentTimeMillis()))
-      .setExpiration(DateUtils.ONE_HOUR)
+      .setIssuedAt(issuedAt)
+      .setExpiration(Date.from(expireZone.toInstant()))
       .signWith(key)
       .compact();
 
+    expireZone = now.plus(10, ChronoUnit.DAYS).atZone(ZoneId.systemDefault());
     String refreshToken = Jwts.builder()
-      .setIssuedAt(new Date(System.currentTimeMillis()))
-      .setExpiration(new Date(DateUtils.ONE_DAY.getTime() * 10))
+      .setSubject(email)
       .claim("email", email)
+      .setIssuedAt(new Date(System.currentTimeMillis()))
+      .setExpiration(Date.from(expireZone.toInstant()))
       .signWith(key)
       .compact();
 

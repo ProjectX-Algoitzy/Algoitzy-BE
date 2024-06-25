@@ -30,6 +30,7 @@ public class ListApplicationRepository {
           application.id.as("applicationId"),
           application.title,
           study.name.as("studyName"),
+          study.profileUrl.as("studyProfileUrl"),
           application.confirmYN,
           create.name.as("createdName"),
           application.createdTime,
