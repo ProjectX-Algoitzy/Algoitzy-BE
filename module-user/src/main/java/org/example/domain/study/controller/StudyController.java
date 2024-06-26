@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
+import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListStudyResponse;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StudyController {
 
   private final StudyService studyService;
+  private final CurriculumService curriculumService;
 
   @GetMapping("/count")
   @Operation(summary = "최신 기수 스터디 개수")
@@ -87,13 +89,12 @@ public class StudyController {
     return ApiResponse.onSuccess(studyService.getContent(studyId));
   }
 
-  @Deprecated
   @GetMapping("/{study-id}/curriculum")
-  @Operation(summary = "정규 스터디 커리큘럼 조회")
+  @Operation(summary = "정규 스터디 커리큘럼 목록 조회")
   public ApiResponse<ListCurriculumResponse> getCurriculumList(
     @PathVariable("study-id") Long studyId
   ) {
-    return ApiResponse.onSuccess(studyService.getCurriculumList(studyId));
+    return ApiResponse.onSuccess(curriculumService.getCurriculumList(studyId));
   }
 
   @Deprecated
