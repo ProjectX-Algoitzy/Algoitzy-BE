@@ -23,4 +23,6 @@ public class ListCurriculumDto {
   @Schema(description = "커리큘럼 제목")
   private String title;
 
+  @Schema(description = "커리큘럼 내용")
+  private String content;
 }

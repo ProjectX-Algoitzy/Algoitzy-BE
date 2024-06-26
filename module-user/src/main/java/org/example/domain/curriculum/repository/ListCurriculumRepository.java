@@ -23,7 +23,8 @@ public class ListCurriculumRepository {
       .select(Projections.fields(ListCurriculumDto.class,
           curriculum.week,
           curriculum.id.as("curriculumId"),
-          curriculum.title
+          curriculum.title,
+          curriculum.content
         )
       )
       .from(curriculum)
