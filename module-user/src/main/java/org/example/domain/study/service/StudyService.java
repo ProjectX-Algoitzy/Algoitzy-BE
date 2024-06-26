@@ -2,7 +2,6 @@ package org.example.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
-import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListStudyResponse;
@@ -71,13 +70,6 @@ public class StudyService {
    */
   public String getContent(Long studyId) {
     return detailStudyService.getContent(studyId);
-  }
-
-  /**
-   * 정규 스터디 커리큘럼 조회
-   */
-  public ListCurriculumResponse getCurriculumList(Long studyId) {
-    return null;
   }
 
   /**
