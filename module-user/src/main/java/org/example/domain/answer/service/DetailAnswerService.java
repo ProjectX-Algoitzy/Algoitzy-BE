@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CoreDetailAnswerService {
+public class DetailAnswerService {
 
   private final DetailAnswerRepository detailAnswerRepository;
   private final ListSelectAnswerService listSelectAnswerService;
@@ -30,8 +30,8 @@ public class CoreDetailAnswerService {
    */
   public DetailAnswerResponse getAnswer(Long answerId) {
     Answer answer = coreAnswerService.findById(answerId);
-    if (!SecurityUtils.isAdminOrMine(answer.getCreatedBy())) {
-      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "접근 불가능한 지원서입니다.");
+    if (!SecurityUtils.getCurrentMemberEmail().equals(answer.getCreatedBy())) {
+      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "타인의 지원서는 열람할 수 없습니다.");
     }
 
     DetailAnswerResponse response = detailAnswerRepository.getAnswer(answerId);

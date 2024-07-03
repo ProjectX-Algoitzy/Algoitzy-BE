@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AnswerService {
 
   private final CoreListAnswerService coreListAnswerService;
-  private final CoreDetailAnswerService coreDetailAnswerService;
+  private final DetailAnswerService detailAnswerService;
 
   /**
    * 작성한 지원서 목록 조회
@@ -24,6 +24,6 @@ public class AnswerService {
    * 작성한 지원서 상세 조회
    */
   public DetailAnswerResponse getAnswer(Long answerId) {
-    return coreDetailAnswerService.getAnswer(answerId);
+    return detailAnswerService.getAnswer(answerId);
   }
 }
