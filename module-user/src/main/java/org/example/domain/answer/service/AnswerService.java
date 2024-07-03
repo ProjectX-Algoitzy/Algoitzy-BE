@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class AnswerService {
 
   private final CreateAnswerService createAnswerService;
-  private final CoreListAnswerService coreListAnswerService;
+  private final ListAnswerService listAnswerService;
   private final DetailAnswerService detailAnswerService;
 
   /**
@@ -26,7 +26,7 @@ public class AnswerService {
    * 작성한 지원서 목록 조회
    */
   public ListAnswerResponse getAnswerList(SearchAnswerRequest request) {
-    return coreListAnswerService.getAnswerList(request);
+    return listAnswerService.getAnswerList(request);
   }
 
   /**

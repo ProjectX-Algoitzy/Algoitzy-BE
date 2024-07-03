@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AnswerService {
 
-  private final CoreListAnswerService coreListAnswerService;
+  private final ListAnswerService listAnswerService;
   private final DetailAnswerService detailAnswerService;
 
   /**
    * 작성한 지원서 목록 조회
    */
   public ListAnswerResponse getAnswerList(SearchAnswerRequest request) {
-    return coreListAnswerService.getAnswerList(request);
+    return listAnswerService.getAnswerList(request);
   }
 
   /**

@@ -1,23 +1,23 @@
 package org.example.domain.answer.repository;
 
 
-import static org.example.domain.answer.QAnswer.*;
-import static org.example.domain.application.QApplication.*;
+import static org.example.domain.answer.QAnswer.answer;
+import static org.example.domain.application.QApplication.application;
 import static org.example.domain.interview.QInterview.interview;
-import static org.example.domain.member.QMember.*;
-import static org.example.domain.study.QStudy.*;
+import static org.example.domain.member.QMember.member;
+import static org.example.domain.study.QStudy.study;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.answer.controller.request.SearchAnswerRequest;
 import org.example.domain.answer.controller.response.ListAnswerDto;
-import org.example.domain.member.repository.MemberAuthRepository;
 import org.example.domain.study_member.enums.StudyMemberStatus;
+import org.example.util.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,6 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ListAnswerRepository {
 
-  private final MemberAuthRepository memberAuthRepository;
   private final JPAQueryFactory queryFactory;
 
   /**
@@ -56,7 +55,7 @@ public class ListAnswerRepository {
       .where(
         study.generation.eq(request.generation()),
         statusEq(request.status()),
-        memberAuthRepository.emailEq()
+        member.email.eq(SecurityUtils.getCurrentMemberEmail())
       )
       .offset(request.pageRequest().getOffset())
       .limit(request.pageRequest().getPageSize())
@@ -71,20 +70,18 @@ public class ListAnswerRepository {
       .innerJoin(studyMember).on(member.eq(studyMember.member))
       .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
+        study.generation.eq(request.generation()),
         statusEq(request.status()),
-        memberAuthRepository.emailEq()
-      )
-      .offset(request.pageRequest().getOffset())
-      .limit(request.pageRequest().getPageSize());
+        member.email.eq(SecurityUtils.getCurrentMemberEmail())
+      );
 
     return PageableExecutionUtils.getPage(answerList, request.pageRequest(), countQuery::fetchOne);
   }
 
-  private Predicate statusEq(StudyMemberStatus status) {
+  private BooleanExpression statusEq(StudyMemberStatus status) {
     if (status == null) {
       return null;
     }
     return studyMember.status.eq(status);
   }
-
 }
