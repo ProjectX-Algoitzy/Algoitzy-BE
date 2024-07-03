@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.domain.answer.Answer;
 import org.example.domain.field.Field;
 import org.example.domain.field.repository.FieldRepository;
-import org.example.domain.select_answer.response.DetailSelectAnswerDto;
+import org.example.domain.select_answer.controller.response.DetailSelectAnswerDto;
 import org.example.domain.select_answer_field.SelectAnswerField;
 import org.example.domain.select_answer_field.response.DetailSelectAnswerFieldDto;
 import org.example.domain.select_answer_field.service.ListSelectAnswerFieldService;

@@ -7,7 +7,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.answer.Answer;
 import org.example.domain.answer.controller.response.DetailAnswerResponse;
 import org.example.domain.answer.repository.DetailAnswerRepository;
-import org.example.domain.select_answer.response.DetailSelectAnswerDto;
+import org.example.domain.select_answer.controller.response.DetailSelectAnswerDto;
 import org.example.domain.select_answer.service.ListSelectAnswerService;
 import org.example.domain.text_answer.response.DetailTextAnswerDto;
 import org.example.domain.text_answer.service.ListTextAnswerService;
