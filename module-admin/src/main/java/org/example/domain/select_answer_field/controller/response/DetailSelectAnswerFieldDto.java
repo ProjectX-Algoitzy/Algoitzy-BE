@@ -1,4 +1,4 @@
-package org.example.domain.select_answer_field.response;
+package org.example.domain.select_answer_field.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

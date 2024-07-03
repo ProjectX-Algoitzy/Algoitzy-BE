@@ -9,7 +9,7 @@ import org.example.domain.field.Field;
 import org.example.domain.field.repository.FieldRepository;
 import org.example.domain.select_answer.controller.response.DetailSelectAnswerDto;
 import org.example.domain.select_answer_field.SelectAnswerField;
-import org.example.domain.select_answer_field.response.DetailSelectAnswerFieldDto;
+import org.example.domain.select_answer_field.controller.response.DetailSelectAnswerFieldDto;
 import org.example.domain.select_answer_field.service.ListSelectAnswerFieldService;
 import org.example.domain.select_question.SelectQuestion;
 import org.example.domain.select_question.repository.SelectQuestionRepository;

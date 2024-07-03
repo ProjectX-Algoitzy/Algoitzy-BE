@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.select_answer_field.response.DetailSelectAnswerFieldDto;
+import org.example.domain.select_answer_field.controller.response.DetailSelectAnswerFieldDto;
 
 @Builder
 @Getter
