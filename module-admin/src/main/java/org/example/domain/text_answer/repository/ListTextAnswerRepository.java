@@ -8,7 +8,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.text_answer.response.DetailTextAnswerDto;
+import org.example.domain.text_answer.controller.response.DetailTextAnswerDto;
 import org.springframework.stereotype.Repository;
 
 @Repository

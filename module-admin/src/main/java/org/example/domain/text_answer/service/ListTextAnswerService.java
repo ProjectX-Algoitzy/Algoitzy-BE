@@ -2,8 +2,8 @@ package org.example.domain.text_answer.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.text_answer.controller.response.DetailTextAnswerDto;
 import org.example.domain.text_answer.repository.ListTextAnswerRepository;
-import org.example.domain.text_answer.response.DetailTextAnswerDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

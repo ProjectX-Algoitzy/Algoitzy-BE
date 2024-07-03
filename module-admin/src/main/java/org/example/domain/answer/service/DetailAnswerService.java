@@ -7,7 +7,7 @@ import org.example.domain.answer.controller.response.DetailAnswerResponse;
 import org.example.domain.answer.repository.DetailAnswerRepository;
 import org.example.domain.select_answer.controller.response.DetailSelectAnswerDto;
 import org.example.domain.select_answer.service.ListSelectAnswerService;
-import org.example.domain.text_answer.response.DetailTextAnswerDto;
+import org.example.domain.text_answer.controller.response.DetailTextAnswerDto;
 import org.example.domain.text_answer.service.ListTextAnswerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

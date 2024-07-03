@@ -1,4 +1,4 @@
-package org.example.domain.text_answer.response;
+package org.example.domain.text_answer.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

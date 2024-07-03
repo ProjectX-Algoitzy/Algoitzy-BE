@@ -10,7 +10,7 @@ import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.select_answer.controller.response.DetailSelectAnswerDto;
-import org.example.domain.text_answer.response.DetailTextAnswerDto;
+import org.example.domain.text_answer.controller.response.DetailTextAnswerDto;
 
 @Builder(toBuilder = true)
 @Getter
