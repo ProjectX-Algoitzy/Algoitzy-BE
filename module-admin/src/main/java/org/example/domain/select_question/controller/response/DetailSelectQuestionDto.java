@@ -1,4 +1,4 @@
-package org.example.domain.select_question.response;
+package org.example.domain.select_question.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

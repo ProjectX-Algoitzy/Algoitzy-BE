@@ -1,9 +1,10 @@
-package org.example.domain.curriculum.repository;
+package org.example.domain.curriculum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.curriculum.Curriculum;
+import org.example.domain.curriculum.repository.CurriculumRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.select_question.response.DetailSelectQuestionDto;
+import org.example.domain.select_question.controller.response.DetailSelectQuestionDto;
 import org.example.domain.text_question.response.DetailTextQuestionDto;
 
 @Builder(toBuilder = true)

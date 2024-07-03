@@ -6,7 +6,6 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.curriculum.Curriculum;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
 import org.example.domain.curriculum.controller.request.UpdateCurriculumRequest;
-import org.example.domain.curriculum.repository.CoreCurriculumService;
 import org.example.domain.curriculum.repository.CurriculumRepository;
 import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
