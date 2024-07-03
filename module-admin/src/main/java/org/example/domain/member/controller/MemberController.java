@@ -13,7 +13,6 @@ import org.example.domain.member.controller.request.SearchMemberRequest;
 import org.example.domain.member.controller.response.ListMemberResponse;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
-import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.member.service.MemberService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,25 +31,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
   private final MemberService memberService;
-  private final CoreMemberService coreMemberService;
 
   @PostMapping("/login")
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-    return ApiResponse.onSuccess(coreMemberService.login(ROLE_ADMIN, request));
+    return ApiResponse.onSuccess(memberService.login(ROLE_ADMIN, request));
   }
 
   @PostMapping("/logout")
   @Operation(summary = "로그아웃")
   public ApiResponse<Void> logout() {
-    coreMemberService.logout();
+    memberService.logout();
     return ApiResponse.onSuccess();
   }
 
   @PostMapping("/refresh-token")
   @Operation(summary = "Access Token 재발급")
   public ApiResponse<LoginResponse> refreshAccessToken(@RequestBody @Valid RefreshAccessTokenRequest request) {
-    return ApiResponse.onSuccess(coreMemberService.refreshAccessToken(request));
+    return ApiResponse.onSuccess(memberService.refreshAccessToken(request));
   }
 
   @GetMapping("/admin")
@@ -77,6 +75,6 @@ public class MemberController {
   @GetMapping("/info")
   @Operation(summary = "로그인 멤버 정보")
   public ApiResponse<MemberInfoResponse> getLoginMemberInfo() {
-    return ApiResponse.onSuccess(coreMemberService.getMemberInfo());
+    return ApiResponse.onSuccess(memberService.getMemberInfo());
   }
 }

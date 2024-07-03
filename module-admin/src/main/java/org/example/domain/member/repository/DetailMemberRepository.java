@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CoreDetailMemberRepository {
+public class DetailMemberRepository {
 
   private final JPAQueryFactory queryFactory;
 
