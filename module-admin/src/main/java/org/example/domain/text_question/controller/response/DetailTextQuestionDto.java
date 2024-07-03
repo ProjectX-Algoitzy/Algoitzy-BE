@@ -1,4 +1,4 @@
-package org.example.domain.text_question.response;
+package org.example.domain.text_question.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

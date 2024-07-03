@@ -8,8 +8,8 @@ import org.example.domain.application.controller.response.DetailApplicationRespo
 import org.example.domain.application.repository.DetailApplicationRepository;
 import org.example.domain.select_question.controller.response.DetailSelectQuestionDto;
 import org.example.domain.select_question.service.ListSelectQuestionService;
-import org.example.domain.text_question.response.DetailTextQuestionDto;
-import org.example.domain.text_question.service.CoreListTextQuestionService;
+import org.example.domain.text_question.controller.response.DetailTextQuestionDto;
+import org.example.domain.text_question.service.ListTextQuestionService;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ public class DetailApplicationService {
 
   private final DetailApplicationRepository detailApplicationRepository;
   private final ListSelectQuestionService listSelectQuestionService;
-  private final CoreListTextQuestionService coreListTextQuestionService;
+  private final ListTextQuestionService listTextQuestionService;
 
   /**
    * 지원서 양식 상세 조회
@@ -31,7 +31,7 @@ public class DetailApplicationService {
       throw new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않거나 확정되지 않은 지원서 ID입니다.");
     }
     List<DetailSelectQuestionDto> selectQuestionList = listSelectQuestionService.getSelectQuestionList(applicationId);
-    List<DetailTextQuestionDto> textQuestionList = coreListTextQuestionService.getTextQuestionList(applicationId);
+    List<DetailTextQuestionDto> textQuestionList = listTextQuestionService.getTextQuestionList(applicationId);
 
     return response.toBuilder()
       .selectQuestionList(selectQuestionList)

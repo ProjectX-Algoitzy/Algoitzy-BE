@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.select_question.controller.response.DetailSelectQuestionDto;
-import org.example.domain.text_question.response.DetailTextQuestionDto;
+import org.example.domain.text_question.controller.response.DetailTextQuestionDto;
 
 @Builder(toBuilder = true)
 @Getter

@@ -7,12 +7,12 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.text_question.response.DetailTextQuestionDto;
+import org.example.domain.text_question.controller.response.DetailTextQuestionDto;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CoreListTextQuestionRepository {
+public class ListTextQuestionRepository {
 
   private final JPAQueryFactory queryFactory;
 
