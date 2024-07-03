@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.field.response.DetailFieldDto;
+import org.example.domain.field.controller.response.DetailFieldDto;
 
 @Builder(toBuilder = true)
 @Getter

@@ -7,12 +7,12 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.field.response.DetailFieldDto;
+import org.example.domain.field.controller.response.DetailFieldDto;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CoreListFieldRepository {
+public class ListFieldRepository {
 
   private final JPAQueryFactory queryFactory;
 
