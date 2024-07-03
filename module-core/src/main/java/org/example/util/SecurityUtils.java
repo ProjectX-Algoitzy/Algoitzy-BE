@@ -29,8 +29,4 @@ public class SecurityUtils {
     List<? extends GrantedAuthority> authorityList = authentication.getAuthorities().stream().toList();
     return Role.valueOf(authorityList.get(0).toString());
   }
-
-  public static boolean isAdminOrMine(String email) {
-    return getCurrentMemberRole().equals(Role.ROLE_ADMIN) || getCurrentMemberEmail().equals(email);
-  }
 }

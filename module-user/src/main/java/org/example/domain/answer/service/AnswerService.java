@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 public class AnswerService {
 
   private final CreateAnswerService createAnswerService;
-  private final CoreListAnswerService coreListAnswerService;
-  private final CoreDetailAnswerService coreDetailAnswerService;
+  private final ListAnswerService listAnswerService;
+  private final DetailAnswerService detailAnswerService;
 
   /**
    * 지원서 작성
@@ -26,14 +26,14 @@ public class AnswerService {
    * 작성한 지원서 목록 조회
    */
   public ListAnswerResponse getAnswerList(SearchAnswerRequest request) {
-    return coreListAnswerService.getAnswerList(request);
+    return listAnswerService.getAnswerList(request);
   }
 
   /**
    * 작성한 지원서 상세 조회
    */
   public DetailAnswerResponse getAnswer(Long answerId) {
-    return coreDetailAnswerService.getAnswer(answerId);
+    return detailAnswerService.getAnswer(answerId);
   }
 
   public void deleteAnswer(Long answerId) {
