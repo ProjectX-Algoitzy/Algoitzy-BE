@@ -29,7 +29,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
       "/sms",
       "/health",
       "/study/count",
-      "/study/max-generation",
+      "/generation/max",
       "/s3"
     };
     String path = request.getRequestURI();

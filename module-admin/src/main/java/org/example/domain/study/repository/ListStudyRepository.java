@@ -31,13 +31,4 @@ public class ListStudyRepository {
       .fetch();
   }
 
-  /**
-   * 스터디 최신 기수
-   */
-  public Integer getMaxStudyGeneration() {
-    return queryFactory
-      .select(study.generation.max())
-      .from(study)
-      .fetchOne();
-  }
 }

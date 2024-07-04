@@ -6,7 +6,6 @@ import static org.example.domain.study.QStudy.study;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.application.controller.response.ListApplicationByGenerationDto;
 import org.example.domain.member.QMember;
@@ -44,17 +43,10 @@ public class ListApplicationRepository {
       .innerJoin(create).on(application.createdBy.eq(create.email))
       .innerJoin(update).on(application.updatedBy.eq(update.email))
       .where(
-        study.generation.eq(generation)
+        study.generation.value.eq(generation)
       )
       .orderBy(application.updatedTime.desc())
       .fetch();
   }
 
-  public int getMaxStudyGeneration() {
-    return Objects.requireNonNull(queryFactory
-      .select(study.generation.max())
-      .from(study)
-      .fetchOne()
-    );
-  }
 }

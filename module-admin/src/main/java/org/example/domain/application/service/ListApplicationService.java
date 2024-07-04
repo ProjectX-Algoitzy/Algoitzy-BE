@@ -7,6 +7,7 @@ import org.example.domain.application.controller.response.ListApplicationByGener
 import org.example.domain.application.controller.response.ListApplicationDto;
 import org.example.domain.application.controller.response.ListApplicationResponse;
 import org.example.domain.application.repository.ListApplicationRepository;
+import org.example.domain.generation.repository.GenerationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ListApplicationService {
 
   private final ListApplicationRepository listApplicationRepository;
+  private final GenerationRepository generationRepository;
 
   /**
    * 근 4기수 지원서 양식 목록 조회
@@ -23,7 +25,7 @@ public class ListApplicationService {
   public ListApplicationResponse getApplicationList() {
     List<ListApplicationDto> applicationList = new ArrayList<>();
 
-    int maxGeneration = listApplicationRepository.getMaxStudyGeneration();
+    Integer maxGeneration = generationRepository.findTopByOrderByValueDesc().getValue();
     for (int generation = maxGeneration; generation >= maxGeneration - 3; generation--) {
       List<ListApplicationByGenerationDto> applicationByGenerationList = listApplicationRepository.getApplicationList(generation);
       applicationList.add(

@@ -45,7 +45,7 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/health")).permitAll()
             // 랜딩 페이지
             .requestMatchers(new AntPathRequestMatcher("/study/count")).permitAll()
-            .requestMatchers(new AntPathRequestMatcher("/study/max-generation")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/generation/max")).permitAll()
 
             .requestMatchers(new AntPathRequestMatcher("/s3/**")).permitAll()
             .anyRequest().authenticated()

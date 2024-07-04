@@ -35,12 +35,6 @@ public class StudyController {
     return ApiResponse.onSuccess(studyService.getStudyCount());
   }
 
-  @GetMapping("/max-generation")
-  @Operation(summary = "스터디 최신 기수")
-  public ApiResponse<Integer> getMaxStudyGeneration() {
-    return ApiResponse.onSuccess(studyService.getMaxStudyGeneration());
-  }
-
   /************* 자율 스터디 *************/
 
   @PostMapping

@@ -31,13 +31,6 @@ public class ListStudyService {
   }
 
   /**
-   * 스터디 최신 기수
-   */
-  public Integer getMaxStudyGeneration() {
-    return listStudyRepository.getMaxStudyGeneration();
-  }
-
-  /**
    * 정규 스터디 목록 조회
    */
   public ListStudyResponse getRegularStudyList() {

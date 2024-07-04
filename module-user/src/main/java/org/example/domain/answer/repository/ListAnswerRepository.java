@@ -53,7 +53,7 @@ public class ListAnswerRepository {
       .innerJoin(studyMember).on(member.eq(studyMember.member))
       .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
-        study.generation.eq(request.generation()),
+        study.generation.value.eq(request.generation()),
         statusEq(request.status()),
         member.email.eq(SecurityUtils.getCurrentMemberEmail())
       )
@@ -70,7 +70,7 @@ public class ListAnswerRepository {
       .innerJoin(studyMember).on(member.eq(studyMember.member))
       .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
-        study.generation.eq(request.generation()),
+        study.generation.value.eq(request.generation()),
         statusEq(request.status()),
         member.email.eq(SecurityUtils.getCurrentMemberEmail())
       );

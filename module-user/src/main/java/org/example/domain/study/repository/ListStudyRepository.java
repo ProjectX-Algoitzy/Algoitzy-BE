@@ -1,5 +1,6 @@
 package org.example.domain.study.repository;
 
+import static org.example.domain.generation.QGeneration.generation;
 import static org.example.domain.study.QStudy.study;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
@@ -70,21 +71,16 @@ public class ListStudyRepository {
    * 최신 기수 스터디 개수
    */
   public Integer getStudyCount() {
+    Integer maxGeneration = queryFactory
+      .select(generation.value.max())
+      .from(generation)
+      .fetchOne();
+
     return queryFactory
       .selectFrom(study)
       .where(
-        study.generation.eq(getMaxStudyGeneration())
+        study.generation.value.eq(maxGeneration)
       )
       .fetch().size();
-  }
-
-  /**
-   * 스터디 최신 기수
-   */
-  public Integer getMaxStudyGeneration() {
-    return queryFactory
-      .select(study.generation.max())
-      .from(study)
-      .fetchOne();
   }
 }

@@ -3,10 +3,10 @@ package org.example.domain.study.service;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.generation.repository.GenerationRepository;
 import org.example.domain.study.Study;
 import org.example.domain.study.controller.request.CreateRegularStudyRequest;
 import org.example.domain.study.enums.StudyType;
-import org.example.domain.study.repository.ListStudyRepository;
 import org.example.domain.study.repository.StudyRepository;
 import org.example.util.ValueUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 public class CreateStudyService {
 
   private final StudyRepository studyRepository;
-  private final ListStudyRepository listStudyRepository;
+  private final GenerationRepository generationRepository;
 
   @Value("${s3.basic-image.coding-test-basic}")
   private String codingTestBasicImage;
@@ -50,7 +50,7 @@ public class CreateStudyService {
         .name(request.name())
         .content(request.content())
         .type(StudyType.REGULAR)
-        .generation(listStudyRepository.getMaxStudyGeneration())
+        .generation(generationRepository.findTopByOrderByValueDesc())
         .build()
     );
   }

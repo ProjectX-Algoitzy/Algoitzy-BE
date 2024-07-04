@@ -24,13 +24,6 @@ public class StudyService {
   }
 
   /**
-   * 스터디 최신 기수
-   */
-  public Integer getMaxStudyGeneration() {
-    return listStudyService.getMaxStudyGeneration();
-  }
-
-  /**
    * 자율 스터디 생성
    */
   public void createTempStudy(CreateTempStudyRequest request) {
