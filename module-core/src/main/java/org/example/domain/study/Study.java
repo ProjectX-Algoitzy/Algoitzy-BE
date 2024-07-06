@@ -79,4 +79,12 @@ public class Study {
     this.type = type;
     this.generation = generation;
   }
+
+  public void renewGeneration(Generation generation) {
+    this.generation = generation;
+  }
+
+  public void markOldGeneration(Generation oldGeneration) {
+    this.name = oldGeneration.getValue() + "기 " + this.name;
+  }
 }

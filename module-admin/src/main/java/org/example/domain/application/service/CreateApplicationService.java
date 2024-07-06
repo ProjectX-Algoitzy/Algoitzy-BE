@@ -9,6 +9,7 @@ import org.example.domain.application.Application;
 import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.repository.ApplicationRepository;
 import org.example.domain.select_question.service.CreateSelectQuestionService;
+import org.example.domain.study.Study;
 import org.example.domain.study.service.CoreStudyService;
 import org.example.domain.text_question.service.CreateTextQuestionService;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,21 @@ public class CreateApplicationService {
     );
     createTextQuestionService.copyTextQuestion(newApplication, application.getTextQuestionList());
     createSelectQuestionService.copySelectQuestion(newApplication, application.getSelectQuestionList());
+  }
+
+  /**
+   * 지원서 복사
+   */
+  public Application renewApplication(Study newStudy, Application oldApplication) {
+    Application newApplication = applicationRepository.save(Application.builder()
+      .study(newStudy)
+      .title(oldApplication.getTitle())
+      .confirmYN(false)
+      .build()
+    );
+    createTextQuestionService.copyTextQuestion(newApplication, oldApplication.getTextQuestionList());
+    createSelectQuestionService.copySelectQuestion(newApplication, oldApplication.getSelectQuestionList());
+    return newApplication;
   }
 
   /**
