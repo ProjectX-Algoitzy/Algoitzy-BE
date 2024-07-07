@@ -82,7 +82,7 @@ public class CreateApplicationService {
   /**
    * 지원서 복사
    */
-  public Application renewApplication(Study newStudy, Application oldApplication) {
+  public void renewApplication(Study newStudy, Application oldApplication) {
     Application newApplication = applicationRepository.save(Application.builder()
       .study(newStudy)
       .title(oldApplication.getTitle())
@@ -91,7 +91,6 @@ public class CreateApplicationService {
     );
     createTextQuestionService.copyTextQuestion(newApplication, oldApplication.getTextQuestionList());
     createSelectQuestionService.copySelectQuestion(newApplication, oldApplication.getSelectQuestionList());
-    return newApplication;
   }
 
   /**

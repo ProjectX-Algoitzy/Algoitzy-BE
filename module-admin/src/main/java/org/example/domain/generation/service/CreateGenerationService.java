@@ -2,10 +2,12 @@ package org.example.domain.generation.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.application.Application;
 import org.example.domain.application.repository.ApplicationRepository;
 import org.example.domain.application.service.CreateApplicationService;
 import org.example.domain.curriculum.Curriculum;
@@ -95,10 +97,12 @@ public class CreateGenerationService {
       }
 
       // 지원서 양식 마이그레이션
-//      Application oldApplication = applicationRepository.findByStudy(oldStudy)
-//        .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "해당 스터디의 지원서가 존재하지 않습니다."));
-//      Application newApplication = createApplicationService.renewApplication(newStudy, oldApplication);
-//      applicationRepository.save(newApplication);
+      Application oldApplication = applicationRepository.findByStudy(oldStudy)
+        .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "해당 스터디의 지원서가 존재하지 않습니다."));
+      createApplicationService.renewApplication(newStudy, oldApplication);
+
+      // todo 출석부 로직 구현 후 블랙리스트 삽입
+
 
       oldStudy.markOldGeneration(oldGeneration);
     }
@@ -119,7 +123,7 @@ public class CreateGenerationService {
       throw new GeneralException(ErrorStatus.VALIDATION_ERROR, "1주차 시작 일자는 기수 갱신일로부터 5일 이후여야 합니다.");
     }
 
-    List<WeekDto> weekDtoList = request.getWeekList();
+    List<WeekDto> weekDtoList = new ArrayList<>(request.getWeekList());
     for (int i = 1; i < weekDtoList.size(); i++) {
       WeekDto lastWeek = weekDtoList.get(i - 1);
       WeekDto thisWeek = weekDtoList.get(i);
