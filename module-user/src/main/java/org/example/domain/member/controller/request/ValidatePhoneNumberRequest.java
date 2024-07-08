@@ -1,13 +1,13 @@
 package org.example.domain.member.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
+import org.example.validator.PhoneNumber;
 
 public record ValidatePhoneNumberRequest(
 
-  @NotBlank
-  @Schema(description = "핸드폰 번호", example = "01012341234")
+  @PhoneNumber
+  @Schema(description = "핸드폰 번호", example = "010-1234-1234")
   String phoneNumber,
 
   @NotBlank
@@ -15,9 +15,4 @@ public record ValidatePhoneNumberRequest(
   String code
 ) {
 
-  @AssertTrue(message = "핸드폰 번호를 확인해주세요.")
-  @Schema(hidden = true)
-  public boolean getPhoneNumberValidate() {
-    return phoneNumber.length() == 11 && phoneNumber.matches("[0-9]+");
-  }
 }
