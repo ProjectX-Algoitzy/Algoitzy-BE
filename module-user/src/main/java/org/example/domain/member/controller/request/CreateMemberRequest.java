@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.example.validator.PhoneNumber;
 
 @Schema(description = "회원가입 요청 객체")
 public record CreateMemberRequest(
@@ -42,8 +43,8 @@ public record CreateMemberRequest(
   @Schema(description = "백준 핸들", example = "engus525")
   String handle,
 
-  @NotBlank
-  @Schema(description = "핸드폰 번호", example = "01012341234")
+  @PhoneNumber
+  @Schema(description = "핸드폰 번호", example = "010-1234-1234")
   String phoneNumber
 
 ) {
@@ -56,12 +57,6 @@ public record CreateMemberRequest(
   @Schema(hidden = true)
   public boolean getPasswordValidate() {
     return password.equals(checkPassword);
-  }
-
-  @AssertTrue(message = "핸드폰 번호를 확인해주세요.")
-  @Schema(hidden = true)
-  public boolean getPhoneNumberValidate() {
-    return phoneNumber.length() == 11 && phoneNumber.matches("[0-9]+");
   }
 
 }
