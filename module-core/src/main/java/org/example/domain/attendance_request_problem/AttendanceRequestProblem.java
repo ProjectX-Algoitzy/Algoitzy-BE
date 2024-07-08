@@ -16,7 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.attendance_request.AttendanceRequest;
-import org.example.domain.problem.Problem;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -37,9 +37,9 @@ public class AttendanceRequestProblem {
   @JoinColumn(name = "attendance_request_id")
   private AttendanceRequest attendanceRequest;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "problem_id")
-  private Problem problem;
+  @Column(nullable = false)
+  @Comment("문제 URL")
+  private String problemUrl;
 
   @CreatedDate
   @Column(updatable = false)
@@ -56,8 +56,8 @@ public class AttendanceRequestProblem {
   private String updatedBy;
 
   @Builder
-  public AttendanceRequestProblem(AttendanceRequest attendanceRequest, Problem problem) {
+  public AttendanceRequestProblem(AttendanceRequest attendanceRequest, String problemUrl) {
     this.attendanceRequest = attendanceRequest;
-    this.problem = problem;
+    this.problemUrl = problemUrl;
   }
 }
