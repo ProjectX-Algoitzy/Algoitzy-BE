@@ -7,12 +7,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
+import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.service.MemberService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,5 +52,11 @@ public class MemberController {
   @Operation(summary = "로그인 멤버 정보")
   public ApiResponse<MemberInfoResponse> getLoginMemberInfo() {
     return ApiResponse.onSuccess(memberService.getMemberInfo());
+  }
+
+  @GetMapping("/find-email")
+  @Operation(summary = "아이디(이메일) 찾기")
+  public ApiResponse<String> findEmail(@ParameterObject @ModelAttribute @Valid FindEmailRequest request) {
+    return ApiResponse.onSuccess(memberService.findEmail(request));
   }
 }

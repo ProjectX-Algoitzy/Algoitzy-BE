@@ -44,7 +44,7 @@ public record CreateMemberRequest(
   String handle,
 
   @PhoneNumber
-  @Schema(description = "핸드폰 번호", example = "010-1234-1234")
+  @Schema(description = "핸드폰 번호", example = "01012341234")
   String phoneNumber
 
 ) {
@@ -55,7 +55,7 @@ public record CreateMemberRequest(
 
   @AssertTrue(message = "비밀번호가 일치하지 않습니다.")
   @Schema(hidden = true)
-  public boolean getPasswordValidate() {
+  private boolean getPasswordValidate() {
     return password.equals(checkPassword);
   }
 
