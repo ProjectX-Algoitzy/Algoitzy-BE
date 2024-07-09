@@ -22,7 +22,7 @@ public class DetailApplicationRepository {
     return queryFactory
       .select(Projections.fields(DetailApplicationResponse.class,
         application.title,
-        study.generation,
+        study.generation.value.as("generation"),
         study.id.as("studyId"),
         study.name.as("studyName"),
         application.confirmYN
