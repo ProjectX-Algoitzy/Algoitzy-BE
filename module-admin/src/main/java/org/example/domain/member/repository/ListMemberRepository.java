@@ -36,7 +36,7 @@ public class ListMemberRepository {
         )
       )
       .from(member)
-      .where(member.role.eq(Role.ROLE_ADMIN))
+      .where(member.role.ne(Role.ROLE_USER))
       .orderBy(member.name.asc())
       .fetch();
   }

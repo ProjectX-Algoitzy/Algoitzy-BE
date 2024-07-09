@@ -1,7 +1,5 @@
 package org.example.domain.member.controller;
 
-import static org.example.domain.member.enums.Role.ROLE_USER;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -32,7 +30,7 @@ public class MemberController {
   @PostMapping("/login")
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-    return ApiResponse.onSuccess(memberService.login(ROLE_USER, request));
+    return ApiResponse.onSuccess(memberService.login(request));
   }
 
   @PostMapping("/logout")

@@ -1,8 +1,5 @@
 package org.example.domain.member.service;
 
-import static org.example.domain.member.enums.Role.ROLE_ADMIN;
-import static org.example.domain.member.enums.Role.ROLE_USER;
-
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
@@ -38,15 +35,12 @@ public class LoginService {
   /**
    * 로그인
    */
-  public LoginResponse login(Role role, LoginRequest request) {
+  public LoginResponse login(LoginRequest request) {
     UsernamePasswordAuthenticationToken authenticationToken =
       new UsernamePasswordAuthenticationToken(request.email(), request.password());
     Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     String memberRole = authentication.getAuthorities().stream().toList().get(0).toString();
-    if (role.equals(ROLE_ADMIN) && ROLE_USER.toString().equals(memberRole)) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "관리자만 접근할 수 있습니다.");
-    }
-    JwtToken jwtToken = jwtTokenProvider.generateToken(role, request.email());
+    JwtToken jwtToken = jwtTokenProvider.generateToken(Role.valueOf(memberRole), request.email());
     redisUtils.save(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));
 
     return LoginResponse

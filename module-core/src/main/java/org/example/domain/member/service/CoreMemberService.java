@@ -22,4 +22,8 @@ public class CoreMemberService {
     return memberRepository.findByEmail(email)
       .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않는 Email 입니다."));
   }
+
+  public Member getOwner() {
+    return memberRepository.getOwner();
+  }
 }

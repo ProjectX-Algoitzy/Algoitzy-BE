@@ -91,7 +91,7 @@ public class Member {
     this.password = password;
   }
 
-  public void updateRole() {
-    this.role = role.equals(Role.ROLE_ADMIN) ? Role.ROLE_USER : Role.ROLE_ADMIN;
+  public void updateRole(Role role) {
+    this.role = role;
   }
 }

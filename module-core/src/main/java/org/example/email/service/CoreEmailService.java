@@ -81,7 +81,9 @@ public class CoreEmailService {
 
       String html;
       if (isPass) {
-        html = htmlToString(s3Url + DOCUMENT_PASS.getPath()).replace("${name}", member.getName());
+        html = htmlToString(s3Url + DOCUMENT_PASS.getPath())
+          .replace("${name}", member.getName())
+          .replace("${phoneNumber}", coreMemberService.getOwner().getPhoneNumber());
       } else {
         html = htmlToString(s3Url + DOCUMENT_FAIL.getPath()).replace("${name}", member.getName());
       }
@@ -96,10 +98,14 @@ public class CoreEmailService {
         .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 회원은 서류 합격 단계가 아닙니다."));
       Interview interview = interviewRepository.findByStudyMember(studyMember)
         .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 스터디원의 면접 일정이 존재하지 않습니다."));
+      if (interview.getCreatedTime().isEqual(interview.getUpdatedTime())) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "면접 시간을 설정해주세요.");
+      }
       changeStatus(request, member);
 
       String html = htmlToString(s3Url + INTERVIEW.getPath())
-        .replace("${name}", member.getName()).replace("${time}", interview.getTime());
+        .replace("${name}", member.getName())
+        .replace("${time}", interview.getTime());
       send(email, request.type(), html);
     }
   }
