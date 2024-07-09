@@ -69,6 +69,6 @@ public class StudyService {
    * 정규 스터디 출석부 조회
    */
   public ListAttendanceResponse getAttendanceList(Long studyId) {
-    return null;
+    return detailStudyService.getAttendanceList(studyId);
   }
 }
