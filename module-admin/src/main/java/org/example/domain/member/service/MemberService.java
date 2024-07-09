@@ -1,6 +1,7 @@
 package org.example.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
 import org.example.domain.member.controller.request.SearchMemberRequest;
@@ -66,5 +67,12 @@ public class MemberService {
    */
   public MemberInfoResponse getMemberInfo() {
     return detailMemberService.getMemberInfo();
+  }
+
+  /**
+   * 아이디(이메일 찾기)
+   */
+  public String findEmail(FindEmailRequest request) {
+    return detailMemberService.findEmail(request);
   }
 }
