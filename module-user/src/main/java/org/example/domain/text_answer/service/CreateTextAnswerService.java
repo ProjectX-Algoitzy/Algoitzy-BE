@@ -30,21 +30,24 @@ public class CreateTextAnswerService {
   public void createTextAnswer(Answer answer, List<CreateTextAnswerRequest> requestList) {
 
     // 모든 필수 문항 응답 여부 확인
-    List<Long> requiredTextQuestionIdList =
-      textQuestionRepository.findAllByApplicationAndIsRequiredIsTrue(answer.getApplication())
-        .stream().map(TextQuestion::getId).toList();
-    List<Long> requestTextQuestionIdList = requestList.stream().map(CreateTextAnswerRequest::textQuestionId).toList();
-    boolean allRequiredAnswered = new HashSet<>(requestTextQuestionIdList).containsAll(requiredTextQuestionIdList);
-    if (!allRequiredAnswered) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "주관식 필수 문항에 응답해주세요.");
+    if (answer.getConfirmYN()) {
+      List<Long> requiredTextQuestionIdList =
+        textQuestionRepository.findAllByApplicationAndIsRequiredIsTrue(answer.getApplication())
+          .stream().map(TextQuestion::getId).toList();
+      List<Long> requestTextQuestionIdList = requestList.stream().map(CreateTextAnswerRequest::textQuestionId).toList();
+      boolean allRequiredAnswered = new HashSet<>(requestTextQuestionIdList).containsAll(requiredTextQuestionIdList);
+      if (!allRequiredAnswered) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "주관식 필수 문항에 응답해주세요.");
+      }
     }
 
     List<TextAnswer> textAnswerList = requestList.stream()
-      .map(request -> textAnswerRepository.save(TextAnswer.builder()
-        .answer(answer)
-        .textQuestion(coreTextQuestionService.findById(request.textQuestionId()))
-        .text(request.text())
-        .build())
+      .map(request -> textAnswerRepository.save(
+        TextAnswer.builder()
+          .answer(answer)
+          .textQuestion(coreTextQuestionService.findById(request.textQuestionId()))
+          .text(request.text())
+          .build())
       ).toList();
 
     answer.setTextAnswerList(textAnswerList);

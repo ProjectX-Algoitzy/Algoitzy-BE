@@ -2,6 +2,7 @@ package org.example.domain.answer;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -20,9 +21,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.application.Application;
 import org.example.domain.select_answer.SelectAnswer;
 import org.example.domain.text_answer.TextAnswer;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -52,6 +55,11 @@ public class Answer {
   @JoinColumn(name = "application_id")
   private Application application;
 
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  @Comment("확정 여부")
+  private Boolean confirmYN;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -67,7 +75,8 @@ public class Answer {
   private String updatedBy;
 
   @Builder
-  public Answer(Application application) {
+  public Answer(Application application, Boolean confirmYN) {
     this.application = application;
+    this.confirmYN = confirmYN;
   }
 }

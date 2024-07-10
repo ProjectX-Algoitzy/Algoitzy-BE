@@ -45,13 +45,15 @@ public class CreateSelectAnswerService {
   public void createSelectAnswer(Answer answer, List<CreateSelectAnswerRequest> requestList, StudyMember studyMember) {
 
     // 모든 필수 문항 응답 여부 확인
-    List<Long> requiredSelectQuestionIdList =
-      selectQuestionRepository.findAllByApplicationAndIsRequiredIsTrue(answer.getApplication())
-        .stream().map(SelectQuestion::getId).toList();
-    List<Long> requestSelectQuestionIdList = requestList.stream().map(CreateSelectAnswerRequest::selectQuestionId).toList();
-    boolean allRequiredAnswered = new HashSet<>(requestSelectQuestionIdList).containsAll(requiredSelectQuestionIdList);
-    if (!allRequiredAnswered) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "객관식 필수 문항에 응답해주세요.");
+    if (answer.getConfirmYN()) {
+      List<Long> requiredSelectQuestionIdList =
+        selectQuestionRepository.findAllByApplicationAndIsRequiredIsTrue(answer.getApplication())
+          .stream().map(SelectQuestion::getId).toList();
+      List<Long> requestSelectQuestionIdList = requestList.stream().map(CreateSelectAnswerRequest::selectQuestionId).toList();
+      boolean allRequiredAnswered = new HashSet<>(requestSelectQuestionIdList).containsAll(requiredSelectQuestionIdList);
+      if (!allRequiredAnswered) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "객관식 필수 문항에 응답해주세요.");
+      }
     }
 
     List<SelectAnswer> selectAnswerList = new ArrayList<>();
@@ -61,30 +63,9 @@ public class CreateSelectAnswerService {
         throw new GeneralException(ErrorStatus.BAD_REQUEST, "다중 선택이 불가능한 문항입니다.");
       }
 
-      // 면접 일정 문항 로직
-      if (selectQuestion.getQuestion().equals(INTERVIEW_QUESTION)) {
-        List<Field> fieldList = fieldRepository.findAllById(request.fieldIdList());
-
-        // 선택한 날짜 중 면접자가 최소인 날짜로 배정
-        long minCount = Long.MAX_VALUE;
-        String time = "";
-        for (Field field : fieldList) {
-          long count = listInterviewRepository.countByStudyAndTime(studyMember.getStudy(), field);
-          if (count < minCount) {
-            minCount = count;
-            time = field.getContext();
-          }
-        }
-        if (!StringUtils.hasText(time)) {
-          throw new GeneralException(ErrorStatus.BAD_REQUEST, "면접 일자 할당 중 오류가 발생했습니다.");
-        }
-
-        interviewRepository.save(
-          Interview.builder()
-            .studyMember(studyMember)
-            .time(time)
-            .build()
-        );
+      // 면접 일정 생성
+      if (answer.getConfirmYN()) {
+        createInterview(studyMember, request, selectQuestion);
       }
 
       SelectAnswer selectAnswer = selectAnswerRepository.save(
@@ -98,6 +79,34 @@ public class CreateSelectAnswerService {
     }
 
     answer.setSelectAnswerList(selectAnswerList);
+  }
+
+  private void createInterview(StudyMember studyMember, CreateSelectAnswerRequest request, SelectQuestion selectQuestion) {
+    // 면접 일정 문항 로직
+    if (selectQuestion.getQuestion().equals(INTERVIEW_QUESTION)) {
+      List<Field> fieldList = fieldRepository.findAllById(request.fieldIdList());
+
+      // 선택한 날짜 중 면접자가 최소인 날짜로 배정
+      long minCount = Long.MAX_VALUE;
+      String time = "";
+      for (Field field : fieldList) {
+        long count = listInterviewRepository.countByStudyAndTime(studyMember.getStudy(), field);
+        if (count < minCount) {
+          minCount = count;
+          time = field.getContext();
+        }
+      }
+      if (!StringUtils.hasText(time)) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "면접 일자 할당 중 오류가 발생했습니다.");
+      }
+
+      interviewRepository.save(
+        Interview.builder()
+          .studyMember(studyMember)
+          .time(time)
+          .build()
+      );
+    }
   }
 
 }

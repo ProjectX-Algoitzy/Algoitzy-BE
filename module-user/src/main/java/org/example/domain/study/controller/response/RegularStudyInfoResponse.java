@@ -24,6 +24,12 @@ public class RegularStudyInfoResponse {
   @Schema(description = "현재 스터디원 수")
   long memberCount;
 
+  @Schema(description = "지원서 ID")
+  long applicationId;
+
+  @Schema(description = "지원서 작성 여부")
+  boolean answerYN;
+
   @Schema(description = "스터디장 프로필 이미지")
   String leaderProfileUrl;
 
