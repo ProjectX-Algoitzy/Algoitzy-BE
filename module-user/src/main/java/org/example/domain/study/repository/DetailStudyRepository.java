@@ -1,5 +1,6 @@
 package org.example.domain.study.repository;
 
+import static org.example.domain.answer.QAnswer.answer;
 import static org.example.domain.study.QStudy.study;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
@@ -81,6 +82,7 @@ public class DetailStudyRepository {
     return queryFactory
       .select(Projections.fields(RegularStudyInfoResponse.class,
           study.profileUrl,
+          study.name.as("studyName"),
           Expressions.as(
             JPAExpressions
               .select(studyMember.count())
@@ -89,7 +91,16 @@ public class DetailStudyRepository {
                 studyMember.study.eq(study)
               )
             , "memberCount"),
-          study.name.as("studyName"),
+        Expressions.as(
+          JPAExpressions
+            .select()
+            .from(answer)
+            .where(
+              answer.application.study.eq(study),
+              answer.createdBy.eq(SecurityUtils.getCurrentMemberEmail())
+            )
+            .exists()
+          , "answerYN"),
           Expressions.as(
             JPAExpressions
               .select(studyMember.member.profileUrl)
