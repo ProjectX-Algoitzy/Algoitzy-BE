@@ -37,6 +37,7 @@ public class AnswerController {
     return ApiResponse.onSuccess();
   }
 
+  @Deprecated
   @GetMapping()
   @Operation(summary = "작성한 지원서 목록 조회")
   public ApiResponse<ListAnswerResponse> getAnswerList(

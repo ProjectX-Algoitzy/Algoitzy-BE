@@ -8,7 +8,9 @@ import static org.example.domain.study.QStudy.study;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.answer.Answer;
 import org.example.domain.answer.controller.response.DetailAnswerResponse;
 import org.springframework.stereotype.Repository;
 
@@ -39,4 +41,15 @@ public class DetailAnswerRepository {
       .fetchOne();
   }
 
+  public Optional<Answer> getAnswer(Long applicationId, String email) {
+    return Optional.ofNullable(
+      queryFactory
+        .selectFrom(answer)
+        .where(
+          answer.application.id.eq(applicationId),
+          answer.createdBy.eq(email)
+        )
+        .fetchOne()
+    );
+  }
 }
