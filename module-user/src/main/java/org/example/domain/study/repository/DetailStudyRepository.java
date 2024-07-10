@@ -1,6 +1,7 @@
 package org.example.domain.study.repository;
 
 import static org.example.domain.answer.QAnswer.answer;
+import static org.example.domain.application.QApplication.application;
 import static org.example.domain.study.QStudy.study;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
@@ -91,6 +92,14 @@ public class DetailStudyRepository {
                 studyMember.study.eq(study)
               )
             , "memberCount"),
+        Expressions.as(
+          JPAExpressions
+            .select(application.id)
+            .from(application)
+            .where(
+              application.study.eq(study)
+            )
+          , "applicationId"),
         Expressions.as(
           JPAExpressions
             .select()
