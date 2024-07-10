@@ -9,8 +9,6 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, St
   @Override
   public boolean isValid(String phoneNumber, ConstraintValidatorContext context) {
     if (!StringUtils.hasText(phoneNumber)) return false;
-
-    // 01012341234 형식만 허용
     if (phoneNumber.length() != 11) return false;
 
     return phoneNumber.matches("[0-9]+");

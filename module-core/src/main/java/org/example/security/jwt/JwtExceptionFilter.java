@@ -25,6 +25,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
       "/swagger-ui",
       "/sign-up",
       "/member/login",
+      "/member/find-email",
       "/email",
       "/sms",
       "/health",

@@ -1,6 +1,7 @@
 package org.example.domain.member;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.CryptoConverter;
 import org.example.domain.member.enums.Role;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
@@ -58,6 +60,7 @@ public class Member {
   @Comment("백준 닉네임")
   private String handle;
 
+  @Convert(converter = CryptoConverter.class)
   @Column(unique = true, nullable = false)
   @Comment("핸드폰 번호")
   private String phoneNumber;
@@ -91,7 +94,7 @@ public class Member {
     this.password = password;
   }
 
-  public void updateRole() {
-    this.role = role.equals(Role.ROLE_ADMIN) ? Role.ROLE_USER : Role.ROLE_ADMIN;
+  public void updateRole(Role role) {
+    this.role = role;
   }
 }

@@ -7,7 +7,7 @@ import org.example.validator.PhoneNumber;
 public record ValidatePhoneNumberRequest(
 
   @PhoneNumber
-  @Schema(description = "핸드폰 번호", example = "010-1234-1234")
+  @Schema(description = "핸드폰 번호", example = "01012341234")
   String phoneNumber,
 
   @NotBlank

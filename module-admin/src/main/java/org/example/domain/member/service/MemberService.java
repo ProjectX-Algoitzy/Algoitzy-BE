@@ -1,13 +1,14 @@
 package org.example.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
 import org.example.domain.member.controller.request.SearchMemberRequest;
+import org.example.domain.member.controller.request.UpdateMemberRoleRequest;
 import org.example.domain.member.controller.response.ListMemberResponse;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
-import org.example.domain.member.enums.Role;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,10 +21,10 @@ public class MemberService {
   private final DetailMemberService detailMemberService;
 
   /**
-   * 유저 역할 변경
+   * 멤버 권한 변경
    */
-  public void updateMemberRole(Long memberId) {
-    createMemberService.updateMemberRole(memberId);
+  public void updateMemberRole(UpdateMemberRoleRequest request) {
+    createMemberService.updateMemberRole(request);
   }
 
   /**
@@ -43,8 +44,8 @@ public class MemberService {
   /**
    * 로그인
    */
-  public LoginResponse login(Role role, LoginRequest request) {
-    return loginService.login(role, request);
+  public LoginResponse login(LoginRequest request) {
+    return loginService.login(request);
   }
 
   /**
@@ -66,5 +67,12 @@ public class MemberService {
    */
   public MemberInfoResponse getMemberInfo() {
     return detailMemberService.getMemberInfo();
+  }
+
+  /**
+   * 아이디(이메일 찾기)
+   */
+  public String findEmail(FindEmailRequest request) {
+    return detailMemberService.findEmail(request);
   }
 }

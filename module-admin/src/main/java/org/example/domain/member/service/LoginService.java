@@ -1,7 +1,7 @@
 package org.example.domain.member.service;
 
-import static org.example.domain.member.enums.Role.ROLE_ADMIN;
 import static org.example.domain.member.enums.Role.ROLE_USER;
+import static org.example.domain.member.enums.Role.valueOf;
 
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
 import org.example.domain.member.controller.response.LoginResponse;
-import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
 import org.example.security.jwt.JwtToken;
 import org.example.security.jwt.JwtTokenProvider;
@@ -38,15 +37,15 @@ public class LoginService {
   /**
    * 로그인
    */
-  public LoginResponse login(Role role, LoginRequest request) {
+  public LoginResponse login(LoginRequest request) {
     UsernamePasswordAuthenticationToken authenticationToken =
       new UsernamePasswordAuthenticationToken(request.email(), request.password());
     Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     String memberRole = authentication.getAuthorities().stream().toList().get(0).toString();
-    if (role.equals(ROLE_ADMIN) && ROLE_USER.toString().equals(memberRole)) {
+    if (ROLE_USER.toString().equals(memberRole)) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "관리자만 접근할 수 있습니다.");
     }
-    JwtToken jwtToken = jwtTokenProvider.generateToken(role, request.email());
+    JwtToken jwtToken = jwtTokenProvider.generateToken(valueOf(memberRole), request.email());
     redisUtils.save(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));
 
     return LoginResponse
