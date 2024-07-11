@@ -1,27 +1,26 @@
-package org.example.domain.problem.controller;
+package org.example.domain.algorithm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
-import org.example.domain.problem.service.ProblemService;
+import org.example.domain.algorithm.service.AlgorithmService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/problem")
-@Tag(name = "ProblemController", description = "[ADMIN] 문제 관련 API")
-public class ProblemController {
+@RequestMapping("/algorithm")
+@Tag(name = "AlgorithmController", description = "[ADMIN] 알고리즘 관련 API")
+public class AlgorithmController {
 
-  private final ProblemService problemService;
+  private final AlgorithmService algorithmService;
 
   @PostMapping()
-  @Operation(summary = "백준 문제 저장")
-  public ApiResponse<Void> createProblem() {
-    problemService.createProblem();
+  @Operation(summary = "백준 알고리즘 저장")
+  public ApiResponse<Void> createAlgorithm() {
+    algorithmService.createAlgorithm();
     return ApiResponse.onCreate();
   }
-
 }

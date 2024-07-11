@@ -1,7 +1,8 @@
 package org.example.schedule.solved_ac;
 
 import org.example.config.FeignClientConfig;
-import org.example.schedule.solved_ac.response.ProblemResponse;
+import org.example.schedule.solved_ac.response.algorithm.AlgorithmResponse;
+import org.example.schedule.solved_ac.response.problem.ProblemResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,5 +16,10 @@ public interface SolvedAcClient {
         @RequestParam("query") String query,
         @RequestParam("sort") String sort,
         @RequestParam("direction") String direction
+    );
+
+    @GetMapping("/tag/list")
+    AlgorithmResponse searchTag(
+        @RequestParam("page") int page
     );
 }

@@ -7,13 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.domain.problem.Problem;
 import org.example.domain.problem.repository.ProblemRepository;
 import org.example.schedule.solved_ac.SolvedAcClient;
-import org.example.schedule.solved_ac.response.ProblemDto;
-import org.example.schedule.solved_ac.response.ProblemResponse;
+import org.example.schedule.solved_ac.response.problem.ProblemDto;
+import org.example.schedule.solved_ac.response.problem.ProblemResponse;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class CreateProblemService {
 
@@ -28,9 +30,9 @@ public class CreateProblemService {
   public void createProblem() {
     try {
       ProblemResponse initResponse = solvedAcClient.searchProblems(1, QUERY, SORT, DIRECTION);
-      int pageCount = initResponse.getCount() / NUMBER_PER_PAGE;
+      int pageCount = initResponse.getCount() / NUMBER_PER_PAGE + 1;
 
-      for (int page = 1; page <= pageCount + 1; page++) {
+      for (int page = 1; page <= pageCount; page++) {
         log.info("{}번 페이지 문제 저장", page);
         ProblemResponse problemResponse = solvedAcClient.searchProblems(page, QUERY, SORT, DIRECTION);
 

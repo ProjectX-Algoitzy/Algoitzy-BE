@@ -1,4 +1,4 @@
-package org.example.schedule.solved_ac.response;
+package org.example.schedule.solved_ac.response.problem;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
