@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "${feign.svc1.name}", url = "${feign.svc1.url}", configuration = FeignClientConfig.class)
+@FeignClient(name = "solvedAc", url = "${feign.solved-ac.url}", configuration = FeignClientConfig.class)
 public interface SolvedAcClient {
 
     @GetMapping("/search/problem")

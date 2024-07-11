@@ -28,7 +28,7 @@ public class CreateAlgorithmService {
 
     for (int page = 1; page <= pageCount; page++) {
       log.info("{}번 페이지 알고리즘 저장", page);
-      AlgorithmResponse algorithmResponse = solvedAcClient.searchTag(1);
+      AlgorithmResponse algorithmResponse = solvedAcClient.searchTag(page);
       List<AlgorithmDto> algorithmDtoList = algorithmResponse.getAlgorithmList();
 
       List<Algorithm> algorithmList = new ArrayList<>();

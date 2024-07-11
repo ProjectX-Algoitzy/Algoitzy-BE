@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.algorithm.Algorithm;
@@ -23,6 +24,7 @@ public class AlgorithmDto {
 
   @Schema(description = "국가별 알고리즘명")
   @JsonProperty("displayNames")
+  @Default
   private List<AlgorithmNameDto> algorithmNameList = new ArrayList<>();
 
   public Algorithm toEntity() {

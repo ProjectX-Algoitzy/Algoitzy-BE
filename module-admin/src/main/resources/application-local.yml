@@ -7,6 +7,5 @@ spring:
 
 
 feign:
-  svc1:
-    name: solved-ac
+  solved-ac:
     url: https://solved.ac/api/v3
