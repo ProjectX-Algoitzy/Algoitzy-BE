@@ -34,6 +34,7 @@ public class CreateProblemService {
   @Async
   public void createProblem() {
     try {
+      problemAlgorithmRepository.deleteAll();
       ProblemResponse initResponse = solvedAcClient.searchProblems(1, QUERY, SORT, DIRECTION);
       int pageCount = initResponse.getCount() / NUMBER_PER_PAGE + 1;
 
@@ -51,7 +52,6 @@ public class CreateProblemService {
           Problem problem = problemRepository.save(problemDto.toEntity());
 
           // 문제 알고리즘 매핑
-          problemAlgorithmRepository.deleteAll();
           for (AlgorithmDto algorithmDto : problemDto.getAlgorithmList()) {
             algorithmRepository.findById(algorithmDto.getName())
               .ifPresent(algorithm ->
