@@ -1,4 +1,4 @@
-package org.example.schedule.solved_ac_response;
+package org.example.schedule.solved_ac.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

@@ -1,14 +1,15 @@
 package org.example.domain.problem.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.problem.Level;
 import org.example.domain.problem.Problem;
 import org.example.domain.problem.repository.ProblemRepository;
-import org.example.schedule.solved_ac_response.LanguageDto;
-import org.example.schedule.solved_ac_response.ProblemDto;
+import org.example.schedule.solved_ac.SolvedAcClient;
+import org.example.schedule.solved_ac.response.ProblemDto;
+import org.example.schedule.solved_ac.response.ProblemResponse;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,33 +17,36 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CreateProblemService {
 
+  private final SolvedAcClient solvedAcClient;
   private final ProblemRepository problemRepository;
+  private static final int NUMBER_PER_PAGE = 50;
+  private static final String QUERY = "";
+  private static final String SORT = "id";
+  private static final String DIRECTION = "asc";
 
-  // 2. problem table에 저장
-  public void saveProblemList(List<ProblemDto> problemDtoList) {
-    for (ProblemDto problemDto : problemDtoList) {
-      Problem problem = createProblem(problemDto);
-      problemRepository.save(problem);
+  @Async
+  public void createProblem() {
+    try {
+      ProblemResponse initResponse = solvedAcClient.searchProblems(1, QUERY, SORT, DIRECTION);
+      int pageCount = initResponse.getCount() / NUMBER_PER_PAGE;
+
+      for (int page = 1; page <= pageCount + 1; page++) {
+        log.info("{}번 페이지 문제 저장", page);
+        ProblemResponse problemResponse = solvedAcClient.searchProblems(page, QUERY, SORT, DIRECTION);
+
+        List<ProblemDto> problemDtoList = problemResponse.getProblemList()
+          .stream()
+          .filter(problem -> problem.getLevel() != 0)
+          .toList();
+
+        List<Problem> problemList = new ArrayList<>();
+        for (ProblemDto problemDto : problemDtoList) {
+          problemList.add(problemDto.toEntity());
+        }
+        problemRepository.saveAll(problemList);
+      }
+    } catch (Exception e) {
+      log.error("SolveAc 문제 저장 중 오류 발생 : {}", e.getMessage());
     }
-  }
-
-  private Problem createProblem(ProblemDto problemDto) {
-
-    List<String> languageList = problemDto.getLanguageList().stream()
-        .map(LanguageDto::getLanguage)
-        .collect(Collectors.toList());
-
-    return Problem.builder()
-          .number(problemDto.getNumber())
-          .name(problemDto.getName())
-          .level(Level.valueOf(String.valueOf(problemDto.getLevel())))
-          .languageList(languageList)
-          .build();
-  }
-
-  private List<String> getLanguageList(List<LanguageDto> languageDtoList) {
-    return languageDtoList.stream()
-        .map(LanguageDto::getLanguage)
-        .collect(Collectors.toList());
   }
 }

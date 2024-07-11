@@ -8,5 +8,5 @@ spring:
 
 feign:
   svc1:
-    name: solved-ac-feign-client
-    url: https://solved.ac/api/v3/search/problem
+    name: solved-ac
+    url: https://solved.ac/api/v3

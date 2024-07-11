@@ -1,4 +1,4 @@
-package org.example.schedule.solved_ac_response;
+package org.example.schedule.solved_ac.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.domain.problem.Level;
+import org.example.domain.problem.Problem;
 
 @Builder
 @Getter
@@ -27,7 +28,7 @@ public class ProblemDto {
   private String name;
 
   @Schema(description = "백준 문제 난이도")
-  private Level level;
+  private int level;
 
   @Schema(description = "지원 언어 목록")
   @JsonProperty("titles")
@@ -37,5 +38,16 @@ public class ProblemDto {
   @JsonProperty("tags")
   private List<AlgorithmDto> algorithmList;
 
+  public Problem toEntity() {
+    List<String> languageList = this.getLanguageList().stream()
+      .map(LanguageDto::getLanguage)
+      .toList();
 
+    return Problem.builder()
+      .number(this.getNumber())
+      .name(this.getName())
+      .level(Level.findByLevel(this.getLevel()))
+      .languageList(languageList)
+      .build();
+  }
 }

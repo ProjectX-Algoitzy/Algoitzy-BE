@@ -1,15 +1,15 @@
-package org.example.schedule;
+package org.example.schedule.solved_ac;
 
 import org.example.config.FeignClientConfig;
-import org.example.schedule.solved_ac_response.ProblemResponse;
+import org.example.schedule.solved_ac.response.ProblemResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "${feign.svc1.name}", url = "${feign.svc1.url}", configuration = FeignClientConfig.class)
-public interface SolvedAcProblemSearchClient {
+public interface SolvedAcClient {
 
-    @GetMapping()
+    @GetMapping("/search/problem")
     ProblemResponse searchProblems(
         @RequestParam("page") int page,
         @RequestParam("query") String query,
