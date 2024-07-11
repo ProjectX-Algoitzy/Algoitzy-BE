@@ -19,7 +19,7 @@ public interface SolvedAcClient {
     );
 
     @GetMapping("/tag/list")
-    AlgorithmResponse searchTag(
+    AlgorithmResponse searchAlgorithm(
         @RequestParam("page") int page
     );
 }

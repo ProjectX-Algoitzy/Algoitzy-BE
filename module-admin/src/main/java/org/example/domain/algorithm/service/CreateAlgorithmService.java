@@ -23,12 +23,12 @@ public class CreateAlgorithmService {
   private static final int NUMBER_PER_PAGE = 30;
 
   public void createAlgorithm() {
-    AlgorithmResponse initResponse = solvedAcClient.searchTag(1);
+    AlgorithmResponse initResponse = solvedAcClient.searchAlgorithm(1);
     int pageCount = initResponse.getCount() / NUMBER_PER_PAGE + 1;
 
     for (int page = 1; page <= pageCount; page++) {
       log.info("{}번 페이지 알고리즘 저장", page);
-      AlgorithmResponse algorithmResponse = solvedAcClient.searchTag(page);
+      AlgorithmResponse algorithmResponse = solvedAcClient.searchAlgorithm(page);
       List<AlgorithmDto> algorithmDtoList = algorithmResponse.getAlgorithmList();
 
       List<Algorithm> algorithmList = new ArrayList<>();

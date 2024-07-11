@@ -38,7 +38,10 @@ public class ProblemAlgorithm {
   @JoinColumn(name = "problem_id")
   private Problem problem;
 
-  private String algorithm;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "algorithm_id")
+  private Algorithm algorithm;
 
   @CreatedDate
   @Column(updatable = false)
@@ -55,7 +58,7 @@ public class ProblemAlgorithm {
   private String updatedBy;
 
   @Builder
-  public ProblemAlgorithm(Problem problem, String algorithm) {
+  public ProblemAlgorithm(Problem problem, Algorithm algorithm) {
     this.problem = problem;
     this.algorithm = algorithm;
   }
