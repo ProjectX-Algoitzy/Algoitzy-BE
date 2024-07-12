@@ -26,6 +26,7 @@ public class ListStudyRepository {
     return queryFactory
       .select(Projections.fields(ListRegularStudyDto.class,
           study.id.as("studyId"),
+          study.profileUrl,
           study.name
         )
       )

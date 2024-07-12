@@ -23,7 +23,7 @@ public class StudyController {
   private final StudyService studyService;
 
   @GetMapping()
-  @Operation(summary = "정규 스터디 목록 조회(드롭박스용)")
+  @Operation(summary = "정규 스터디 목록 조회")
   public ApiResponse<ListRegularStudyResponse> getRegularStudyList() {
     return ApiResponse.onSuccess(studyService.getRegularStudyList());
   }
