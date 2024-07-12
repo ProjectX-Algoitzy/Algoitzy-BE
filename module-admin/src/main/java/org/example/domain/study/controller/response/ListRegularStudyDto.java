@@ -16,6 +16,9 @@ public class ListRegularStudyDto {
   @Schema(description = "스터디 ID")
   private long studyId;
 
+  @Schema(description = "스터디 대표 이미지 URL")
+  private String profileUrl;
+
   @Schema(description = "스터디 이름")
   private String name;
 }
