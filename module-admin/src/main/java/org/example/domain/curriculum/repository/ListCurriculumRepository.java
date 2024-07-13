@@ -9,7 +9,6 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.curriculum.controller.request.SearchCurriculumRequest;
 import org.example.domain.curriculum.controller.response.ListCurriculumDto;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +21,7 @@ public class ListCurriculumRepository {
   /**
    * 커리큘럼 목록 조회
    */
-  public List<ListCurriculumDto> getCurriculumList(SearchCurriculumRequest request) {
+  public List<ListCurriculumDto> getCurriculumList(Long studyId) {
     return queryFactory
       .select(Projections.fields(ListCurriculumDto.class,
         curriculum.week,
@@ -39,7 +38,7 @@ public class ListCurriculumRepository {
         )
       )
       .from(curriculum)
-      .where(curriculum.study.id.eq(request.studyId()))
+      .where(curriculum.study.id.eq(studyId))
       .orderBy(
         curriculum.week.asc(),
         curriculum.id.asc()

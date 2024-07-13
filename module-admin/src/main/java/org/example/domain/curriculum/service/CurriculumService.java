@@ -2,7 +2,6 @@ package org.example.domain.curriculum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
-import org.example.domain.curriculum.controller.request.SearchCurriculumRequest;
 import org.example.domain.curriculum.controller.request.UpdateCurriculumRequest;
 import org.example.domain.curriculum.controller.response.DetailCurriculumResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
@@ -33,8 +32,8 @@ public class CurriculumService {
   /**
    * 커리큘럼 목록 조회
    */
-  public ListCurriculumResponse getCurriculumList(SearchCurriculumRequest request) {
-    return listCurriculumService.getCurriculumList(request);
+  public ListCurriculumResponse getCurriculumList(Long studyId) {
+    return listCurriculumService.getCurriculumList(studyId);
   }
 
   /**
