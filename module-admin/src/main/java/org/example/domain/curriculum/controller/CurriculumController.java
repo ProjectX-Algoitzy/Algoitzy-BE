@@ -7,15 +7,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
-import org.example.domain.curriculum.controller.request.SearchCurriculumRequest;
 import org.example.domain.curriculum.controller.request.UpdateCurriculumRequest;
 import org.example.domain.curriculum.controller.response.DetailCurriculumResponse;
-import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,12 +34,12 @@ public class CurriculumController {
     return ApiResponse.onCreate();
   }
 
-  @GetMapping()
-  @Operation(summary = "커리큘럼 목록 조회")
-  public ApiResponse<ListCurriculumResponse> getCurriculumList(
-    @ParameterObject @ModelAttribute @Valid SearchCurriculumRequest request) {
-    return ApiResponse.onSuccess(curriculumService.getCurriculumList(request));
-  }
+//  @GetMapping()
+//  @Operation(summary = "커리큘럼 목록 조회")
+//  public ApiResponse<ListCurriculumResponse> getCurriculumList(
+//    @ParameterObject @ModelAttribute @Valid SearchCurriculumRequest request) {
+//    return ApiResponse.onSuccess(curriculumService.getCurriculumList(request));
+//  }
 
   @GetMapping("/{curriculum-id}")
   @Operation(summary = "커리큘럼 상세 조회")

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
+import org.example.domain.application.controller.request.CreateApplicationRequest;
 import org.example.domain.application.controller.request.UpdateApplicationRequest;
 import org.example.domain.application.Application;
 import org.example.domain.application.controller.response.CreateApplicationResponse;
@@ -30,10 +31,15 @@ public class CreateApplicationService {
   /**
    * 지원서 생성
    */
-  public CreateApplicationResponse createApplication() {
+  public CreateApplicationResponse createApplication(CreateApplicationRequest request) {
+    Study study = coreStudyService.findById(request.studyId());
+    if (applicationRepository.findByStudy(study).isPresent())
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 지원서가 존재하는 스터디입니다.");
+
     Application application = applicationRepository.save(
       Application.builder()
-        .title("새 지원서")
+        .title(study.getName() + " 지원서")
+        .study(study)
         .build()
     );
     createSelectQuestionService.createSelectQuestion(application);

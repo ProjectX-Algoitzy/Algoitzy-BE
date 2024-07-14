@@ -10,7 +10,7 @@ import lombok.Builder;
 import org.example.domain.select_question.controller.request.UpdateSelectQuestionRequest;
 import org.example.domain.text_question.controller.request.UpdateTextQuestionRequest;
 
-@Schema(description = "지원서 양식 생성 요청 객체")
+@Schema(description = "지원서 양식 수정 요청 객체")
 public record UpdateApplicationRequest(
 
   @NotNull

@@ -2,6 +2,7 @@ package org.example.domain.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.application.controller.request.CopyApplicationRequest;
+import org.example.domain.application.controller.request.CreateApplicationRequest;
 import org.example.domain.application.controller.request.UpdateApplicationRequest;
 import org.example.domain.application.controller.response.CreateApplicationResponse;
 import org.example.domain.application.controller.response.DetailApplicationResponse;
@@ -16,8 +17,8 @@ public class ApplicationService {
   private final ListApplicationService listApplicationService;
   private final DetailApplicationService detailApplicationService;
 
-  public CreateApplicationResponse createApplication() {
-    return createApplicationService.createApplication();
+  public CreateApplicationResponse createApplication(CreateApplicationRequest request) {
+    return createApplicationService.createApplication(request);
   }
 
   public void updateApplication(Long applicationId, UpdateApplicationRequest request) {

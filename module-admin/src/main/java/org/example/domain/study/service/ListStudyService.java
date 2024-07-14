@@ -14,7 +14,7 @@ public class ListStudyService {
   private final ListStudyRepository listStudyRepository;
 
   /**
-   * 커리큘럼 목록 조회(드롭박스용)
+   * 정규 스터디 목록 조회
    */
   public ListRegularStudyResponse getRegularStudyList() {
     return ListRegularStudyResponse.builder()
