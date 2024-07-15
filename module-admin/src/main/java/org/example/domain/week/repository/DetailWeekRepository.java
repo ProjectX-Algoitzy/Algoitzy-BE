@@ -15,6 +15,18 @@ public class DetailWeekRepository {
 
   private final JPAQueryFactory queryFactory;
 
+  public Optional<Week> getLastWeek() {
+    LocalDateTime lastWeek = LocalDateTime.now().minusDays(7);
+    return Optional.ofNullable(
+      queryFactory
+        .selectFrom(week)
+        .where(
+          week.startTime.loe(lastWeek),
+          week.endTime.goe(lastWeek)
+        )
+        .fetchOne()
+    );
+  }
 
   public Optional<Week> getCurrentWeek() {
     return Optional.ofNullable(

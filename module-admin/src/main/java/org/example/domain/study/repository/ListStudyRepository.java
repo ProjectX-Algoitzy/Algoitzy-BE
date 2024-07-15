@@ -20,9 +20,14 @@ public class ListStudyRepository {
   private final JPAQueryFactory queryFactory;
 
   /**
-   * 커리큘럼 목록 조회(드롭박스용)
+   * 정규 스터디 목록 조회
    */
   public List<ListRegularStudyDto> getRegularStudyList() {
+    Integer maxGeneration = queryFactory
+      .select(generation.value.max())
+      .from(generation)
+      .fetchOne();
+
     return queryFactory
       .select(Projections.fields(ListRegularStudyDto.class,
           study.id.as("studyId"),
@@ -31,7 +36,10 @@ public class ListStudyRepository {
         )
       )
       .from(study)
-      .where(study.type.eq(StudyType.REGULAR))
+      .where(
+        study.type.eq(StudyType.REGULAR),
+        study.generation.value.eq(maxGeneration)
+      )
       .fetch();
   }
 
