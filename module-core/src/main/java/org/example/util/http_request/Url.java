@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Url {
 
-  BAEKJOON_USER("https://www.acmicpc.net/user/"),
-  SOLVED_AC("https://solved.ac/api/v3/search/problem?query=*b..*d&page=${page}&sort=solved&direction=descending");
+  BAEKJOON_USER("https://www.acmicpc.net/user/");
+  //SOLVED_AC("https://solved.ac/api/v3/search/problem?query=*b..*d&page=${page}&sort=solved&direction=descending");
 
   private final String uri;
 
@@ -16,7 +16,7 @@ public enum Url {
     return BAEKJOON_USER.uri + handle;
   }
 
-  public String getSolvedAcPage(int page) {
+/*  public String getSolvedAcPage(int page) {
     return SOLVED_AC.uri.replace("${page}", String.valueOf(page));
-  }
+  }*/
 }

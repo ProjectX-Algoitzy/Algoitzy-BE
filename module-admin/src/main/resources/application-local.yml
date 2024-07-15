@@ -4,3 +4,8 @@ server:
 spring:
   config:
     import: application-core-local.yml
+
+
+feign:
+  solved-ac:
+    url: https://solved.ac/api/v3

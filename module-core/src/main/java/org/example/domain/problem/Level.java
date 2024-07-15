@@ -1,5 +1,6 @@
 package org.example.domain.problem;
 
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 
@@ -35,9 +36,21 @@ public enum Level {
   DIAMOND4(22, "https://static.solved.ac/tier_small/22.svg"),
   DIAMOND3(23, "https://static.solved.ac/tier_small/23.svg"),
   DIAMOND2(24, "https://static.solved.ac/tier_small/24.svg"),
-  DIAMOND1(25, "https://static.solved.ac/tier_small/25.svg");
+  DIAMOND1(25, "https://static.solved.ac/tier_small/25.svg"),
+
+  RUBY5(26, "https://static.solved.ac/tier_small/26.svg"),
+  RUBY4(27, "https://static.solved.ac/tier_small/27.svg"),
+  RUBY3(28, "https://static.solved.ac/tier_small/28.svg"),
+  RUBY2(29, "https://static.solved.ac/tier_small/29.svg"),
+  RUBY1(30, "https://static.solved.ac/tier_small/30.svg");
 
   private final int level;
   private final String imageUrl;
 
+  public static Level findByLevel(int level) {
+    return Arrays.stream(values())
+      .filter(value -> value.level == level)
+      .findFirst()
+      .orElseThrow();
+  }
 }

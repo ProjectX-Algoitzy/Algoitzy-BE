@@ -1,43 +1,72 @@
 package org.example.domain.problem.service;
 
-import static org.example.util.http_request.Url.SOLVED_AC;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import java.util.Objects;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.algorithm.repository.AlgorithmRepository;
+import org.example.domain.problem.Problem;
 import org.example.domain.problem.repository.ProblemRepository;
+import org.example.domain.problem_algorithm.ProblemAlgorithm;
 import org.example.domain.problem_algorithm.repository.ProblemAlgorithmRepository;
-import org.example.util.http_request.HttpRequest;
+import org.example.schedule.solved_ac.SolvedAcClient;
+import org.example.schedule.solved_ac.response.problem.AlgorithmDto;
+import org.example.schedule.solved_ac.response.problem.ProblemDto;
+import org.example.schedule.solved_ac.response.problem.ProblemResponse;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class CreateProblemService {
 
+  private final SolvedAcClient solvedAcClient;
   private final ProblemRepository problemRepository;
+  private final AlgorithmRepository algorithmRepository;
   private final ProblemAlgorithmRepository problemAlgorithmRepository;
+  private static final int NUMBER_PER_PAGE = 50;
+  private static final String QUERY = "";
+  private static final String SORT = "id";
+  private static final String DIRECTION = "asc";
 
-  /**
-   * 백준 문제 크롤링
-   */
-  public void crawlingProblem() {
-    // todo sebin : test code 통해 작업
+  @Async
+  public void createProblem() {
+    try {
+      problemAlgorithmRepository.deleteAll();
+      ProblemResponse initResponse = solvedAcClient.searchProblems(1, QUERY, SORT, DIRECTION);
+      int pageCount = initResponse.getCount() / NUMBER_PER_PAGE + 1;
 
-    // 1. solvedac에서 문제 list 크롤링 -> 반복문으로 페이지에 문제 없을때까지 && 이미 저장한 페이지 이후부터
-    String jsonString = HttpRequest.getRequest(SOLVED_AC.getSolvedAcPage(1), String.class).getBody();
-    JsonObject jsonObject = JsonParser.parseString(Objects.requireNonNull(jsonString)).getAsJsonObject();
-    JsonArray problemArray = jsonObject.getAsJsonArray("items");
-    log.info("problemArray = " + problemArray);
+      for (int page = 1; page <= pageCount; page++) {
+        log.info("{}번 페이지 문제 저장", page);
+        ProblemResponse problemResponse = solvedAcClient.searchProblems(page, QUERY, SORT, DIRECTION);
 
-    // 2. DB problem 테이블에 저장 -> 백준 문제 번호, 문제 이름, 난이도(json에서 level을 통해 Level enum 으로 변환 후 저장) 저장
+        // Level 미할당 문제 제거
+        List<ProblemDto> problemDtoList = problemResponse.getProblemList()
+          .stream()
+          .filter(problem -> problem.getLevel() != 0)
+          .toList();
 
-    // 3. DB problem_algorithm 테이블에 알고리즘 유형 저장 -> json에서 tags 참조
+        for (ProblemDto problemDto : problemDtoList) {
+          Problem problem = problemRepository.save(problemDto.toEntity());
 
-    // 4. 크롤링했던 마지막 페이지를 저장하기 위한 테이블과 갱신 로직 필요
-
+          // 문제 알고리즘 매핑
+          for (AlgorithmDto algorithmDto : problemDto.getAlgorithmList()) {
+            algorithmRepository.findById(algorithmDto.getName())
+              .ifPresent(algorithm ->
+                problemAlgorithmRepository.save(
+                  ProblemAlgorithm.builder()
+                    .problem(problem)
+                    .algorithm(algorithm)
+                    .build()
+                )
+              );
+          }
+        }
+      }
+    } catch (Exception e) {
+      log.error("SolveAc 문제 저장 중 오류 발생 : {}", e.getMessage());
+    }
   }
 }

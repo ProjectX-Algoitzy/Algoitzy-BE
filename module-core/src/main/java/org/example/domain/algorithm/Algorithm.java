@@ -3,8 +3,6 @@ package org.example.domain.algorithm;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -27,15 +25,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Algorithm {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @Column(unique = true, nullable = false)
-  @Comment("유형 한글명")
-  private String koreanName;
-
   @Comment("유형 영어명")
   private String englishName;
+
+  @Comment("유형 한글명")
+  private String koreanName;
 
   @CreatedDate
   @Column(updatable = false)
@@ -51,8 +45,8 @@ public class Algorithm {
   private String updatedBy;
 
   @Builder
-  public Algorithm(String koreanName, String englishName) {
-    this.koreanName = koreanName;
+  public Algorithm(String englishName, String koreanName) {
     this.englishName = englishName;
+    this.koreanName = koreanName;
   }
 }
