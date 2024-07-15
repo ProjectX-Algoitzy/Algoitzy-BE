@@ -1,6 +1,7 @@
 package org.example.domain.attendance;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.study_member.StudyMember;
 import org.example.domain.week.Week;
 import org.hibernate.annotations.Comment;
@@ -43,15 +45,18 @@ public class Attendance {
   @JoinColumn(name = "week_id")
   private Week week;
 
-  @Column(nullable = false)
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
   @Comment("문제 할당량 충족 여부")
   private Boolean problemYN;
 
-  @Column(nullable = false)
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
   @Comment("블로그 포스팅 여부")
   private Boolean blogYN;
 
-  @Column(nullable = false)
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
   @Comment("모의테스트 참여 여부")
   private Boolean workbookYN;
 
@@ -70,10 +75,11 @@ public class Attendance {
   private String updatedBy;
 
   @Builder
-  public Attendance(StudyMember studyMember, Week week, Boolean problemYN, Boolean blogYN) {
+  public Attendance(StudyMember studyMember, Week week, Boolean problemYN, Boolean blogYN, Boolean workbookYN) {
     this.studyMember = studyMember;
     this.week = week;
     this.problemYN = problemYN;
     this.blogYN = blogYN;
+    this.workbookYN = workbookYN;
   }
 }

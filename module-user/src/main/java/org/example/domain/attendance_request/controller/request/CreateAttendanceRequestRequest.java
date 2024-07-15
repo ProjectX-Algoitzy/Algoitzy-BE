@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import java.util.List;
 import org.example.util.ArrayUtils;
+import org.springframework.util.ObjectUtils;
 
 @Schema(description = "출석 요청 생성 요청 객체")
 public record CreateAttendanceRequestRequest(
@@ -21,6 +22,8 @@ public record CreateAttendanceRequestRequest(
   @AssertTrue(message = "전체 URL을 입력해주세요.")
   @Schema(hidden = true)
   private boolean getProblemUrlListValidate() {
+    if (ObjectUtils.isEmpty(problemUrlList)) return true;
+
     return problemUrlList.stream()
       .allMatch(problemUrl -> problemUrl.contains("www.")) && blogUrl.contains("www.");
   }
