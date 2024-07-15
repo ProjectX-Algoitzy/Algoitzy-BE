@@ -15,4 +15,5 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> 
   List<StudyMember> findAllByMember(Member member);
 
   Optional<StudyMember> findByMemberAndStatus(Member member, StudyMemberStatus status);
+  List<StudyMember> findAllByStudyIdAndStatus(Long studyId, StudyMemberStatus status);
 }
