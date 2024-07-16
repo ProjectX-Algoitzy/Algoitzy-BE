@@ -71,4 +71,11 @@ public class StudyService {
   public ListAttendanceResponse getAttendanceList(Long studyId) {
     return detailStudyService.getAttendanceList(studyId);
   }
+
+  /**
+   * 나의 스터디 목록 조회
+   */
+  public ListStudyResponse getMyStudyList() {
+    return listStudyService.getMyStudyList();
+  }
 }

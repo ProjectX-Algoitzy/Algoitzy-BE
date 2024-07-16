@@ -38,4 +38,13 @@ public class ListStudyService {
       .studyList(listStudyRepository.getStudyList(StudyType.REGULAR))
       .build();
   }
+
+  /**
+   * 나의 스터디 목록 조회
+   */
+  public ListStudyResponse getMyStudyList() {
+    return ListStudyResponse.builder()
+      .studyList(listStudyRepository.getStudyList(null))
+      .build();
+  }
 }
