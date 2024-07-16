@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "작성한 주관식 문항 상세 응답 객체")
 public class DetailTextAnswerDto {
 
+  @Schema(description = "주관식 문항 ID")
+  private long textQuestionId;
+
   @Schema(description = "문항 내용")
   private String question;
 
@@ -18,4 +21,6 @@ public class DetailTextAnswerDto {
   @Schema(description = "답변")
   private String text;
 
+  @Schema(description = "문항 번호")
+  private int sequence;
 }

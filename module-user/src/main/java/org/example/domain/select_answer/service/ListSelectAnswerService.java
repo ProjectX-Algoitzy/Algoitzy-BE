@@ -46,17 +46,19 @@ public class ListSelectAnswerService {
       // 선택한 필드라면 isSelected true
       List<DetailSelectAnswerFieldDto> selectAnswerFieldDtoList = fieldList.stream()
         .map(field -> DetailSelectAnswerFieldDto.builder()
+          .fieldId(field.getId())
           .context(field.getContext())
           .isSelected(selectFieldList.contains(field))
           .build()
         ).toList();
 
       selectAnswerList.add(DetailSelectAnswerDto.builder()
-        .question(selectQuestion.getQuestion())
-        .isRequired(selectQuestion.getIsRequired())
-        .isMultiSelect(selectQuestion.getIsMultiSelect())
-        .selectAnswerFieldList(selectAnswerFieldDtoList)
-        .build()
+          .selectQuestionId(selectQuestion.getId())
+          .question(selectQuestion.getQuestion())
+          .isRequired(selectQuestion.getIsRequired())
+          .isMultiSelect(selectQuestion.getIsMultiSelect())
+          .selectAnswerFieldList(selectAnswerFieldDtoList)
+          .build()
       );
     }
 

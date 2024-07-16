@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "객관식 문항 필드 상세 응답 객체")
 public class DetailSelectAnswerFieldDto {
 
+  @Schema(description = "필드 ID")
+  private long fieldId;
+
   @Schema(description = "필드 내용")
   private String context;
 

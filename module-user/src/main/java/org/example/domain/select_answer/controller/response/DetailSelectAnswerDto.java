@@ -17,6 +17,9 @@ import org.example.domain.select_answer_field.controller.response.DetailSelectAn
 @Schema(description = "작성한 객관식 문항 상세 응답 객체")
 public class DetailSelectAnswerDto {
 
+  @Schema(description = "객관식 문항 ID")
+  private long selectQuestionId;
+
   @Schema(description = "문항 내용")
   private String question;
 
