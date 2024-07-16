@@ -53,7 +53,8 @@ public class ListAnswerRepository {
       .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
         study.generation.value.eq(request.generation()),
-        statusEq(request.status())
+        statusEq(request.status()),
+        answer.confirmYN.isTrue()
       )
       .offset(request.pageRequest().getOffset())
       .limit(request.pageRequest().getPageSize())

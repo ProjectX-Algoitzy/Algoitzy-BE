@@ -34,7 +34,8 @@ public class DetailAnswerRepository {
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
       .where(
-        answer.id.eq(answerId)
+        answer.id.eq(answerId),
+        answer.confirmYN.isTrue()
       )
       .fetchOne();
   }
