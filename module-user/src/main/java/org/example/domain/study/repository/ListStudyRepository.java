@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.study.controller.response.ListStudyDto;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.enums.StudyMemberRole;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -25,6 +26,11 @@ public class ListStudyRepository {
    * 스터디 목록 조회
    */
   public List<ListStudyDto> getStudyList(StudyType studyType) {
+    Integer maxGeneration = queryFactory
+      .select(generation.value.max())
+      .from(generation)
+      .fetchOne();
+
     return queryFactory
       .select(Projections.fields(ListStudyDto.class,
           study.id.as("studyId"),
@@ -47,7 +53,7 @@ public class ListStudyRepository {
                 studyMember.role.eq(StudyMemberRole.LEADER)
               )
             , "leaderProfileUrl"),
-        Expressions.as(
+          Expressions.as(
             JPAExpressions
               .select(studyMember.member.name)
               .from(studyMember)
@@ -60,9 +66,15 @@ public class ListStudyRepository {
         )
       )
       .from(study)
+      .leftJoin(studyMember).on(studyMember.study.eq(study))
+      .innerJoin(generation).on(study.generation.eq(generation))
       .where(
-        study.type.eq(studyType)
+        generation.value.eq(maxGeneration),
+        (studyType == null) ?
+          studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail()) // 나의 스터디
+          : study.type.eq(studyType)
       )
+      .groupBy(study)
       .orderBy(study.createdTime.desc())
       .fetch();
   }

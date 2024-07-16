@@ -100,4 +100,11 @@ public class StudyController {
     return ApiResponse.onSuccess(studyService.getAttendanceList(studyId));
   }
 
+  /************* 나의 스터디 *************/
+
+  @GetMapping("/my")
+  @Operation(summary = "나의 스터디 목록 조회")
+  public ApiResponse<ListStudyResponse> getMyStudyList() {
+    return ApiResponse.onSuccess(studyService.getMyStudyList());
+  }
 }

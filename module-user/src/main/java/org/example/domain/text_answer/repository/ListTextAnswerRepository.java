@@ -22,10 +22,13 @@ public class ListTextAnswerRepository {
    */
   public List<DetailTextAnswerDto> getTextAnswerList(Long answerId) {
     return queryFactory
-      .select(Projections.fields(DetailTextAnswerDto.class,
+      .select(Projections.fields(
+          DetailTextAnswerDto.class,
+          textQuestion.id.as("textQuestionId"),
           textQuestion.question,
           textQuestion.isRequired,
-          textAnswer.text
+          textAnswer.text,
+          textQuestion.sequence
         )
       )
       .from(textAnswer)

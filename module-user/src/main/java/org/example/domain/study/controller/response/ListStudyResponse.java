@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "자율 스터디 목록 응답 객체")
+@Schema(description = "스터디 목록 응답 객체")
 public class ListStudyResponse {
 
   @Default
