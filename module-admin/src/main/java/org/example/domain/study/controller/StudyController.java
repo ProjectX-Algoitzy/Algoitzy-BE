@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
+import org.example.domain.attendance.service.AttendanceService;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.study.controller.request.CreateRegularStudyRequest;
@@ -28,6 +29,7 @@ public class StudyController {
 
   private final StudyService studyService;
   private final CurriculumService curriculumService;
+  private final AttendanceService attendanceService;
 
   @GetMapping("/{study-id}")
   @Operation(summary = "자율 스터디 상세 조회")
@@ -81,6 +83,6 @@ public class StudyController {
   public ApiResponse<ListAttendanceResponse> getAttendanceList(
     @PathVariable("study-id") Long studyId
   ) {
-    return ApiResponse.onSuccess(studyService.getAttendanceList(studyId));
+    return ApiResponse.onSuccess(attendanceService.getAttendanceList(studyId));
   }
 }
