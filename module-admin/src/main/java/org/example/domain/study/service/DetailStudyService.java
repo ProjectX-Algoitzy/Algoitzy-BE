@@ -3,7 +3,6 @@ package org.example.domain.study.service;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.study.Study;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
@@ -52,14 +51,5 @@ public class DetailStudyService {
     }
 
     return coreStudyService.findById(studyId).getContent();
-  }
-
-  public ListAttendanceResponse getAttendanceList(Long studyId) {
-    Study study = coreStudyService.findById(studyId);
-    if (study.getType().equals(StudyType.TEMP)) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디가 아닙니다.");
-    }
-
-    return null;
   }
 }
