@@ -23,6 +23,9 @@ public class DetailSelectAnswerDto {
   @Schema(description = "문항 내용")
   private String question;
 
+  @Schema(description = "문항 번호")
+  private int sequence;
+
   @Schema(description = "필수 여부")
   private boolean isRequired;
 

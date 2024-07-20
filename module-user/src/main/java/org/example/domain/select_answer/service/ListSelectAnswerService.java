@@ -55,6 +55,7 @@ public class ListSelectAnswerService {
       selectAnswerList.add(DetailSelectAnswerDto.builder()
           .selectQuestionId(selectQuestion.getId())
           .question(selectQuestion.getQuestion())
+          .sequence(selectQuestion.getSequence())
           .isRequired(selectQuestion.getIsRequired())
           .isMultiSelect(selectQuestion.getIsMultiSelect())
           .selectAnswerFieldList(selectAnswerFieldDtoList)
