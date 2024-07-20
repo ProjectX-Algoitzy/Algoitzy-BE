@@ -40,6 +40,8 @@ public class SmsService {
 
   private static final int MAX_REQUESTS_PER_DAY = 2;
 
+  private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+
   public boolean isAllowedToSendSmS(CertificationPhoneNumberRequest request, String ipAddress) {
 
     if (tryConsumeBucket(ipAddress)) {
@@ -71,8 +73,6 @@ public class SmsService {
   }
 
   private boolean tryConsumeBucket(String ipAddress) {
-
-    Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
     // 해당 IP 주소에 대한 Bucket 가져오기
     Bucket bucket = buckets.computeIfAbsent(ipAddress, key -> {
