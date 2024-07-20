@@ -2,6 +2,7 @@ package org.example.sms.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
@@ -22,8 +23,10 @@ public class SmsController {
 
   @PostMapping("/certification")
   @Operation(summary = "SMS 인증코드 전송")
-  public ApiResponse<Void> sendCertificationPhoneNumber(@RequestBody @Valid CertificationPhoneNumberRequest request) {
-    smsService.sendCertificationPhoneNumber(request);
+  public ApiResponse<Void> sendCertificationPhoneNumber(
+      @RequestBody @Valid CertificationPhoneNumberRequest request,
+      HttpServletRequest httpServletRequest) {
+    smsService.sendCertificationPhoneNumber(request, httpServletRequest.getRemoteAddr());
     return ApiResponse.onSuccess();
   }
 }
