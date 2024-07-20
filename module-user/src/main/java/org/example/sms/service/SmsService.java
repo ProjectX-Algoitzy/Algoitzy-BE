@@ -38,21 +38,18 @@ public class SmsService {
   private String fromNumber;
   private final StringRedisTemplate redisTemplate;
 
-  private static final int MAX_REQUESTS_PER_DAY = 2;
+  private static final int MAX_REQUESTS_PER_DAY = 5;
 
   private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-  public boolean isAllowedToSendSmS(CertificationPhoneNumberRequest request, String ipAddress) {
-
-    if (tryConsumeBucket(ipAddress)) {
-      sendCertificationPhoneNumber(request);
-      return true;
-    } else {
+  public void sendCertificationPhoneNumber(CertificationPhoneNumberRequest request, String ipAddress) {
+    if (!tryConsumeBucket(ipAddress)) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "SMS 인증 요청 횟수를 초과하였습니다.");
     }
+    sendCertificationSms(request);
   }
 
-  private void sendCertificationPhoneNumber(CertificationPhoneNumberRequest request) {
+  private void sendCertificationSms(CertificationPhoneNumberRequest request) {
     Message message = new Message(apiKey, apiSecret);
 
     String code = RandomUtils.getRandomNumber();
@@ -73,7 +70,6 @@ public class SmsService {
   }
 
   private boolean tryConsumeBucket(String ipAddress) {
-
     // 해당 IP 주소에 대한 Bucket 가져오기
     Bucket bucket = buckets.computeIfAbsent(ipAddress, key -> {
       Bandwidth limit = Bandwidth.classic(MAX_REQUESTS_PER_DAY, Refill.intervally(MAX_REQUESTS_PER_DAY, Duration.ofDays(1)));
@@ -82,7 +78,6 @@ public class SmsService {
           .build();
     });
 
-    // 토큰 소비 시도
     return bucket.tryConsume(1);
   }
 

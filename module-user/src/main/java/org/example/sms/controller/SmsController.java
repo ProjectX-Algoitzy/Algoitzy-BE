@@ -23,11 +23,10 @@ public class SmsController {
 
   @PostMapping("/certification")
   @Operation(summary = "SMS 인증코드 전송")
-  public ApiResponse<Boolean> sendCertificationPhoneNumber(@RequestBody @Valid CertificationPhoneNumberRequest request,
+  public ApiResponse<Void> sendCertificationPhoneNumber(
+      @RequestBody @Valid CertificationPhoneNumberRequest request,
       HttpServletRequest httpServletRequest) {
-    String ipAddress = httpServletRequest.getRemoteAddr();
-    return ApiResponse.onSuccess(smsService.isAllowedToSendSmS(request, ipAddress));
+    smsService.sendCertificationPhoneNumber(request, httpServletRequest.getRemoteAddr());
+    return ApiResponse.onSuccess();
   }
 }
-
-
