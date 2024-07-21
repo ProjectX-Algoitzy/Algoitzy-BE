@@ -19,6 +19,9 @@ import org.example.domain.text_answer.controller.response.DetailTextAnswerDto;
 @Schema(description = "작성한 지원서 상세 응답 객체")
 public class DetailAnswerResponse {
 
+  @Schema(description = "지원서 ID")
+  private Long applicationId;
+
   @Schema(description = "답변 ID")
   private Long answerId;
 

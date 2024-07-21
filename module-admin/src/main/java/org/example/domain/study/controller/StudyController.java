@@ -10,11 +10,13 @@ import org.example.domain.attendance.service.AttendanceService;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.study.controller.request.CreateRegularStudyRequest;
+import org.example.domain.study.controller.request.UpdateRegularStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListRegularStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +52,14 @@ public class StudyController {
   public ApiResponse<Void> createRegularStudy(
     @RequestBody @Valid CreateRegularStudyRequest request) {
     studyService.createRegularStudy(request);
+    return ApiResponse.onCreate();
+  }
+
+  @PatchMapping
+  @Operation(summary = "정규 스터디 수정")
+  public ApiResponse<Void> updateRegularStudy(
+    @RequestBody @Valid UpdateRegularStudyRequest request) {
+    studyService.updateRegularStudy(request);
     return ApiResponse.onCreate();
   }
 

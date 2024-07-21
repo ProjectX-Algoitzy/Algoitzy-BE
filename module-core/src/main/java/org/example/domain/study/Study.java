@@ -80,6 +80,12 @@ public class Study {
     this.generation = generation;
   }
 
+  public void update(String profileUrl, String name, String content) {
+    this.name = name;
+    this.profileUrl = profileUrl;
+    this.content = content;
+  }
+
   public void renewGeneration(Generation generation) {
     this.generation = generation;
   }
