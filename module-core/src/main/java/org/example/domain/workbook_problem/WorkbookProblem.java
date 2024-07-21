@@ -1,6 +1,5 @@
-package org.example.domain.workbook;
+package org.example.domain.workbook_problem;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -10,19 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.institution.Institution;
-import org.example.domain.study.Study;
-import org.example.domain.week.Week;
-import org.example.domain.workbook_problem.WorkbookProblem;
+import org.example.domain.problem.Problem;
+import org.example.domain.workbook.Workbook;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -34,26 +28,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Workbook {
+public class WorkbookProblem {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToMany(mappedBy = "workbook", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<WorkbookProblem> workbookProblemList = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "workbook_id")
+  private Workbook workbook;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "study_id")
-  private Study study;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "institution_id")
-  private Institution institution;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "week_id")
-  private Week week;
+  @JoinColumn(name = "problem_id")
+  private Problem problem;
 
   @CreatedDate
   @Column(updatable = false)
@@ -70,9 +57,8 @@ public class Workbook {
   private String updatedBy;
 
   @Builder
-  public Workbook(Study study, Institution institution, Week week) {
-    this.study = study;
-    this.institution = institution;
-    this.week = week;
+  public WorkbookProblem(Workbook workbook, Problem problem) {
+    this.workbook = workbook;
+    this.problem = problem;
   }
 }
