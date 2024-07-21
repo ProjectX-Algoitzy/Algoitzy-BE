@@ -27,6 +27,9 @@ public class RegularStudyInfoResponse {
   @Schema(description = "지원서 ID")
   long applicationId;
 
+  @Schema(description = "답변 ID")
+  Long answerId;
+
   @Schema(description = "지원서 작성 여부")
   boolean answerYN;
 

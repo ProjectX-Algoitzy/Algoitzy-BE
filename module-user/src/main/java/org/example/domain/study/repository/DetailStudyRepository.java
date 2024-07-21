@@ -102,6 +102,15 @@ public class DetailStudyRepository {
           , "applicationId"),
         Expressions.as(
           JPAExpressions
+            .select(answer.id)
+            .from(answer)
+            .where(
+              answer.application.study.eq(study),
+              answer.createdBy.eq(SecurityUtils.getCurrentMemberEmail())
+            )
+          , "answerId"),
+        Expressions.as(
+          JPAExpressions
             .select()
             .from(answer)
             .where(
