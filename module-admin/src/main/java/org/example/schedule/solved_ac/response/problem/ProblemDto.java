@@ -30,6 +30,10 @@ public class ProblemDto {
   @Schema(description = "백준 문제 난이도")
   private int level;
 
+  @Schema(description = "푼 사람 수")
+  @JsonProperty("acceptedUserCount")
+  private int solvedCount;
+
   @Schema(description = "지원 언어 목록")
   @JsonProperty("titles")
   private List<LanguageDto> languageList;
@@ -47,6 +51,7 @@ public class ProblemDto {
       .number(this.getNumber())
       .name(this.getName())
       .level(Level.findByLevel(this.getLevel()))
+      .solvedCount(this.getSolvedCount())
       .languageList(languageList)
       .build();
   }

@@ -43,6 +43,9 @@ public class Problem {
   @Comment("난이도")
   private Level level;
 
+  @Comment("푼 사람 수")
+  private Integer solvedCount;
+
   @Convert(converter = StringListToStringConverter.class)
   @Comment("지원하는 언어 목록")
   private List<String> languageList;
@@ -63,10 +66,11 @@ public class Problem {
 
 
   @Builder
-  public Problem(Integer number, String name, Level level, List<String> languageList) {
+  public Problem(Integer number, String name, Level level, Integer solvedCount, List<String> languageList) {
     this.number = number;
     this.name = name;
     this.level = level;
+    this.solvedCount = solvedCount;
     this.languageList = languageList;
   }
 }
