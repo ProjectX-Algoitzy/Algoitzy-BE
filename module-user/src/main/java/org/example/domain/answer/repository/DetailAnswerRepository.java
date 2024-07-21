@@ -23,6 +23,7 @@ public class DetailAnswerRepository {
   public DetailAnswerResponse getAnswer(Long answerId) {
     return queryFactory
       .select(Projections.fields(DetailAnswerResponse.class,
+          application.id.as("applicationId"),
           answer.id.as("answerId"),
           application.title,
           study.name.as("studyName"),
