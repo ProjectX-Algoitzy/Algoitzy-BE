@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.domain.institution.Institution;
 import org.example.domain.study.Study;
 import org.example.domain.week.Week;
@@ -40,6 +41,7 @@ public class Workbook {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Setter
   @OneToMany(mappedBy = "workbook", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<WorkbookProblem> workbookProblemList = new ArrayList<>();
 
