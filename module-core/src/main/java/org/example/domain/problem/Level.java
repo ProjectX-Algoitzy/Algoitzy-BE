@@ -1,6 +1,7 @@
 package org.example.domain.problem;
 
 import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 
@@ -52,5 +53,11 @@ public enum Level {
       .filter(value -> value.level == level)
       .findFirst()
       .orElseThrow();
+  }
+
+  public static List<Level> findByLevel(int minLevel, int maxLevel) {
+    return Arrays.stream(values())
+      .filter(value -> minLevel <= value.level && value.level <= maxLevel)
+      .toList();
   }
 }
