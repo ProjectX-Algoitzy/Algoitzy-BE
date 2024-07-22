@@ -82,4 +82,12 @@ public class Attendance {
     this.blogYN = blogYN;
     this.workbookYN = workbookYN;
   }
+
+  public int getAbsentCount() {
+    int absentCount = 3;
+    if (this.problemYN) absentCount--;
+    if (this.blogYN) absentCount--;
+    if (this.workbookYN) absentCount--;
+    return absentCount;
+  }
 }

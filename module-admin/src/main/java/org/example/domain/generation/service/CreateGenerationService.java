@@ -5,20 +5,26 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.application.Application;
 import org.example.domain.application.repository.ApplicationRepository;
 import org.example.domain.application.service.CreateApplicationService;
+import org.example.domain.attendance.Attendance;
 import org.example.domain.curriculum.Curriculum;
 import org.example.domain.curriculum.repository.CurriculumRepository;
 import org.example.domain.generation.Generation;
 import org.example.domain.generation.controller.request.RenewGenerationRequest;
 import org.example.domain.generation.repository.GenerationRepository;
+import org.example.domain.member.repository.MemberRepository;
 import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.repository.ListStudyRepository;
 import org.example.domain.study.repository.StudyRepository;
+import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.enums.StudyMemberStatus;
+import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.domain.week.Week;
 import org.example.domain.week.controller.request.WeekDto;
 import org.example.domain.week.repository.WeekRepository;
@@ -26,17 +32,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class CreateGenerationService {
 
   private final CreateApplicationService createApplicationService;
+  private final StudyMemberRepository studyMemberRepository;
   private final GenerationRepository generationRepository;
   private final WeekRepository weekRepository;
   private final ListStudyRepository listStudyRepository;
   private final StudyRepository studyRepository;
   private final CurriculumRepository curriculumRepository;
   private final ApplicationRepository applicationRepository;
+  private final MemberRepository memberRepository;
+
+  private static final int ALL_FIELD_COUNT = 3; // 필드 수(문제 할당량, 블로그 포스팅, 모의테스트 참여 여부)
+  private static final int HALF_ATTENDANCE_FIELD_COUNT = 12; // (필드 3개 X 8주) / 2
+  private static final int MAX_ABSENT_WEEK_COUNT = 3; // 블랙리스트 삽입 미참여 주차 기준
 
   /**
    * 🚫기수 갱신🚫
@@ -72,6 +85,7 @@ public class CreateGenerationService {
     }
 
     // 정규 스터디 복사
+    memberRepository.initBlockYN();
     List<Study> regularStudyList = listStudyRepository.getOldGenerationStudyList(StudyType.REGULAR);
     for (Study oldStudy : regularStudyList) {
       Study newStudy = Study.builder()
@@ -101,8 +115,25 @@ public class CreateGenerationService {
         .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "해당 스터디의 지원서가 존재하지 않습니다."));
       createApplicationService.renewApplication(newStudy, oldApplication);
 
-      // todo 출석부 로직 구현 후 블랙리스트 삽입
+      // 출석률 50% 미만 or 3주 연속 미출석 시 기수 참여 제한
+      List<StudyMember> studyMemberList = studyMemberRepository.findAllByStudyIdAndStatus(oldStudy.getId(), StudyMemberStatus.PASS);
+      for (StudyMember studyMember : studyMemberList) {
 
+        int absentWeekCount = 0; // 주차 연속 미참여 수
+        int absentFieldCount = 0; // 특정 활동 미참여 수
+        for (Attendance attendance : studyMember.getAttendanceList()) {
+          int absentCount = attendance.getAbsentCount();
+          absentWeekCount = (absentCount == ALL_FIELD_COUNT) ? absentWeekCount + 1 : 0;
+          absentFieldCount += absentCount;
+          if (absentWeekCount >= MAX_ABSENT_WEEK_COUNT || absentFieldCount > HALF_ATTENDANCE_FIELD_COUNT) {
+            log.info("{} : {}(연속 미참여 주차 수 : {}, 미참여 활동 수 : {}) 기수 참여 제한",
+              studyMember.getStudy().getName(), studyMember.getMember().getName(),
+              absentWeekCount, absentFieldCount);
+            studyMember.getMember().updateBlockYN(true);
+            break;
+          }
+        }
+      }
 
       oldStudy.markOldGeneration(oldGeneration);
     }

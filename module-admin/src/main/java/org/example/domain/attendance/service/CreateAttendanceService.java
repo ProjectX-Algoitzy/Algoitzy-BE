@@ -86,28 +86,30 @@ public class CreateAttendanceService {
         if (optionalAttendanceRequest.isPresent()) {
           AttendanceRequest attendanceRequest = optionalAttendanceRequest.get();
           int requestCount = listAttendanceRequestProblemRepository.getRequestCount(attendanceRequest);
-          attendanceList.add(
-            Attendance.builder()
-              .studyMember(studyMember)
-              .week(lastWeek)
-              .problemYN(getProblemYN(studyMember, requestCount))
-              .blogYN(StringUtils.hasText(attendanceRequest.getBlogUrl()))
-              .workbookYN(getWorkbookYN(lastWeek, studyMember))
-              .build()
-          );
+          Attendance attendance = Attendance.builder()
+            .studyMember(studyMember)
+            .week(lastWeek)
+            .problemYN(getProblemYN(studyMember, requestCount))
+            .blogYN(StringUtils.hasText(attendanceRequest.getBlogUrl()))
+            .workbookYN(getWorkbookYN(lastWeek, studyMember))
+            .build();
+          attendanceList.add(attendance);
+          // 양방향
+          studyMember.getAttendanceList().add(attendance);
           continue;
         }
 
         // 미인증 회원
-        attendanceList.add(
-          Attendance.builder()
-            .studyMember(studyMember)
-            .week(lastWeek)
-            .problemYN(getProblemYN(studyMember, 0))
-            .blogYN(false)
-            .workbookYN(getWorkbookYN(lastWeek, studyMember))
-            .build()
-        );
+        Attendance attendance = Attendance.builder()
+          .studyMember(studyMember)
+          .week(lastWeek)
+          .problemYN(getProblemYN(studyMember, 0))
+          .blogYN(false)
+          .workbookYN(getWorkbookYN(lastWeek, studyMember))
+          .build();
+        attendanceList.add(attendance);
+        // 양방향
+        studyMember.getAttendanceList().add(attendance);
 
       }
 
