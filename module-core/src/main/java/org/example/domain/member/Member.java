@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.config.jpa.CryptoConverter;
 import org.example.domain.member.enums.Role;
 import org.hibernate.annotations.Comment;
@@ -69,6 +70,11 @@ public class Member {
   @Comment("역할")
   private Role role;
 
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  @Comment("기수 참여 제한 여부")
+  private Boolean blockYN;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -96,5 +102,9 @@ public class Member {
 
   public void updateRole(Role role) {
     this.role = role;
+  }
+
+  public void updateBlockYN(Boolean blockYN) {
+    this.blockYN = blockYN;
   }
 }
