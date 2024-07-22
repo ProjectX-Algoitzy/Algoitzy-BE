@@ -55,11 +55,12 @@ public class StudyController {
     return ApiResponse.onCreate();
   }
 
-  @PatchMapping
+  @PatchMapping("/{study-id}")
   @Operation(summary = "정규 스터디 수정")
   public ApiResponse<Void> updateRegularStudy(
+    @PathVariable("study-id") Long studyId,
     @RequestBody @Valid UpdateRegularStudyRequest request) {
-    studyService.updateRegularStudy(request);
+    studyService.updateRegularStudy(studyId, request);
     return ApiResponse.onCreate();
   }
 
