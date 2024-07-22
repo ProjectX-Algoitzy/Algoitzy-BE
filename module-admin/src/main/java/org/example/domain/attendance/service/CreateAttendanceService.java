@@ -24,6 +24,7 @@ import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.domain.week.Week;
 import org.example.domain.week.repository.DetailWeekRepository;
 import org.example.domain.workbook.enums.CodingTestBasicWorkbook;
+import org.example.domain.workbook_problem.repository.ListWorkbookProblemRepository;
 import org.example.util.ValueUtils;
 import org.example.util.http_request.Url;
 import org.openqa.selenium.By;
@@ -45,6 +46,7 @@ public class CreateAttendanceService {
   private final DetailWeekRepository detailWeekRepository;
   private final ListAttendanceRequestProblemRepository listAttendanceRequestProblemRepository;
   private final ListStudyRepository listStudyRepository;
+  private final ListWorkbookProblemRepository listWorkbookProblemRepository;
   private final StudyMemberRepository studyMemberRepository;
   private final AttendanceRequestRepository attendanceRequestRepository;
   private final AttendanceRepository attendanceRepository;
@@ -67,6 +69,7 @@ public class CreateAttendanceService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, lastWeek.getValue() + "주차 출석부가 이미 갱신되었습니다.");
     }
 
+    log.info("{}주차 출석부 갱신 시작", lastWeek.getValue());
     // 스터디 순회
     List<ListRegularStudyDto> regularStudyList = listStudyRepository.getRegularStudyList();
     for (ListRegularStudyDto study : regularStudyList) {
@@ -111,12 +114,12 @@ public class CreateAttendanceService {
       attendanceRepository.saveAll(attendanceList);
     }
 
-    webDriver.quit();
   }
 
   /**
    * 백준 지난 주 해결한 문제 수 크롤링
    *
+   * @param requestCount 백준 외 플랫폼 문제 풀이 수
    * @rect : 유저 페이지 달력 영역
    * @google-visualization-tooltip : 해결 일자, 해결 수 툴팁
    */
@@ -152,9 +155,9 @@ public class CreateAttendanceService {
       }
     }
 
-    // 백준 풀이 수 + 이외 플랫폼(코드트리, 프로그래머스 등) 풀이 수
-    // todo workbook 제외
-    int solvedCount = count + requestCount - WORKBOOK_MIN_REQUEST_COUNT;
+    // 백준 풀이 수 + requestCount
+    int solvedCount = count + requestCount;
+    log.info("{} 문제 풀이 수 : {}", studyMember.getMember().getName(), solvedCount);
     return switch (studyMember.getStudy().getName()) {
       case ValueUtils.CODING_TEST_PREPARE -> solvedCount >= CODING_TEST_PREPARE_MIN_REQUEST_COUNT;
       case ValueUtils.CODING_TEST_BASIC -> solvedCount >= CODING_TEST_BASIC_MIN_REQUEST_COUNT;
@@ -165,35 +168,38 @@ public class CreateAttendanceService {
   /**
    * 백준 해결한 문제 번호 크롤링
    *
-   * @u-solved : 유저 페이지 달력 영역
+   * @u-solved : 맞힌 문제 수 선택자
    * @.problem-list a : 문제 번호 선택자
    */
   private Boolean getWorkbookYN(Week week, StudyMember studyMember) {
+    webDriver.get(Url.BAEKJOON_USER.getBaekjoonUserUrl(studyMember.getMember().getHandle()));
+
+    // 맞힌 문제 개수로 제한
+    int limitCount = Integer.parseInt(webDriver.findElement(By.id("u-solved")).getText());
+    List<Integer> problemNumberList = webDriver.findElements(By.cssSelector(".problem-list a"))
+      .stream()
+      .map(problemNumber -> Integer.parseInt(problemNumber.getText()))
+      .limit(limitCount)
+      .toList();
+
+    int solvedCount = 0;
     switch (studyMember.getStudy().getName()) {
-      case ValueUtils.CODING_TEST_PREPARE:
-        // todo workbook 자동생성 후 로직 추가
-        break;
-      case ValueUtils.CODING_TEST_BASIC:
-        webDriver.get(Url.BAEKJOON_USER.getBaekjoonUserUrl(studyMember.getMember().getHandle()));
-
-        // 맞힌 문제 개수로 제한
-        int limitCount = Integer.parseInt(webDriver.findElement(By.id("u-solved")).getText());
-        List<Integer> problemNumberList = webDriver.findElements(By.cssSelector(".problem-list a"))
-          .stream()
-          .map(problemNumber -> Integer.parseInt(problemNumber.getText()))
-          .limit(limitCount)
-          .toList();
-
-        int solvedCount = 0;
+      case ValueUtils.CODING_TEST_PREPARE -> {
+        List<Integer> workbookProblemList = listWorkbookProblemRepository.getWorkbookProblemList(week, studyMember.getStudy());
+        for (Integer problemNumber : workbookProblemList) {
+          if (problemNumberList.contains(problemNumber)) solvedCount++;
+        }
+      }
+      case ValueUtils.CODING_TEST_BASIC -> {
         CodingTestBasicWorkbook workbook = CodingTestBasicWorkbook.findByWeek(week.getValue());
         for (Integer problemNumber : workbook.problemNumberList) {
           if (problemNumberList.contains(problemNumber)) solvedCount++;
         }
-
-        return solvedCount >= WORKBOOK_MIN_REQUEST_COUNT;
+      }
     }
 
-    return true;
+    log.info("{} 모의테스트 풀이 수 : {}", studyMember.getMember().getName(), solvedCount);
+    return solvedCount >= WORKBOOK_MIN_REQUEST_COUNT;
   }
 
 }
