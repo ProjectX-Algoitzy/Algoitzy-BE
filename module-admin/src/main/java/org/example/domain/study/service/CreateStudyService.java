@@ -49,8 +49,8 @@ public class CreateStudyService {
   /**
    * 정규 스터디 수정
    */
-  public void updateRegularStudy(UpdateRegularStudyRequest request) {
-    Study study = coreStudyService.findById(request.studyId());
+  public void updateRegularStudy(Long studyId, UpdateRegularStudyRequest request) {
+    Study study = coreStudyService.findById(studyId);
     String profileUrl = (StringUtils.hasText(request.profileUrl())) ? request.profileUrl() : basicStudyImage;
     study.update(profileUrl, request.name(), request.content());
   }

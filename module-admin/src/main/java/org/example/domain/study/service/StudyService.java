@@ -40,8 +40,8 @@ public class StudyService {
   /**
    * 정규 스터디 수정
    */
-  public void updateRegularStudy(UpdateRegularStudyRequest request) {
-    createStudyService.updateRegularStudy(request);
+  public void updateRegularStudy(Long studyId, UpdateRegularStudyRequest request) {
+    createStudyService.updateRegularStudy(studyId, request);
   }
 
   /**
