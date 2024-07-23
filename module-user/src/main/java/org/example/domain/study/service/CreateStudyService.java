@@ -1,12 +1,15 @@
 package org.example.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.generation.repository.GenerationRepository;
 import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.s3_file.service.CoreS3FileService;
 import org.example.domain.study.Study;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
+import org.example.domain.study.controller.request.UpdateStudyRequest;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.repository.StudyRepository;
 import org.example.domain.study_member.StudyMember;
@@ -24,6 +27,7 @@ import org.springframework.util.StringUtils;
 @Transactional
 public class CreateStudyService {
 
+  private final CoreStudyService coreStudyService;
   private final CoreS3FileService coreS3FileService;
   private final CoreMemberService coreMemberService;
   private final StudyRepository studyRepository;
@@ -61,5 +65,18 @@ public class CreateStudyService {
         .build()
     );
 
+  }
+
+  /**
+   * 스터디 수정
+   */
+  public void updateStudy(Long studyId, UpdateStudyRequest request) {
+    Study study = coreStudyService.findById(studyId);
+    if (study.getType().equals(StudyType.REGULAR)) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디는 수정할 수 없습니다.");
+    }
+
+    String profileUrl = (StringUtils.hasText(request.profileUrl())) ? request.profileUrl() : basicStudyImage;
+    study.update(profileUrl, request.name(), request.content());
   }
 }
