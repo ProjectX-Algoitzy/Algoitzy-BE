@@ -10,11 +10,13 @@ import org.example.domain.attendance.service.AttendanceService;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
+import org.example.domain.study.controller.request.UpdateStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,6 +61,15 @@ public class StudyController {
     @PathVariable("study-id") Long studyId
   ) {
     return ApiResponse.onSuccess(studyService.getTempStudy(studyId));
+  }
+
+  @PatchMapping("/{study-id}")
+  @Operation(summary = "스터디 수정")
+  public ApiResponse<Void> updateStudy(
+    @PathVariable("study-id") Long studyId,
+    @RequestBody @Valid UpdateStudyRequest request) {
+    studyService.updateStudy(studyId, request);
+    return ApiResponse.onCreate();
   }
 
   /************* 정규 스터디 *************/

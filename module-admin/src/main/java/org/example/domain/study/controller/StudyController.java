@@ -10,7 +10,7 @@ import org.example.domain.attendance.service.AttendanceService;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.study.controller.request.CreateRegularStudyRequest;
-import org.example.domain.study.controller.request.UpdateRegularStudyRequest;
+import org.example.domain.study.controller.request.UpdateStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListRegularStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
@@ -56,11 +56,11 @@ public class StudyController {
   }
 
   @PatchMapping("/{study-id}")
-  @Operation(summary = "정규 스터디 수정")
-  public ApiResponse<Void> updateRegularStudy(
+  @Operation(summary = "스터디 수정")
+  public ApiResponse<Void> updateStudy(
     @PathVariable("study-id") Long studyId,
-    @RequestBody @Valid UpdateRegularStudyRequest request) {
-    studyService.updateRegularStudy(studyId, request);
+    @RequestBody @Valid UpdateStudyRequest request) {
+    studyService.updateStudy(studyId, request);
     return ApiResponse.onCreate();
   }
 
