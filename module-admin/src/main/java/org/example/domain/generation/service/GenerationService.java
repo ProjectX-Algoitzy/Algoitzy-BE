@@ -2,6 +2,7 @@ package org.example.domain.generation.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.generation.controller.request.RenewGenerationRequest;
+import org.example.domain.generation.controller.response.DetailGenerationResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class GenerationService {
 
   private final CreateGenerationService createGenerationService;
+  private final DetailGenerationService detailGenerationService;
 
 
   /**
@@ -16,5 +18,9 @@ public class GenerationService {
    */
   public void renewGeneration(RenewGenerationRequest request) {
     createGenerationService.renewGeneration(request);
+  }
+
+  public DetailGenerationResponse getGeneration() {
+    return detailGenerationService.getGeneration();
   }
 }
