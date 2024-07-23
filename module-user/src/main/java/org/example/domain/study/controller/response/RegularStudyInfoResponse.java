@@ -1,6 +1,5 @@
 package org.example.domain.study.controller.response;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -25,19 +24,13 @@ public class RegularStudyInfoResponse {
   long memberCount;
 
   @Schema(description = "지원서 ID")
-  long applicationId;
+  Long applicationId;
 
   @Schema(description = "답변 ID")
   Long answerId;
 
   @Schema(description = "지원서 작성 여부")
   boolean answerYN;
-
-  @Schema(description = "스터디장 프로필 이미지")
-  String leaderProfileUrl;
-
-  @Schema(description = "스터디장 이름")
-  String leaderName;
 
   @Schema(description = "최초 제작일")
   LocalDateTime createdTime;

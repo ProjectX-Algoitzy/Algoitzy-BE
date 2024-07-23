@@ -92,51 +92,34 @@ public class DetailStudyRepository {
                 studyMember.study.eq(study)
               )
             , "memberCount"),
-        Expressions.as(
-          JPAExpressions
-            .select(application.id)
-            .from(application)
-            .where(
-              application.study.eq(study)
-            )
-          , "applicationId"),
-        Expressions.as(
-          JPAExpressions
-            .select(answer.id)
-            .from(answer)
-            .where(
-              answer.application.study.eq(study),
-              answer.createdBy.eq(SecurityUtils.getCurrentMemberEmail())
-            )
-          , "answerId"),
-        Expressions.as(
-          JPAExpressions
-            .select()
-            .from(answer)
-            .where(
-              answer.application.study.eq(study),
-              answer.createdBy.eq(SecurityUtils.getCurrentMemberEmail())
-            )
-            .exists()
-          , "answerYN"),
           Expressions.as(
             JPAExpressions
-              .select(studyMember.member.profileUrl)
-              .from(studyMember)
+              .select(application.id)
+              .from(application)
               .where(
-                studyMember.study.eq(study),
-                studyMember.role.eq(StudyMemberRole.LEADER)
+                application.study.eq(study),
+                application.confirmYN.isTrue()
               )
-            , "leaderProfileUrl"),
+            , "applicationId"),
           Expressions.as(
             JPAExpressions
-              .select(studyMember.member.name)
-              .from(studyMember)
+              .select(answer.id)
+              .from(answer)
               .where(
-                studyMember.study.eq(study),
-                studyMember.role.eq(StudyMemberRole.LEADER)
+                answer.application.study.eq(study),
+                answer.createdBy.eq(SecurityUtils.getCurrentMemberEmail())
               )
-            , "leaderName"),
+            , "answerId"),
+          Expressions.as(
+            JPAExpressions
+              .select()
+              .from(answer)
+              .where(
+                answer.application.study.eq(study),
+                answer.createdBy.eq(SecurityUtils.getCurrentMemberEmail())
+              )
+              .exists()
+            , "answerYN"),
           study.createdTime,
           Expressions.as(
             JPAExpressions
