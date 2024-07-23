@@ -24,17 +24,17 @@ public class ListCurriculumRepository {
   public List<ListCurriculumDto> getCurriculumList(Long studyId) {
     return queryFactory
       .select(Projections.fields(ListCurriculumDto.class,
-        curriculum.week,
-        curriculum.id.as("curriculumId"),
-        curriculum.title,
-        Expressions.as(
-          JPAExpressions
-            .select(member.name)
-            .from(member)
-            .where(member.email.eq(curriculum.updatedBy)
-            )
-          , "updatedName"),
-        curriculum.updatedTime
+          curriculum.week,
+          curriculum.id.as("curriculumId"),
+          curriculum.title,
+          Expressions.as(
+            JPAExpressions
+              .select(member.name)
+              .from(member)
+              .where(member.email.eq(curriculum.updatedBy)
+              )
+            , "updatedName"),
+          curriculum.updatedTime
         )
       )
       .from(curriculum)
