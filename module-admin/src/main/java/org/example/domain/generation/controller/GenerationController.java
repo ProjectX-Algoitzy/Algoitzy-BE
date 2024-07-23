@@ -6,7 +6,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.generation.controller.request.RenewGenerationRequest;
+import org.example.domain.generation.controller.response.DetailGenerationResponse;
 import org.example.domain.generation.service.GenerationService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +27,11 @@ public class GenerationController {
   public ApiResponse<Void> renewGeneration(@RequestBody @Valid RenewGenerationRequest request) {
     generationService.renewGeneration(request);
     return ApiResponse.onSuccess();
+  }
+
+  @GetMapping()
+  @Operation(summary = "기수 정보 조회")
+  public ApiResponse<DetailGenerationResponse> getGeneration() {
+    return ApiResponse.onSuccess(generationService.getGeneration());
   }
 }
