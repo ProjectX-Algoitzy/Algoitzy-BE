@@ -33,8 +33,12 @@ public class Institution {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Comment("기관명")
   private String name;
-  private String description;
+
+  @Comment("분석 내용")
+  private String content;
+
   @Enumerated(value = EnumType.STRING)
   @Comment("기관 유형")
   private InstitutionType type;
@@ -54,9 +58,9 @@ public class Institution {
   private String updatedBy;
 
   @Builder
-  public Institution(String name, String description, InstitutionType type) {
+  public Institution(String name, String content, InstitutionType type) {
     this.name = name;
-    this.description = description;
+    this.content = content;
     this.type = type;
   }
 }
