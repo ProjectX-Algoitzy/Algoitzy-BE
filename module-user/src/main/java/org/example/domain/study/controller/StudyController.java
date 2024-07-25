@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.attendance.service.AttendanceService;
+import org.example.domain.controller.response.ListWorkbookResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;
@@ -15,6 +16,7 @@ import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
+import org.example.domain.workbook.service.WorkbookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,7 @@ public class StudyController {
   private final StudyService studyService;
   private final CurriculumService curriculumService;
   private final AttendanceService attendanceService;
+  private final WorkbookService workbookService;
 
   @GetMapping("/count")
   @Operation(summary = "최신 기수 스터디 개수")
@@ -110,6 +113,14 @@ public class StudyController {
     @PathVariable("study-id") Long studyId
   ) {
     return ApiResponse.onSuccess(attendanceService.getAttendanceList(studyId));
+  }
+
+  @GetMapping("/{study-id}/workbook")
+  @Operation(summary = "정규 스터디 모의테스트 조회")
+  public ApiResponse<ListWorkbookResponse> getWorkbookList(
+    @PathVariable("study-id") Long studyId
+  ) {
+    return ApiResponse.onSuccess(workbookService.getWorkbookList(studyId));
   }
 
   /************* 나의 스터디 *************/
