@@ -43,4 +43,11 @@ public class InstitutionService {
   public void updateInstitution(Long institutionId, UpdateInstitutionRequest request) {
     createInstitutionService.updateInstitution(institutionId, request);
   }
+
+  /**
+   * 기관 삭제
+   */
+  public void deleteInstitution(Long institutionId) {
+    createInstitutionService.deleteInstitution(institutionId);
+  }
 }

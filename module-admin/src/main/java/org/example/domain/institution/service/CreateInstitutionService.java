@@ -46,4 +46,11 @@ public class CreateInstitutionService {
       request.type()
     );
   }
+
+  /**
+   * 기관 삭제
+   */
+  public void deleteInstitution(Long institutionId) {
+    institutionRepository.deleteById(institutionId);
+  }
 }

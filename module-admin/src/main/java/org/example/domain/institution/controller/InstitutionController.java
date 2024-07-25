@@ -12,6 +12,7 @@ import org.example.domain.institution.controller.response.DetailInstitutionRespo
 import org.example.domain.institution.controller.response.ListInstitutionResponse;
 import org.example.domain.institution.service.InstitutionService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,7 +34,7 @@ public class InstitutionController {
   @Operation(summary = "기관 생성")
   public ApiResponse<Void> createInstitution(@RequestBody @Valid CreateInstitutionRequest request) {
     institutionService.createInstitution(request);
-    return ApiResponse.onSuccess();
+    return ApiResponse.onCreate();
   }
 
   @GetMapping()
@@ -60,4 +61,14 @@ public class InstitutionController {
     institutionService.updateInstitution(institutionId, request);
     return ApiResponse.onSuccess();
   }
+
+  @DeleteMapping("/{institution-id}")
+  @Operation(summary = "기관 삭제")
+  public ApiResponse<Void> deleteInstitution(
+    @PathVariable("institution-id") Long institutionId) {
+    institutionService.deleteInstitution(institutionId);
+    return ApiResponse.onSuccess();
+  }
+
+
 }
