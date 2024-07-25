@@ -6,6 +6,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.institution.Institution;
 import org.example.domain.institution.controller.request.CreateInstitutionRequest;
 import org.example.domain.institution.controller.request.UpdateInstitutionRequest;
+import org.example.domain.institution.enums.InstitutionType;
 import org.example.domain.institution.repository.InstitutionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +44,7 @@ public class CreateInstitutionService {
     institution.update(
       request.name(),
       request.content(),
-      request.type()
+      InstitutionType.valueOf(request.type())
     );
   }
 
