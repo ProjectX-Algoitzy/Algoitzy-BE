@@ -21,4 +21,5 @@ public class AttendanceService {
   public ListAttendanceResponse getAttendanceList(Long studyId) {
     return listAttendanceService.getAttendanceList(studyId);
   }
+
 }

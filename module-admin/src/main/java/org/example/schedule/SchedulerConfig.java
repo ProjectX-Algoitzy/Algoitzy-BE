@@ -27,12 +27,12 @@ public class SchedulerConfig {
   }
 
   /**
-   * 매주 금요일 00:00 코딩테스트 대비반 문제집 생성
+   * 매주 금요일 00:00 대비반 문제집 생성
    */
   @Scheduled(cron = "0 0 0 * * FRI")
-  public void createCodingTestPrepareWorkbook() {
-    log.info("=========코딩테스트 대비반 문제집 생성 스케쥴러 실행=========");
-    createWorkbookService.createCodingTestPrepareWorkbook();
+  public void createAutoWorkbook() {
+    log.info("=========문제집 생성 스케쥴러 실행=========");
+    createWorkbookService.createAutoWorkbook();
   }
 
   /**
