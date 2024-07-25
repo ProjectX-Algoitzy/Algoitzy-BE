@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.member.enums.Role;
 
 @Builder
 @Getter
@@ -24,4 +25,7 @@ public class ListMemberDto {
 
   @Schema(description = "학과")
   private String major;
+
+  @Schema(description = "역할")
+  private Role role;
 }
