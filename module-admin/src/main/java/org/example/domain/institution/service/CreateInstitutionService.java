@@ -5,6 +5,7 @@ import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.institution.Institution;
 import org.example.domain.institution.controller.request.CreateInstitutionRequest;
+import org.example.domain.institution.controller.request.UpdateInstitutionRequest;
 import org.example.domain.institution.repository.InstitutionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CreateInstitutionService {
 
+  private final CoreInstitutionService coreInstitutionService;
   private final InstitutionRepository institutionRepository;
 
   /**
@@ -30,6 +32,18 @@ public class CreateInstitutionService {
         .content(request.content())
         .type(request.type())
         .build()
+    );
+  }
+
+  /**
+   * 기관 수정
+   */
+  public void updateInstitution(Long institutionId, UpdateInstitutionRequest request) {
+    Institution institution = coreInstitutionService.findById(institutionId);
+    institution.update(
+      request.name(),
+      request.content(),
+      request.type()
     );
   }
 }

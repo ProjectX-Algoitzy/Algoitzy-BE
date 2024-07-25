@@ -7,12 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.institution.controller.request.CreateInstitutionRequest;
 import org.example.domain.institution.controller.request.SearchInstitutionRequest;
+import org.example.domain.institution.controller.request.UpdateInstitutionRequest;
 import org.example.domain.institution.controller.response.DetailInstitutionResponse;
 import org.example.domain.institution.controller.response.ListInstitutionResponse;
 import org.example.domain.institution.service.InstitutionService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,5 +50,14 @@ public class InstitutionController {
     @PathVariable("institution-id") Long institutionId
   ) {
     return ApiResponse.onSuccess(institutionService.getInstitution(institutionId));
+  }
+
+  @PatchMapping("/{institution-id}")
+  @Operation(summary = "기관 수정")
+  public ApiResponse<Void> updateInstitution(
+    @PathVariable("institution-id") Long institutionId,
+    @RequestBody @Valid UpdateInstitutionRequest request) {
+    institutionService.updateInstitution(institutionId, request);
+    return ApiResponse.onSuccess();
   }
 }

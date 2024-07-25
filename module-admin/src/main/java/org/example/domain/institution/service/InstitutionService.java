@@ -3,6 +3,7 @@ package org.example.domain.institution.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.institution.controller.request.CreateInstitutionRequest;
 import org.example.domain.institution.controller.request.SearchInstitutionRequest;
+import org.example.domain.institution.controller.request.UpdateInstitutionRequest;
 import org.example.domain.institution.controller.response.DetailInstitutionResponse;
 import org.example.domain.institution.controller.response.ListInstitutionResponse;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,12 @@ public class InstitutionService {
    */
   public DetailInstitutionResponse getInstitution(Long institutionId) {
     return detailInstitutionService.getInstitution(institutionId);
+  }
+
+  /**
+   * 기관 수정
+   */
+  public void updateInstitution(Long institutionId, UpdateInstitutionRequest request) {
+    createInstitutionService.updateInstitution(institutionId, request);
   }
 }

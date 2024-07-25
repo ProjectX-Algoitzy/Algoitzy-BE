@@ -21,6 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -62,5 +63,11 @@ public class Institution {
     this.name = name;
     this.content = content;
     this.type = type;
+  }
+
+  public void update(String name, String content, InstitutionType type) {
+    if (StringUtils.hasText(name)) this.name = name;
+    if (StringUtils.hasText(content)) this.content = content;
+    if (type != null) this.type = type;
   }
 }
