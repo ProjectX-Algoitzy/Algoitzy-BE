@@ -15,6 +15,7 @@ import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListRegularStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
+import org.example.domain.workbook.controller.response.ListWorkbookResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,5 +95,13 @@ public class StudyController {
     @PathVariable("study-id") Long studyId
   ) {
     return ApiResponse.onSuccess(attendanceService.getAttendanceList(studyId));
+  }
+
+  @GetMapping("/{study-id}/workbook")
+  @Operation(summary = "정규 스터디 모의테스트 조회")
+  public ApiResponse<ListWorkbookResponse> getWorkbookList(
+    @PathVariable("study-id") Long studyId
+  ) {
+    return ApiResponse.onSuccess(attendanceService.getWorkbookList(studyId));
   }
 }
