@@ -19,9 +19,9 @@ public class WorkbookController {
 
   @Deprecated
   @PostMapping("/auto")
-  @Operation(summary = "코딩테스트 대비반 문제집 생성")
-  public ApiResponse<Void> createCodingTestPrepareWorkbook() {
-    workbookService.createCodingTestPrepareWorkbook();
+  @Operation(summary = "문제집 자동 생성")
+  public ApiResponse<Void> createAutoWorkbook() {
+    workbookService.createAutoWorkbook();
     return ApiResponse.onCreate();
   }
 

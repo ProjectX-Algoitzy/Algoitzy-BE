@@ -9,7 +9,7 @@ public class WorkbookService {
 
   private final CreateWorkbookService createWorkbookService;
 
-  public void createCodingTestPrepareWorkbook() {
-    createWorkbookService.createCodingTestPrepareWorkbook();
+  public void createAutoWorkbook() {
+    createWorkbookService.createAutoWorkbook();
   }
 }
