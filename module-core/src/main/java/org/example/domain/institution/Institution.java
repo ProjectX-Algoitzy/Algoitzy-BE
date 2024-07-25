@@ -21,6 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -33,8 +34,12 @@ public class Institution {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Comment("기관명")
   private String name;
-  private String description;
+
+  @Comment("분석 내용")
+  private String content;
+
   @Enumerated(value = EnumType.STRING)
   @Comment("기관 유형")
   private InstitutionType type;
@@ -54,9 +59,15 @@ public class Institution {
   private String updatedBy;
 
   @Builder
-  public Institution(String name, String description, InstitutionType type) {
+  public Institution(String name, String content, InstitutionType type) {
     this.name = name;
-    this.description = description;
+    this.content = content;
     this.type = type;
+  }
+
+  public void update(String name, String content, InstitutionType type) {
+    if (StringUtils.hasText(name)) this.name = name;
+    if (StringUtils.hasText(content)) this.content = content;
+    if (type != null) this.type = type;
   }
 }
