@@ -32,7 +32,8 @@ public class ListMemberRepository {
           member.id.as("memberId"),
           member.name,
           member.handle,
-          member.major
+          member.major,
+          member.role
         )
       )
       .from(member)
@@ -50,7 +51,8 @@ public class ListMemberRepository {
           member.id.as("memberId"),
           member.name,
           member.handle,
-          member.major
+          member.major,
+          member.role
         )
       )
       .from(member)
