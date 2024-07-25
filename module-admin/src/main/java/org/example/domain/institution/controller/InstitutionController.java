@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.institution.controller.request.CreateInstitutionRequest;
 import org.example.domain.institution.controller.request.SearchInstitutionRequest;
+import org.example.domain.institution.controller.response.DetailInstitutionResponse;
 import org.example.domain.institution.controller.response.ListInstitutionResponse;
 import org.example.domain.institution.service.InstitutionService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +40,13 @@ public class InstitutionController {
     @ParameterObject @ModelAttribute @Valid SearchInstitutionRequest request
   ) {
     return ApiResponse.onSuccess(institutionService.getInstitutionList(request));
+  }
+
+  @GetMapping("/{institution-id}")
+  @Operation(summary = "기관 상세 조회")
+  public ApiResponse<DetailInstitutionResponse> getInstitution(
+    @PathVariable("institution-id") Long institutionId
+  ) {
+    return ApiResponse.onSuccess(institutionService.getInstitution(institutionId));
   }
 }
