@@ -6,6 +6,7 @@ import org.example.domain.institution.controller.request.SearchInstitutionReques
 import org.example.domain.institution.controller.request.UpdateInstitutionRequest;
 import org.example.domain.institution.controller.response.DetailInstitutionResponse;
 import org.example.domain.institution.controller.response.ListInstitutionResponse;
+import org.example.domain.workbook.controller.response.ListInstitutionWorkbookResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,5 +57,12 @@ public class InstitutionService {
    */
   public Long createInstitutionWorkbook(Long institutionId) {
     return createInstitutionService.createInstitutionWorkbook(institutionId);
+  }
+
+  /**
+   * 기관 문제집 목록 조회
+   */
+  public ListInstitutionWorkbookResponse getInstitutionWorkbookList(Long institutionId) {
+    return listInstitutionService.getInstitutionWorkbookList(institutionId);
   }
 }

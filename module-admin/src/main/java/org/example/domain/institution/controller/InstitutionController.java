@@ -11,6 +11,7 @@ import org.example.domain.institution.controller.request.UpdateInstitutionReques
 import org.example.domain.institution.controller.response.DetailInstitutionResponse;
 import org.example.domain.institution.controller.response.ListInstitutionResponse;
 import org.example.domain.institution.service.InstitutionService;
+import org.example.domain.workbook.controller.response.ListInstitutionWorkbookResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,5 +76,12 @@ public class InstitutionController {
   public ApiResponse<Long> createInstitutionWorkbook(
     @PathVariable("institution-id") Long institutionId) {
     return ApiResponse.onCreate(institutionService.createInstitutionWorkbook(institutionId));
+  }
+
+  @GetMapping("/{institution-id}/workbook")
+  @Operation(summary = "기관 문제집 목록 조회")
+  public ApiResponse<ListInstitutionWorkbookResponse> getInstitutionWorkbookList(
+    @PathVariable("institution-id") Long institutionId) {
+    return ApiResponse.onCreate(institutionService.getInstitutionWorkbookList(institutionId));
   }
 }
