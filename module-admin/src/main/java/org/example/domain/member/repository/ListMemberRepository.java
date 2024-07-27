@@ -71,9 +71,7 @@ public class ListMemberRepository {
       .where(
         member.role.eq(Role.ROLE_USER),
         searchKeyword(request.searchKeyword())
-      )
-      .offset(request.pageRequest().getOffset())
-      .limit(request.pageRequest().getPageSize());
+      );
 
     return PageableExecutionUtils.getPage(memberList, request.pageRequest(), countQuery::fetchOne);
 
