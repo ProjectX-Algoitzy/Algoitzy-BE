@@ -8,6 +8,7 @@ import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.problem.Problem;
 import org.example.domain.problem.repository.ListProblemRepository;
+import org.example.domain.problem.service.CoreProblemService;
 import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.repository.StudyRepository;
