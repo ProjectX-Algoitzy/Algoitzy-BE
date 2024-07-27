@@ -70,5 +70,10 @@ public class InstitutionController {
     return ApiResponse.onSuccess();
   }
 
-
+  @PostMapping("/{institution-id}/workbook")
+  @Operation(summary = "기관 문제집 생성")
+  public ApiResponse<Long> createInstitutionWorkbook(
+    @PathVariable("institution-id") Long institutionId) {
+    return ApiResponse.onCreate(institutionService.createInstitutionWorkbook(institutionId));
+  }
 }

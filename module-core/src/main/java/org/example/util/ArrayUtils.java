@@ -15,10 +15,13 @@ public class ArrayUtils {
     return array.stream().allMatch(set::add);
   }
 
+  /**
+   * 숫자로만 이루어진 문자열인지 검사
+   */
   public static boolean isAllNumber(String str) {
     if (!StringUtils.hasText(str)) {
       return false;
     }
-    return str.matches("\\d+"); // "\\d+"는 하나 이상의 숫자에 매칭
+    return str.matches("\\d+");
   }
 }

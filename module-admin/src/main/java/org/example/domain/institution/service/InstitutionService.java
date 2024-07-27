@@ -50,4 +50,11 @@ public class InstitutionService {
   public void deleteInstitution(Long institutionId) {
     createInstitutionService.deleteInstitution(institutionId);
   }
+
+  /**
+   * 기관 문제집 생성
+   */
+  public Long createInstitutionWorkbook(Long institutionId) {
+    return createInstitutionService.createInstitutionWorkbook(institutionId);
+  }
 }

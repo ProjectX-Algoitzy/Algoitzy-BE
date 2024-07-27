@@ -24,6 +24,7 @@ import org.example.domain.institution.Institution;
 import org.example.domain.study.Study;
 import org.example.domain.week.Week;
 import org.example.domain.workbook_problem.WorkbookProblem;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -57,6 +58,9 @@ public class Workbook {
   @JoinColumn(name = "week_id")
   private Week week;
 
+  @Comment("이름")
+  private String name;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -72,9 +76,10 @@ public class Workbook {
   private String updatedBy;
 
   @Builder
-  public Workbook(Study study, Institution institution, Week week) {
+  public Workbook(Study study, Institution institution, Week week, String name) {
     this.study = study;
     this.institution = institution;
     this.week = week;
+    this.name = name;
   }
 }
