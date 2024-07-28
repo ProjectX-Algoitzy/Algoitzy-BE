@@ -1,4 +1,4 @@
-package org.example.domain.workbook.service;
+package org.example.domain.problem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;

@@ -6,8 +6,9 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.institution.Institution;
 import org.example.domain.institution.controller.request.CreateInstitutionRequest;
 import org.example.domain.institution.controller.request.UpdateInstitutionRequest;
-import org.example.domain.institution.enums.InstitutionType;
 import org.example.domain.institution.repository.InstitutionRepository;
+import org.example.domain.workbook.Workbook;
+import org.example.domain.workbook.repository.WorkbookRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class CreateInstitutionService {
 
   private final CoreInstitutionService coreInstitutionService;
   private final InstitutionRepository institutionRepository;
+  private final WorkbookRepository workbookRepository;
 
   /**
    * 기관 생성
@@ -44,7 +46,7 @@ public class CreateInstitutionService {
     institution.update(
       request.name(),
       request.content(),
-      InstitutionType.valueOf(request.type())
+      request.type()
     );
   }
 
@@ -53,5 +55,19 @@ public class CreateInstitutionService {
    */
   public void deleteInstitution(Long institutionId) {
     institutionRepository.deleteById(institutionId);
+  }
+
+  /**
+   * 기관 문제집 생성
+   */
+  public Long createInstitutionWorkbook(Long institutionId) {
+    Institution institution = coreInstitutionService.findById(institutionId);
+    Workbook workbook = workbookRepository.save(
+      Workbook.builder()
+        .institution(institution)
+        .name(institution.getName() + " 새 문제집")
+        .build()
+    );
+    return workbook.getId();
   }
 }

@@ -1,11 +1,8 @@
 package org.example.util;
 
-import java.util.List;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.domain.member.enums.Role;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtils {
@@ -21,12 +18,5 @@ public class SecurityUtils {
   public static String getCurrentMemberEmail() {
     Authentication authentication = getAuthentication();
     return authentication.getName();
-  }
-
-  public static Role getCurrentMemberRole() {
-    Authentication authentication = getAuthentication();
-
-    List<? extends GrantedAuthority> authorityList = authentication.getAuthorities().stream().toList();
-    return Role.valueOf(authorityList.get(0).toString());
   }
 }
