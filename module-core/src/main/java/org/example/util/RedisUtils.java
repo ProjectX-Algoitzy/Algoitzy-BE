@@ -15,7 +15,7 @@ public class RedisUtils {
     redisTemplate.opsForValue().set(email, code);
   }
 
-  public void save(String email, String code, Duration expireTime) {
+  public void saveWithExpireTime(String email, String code, Duration expireTime) {
     redisTemplate.opsForValue().set(email, code, expireTime);
   }
 

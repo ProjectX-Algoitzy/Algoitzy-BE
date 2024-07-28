@@ -41,7 +41,7 @@ public class LoginService {
     Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     String memberRole = authentication.getAuthorities().stream().toList().get(0).toString();
     JwtToken jwtToken = jwtTokenProvider.generateToken(Role.valueOf(memberRole), request.email());
-    redisUtils.save(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));
+    redisUtils.saveWithExpireTime(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));
 
     return LoginResponse
       .builder()
@@ -76,7 +76,7 @@ public class LoginService {
     Member member = memberRepository.findByEmail(refreshTokenEmail)
       .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않는 Email 입니다."));
     JwtToken jwtToken = jwtTokenProvider.generateToken(member.getRole(), member.getEmail());
-    redisUtils.save(JwtToken.toRedisKey(member.getEmail()), jwtToken.refreshToken(), Duration.ofDays(10));
+    redisUtils.saveWithExpireTime(JwtToken.toRedisKey(member.getEmail()), jwtToken.refreshToken(), Duration.ofDays(10));
 
     return LoginResponse
       .builder()

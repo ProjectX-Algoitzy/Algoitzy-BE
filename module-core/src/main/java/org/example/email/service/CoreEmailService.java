@@ -69,7 +69,7 @@ public class CoreEmailService {
 
   private void sendCertificateEmail(SendEmailRequest request) {
     String code = RandomUtils.getRandomNumber();
-    redisUtils.save(request.emailList().get(0), code, Duration.ofSeconds(180));
+    redisUtils.saveWithExpireTime(request.emailList().get(0), code, Duration.ofSeconds(180));
     String html = htmlToString(s3Url + CERTIFICATION.getPath()).replace("${code}", code);
     send(request.emailList().get(0), request.type(), html);
   }
