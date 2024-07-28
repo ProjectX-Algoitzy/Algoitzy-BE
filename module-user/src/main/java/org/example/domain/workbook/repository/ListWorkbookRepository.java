@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.controller.response.ListWorkbookDto;
 import org.example.domain.study.Study;
+import org.example.domain.workbook.controller.response.ListInstitutionWorkbookDto;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -28,6 +29,23 @@ public class ListWorkbookRepository {
       .from(workbook)
       .where(workbook.study.eq(study))
       .orderBy(workbook.week.value.asc())
+      .fetch();
+  }
+
+  /**
+   * 기관 문제집 목록 조회
+   */
+  public List<ListInstitutionWorkbookDto> getInstitutionWorkbookList(Long institutionId) {
+    return queryFactory
+      .select(Projections.fields(
+          ListInstitutionWorkbookDto.class,
+          workbook.id.as("workbookId"),
+          workbook.name
+        )
+      )
+      .from(workbook)
+      .where(workbook.institution.id.eq(institutionId))
+      .orderBy(workbook.name.asc())
       .fetch();
   }
 }
