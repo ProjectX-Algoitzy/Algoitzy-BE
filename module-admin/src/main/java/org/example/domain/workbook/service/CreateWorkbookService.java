@@ -18,6 +18,8 @@ import org.example.domain.workbook.Workbook;
 import org.example.domain.workbook.enums.CodingTestBasicWorkbook;
 import org.example.domain.workbook.repository.WorkbookRepository;
 import org.example.domain.workbook_problem.WorkbookProblem;
+import org.example.domain.workbook_problem.controller.request.CreateWorkbookProblemRequest;
+import org.example.domain.workbook_problem.repository.WorkbookProblemRepository;
 import org.example.util.ValueUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,11 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CreateWorkbookService {
 
+  private final CoreWorkbookService coreWorkbookService;
   private final CoreProblemService coreProblemService;
   private final WorkbookRepository workbookRepository;
   private final StudyRepository studyRepository;
   private final DetailWeekRepository detailWeekRepository;
   private final ListProblemRepository listProblemRepository;
+  private final WorkbookProblemRepository workbookProblemRepository;
 
   /**
    * 문제집 자동 생성
@@ -96,5 +100,26 @@ public class CreateWorkbookService {
       case 8 -> algorithmList = List.of("greedy");
     }
     return listProblemRepository.getProblemList(algorithmList);
+  }
+
+  /**
+   * 문제집 문제 추가
+   */
+  public void createWorkbookProblem(Long workbookId, CreateWorkbookProblemRequest request) {
+    Workbook workbook = coreWorkbookService.findById(workbookId);
+    Problem problem = coreProblemService.findByNumber(request.number());
+    workbookProblemRepository.save(
+      WorkbookProblem.builder()
+        .workbook(workbook)
+        .problem(problem)
+        .build()
+    );
+  }
+
+  /**
+   * 문제집 문제 삭제
+   */
+  public void deleteWorkbookProblem(Long workbookId, Integer problemNumber) {
+    workbookProblemRepository.deleteByWorkbookIdAndProblemNumber(workbookId, problemNumber);
   }
 }

@@ -3,6 +3,7 @@ package org.example.domain.workbook.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.workbook.controller.response.DetailWorkbookResponse;
 import org.example.domain.workbook.controller.response.ListWorkbookResponse;
+import org.example.domain.workbook_problem.controller.request.CreateWorkbookProblemRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +30,19 @@ public class WorkbookService {
    */
   public DetailWorkbookResponse getWorkbook(Long workbookId) {
     return detailWorkbookService.getWorkbook(workbookId);
+  }
+
+  /**
+   * 문제집 문제 추가
+   */
+  public void createWorkbookProblem(Long workbookId, CreateWorkbookProblemRequest request) {
+    createWorkbookService.createWorkbookProblem(workbookId, request);
+  }
+
+  /**
+   * 문제집 문제 삭제
+   */
+  public void deleteWorkbookProblem(Long workbookId, Integer problemNumber) {
+    createWorkbookService.deleteWorkbookProblem(workbookId, problemNumber);
   }
 }
