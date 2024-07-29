@@ -19,6 +19,9 @@ public class ListInstitutionService {
   private final ListInstitutionRepository listInstitutionRepository;
   private final ListWorkbookRepository listWorkbookRepository;
 
+  /**
+   * 기관 목록 조회
+   */
   public ListInstitutionResponse getInstitutionList(SearchInstitutionRequest request) {
     Page<ListInstitutionDto> page = listInstitutionRepository.getInstitutionList(request);
     return ListInstitutionResponse.builder()

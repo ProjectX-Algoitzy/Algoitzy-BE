@@ -29,8 +29,8 @@ public class ListInstitutionRepository {
       .select(Projections.fields(
           ListInstitutionDto.class,
           institution.id.as("institutionId"),
-          institution.name
-          // todo 조회수 로직 추가 후 수정
+          institution.name,
+          institution.viewCount
         )
       )
       .from(institution)
@@ -72,15 +72,14 @@ public class ListInstitutionRepository {
   /**
    * 정렬 조건
    */
-  private OrderSpecifier<?> searchOrderBy(InstitutionSort sort) {
+  private OrderSpecifier<?>[] searchOrderBy(InstitutionSort sort) {
     if (sort == null) {
-      return institution.id.asc();
+      return new OrderSpecifier<?>[]{institution.id.asc(), institution.viewCount.asc()};
     }
 
     return switch (sort) {
-      case NAME -> institution.name.asc();
-      // todo 조회수 로직 추가 후 수정
-      case VIEW_COUNT -> institution.content.asc();
+      case NAME -> new OrderSpecifier<?>[]{institution.name.asc(), institution.viewCount.asc()};
+      case VIEW_COUNT -> new OrderSpecifier<?>[]{institution.viewCount.desc(), institution.name.asc()};
     };
   }
 }
