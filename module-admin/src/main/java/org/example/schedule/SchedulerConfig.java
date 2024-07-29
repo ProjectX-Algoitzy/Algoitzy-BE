@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.domain.attendance.service.CreateAttendanceService;
 import org.example.domain.problem.service.CreateProblemService;
 import org.example.domain.workbook.service.CreateWorkbookService;
+import org.example.schedule.service.CreateViewCountService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -16,6 +17,7 @@ public class SchedulerConfig {
   private final CreateProblemService createProblemService;
   private final CreateWorkbookService createWorkbookService;
   private final CreateAttendanceService createAttendanceService;
+  private final CreateViewCountService createViewCountService;
 
   /**
    * 매주 수요일 00:00 백준 문제 저장
@@ -42,5 +44,14 @@ public class SchedulerConfig {
   public void createAttendance() {
     log.info("=========출석부 갱신 스케쥴러 실행=========");
     createAttendanceService.createAttendance();
+  }
+
+  /**
+   * 1시간마다 조회수 동기화
+   */
+  @Scheduled(fixedDelay = 3600000L)
+  public void createViewCount() {
+    log.info("=========조회수 동기화 스케쥴러 실행=========");
+    createViewCountService.syncViewCount();
   }
 }

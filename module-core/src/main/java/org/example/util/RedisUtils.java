@@ -1,6 +1,7 @@
 package org.example.util;
 
 import java.time.Duration;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,16 @@ public class RedisUtils {
     redisTemplate.delete(key);
   }
 
+  public void delete(Set<String> keySet) {
+    redisTemplate.delete(keySet);
+  }
+
   public String getValue(String key) {
     return redisTemplate.opsForValue().get(key);
+  }
+
+  public Set<String> findAllKeysByPattern(String keyPattern) {
+    return redisTemplate.keys(keyPattern);
   }
 
 }

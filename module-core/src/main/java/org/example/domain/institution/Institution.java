@@ -52,6 +52,10 @@ public class Institution {
   @Comment("기관 유형")
   private InstitutionType type;
 
+  @Comment("조회수")
+  @Column(columnDefinition = "int default 0")
+  private Integer viewCount;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -77,5 +81,9 @@ public class Institution {
     if (StringUtils.hasText(name)) this.name = name;
     if (StringUtils.hasText(content)) this.content = content;
     if (type != null) this.type = type;
+  }
+
+  public void syncViewCount(int viewCount) {
+    this.viewCount += viewCount;
   }
 }
