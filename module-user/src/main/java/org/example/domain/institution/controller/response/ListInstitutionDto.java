@@ -20,5 +20,5 @@ public class ListInstitutionDto {
   private String name;
 
   @Schema(description = "조회수")
-  private long viewCount;
+  private int viewCount;
 }

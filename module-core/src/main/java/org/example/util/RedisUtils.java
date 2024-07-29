@@ -11,12 +11,12 @@ public class RedisUtils {
 
   private final StringRedisTemplate redisTemplate;
 
-  public void save(String email, String code) {
-    redisTemplate.opsForValue().set(email, code);
+  public void save(String key, String value) {
+    redisTemplate.opsForValue().set(key, value);
   }
 
-  public void saveWithExpireTime(String email, String code, Duration expireTime) {
-    redisTemplate.opsForValue().set(email, code, expireTime);
+  public void saveWithExpireTime(String key, String value, Duration expireTime) {
+    redisTemplate.opsForValue().set(key, value, expireTime);
   }
 
   public void delete(String key) {
