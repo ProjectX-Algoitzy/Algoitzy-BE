@@ -46,7 +46,7 @@ public class LoginService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "관리자만 접근할 수 있습니다.");
     }
     JwtToken jwtToken = jwtTokenProvider.generateToken(valueOf(memberRole), request.email());
-    redisUtils.save(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));
+    redisUtils.saveWithExpireTime(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));
 
     return LoginResponse
       .builder()
@@ -81,7 +81,7 @@ public class LoginService {
     Member member = memberRepository.findByEmail(refreshTokenEmail)
       .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "존재하지 않는 Email 입니다."));
     JwtToken jwtToken = jwtTokenProvider.generateToken(member.getRole(), member.getEmail());
-    redisUtils.save(JwtToken.toRedisKey(member.getEmail()), jwtToken.refreshToken(), Duration.ofDays(10));
+    redisUtils.saveWithExpireTime(JwtToken.toRedisKey(member.getEmail()), jwtToken.refreshToken(), Duration.ofDays(10));
 
     return LoginResponse
       .builder()
