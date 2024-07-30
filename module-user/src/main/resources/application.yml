@@ -9,3 +9,7 @@ coolsms:
   apikey: ${SMS_KEY}
   apisecret: ${SMS_SECRET}
   fromnumber: ${SMS_FROM}
+
+springdoc:
+  swagger-ui:
+    path: /user-api/

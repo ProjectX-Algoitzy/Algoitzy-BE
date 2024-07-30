@@ -22,7 +22,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
   protected boolean shouldNotFilter(HttpServletRequest request) {
     String[] excludePath = {
       "/v3/api-docs",
-      "/swagger-ui",
+      "/user-api/swagger-ui",
+      "/admin-api/swagger-ui",
       "/sign-up",
       "/member/login",
       "/member/find-email",
