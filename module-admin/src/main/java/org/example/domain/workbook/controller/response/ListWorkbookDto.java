@@ -1,6 +1,5 @@
 package org.example.domain.workbook.controller.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.example.domain.workbook_problem.controller.response.ListWorkbookProbl
 @Schema(description = "문제집 목록 응답 DTO")
 public class ListWorkbookDto {
 
-  @JsonIgnore
   @Schema(description = "문제집 ID")
   private long workbookId;
 
