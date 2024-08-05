@@ -103,6 +103,13 @@ public class CreateWorkbookService {
   }
 
   /**
+   * 문제집 삭제
+   */
+  public void deleteWorkbook(Long workbookId) {
+    workbookRepository.deleteById(workbookId);
+  }
+
+  /**
    * 문제집 문제 추가
    */
   public void createWorkbookProblem(Long workbookId, CreateWorkbookProblemRequest request) {
