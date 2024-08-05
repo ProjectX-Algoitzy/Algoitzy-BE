@@ -26,6 +26,13 @@ public class WorkbookService {
   }
 
   /**
+   * 문제집 삭제
+   */
+  public void deleteWorkbook(Long workbookId) {
+    createWorkbookService.deleteWorkbook(workbookId);
+  }
+
+  /**
    * 문제집 상세 조회
    */
   public DetailWorkbookResponse getWorkbook(Long workbookId) {

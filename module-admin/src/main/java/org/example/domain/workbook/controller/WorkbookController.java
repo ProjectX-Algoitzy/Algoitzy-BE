@@ -31,6 +31,14 @@ public class WorkbookController {
     return ApiResponse.onSuccess(workbookService.getWorkbook(workbookId));
   }
 
+  @DeleteMapping("/{workbook-id}")
+  @Operation(summary = "문제집 삭제")
+  public ApiResponse<Void> deleteWorkbook(
+    @PathVariable("workbook-id") Long workbookId) {
+    workbookService.deleteWorkbook(workbookId);
+    return ApiResponse.onSuccess();
+  }
+
   @PostMapping("/{workbook-id}/problem")
   @Operation(summary = "문제집 문제 추가")
   public ApiResponse<Void> createWorkbookProblem(
