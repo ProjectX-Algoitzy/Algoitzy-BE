@@ -75,9 +75,13 @@ public class CreateMemberService {
    * 백준 유효 계정 인증
    */
   public void validateHandle(ValidateHandleRequest request) {
+    if (memberRepository.findByHandle(request.handle()).isPresent()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 가입된 닉네임입니다.");
+    }
+
     ResponseEntity<String> response = HttpRequest.getRequest(Url.BAEKJOON_USER.getBaekjoonUserUrl(request.handle()), String.class);
     if (!response.getStatusCode().is2xxSuccessful()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "백준 핸들이 유효하지 않습니다.");
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "백준 닉네임이 유효하지 않습니다.");
     }
   }
 

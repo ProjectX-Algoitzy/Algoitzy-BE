@@ -12,6 +12,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
   Optional<Member> findByNameAndPhoneNumber(String name, String phoneNumber);
 
+  Optional<Member> findByHandle(String handle);
+
   @Query("select m from Member m where m.role = 'ROLE_OWNER'")
   Member getOwner();
 
