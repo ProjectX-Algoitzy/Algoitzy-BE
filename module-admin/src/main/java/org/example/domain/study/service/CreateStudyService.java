@@ -31,7 +31,7 @@ public class CreateStudyService {
    */
   public void createRegularStudy(CreateRegularStudyRequest request) {
     if (studyRepository.findByNameAndTypeIs(request.name(), StudyType.REGULAR).isPresent()) {
-      throw new GeneralException(ErrorStatus.VALIDATION_ERROR, "동일한 이름의 정규 스터디가 존재합니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "동일한 이름의 정규 스터디가 존재합니다.");
     }
 
     String profileUrl = (StringUtils.hasText(request.profileUrl())) ? request.profileUrl() : basicStudyImage;

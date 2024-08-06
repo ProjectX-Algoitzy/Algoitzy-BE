@@ -28,7 +28,7 @@ public class ListAttendanceService {
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     Study study = coreStudyService.findById(studyId);
     if (studyMemberRepository.findByStudyAndMember(study, member).isEmpty()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "스터디원만 열람할 수 있습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
     return ListAttendanceResponse.builder()
       .attendanceList(listAttendanceRepository.getAttendanceList(studyId))

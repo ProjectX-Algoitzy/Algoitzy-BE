@@ -35,7 +35,7 @@ public class ListCurriculumService {
     }
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     if (studyMemberRepository.findByStudyAndMember(study, member).isEmpty()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "스터디원만 열람할 수 있습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
 
     return ListCurriculumResponse

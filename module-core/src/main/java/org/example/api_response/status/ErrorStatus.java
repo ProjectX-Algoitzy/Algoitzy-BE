@@ -12,6 +12,11 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorStatus implements BaseErrorCode {
 
+    NOTICE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "NOTICE"),
+    NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "NOTICE"),
+    NOTICE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "NOTICE"),
+    NOTICE_INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NOTICE"),
+
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON4000"),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "COMMON4001"),
     NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON4002"),

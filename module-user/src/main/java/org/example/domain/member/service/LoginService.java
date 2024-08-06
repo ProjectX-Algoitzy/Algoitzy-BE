@@ -15,6 +15,7 @@ import org.example.security.jwt.JwtTokenProvider;
 import org.example.util.RedisUtils;
 import org.example.util.SecurityUtils;
 import org.example.util.ValueUtils;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -36,9 +37,15 @@ public class LoginService {
    * 로그인
    */
   public LoginResponse login(LoginRequest request) {
-    UsernamePasswordAuthenticationToken authenticationToken =
-      new UsernamePasswordAuthenticationToken(request.email(), request.password());
-    Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    Authentication authentication;
+    try {
+      UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(request.email(), request.password());
+      authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    } catch (BadCredentialsException e) {
+      throw new GeneralException(ErrorStatus.NOTICE_NOT_FOUND, "아이디 또는 비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+    }
+
     String memberRole = authentication.getAuthorities().stream().toList().get(0).toString();
     JwtToken jwtToken = jwtTokenProvider.generateToken(Role.valueOf(memberRole), request.email());
     redisUtils.saveWithExpireTime(JwtToken.toRedisKey(request.email()), jwtToken.refreshToken(), Duration.ofDays(10));

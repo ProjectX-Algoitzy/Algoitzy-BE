@@ -89,10 +89,10 @@ public class CreateAttendanceRequestService {
   private void validateUrl(CreateAttendanceRequestRequest request, StudyMember studyMember) {
     // 블로그 URL 유효성 검사
     if (attendanceRequestRepository.findByBlogUrl(request.blogUrl()).isPresent()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 블로그 URL의 인증 이력이 존재합니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "해당 블로그 URL의 인증 이력이 존재합니다.");
     }
     if (!HttpRequest.getRequest(request.blogUrl(), String.class).getStatusCode().is2xxSuccessful()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "유효하지 않은 블로그 URL입니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "유효하지 않은 블로그 URL입니다.");
     }
 
     // 문제 URL 유효성 검사
@@ -100,10 +100,10 @@ public class CreateAttendanceRequestService {
     for (int i = 0; i < problemUrlList.size(); i++) {
       String problemUrl = problemUrlList.get(i);
       if (!HttpRequest.getRequest(problemUrl, String.class).getStatusCode().is2xxSuccessful()) {
-        throw new GeneralException(ErrorStatus.BAD_REQUEST, (i + 1) + "번째 문제 URL이 유효하지 않습니다.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, (i + 1) + "번째 문제 URL이 유효하지 않습니다.");
       }
       if (detailAttendanceRequestProblemRepository.findByProblemUrl(studyMember, problemUrl).isPresent())
-        throw new GeneralException(ErrorStatus.BAD_REQUEST, (i + 1) + "번째 문제 URL의 인증 이력이 존재합니다.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, (i + 1) + "번째 문제 URL의 인증 이력이 존재합니다.");
     }
   }
 }

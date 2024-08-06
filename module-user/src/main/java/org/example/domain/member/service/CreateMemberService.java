@@ -65,7 +65,7 @@ public class CreateMemberService {
       .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 이메일과 매칭되는 인증코드가 없습니다."));
 
     if (!code.equals(request.code())) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
     redisUtils.delete(request.email());
   }
@@ -88,17 +88,12 @@ public class CreateMemberService {
    * 휴대전화 인증
    */
   public void validatePhoneNumber(ValidatePhoneNumberRequest request) {
-    try {
-      String code = Optional.ofNullable(redisUtils.getValue(request.phoneNumber()))
-        .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 번호와 매칭되는 인증코드가 없습니다."));
+    String code = Optional.ofNullable(redisUtils.getValue(request.phoneNumber()))
+      .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 번호와 매칭되는 인증코드가 없습니다."));
 
-      if (!code.equals(request.code())) {
-        throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
-      }
-      redisUtils.delete(request.phoneNumber());
-    } catch (Exception e) {
-      log.error("SMS 인증코드 확인 중 알 수 없는 오류가 발생했습니다.");
+    if (!code.equals(request.code())) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
-
+    redisUtils.delete(request.phoneNumber());
   }
 }

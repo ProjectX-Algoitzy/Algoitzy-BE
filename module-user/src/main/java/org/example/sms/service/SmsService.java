@@ -42,7 +42,7 @@ public class SmsService {
 
   public void sendCertificationPhoneNumber(CertificationPhoneNumberRequest request, String ipAddress) {
     if (!tryConsumeBucket(ipAddress)) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "SMS 인증 요청 횟수를 초과하였습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "SMS 인증 요청 횟수를 초과하였습니다.");
     }
     sendCertificationSms(request);
   }

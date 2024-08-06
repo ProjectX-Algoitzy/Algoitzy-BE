@@ -34,7 +34,7 @@ public class DetailMemberService {
   public String findEmail(FindEmailRequest request) {
     Optional<Member> optionalMember = memberRepository.findByNameAndPhoneNumber(request.name(), request.phoneNumber());
     if (optionalMember.isEmpty()) {
-      throw new GeneralException(ErrorStatus.NOT_FOUND, "일치하는 회원 정보가 없습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_NOT_FOUND, "일치하는 회원 정보가 없습니다.");
     }
 
     return optionalMember.get().getEmail();

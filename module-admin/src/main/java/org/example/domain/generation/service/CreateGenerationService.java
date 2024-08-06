@@ -145,13 +145,13 @@ public class CreateGenerationService {
 
     Week oldGenerationLastWeek = weekRepository.findTopByOrderByEndTimeDesc();
     if (!LocalDateTime.now().isAfter(oldGenerationLastWeek.getEndTime())) {
-      throw new GeneralException(ErrorStatus.VALIDATION_ERROR, "기존 기수가 마감되지 않아 갱신할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "기존 기수가 마감되지 않아 갱신할 수 없습니다.");
     }
 
     WeekDto firstWeek = request.getWeekList().get(0);
     if (!LocalDate.now().plusDays(4).isBefore(firstWeek.getStartTime())) {
       // 서류 + 면접 전형 고려
-      throw new GeneralException(ErrorStatus.VALIDATION_ERROR, "1주차 시작 일자는 기수 갱신일로부터 5일 이후여야 합니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "1주차 시작 일자는 기수 갱신일로부터 5일 이후여야 합니다.");
     }
 
     List<WeekDto> weekDtoList = new ArrayList<>(request.getWeekList());
@@ -159,10 +159,10 @@ public class CreateGenerationService {
       WeekDto lastWeek = weekDtoList.get(i - 1);
       WeekDto thisWeek = weekDtoList.get(i);
       if (lastWeek.getWeek() + 1 != thisWeek.getWeek()) {
-        throw new GeneralException(ErrorStatus.BAD_REQUEST, "요청 순서가 올바르지 않습니다.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "요청 순서가 올바르지 않습니다.");
       }
       if (lastWeek.getStartTime().plusDays(7).isAfter(thisWeek.getStartTime())) {
-        throw new GeneralException(ErrorStatus.VALIDATION_ERROR, (i + 1) + "주차 시작 일자가 올바르지 않습니다.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, (i + 1) + "주차 시작 일자가 올바르지 않습니다.");
       }
     }
 
