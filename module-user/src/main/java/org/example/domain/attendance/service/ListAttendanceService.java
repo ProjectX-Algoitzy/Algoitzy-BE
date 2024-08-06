@@ -9,6 +9,7 @@ import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study.Study;
 import org.example.domain.study.service.CoreStudyService;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ListAttendanceService {
   public ListAttendanceResponse getAttendanceList(Long studyId) {
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     Study study = coreStudyService.findById(studyId);
-    if (studyMemberRepository.findByStudyAndMember(study, member).isEmpty()) {
+    if (studyMemberRepository.findByStudyAndMemberAndStatus(study, member, StudyMemberStatus.PASS).isEmpty()) {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
     return ListAttendanceResponse.builder()

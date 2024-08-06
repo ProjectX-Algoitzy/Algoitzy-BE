@@ -10,6 +10,7 @@ import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.service.CoreStudyService;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ListCurriculumService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디가 아닙니다.");
     }
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
-    if (studyMemberRepository.findByStudyAndMember(study, member).isEmpty()) {
+    if (studyMemberRepository.findByStudyAndMemberAndStatus(study, member, StudyMemberStatus.PASS).isEmpty()) {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
 
