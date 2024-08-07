@@ -31,11 +31,11 @@ public class ListTextAnswerRepository {
           textQuestion.sequence
         )
       )
-      .from(textAnswer)
-      .innerJoin(answer).on(textAnswer.answer.eq(answer))
-      .innerJoin(textQuestion).on(textAnswer.textQuestion.eq(textQuestion))
+      .from(textQuestion)
+      .leftJoin(textAnswer).on(textQuestion.eq(textAnswer.textQuestion))
+      .leftJoin(answer).on(textAnswer.answer.eq(answer))
       .where(
-        answer.id.eq(answerId)
+        answer.id.eq(answerId).or(answer.id.isNull())
       )
       .fetch();
   }

@@ -22,17 +22,18 @@ public class ListTextAnswerRepository {
    */
   public List<DetailTextAnswerDto> getTextAnswerList(Long answerId) {
     return queryFactory
-      .select(Projections.fields(DetailTextAnswerDto.class,
+      .select(Projections.fields(
+          DetailTextAnswerDto.class,
           textQuestion.question,
           textQuestion.isRequired,
           textAnswer.text
         )
       )
-      .from(textAnswer)
-      .innerJoin(answer).on(textAnswer.answer.eq(answer))
-      .innerJoin(textQuestion).on(textAnswer.textQuestion.eq(textQuestion))
+      .from(textQuestion)
+      .leftJoin(textAnswer).on(textQuestion.eq(textAnswer.textQuestion))
+      .leftJoin(answer).on(textAnswer.answer.eq(answer))
       .where(
-        answer.id.eq(answerId)
+        answer.id.eq(answerId).or(answer.id.isNull())
       )
       .fetch();
   }
