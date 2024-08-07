@@ -2,9 +2,12 @@ package org.example.domain.study.service;
 
 import static org.example.util.ValueUtils.*;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.application.Application;
+import org.example.domain.application.repository.ApplicationRepository;
 import org.example.domain.generation.repository.GenerationRepository;
 import org.example.domain.study.Study;
 import org.example.domain.study.controller.request.CreateRegularStudyRequest;
@@ -24,6 +27,7 @@ public class CreateStudyService {
   private final CoreStudyService coreStudyService;
   private final StudyRepository studyRepository;
   private final GenerationRepository generationRepository;
+  private final ApplicationRepository applicationRepository;
 
   @Value("${s3.basic-image.study}")
   private String basicStudyImage;
@@ -63,6 +67,8 @@ public class CreateStudyService {
     }
 
     String profileUrl = (StringUtils.hasText(request.profileUrl())) ? request.profileUrl() : basicStudyImage;
+    Optional<Application> optionalApplication = applicationRepository.findByStudy(study);
+    optionalApplication.ifPresent(application -> application.updateTitle(request.name() + " 지원서"));
     study.update(profileUrl, request.name(), request.content());
   }
 }

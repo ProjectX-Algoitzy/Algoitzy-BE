@@ -84,4 +84,8 @@ public class Application {
     this.title = title;
     this.confirmYN = confirmYN;
   }
+
+  public void updateTitle(String title) {
+    this.title = title;
+  }
 }
