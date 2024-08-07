@@ -17,7 +17,11 @@ public class ListAttendanceRequestProblemRepository {
     return queryFactory
       .select(attendanceRequestProblem)
       .from(attendanceRequestProblem)
-      .where(attendanceRequestProblem.attendanceRequest.eq(attendanceRequest))
+      .where(
+        attendanceRequestProblem.attendanceRequest.eq(attendanceRequest),
+        attendanceRequestProblem.problemUrl.contains("acmicpc.net").not(), // 백준 제외
+        attendanceRequestProblem.problemUrl.contains("boj.kr").not() // 백준 제외
+      )
       .fetch().size();
   }
 }
