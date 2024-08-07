@@ -1,5 +1,7 @@
 package org.example.domain.study.service;
 
+import static org.example.util.ValueUtils.*;
+
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
@@ -52,7 +54,12 @@ public class CreateStudyService {
   public void updateStudy(Long studyId, UpdateStudyRequest request) {
     Study study = coreStudyService.findById(studyId);
     if (study.getType().equals(StudyType.TEMP)) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "자율 스터디는 수정할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자율 스터디는 수정할 수 없습니다.");
+    }
+
+    if ((study.getName().equals(CODING_TEST_BASIC) && !request.name().equals(CODING_TEST_BASIC))
+      || (study.getName().equals(CODING_TEST_PREPARE) && !request.name().equals(CODING_TEST_PREPARE))) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, study.getName() + "의 스터디명은 수정할 수 없습니다.");
     }
 
     String profileUrl = (StringUtils.hasText(request.profileUrl())) ? request.profileUrl() : basicStudyImage;
