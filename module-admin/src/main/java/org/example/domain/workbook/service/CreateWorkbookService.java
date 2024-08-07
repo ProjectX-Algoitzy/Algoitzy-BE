@@ -115,6 +115,9 @@ public class CreateWorkbookService {
   public void createWorkbookProblem(Long workbookId, CreateWorkbookProblemRequest request) {
     Workbook workbook = coreWorkbookService.findById(workbookId);
     Problem problem = coreProblemService.findByNumber(request.number());
+    if (workbookProblemRepository.findByWorkbookAndProblem(workbook, problem).isPresent()) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 문제집에 포함된 문제입니다.");
+    }
     workbookProblemRepository.save(
       WorkbookProblem.builder()
         .workbook(workbook)
