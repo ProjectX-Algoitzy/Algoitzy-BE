@@ -21,4 +21,7 @@ public class ListRegularStudyDto {
 
   @Schema(description = "스터디 이름")
   private String name;
+
+  @Schema(description = "현재 스터디원 수")
+  long memberCount;
 }
