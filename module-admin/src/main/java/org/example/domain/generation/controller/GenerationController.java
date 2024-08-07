@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.generation.controller.request.RenewGenerationRequest;
 import org.example.domain.generation.controller.response.DetailGenerationResponse;
+import org.example.domain.generation.controller.response.ListGenerationResponse;
 import org.example.domain.generation.service.GenerationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,9 +30,16 @@ public class GenerationController {
     return ApiResponse.onSuccess();
   }
 
-  @GetMapping()
-  @Operation(summary = "기수 정보 조회")
+  @GetMapping("/current")
+  @Operation(summary = "현재 기수 상세 조회")
   public ApiResponse<DetailGenerationResponse> getGeneration() {
     return ApiResponse.onSuccess(generationService.getGeneration());
+  }
+
+  @GetMapping
+  @Operation(summary = "기수 목록 조회")
+  public ApiResponse<ListGenerationResponse> getGenerationList() {
+    return ApiResponse.onSuccess(generationService.getGenerationList());
+
   }
 }
