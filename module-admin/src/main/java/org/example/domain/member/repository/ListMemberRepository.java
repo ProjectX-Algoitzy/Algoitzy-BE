@@ -5,6 +5,7 @@ import static org.example.domain.member.QMember.member;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -38,7 +39,13 @@ public class ListMemberRepository {
       )
       .from(member)
       .where(member.role.ne(Role.ROLE_USER))
-      .orderBy(member.name.asc())
+      .orderBy(
+        new CaseBuilder()
+          .when(member.role.eq(Role.ROLE_OWNER)).then(0)
+          .when(member.role.eq(Role.ROLE_ADMIN)).then(1)
+          .otherwise(2).asc(),
+        member.name.asc()
+      )
       .fetch();
   }
 

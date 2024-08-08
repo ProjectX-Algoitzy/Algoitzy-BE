@@ -23,7 +23,7 @@ public class CreateMemberService {
   public void updateMemberRole(UpdateMemberRoleRequest request) {
     Member currentMember= coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     if (!currentMember.getRole().equals(Role.ROLE_OWNER)) {
-      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "KOALA 회장만 접근 가능합니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "KOALA 회장만 접근 가능합니다.");
     }
 
     // 회장은 한 명만 존재

@@ -177,7 +177,7 @@ public class CoreEmailService {
       .filter(studyMember -> studyMember.getStatus().getOrder() == valueOf(request.type()).getOrder() - 1)
       .findFirst();
     if (optionalStudyMember.isEmpty()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "전형 단계를 확인해주세요.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "전형 단계를 확인해주세요.");
     }
 
     StudyMember studyMember = optionalStudyMember.get();

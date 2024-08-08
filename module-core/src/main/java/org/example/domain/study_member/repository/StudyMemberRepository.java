@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> {
 
   Optional<StudyMember> findByStudyAndMember(Study study, Member member);
+  Optional<StudyMember> findByStudyAndMemberAndStatus(Study study, Member member, StudyMemberStatus status);
 
   List<StudyMember> findAllByMember(Member member);
 

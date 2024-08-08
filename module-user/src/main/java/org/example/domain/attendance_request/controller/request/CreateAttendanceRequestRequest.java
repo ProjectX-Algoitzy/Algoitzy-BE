@@ -19,13 +19,13 @@ public record CreateAttendanceRequestRequest(
 
 ) {
 
-  @AssertTrue(message = "전체 URL을 입력해주세요.")
+  @AssertTrue(message = "https://를 포함한 전체 URL 경로를 입력해주세요.")
   @Schema(hidden = true)
   private boolean getProblemUrlListValidate() {
     if (ObjectUtils.isEmpty(problemUrlList)) return true;
 
     return problemUrlList.stream()
-      .allMatch(problemUrl -> problemUrl.contains("www.")) && blogUrl.contains("www.");
+      .allMatch(problemUrl -> problemUrl.contains("https://")) && blogUrl.contains("https://");
   }
 
   @AssertTrue(message = "중복된 URL이 존재합니다.")

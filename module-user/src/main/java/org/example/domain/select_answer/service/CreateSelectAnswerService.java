@@ -52,7 +52,7 @@ public class CreateSelectAnswerService {
       List<Long> requestSelectQuestionIdList = requestList.stream().map(CreateSelectAnswerRequest::selectQuestionId).toList();
       boolean allRequiredAnswered = new HashSet<>(requestSelectQuestionIdList).containsAll(requiredSelectQuestionIdList);
       if (!allRequiredAnswered) {
-        throw new GeneralException(ErrorStatus.BAD_REQUEST, "객관식 필수 문항에 응답해주세요.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "객관식 필수 문항에 응답해주세요.");
       }
     }
 
@@ -60,7 +60,7 @@ public class CreateSelectAnswerService {
     for (CreateSelectAnswerRequest request : requestList) {
       SelectQuestion selectQuestion = coreSelectQuestionService.findById(request.selectQuestionId());
       if (!selectQuestion.getIsMultiSelect() && request.fieldIdList().size() > 1) {
-        throw new GeneralException(ErrorStatus.BAD_REQUEST, "다중 선택이 불가능한 문항입니다.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "다중 선택이 불가능한 문항입니다.");
       }
 
       // 면접 일정 생성

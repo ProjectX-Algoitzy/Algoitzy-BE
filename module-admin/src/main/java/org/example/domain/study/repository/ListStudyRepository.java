@@ -2,8 +2,11 @@ package org.example.domain.study.repository;
 
 import static org.example.domain.generation.QGeneration.generation;
 import static org.example.domain.study.QStudy.study;
+import static org.example.domain.study_member.QStudyMember.studyMember;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +35,13 @@ public class ListStudyRepository {
       .select(Projections.fields(ListRegularStudyDto.class,
           study.id.as("studyId"),
           study.profileUrl,
-          study.name
+          study.name,
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.count())
+              .from(studyMember)
+              .where(studyMember.study.eq(study))
+            , "memberCount")
         )
       )
       .from(study)

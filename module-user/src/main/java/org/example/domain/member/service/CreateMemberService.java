@@ -1,5 +1,6 @@
 package org.example.domain.member.service;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
@@ -60,13 +61,11 @@ public class CreateMemberService {
    * 이메일 인증
    */
   public void validateEmail(ValidateEmailRequest request) {
-    String code = redisUtils.getValue(request.email());
-    if (code == null) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 이메일과 매칭되는 인증코드가 없습니다.");
-    }
+    String code = Optional.ofNullable(redisUtils.getValue(request.email()))
+      .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 이메일과 매칭되는 인증코드가 없습니다."));
 
     if (!code.equals(request.code())) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
     redisUtils.delete(request.email());
   }
@@ -75,9 +74,13 @@ public class CreateMemberService {
    * 백준 유효 계정 인증
    */
   public void validateHandle(ValidateHandleRequest request) {
+    if (memberRepository.findByHandle(request.handle()).isPresent()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 가입된 닉네임입니다.");
+    }
+
     ResponseEntity<String> response = HttpRequest.getRequest(Url.BAEKJOON_USER.getBaekjoonUserUrl(request.handle()), String.class);
     if (!response.getStatusCode().is2xxSuccessful()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "백준 핸들이 유효하지 않습니다.");
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "백준 닉네임이 유효하지 않습니다.");
     }
   }
 
@@ -85,13 +88,11 @@ public class CreateMemberService {
    * 휴대전화 인증
    */
   public void validatePhoneNumber(ValidatePhoneNumberRequest request) {
-    String code = redisUtils.getValue(request.phoneNumber());
-    if (code == null) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "해당 번호와 매칭되는 인증코드가 없습니다.");
-    }
+    String code = Optional.ofNullable(redisUtils.getValue(request.phoneNumber()))
+      .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 번호와 매칭되는 인증코드가 없습니다."));
 
     if (!code.equals(request.code())) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
     redisUtils.delete(request.phoneNumber());
   }

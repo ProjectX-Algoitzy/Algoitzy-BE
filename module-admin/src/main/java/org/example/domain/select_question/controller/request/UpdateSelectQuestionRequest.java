@@ -3,6 +3,7 @@ package org.example.domain.select_question.controller.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import org.example.domain.field.controller.request.UpdateFieldRequest;
 
@@ -22,6 +23,7 @@ public record UpdateSelectQuestionRequest(
   @Schema(description = "문항 번호")
   int sequence,
 
+  @NotEmpty
   @Schema(description = "객관식 필드")
   List<@Valid UpdateFieldRequest> updateFieldRequestList
 ) {
