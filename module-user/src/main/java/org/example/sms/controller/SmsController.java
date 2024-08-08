@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.sms.controller.request.CertificationPhoneNumberRequest;
 import org.example.sms.service.SmsService;
+import org.example.util.IpUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class SmsController {
   public ApiResponse<Void> sendCertificationPhoneNumber(
       @RequestBody @Valid CertificationPhoneNumberRequest request,
       HttpServletRequest httpServletRequest) {
-    smsService.sendCertificationPhoneNumber(request, httpServletRequest.getRemoteAddr());
+    smsService.sendCertificationPhoneNumber(request, IpUtils.getClientIp(httpServletRequest));
     return ApiResponse.onSuccess();
   }
 }

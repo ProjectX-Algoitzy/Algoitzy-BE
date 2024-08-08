@@ -5,6 +5,9 @@
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
   <component name="NimProjectFileService" has-nim-files="false" />
+  <component name="PDMPlugin">
+    <option name="skipTestSources" value="false" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
