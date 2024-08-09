@@ -74,15 +74,6 @@ public class CoreCreateS3FileService {
   }
 
   /**
-   * S3 파일 삭제
-   */
-  public void deleteS3File(String fileName) {
-    fileName = profile + File.separator + fileName;
-    amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
-    s3FileRepository.deleteByFileName(fileName);
-  }
-
-  /**
    * 중복 방지를 위한 파일명 난수화
    */
   private String generateRandomFileName(String originalName) {
@@ -92,6 +83,27 @@ public class CoreCreateS3FileService {
     } while (s3FileRepository.existsByFileName(fileName));
 
     return profile + File.separator + fileName;
+  }
+
+  /**
+   * S3 파일 삭제
+   */
+  public void deleteS3File(String fileUrl) {
+
+    String fileName = extractFileNameFromUrl(fileUrl);
+    fileName = profile + File.separator + fileName;
+
+    // S3에서 파일 삭제
+    amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+
+    // 레포지토리에서 파일 삭제
+    s3FileRepository.deleteByFileName(fileName);
+  }
+
+  // 파일 URL에서 파일 이름을 추출
+  private String extractFileNameFromUrl(String fileUrl) {
+    int fileIndex = fileUrl.lastIndexOf('/');
+    return fileUrl.substring(fileIndex + 1);
   }
 
 }

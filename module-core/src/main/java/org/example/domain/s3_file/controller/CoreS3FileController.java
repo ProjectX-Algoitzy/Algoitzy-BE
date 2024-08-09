@@ -8,8 +8,8 @@ import org.example.api_response.ApiResponse;
 import org.example.domain.s3_file.service.CoreS3FileService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,10 +29,13 @@ public class CoreS3FileController {
     return ApiResponse.onCreate(coreS3FileService.uploadS3File(multipartFileList));
   }
 
-  @DeleteMapping("/{filename}")
+  @DeleteMapping("/deleteFile")
   @Operation(summary = "S3 파일 삭제")
-  public ApiResponse<Void> deleteS3File(@PathVariable("filename") String fileName) {
-    coreS3FileService.deleteS3File(fileName);
+  public ApiResponse<Void> deleteS3File(@RequestBody String fileUrl) {
+    if (fileUrl == null || fileUrl.isEmpty()) {
+      throw new IllegalArgumentException("File URL 경로를 재확인 해주세요.");
+    }
+    coreS3FileService.deleteS3File(fileUrl);
     return ApiResponse.onSuccess();
   }
 }
