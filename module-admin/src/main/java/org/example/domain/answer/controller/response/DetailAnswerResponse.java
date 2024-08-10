@@ -22,6 +22,9 @@ public class DetailAnswerResponse {
   @Schema(description = "답변 ID")
   private Long answerId;
 
+  @Schema(description = "작성한 지원서 대상 스터디 ID")
+  private long studyId;
+
   @Schema(description = "작성한 지원서 대상 스터디 이름")
   private String studyName;
 

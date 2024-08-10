@@ -28,6 +28,9 @@ public class DetailAnswerResponse {
   @Schema(description = "지원서 제목")
   private String title;
 
+  @Schema(description = "작성한 지원서 대상 스터디 ID")
+  private long studyId;
+
   @Schema(description = "작성한 지원서 대상 스터디 이름")
   private String studyName;
 
@@ -39,6 +42,9 @@ public class DetailAnswerResponse {
 
   @Schema(description = "작성자 핸드폰 번호")
   private String phoneNumber;
+
+  @Schema(description = "제출 확정 여부")
+  private boolean confirmYN;
 
   @Default
   @Schema(description = "객관식 답변 list")
