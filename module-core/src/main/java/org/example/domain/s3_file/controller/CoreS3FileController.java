@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,12 +30,9 @@ public class CoreS3FileController {
     return ApiResponse.onCreate(coreS3FileService.uploadS3File(multipartFileList));
   }
 
-  @DeleteMapping("/deleteFile")
+  @DeleteMapping("")
   @Operation(summary = "S3 파일 삭제")
-  public ApiResponse<Void> deleteS3File(@RequestBody String fileUrl) {
-    if (fileUrl == null || fileUrl.isEmpty()) {
-      throw new IllegalArgumentException("File URL 경로를 재확인 해주세요.");
-    }
+  public ApiResponse<Void> deleteS3File(@RequestParam String fileUrl) {
     coreS3FileService.deleteS3File(fileUrl);
     return ApiResponse.onSuccess();
   }

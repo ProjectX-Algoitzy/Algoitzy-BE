@@ -105,5 +105,4 @@ public class CoreCreateS3FileService {
     int fileIndex = fileUrl.lastIndexOf('/');
     return fileUrl.substring(fileIndex + 1);
   }
-
 }
