@@ -56,6 +56,7 @@ subprojects {
 //        implementation 'io.github.bonigarcia:webdrivermanager:5.9.1'
         implementation 'org.seleniumhq.selenium:selenium-java'
         compileOnly 'org.projectlombok:lombok'
+        runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
         runtimeOnly 'com.mysql:mysql-connector-j'
         annotationProcessor 'org.projectlombok:lombok'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
