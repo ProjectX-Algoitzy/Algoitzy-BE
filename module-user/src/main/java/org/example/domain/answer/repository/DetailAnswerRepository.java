@@ -26,10 +26,12 @@ public class DetailAnswerRepository {
           application.id.as("applicationId"),
           answer.id.as("answerId"),
           application.title,
+          study.id.as("studyId"),
           study.name.as("studyName"),
           member.name.as("submitName"),
           member.email.as("submitEmail"),
           member.phoneNumber,
+          answer.confirmYN,
           answer.updatedTime.as("submitTime")
         )
       )

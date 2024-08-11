@@ -22,6 +22,7 @@ public class DetailAnswerRepository {
     return queryFactory
       .select(Projections.fields(DetailAnswerResponse.class,
           answer.id.as("answerId"),
+          study.id.as("studyId"),
           study.name.as("studyName"),
           member.name.as("submitName"),
           member.email.as("submitEmail"),
