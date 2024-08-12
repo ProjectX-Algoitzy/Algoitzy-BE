@@ -9,12 +9,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class CorsConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-            .allowedOrigins("*")
-            .allowedMethods("*")
-            .maxAge(3600);
-    }
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+      .allowedOrigins(
+        // production
+        "https://kau-koala.com",
+        "https://admin.kau-koala.com",
+        // dev
+        "https://user-dev-front.kau-koala.com",
+        "https://admin-dev-front.kau-koala.com",
+        // local
+        "http://localhost:3000"
+      )
+      .allowedMethods("*")
+      .maxAge(3600);
+  }
 }
 
