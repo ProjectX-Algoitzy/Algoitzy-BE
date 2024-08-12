@@ -20,9 +20,11 @@ public class DetailApplicationRepository {
    */
   public DetailApplicationResponse getApplication(Long applicationId) {
     return queryFactory
-      .select(Projections.fields(DetailApplicationResponse.class,
-        application.title,
-        study.name.as("studyName")
+      .select(Projections.fields(
+          DetailApplicationResponse.class,
+          application.title,
+          study.id.as("studyId"),
+          study.name.as("studyName")
         )
       )
       .from(application)

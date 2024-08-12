@@ -19,6 +19,9 @@ public class DetailApplicationResponse {
   @Schema(description = "지원서 제목")
   private String title;
 
+  @Schema(description = "대상 스터디 ID")
+  private long studyId;
+
   @Schema(description = "대상 스터디 이름")
   private String studyName;
 
