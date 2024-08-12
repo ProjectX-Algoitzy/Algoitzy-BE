@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.study.controller.response.ListStudyDto;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.enums.StudyMemberRole;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
@@ -71,7 +72,8 @@ public class ListStudyRepository {
       .where(
         generation.value.eq(maxGeneration),
         (studyType == null) ?
-          studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail()) // 나의 스터디
+          studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+            .and(studyMember.status.eq(StudyMemberStatus.PASS))// 나의 스터디
           : study.type.eq(studyType)
       )
       .groupBy(study)
