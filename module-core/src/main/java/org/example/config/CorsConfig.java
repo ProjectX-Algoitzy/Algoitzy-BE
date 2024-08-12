@@ -13,12 +13,18 @@ public class CorsConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
       .allowedOrigins(
-        // production
+        // production front
         "https://kau-koala.com",
         "https://admin.kau-koala.com",
-        // dev
+        // production back
+        "https://api.kau-koala.com",
+        "https://admin-api.kau-koala.com",
+        // dev front
         "https://user-dev-front.kau-koala.com",
         "https://admin-dev-front.kau-koala.com",
+        // dev back
+        "https://user-dev.kau-koala.com",
+        "https://admin-dev.kau-koala.com",
         // local
         "http://localhost:3000"
       )
