@@ -24,13 +24,10 @@ jobs:
         shell: bash
 
       - name: Build module-core
-        run: |
-          ./gradlew build
+        run: ./gradlew :module-core:clean :module-core:build
 
       - name: Build module-admin
-        run: |
-          ./gradlew build
+        run: ./gradlew :module-admin:clean :module-admin:bootJar
 
-      - name: Build module-user
-        run: |
-          ./gradlew build
+      - name: Build module-admin
+        run: ./gradlew :module-admin:clean :module-admin:bootJar
