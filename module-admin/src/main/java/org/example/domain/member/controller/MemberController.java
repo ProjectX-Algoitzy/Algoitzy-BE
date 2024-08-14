@@ -44,7 +44,7 @@ public class MemberController {
     return ApiResponse.onSuccess();
   }
 
-  @GetMapping("/check-token")
+  @PostMapping("/check-token")
   @Operation(summary = "Access Token 만료 임박 확인", description = "5분 이내 만료 시 true 반환")
   public ApiResponse<Boolean> checkAccessToken(@RequestBody @Valid AccessTokenRequest request) {
     return ApiResponse.onSuccess(memberService.checkAccessToken(request));
