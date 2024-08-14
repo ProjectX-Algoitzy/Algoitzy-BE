@@ -14,6 +14,7 @@ import org.example.domain.text_question.repository.TextQuestionRepository;
 import org.example.domain.text_question.service.CoreTextQuestionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,10 @@ public class CreateTextAnswerService {
         textQuestionRepository.findAllByApplicationAndIsRequiredIsTrue(answer.getApplication())
           .stream().map(TextQuestion::getId).toList();
       List<Long> requestTextQuestionIdList = requestList.stream().map(CreateTextAnswerRequest::textQuestionId).toList();
+      List<String> requestTextQuestionTextList = requestList.stream().map(CreateTextAnswerRequest::text).toList();
+      if (requestTextQuestionTextList.stream().anyMatch(text -> !StringUtils.hasText(text))) {
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "주관식 필수 문항에 응답해주세요.");
+      }
       boolean allRequiredAnswered = new HashSet<>(requestTextQuestionIdList).containsAll(requiredTextQuestionIdList);
       if (!allRequiredAnswered) {
         throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "주관식 필수 문항에 응답해주세요.");
