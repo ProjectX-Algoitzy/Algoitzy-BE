@@ -29,5 +29,5 @@ jobs:
       - name: Build module-admin
         run: ./gradlew :module-admin:clean :module-admin:bootJar
 
-      - name: Build module-admin
-        run: ./gradlew :module-admin:clean :module-admin:bootJar
+      - name: Build module-user
+        run: ./gradlew :module-user:clean :module-admin:bootJar
