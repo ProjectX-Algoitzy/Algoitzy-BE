@@ -30,4 +30,4 @@ jobs:
         run: ./gradlew :module-admin:clean :module-admin:bootJar
 
       - name: Build module-user
-        run: ./gradlew :module-user:clean :module-admin:bootJar
+        run: ./gradlew :module-user:clean :module-user:bootJar
