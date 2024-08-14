@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - feature/217
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to repository
+        uses: actions/checkout@v2
+
+      - name: Setup Java 19
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Build module-core
+        run: |
+          cd module-core
+          ./gradlew build
+
+      - name: Build module-admin
+        run: |
+          cd module-admin
+          ./gradlew build
+
+      - name: Build module-user
+        run: |
+          cd module-user
+          ./gradlew build
