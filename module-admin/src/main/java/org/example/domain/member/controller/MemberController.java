@@ -3,7 +3,6 @@ package org.example.domain.member.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.FindEmailRequest;
@@ -15,7 +14,6 @@ import org.example.domain.member.controller.response.ListMemberResponse;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.service.MemberService;
-import org.example.util.CryptoUtils;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -49,11 +47,6 @@ public class MemberController {
   @PostMapping("/check-token")
   @Operation(summary = "Access Token 만료 임박 확인", description = "5분 이내 만료 시 true 반환")
   public ApiResponse<Boolean> checkAccessToken(@RequestBody @Valid AccessTokenRequest request) {
-    for (String s : List.of("01074950618",
-      "01067512077",
-      "01077626009")) {
-      System.out.println("CryptoUtils.encode(s) = " + CryptoUtils.encode(s));
-    }
     return ApiResponse.onSuccess(memberService.checkAccessToken(request));
   }
 
