@@ -90,12 +90,7 @@ public class Member {
     this.password = password;
     this.name = name;
     this.handle = handle;
-    this.phoneNumber =
-      phoneNumber.substring(0, 3)
-        + "-"
-        + phoneNumber.substring(3, 7)
-        + "-"
-        + phoneNumber.substring(7);
+    this.phoneNumber = phoneNumber;
     this.role = role;
     this.grade = grade;
     this.major = major;
