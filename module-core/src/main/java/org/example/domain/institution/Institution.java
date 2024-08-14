@@ -84,6 +84,7 @@ public class Institution {
   }
 
   public void syncViewCount(int viewCount) {
-    this.viewCount += viewCount;
+    if (this.viewCount == null) this.viewCount = viewCount;
+    else this.viewCount += viewCount;
   }
 }
