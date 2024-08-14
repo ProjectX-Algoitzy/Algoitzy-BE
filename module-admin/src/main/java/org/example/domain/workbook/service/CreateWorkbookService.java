@@ -15,6 +15,7 @@ import org.example.domain.study.repository.StudyRepository;
 import org.example.domain.week.Week;
 import org.example.domain.week.repository.DetailWeekRepository;
 import org.example.domain.workbook.Workbook;
+import org.example.domain.workbook.controller.request.UpdateWorkbookRequest;
 import org.example.domain.workbook.enums.CodingTestBasicWorkbook;
 import org.example.domain.workbook.repository.WorkbookRepository;
 import org.example.domain.workbook_problem.WorkbookProblem;
@@ -100,6 +101,14 @@ public class CreateWorkbookService {
       case 8 -> algorithmList = List.of("greedy");
     }
     return listProblemRepository.getProblemList(algorithmList);
+  }
+
+  /**
+   * 문제집 이름 수정
+   */
+  public void updateWorkbook(Long workbookId, UpdateWorkbookRequest request) {
+    Workbook workbook = coreWorkbookService.findById(workbookId);
+    workbook.update(request.name());
   }
 
   /**

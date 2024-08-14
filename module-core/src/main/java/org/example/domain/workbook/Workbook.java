@@ -30,6 +30,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -81,5 +82,9 @@ public class Workbook {
     this.institution = institution;
     this.week = week;
     this.name = name;
+  }
+
+  public void update(String name) {
+    if (StringUtils.hasText(name)) this.name = name;
   }
 }
