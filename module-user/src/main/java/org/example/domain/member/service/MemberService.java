@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
-import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
+import org.example.domain.member.controller.request.AccessTokenRequest;
 import org.example.domain.member.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.member.controller.request.ValidatePhoneNumberRequest;
@@ -51,9 +51,16 @@ public class MemberService {
   }
 
   /**
+   * Access Token 만료 임박 확인
+   */
+  public Boolean checkAccessToken(AccessTokenRequest request) {
+    return loginService.checkAccessToken(request);
+  }
+
+  /**
    * Access Token 재발급
    */
-  public LoginResponse refreshAccessToken(RefreshAccessTokenRequest request) {
+  public LoginResponse refreshAccessToken(AccessTokenRequest request) {
     return loginService.refreshAccessToken(request);
   }
 
