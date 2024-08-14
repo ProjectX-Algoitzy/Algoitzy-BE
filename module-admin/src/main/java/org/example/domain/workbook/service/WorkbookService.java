@@ -1,6 +1,7 @@
 package org.example.domain.workbook.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.workbook.controller.request.UpdateWorkbookRequest;
 import org.example.domain.workbook.controller.response.DetailWorkbookResponse;
 import org.example.domain.workbook.controller.response.ListWorkbookResponse;
 import org.example.domain.workbook_problem.controller.request.CreateWorkbookProblemRequest;
@@ -23,6 +24,13 @@ public class WorkbookService {
    */
   public ListWorkbookResponse getWorkbookList(Long studyId) {
     return listWorkbookService.getWorkbookList(studyId);
+  }
+
+  /**
+   * 문제집 이름 수정
+   */
+  public void updateWorkbook(Long workbookId, UpdateWorkbookRequest request) {
+    createWorkbookService.updateWorkbook(workbookId, request);
   }
 
   /**

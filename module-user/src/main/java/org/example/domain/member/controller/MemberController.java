@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
-import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
+import org.example.domain.member.controller.request.AccessTokenRequest;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.service.MemberService;
@@ -40,9 +40,15 @@ public class MemberController {
     return ApiResponse.onSuccess();
   }
 
+  @GetMapping("/check-token")
+  @Operation(summary = "Access Token 만료 임박 확인", description = "5분 이내 만료 시 true 반환")
+  public ApiResponse<Boolean> checkAccessToken(@RequestBody @Valid AccessTokenRequest request) {
+    return ApiResponse.onSuccess(memberService.checkAccessToken(request));
+  }
+
   @PostMapping("/refresh-token")
   @Operation(summary = "Access Token 재발급")
-  public ApiResponse<LoginResponse> refreshAccessToken(@RequestBody @Valid RefreshAccessTokenRequest request) {
+  public ApiResponse<LoginResponse> refreshAccessToken(@RequestBody @Valid AccessTokenRequest request) {
     return ApiResponse.onSuccess(memberService.refreshAccessToken(request));
   }
 
