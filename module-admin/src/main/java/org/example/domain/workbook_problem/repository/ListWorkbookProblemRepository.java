@@ -1,14 +1,17 @@
 package org.example.domain.workbook_problem.repository;
 
+import static org.example.domain.problem.QProblem.problem;
 import static org.example.domain.workbook_problem.QWorkbookProblem.workbookProblem;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.study.Study;
 import org.example.domain.week.Week;
 import org.example.domain.workbook_problem.controller.response.ListWorkbookProblemDto;
+import org.example.util.http_request.Url;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,7 +38,10 @@ public class ListWorkbookProblemRepository {
           ListWorkbookProblemDto.class,
           workbookProblem.problem.number,
           workbookProblem.problem.name,
-          workbookProblem.problem.level.stringValue().as("levelUrl")
+          workbookProblem.problem.level.stringValue().as("levelUrl"),
+          Expressions.stringTemplate("concat({0}, {1})",
+              Url.BAEKJOON_PROBLEM.getUri(), problem.number.stringValue())
+            .as("baekjoonUrl")
         )
       )
       .from(workbookProblem)
