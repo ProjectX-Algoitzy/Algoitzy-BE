@@ -7,7 +7,7 @@ import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.AccessTokenRequest;
 import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
-import org.example.domain.member.controller.request.ValidatePhoneNumberRequest;
+import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.springframework.stereotype.Service;

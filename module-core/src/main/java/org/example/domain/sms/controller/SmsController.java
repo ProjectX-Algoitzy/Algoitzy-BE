@@ -1,4 +1,4 @@
-package org.example.sms.controller;
+package org.example.domain.sms.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -6,8 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
-import org.example.sms.controller.request.CertificationPhoneNumberRequest;
-import org.example.sms.service.SmsService;
+import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
+import org.example.domain.sms.service.SmsService;
+import org.example.domain.sms.controller.request.CertificationPhoneNumberRequest;
 import org.example.util.IpUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,13 @@ public class SmsController {
       @RequestBody @Valid CertificationPhoneNumberRequest request,
       HttpServletRequest httpServletRequest) {
     smsService.sendCertificationPhoneNumber(request, IpUtils.getClientIp(httpServletRequest));
+    return ApiResponse.onSuccess();
+  }
+
+  @PostMapping("/phone-number")
+  @Operation(summary = "휴대전화 인증")
+  public ApiResponse<Void> validatePhoneNumber(@RequestBody @Valid ValidatePhoneNumberRequest request) {
+    smsService.validatePhoneNumber(request);
     return ApiResponse.onSuccess();
   }
 }

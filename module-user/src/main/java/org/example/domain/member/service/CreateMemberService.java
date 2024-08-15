@@ -9,7 +9,7 @@ import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.member.Member;
-import org.example.domain.member.controller.request.ValidatePhoneNumberRequest;
+import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
 import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
 import org.example.util.RedisUtils;
