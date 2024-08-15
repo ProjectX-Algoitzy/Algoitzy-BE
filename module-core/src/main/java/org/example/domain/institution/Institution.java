@@ -46,6 +46,7 @@ public class Institution {
   private String name;
 
   @Comment("분석 내용")
+  @Column(length = 1000000)
   private String content;
 
   @Enumerated(value = EnumType.STRING)
