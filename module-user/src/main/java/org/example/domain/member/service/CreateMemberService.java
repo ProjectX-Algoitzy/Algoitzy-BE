@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.controller.request.CreateMemberRequest;
-import org.example.domain.member.controller.request.ValidateEmailRequest;
+import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.ValidatePhoneNumberRequest;

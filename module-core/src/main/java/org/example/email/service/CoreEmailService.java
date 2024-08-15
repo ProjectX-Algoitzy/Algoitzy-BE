@@ -28,6 +28,7 @@ import org.example.domain.study_member.StudyMember;
 import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.email.controller.request.SendEmailRequest;
+import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.email.enums.EmailType;
 import org.example.util.RandomUtils;
 import org.example.util.RedisUtils;
@@ -182,5 +183,18 @@ public class CoreEmailService {
 
     StudyMember studyMember = optionalStudyMember.get();
     studyMember.updateStatus(valueOf(request.type()));
+  }
+
+  /**
+   * 이메일 인증
+   */
+  public void validateEmail(ValidateEmailRequest request) {
+    String code = Optional.ofNullable(redisUtils.getValue(request.email()))
+      .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 이메일과 매칭되는 인증코드가 없습니다."));
+
+    if (!code.equals(request.code())) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "인증코드가 일치하지 않습니다.");
+    }
+    redisUtils.delete(request.email());
   }
 }

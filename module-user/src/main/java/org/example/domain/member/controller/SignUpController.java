@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.CreateMemberRequest;
-import org.example.domain.member.controller.request.ValidateEmailRequest;
+import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.member.controller.request.ValidatePhoneNumberRequest;
 import org.example.domain.member.service.MemberService;
