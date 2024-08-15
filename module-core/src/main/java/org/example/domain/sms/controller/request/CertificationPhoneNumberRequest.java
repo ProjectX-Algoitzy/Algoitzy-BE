@@ -1,4 +1,4 @@
-package org.example.sms.controller.request;
+package org.example.domain.sms.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.example.validator.PhoneNumber;
