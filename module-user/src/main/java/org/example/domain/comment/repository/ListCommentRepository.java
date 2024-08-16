@@ -7,7 +7,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.comment.controller.request.SearchCommentRequest;
 import org.example.domain.comment.controller.response.ListCommentDto;
@@ -24,7 +23,7 @@ public class ListCommentRepository {
   /**
    * 댓글 목록 조회
    */
-  public Page<ListCommentDto> getCommentList(String boardId, SearchCommentRequest request) {
+  public Page<ListCommentDto> getCommentList(Long boardId, SearchCommentRequest request) {
     List<ListCommentDto> commentList = queryFactory
       .select(
         Projections.fields(
@@ -37,7 +36,7 @@ public class ListCommentRepository {
       .from(comment)
       .innerJoin(board).on(comment.board.eq(board))
       .where(
-        board.id.eq(UUID.fromString(boardId))
+        board.id.eq(boardId)
       )
       .offset(request.pageRequest().getOffset())
       .limit(request.pageRequest().getPageSize())
@@ -50,7 +49,7 @@ public class ListCommentRepository {
       .select(comment.count())
       .from(comment)
       .innerJoin(board).on(comment.board.eq(board))
-      .where(board.id.eq(UUID.fromString(boardId)));
+      .where(board.id.eq(boardId));
 
     return PageableExecutionUtils.getPage(commentList, request.pageRequest(), countQuery::fetchOne);
   }

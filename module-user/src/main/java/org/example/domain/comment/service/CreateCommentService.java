@@ -22,7 +22,7 @@ public class CreateCommentService {
   /**
    * 댓글 생성
    */
-  public void createComment(String boardId, CreateCommentRequest request) {
+  public void createComment(Long boardId, CreateCommentRequest request) {
     Board board = coreBoardService.findById(boardId);
     commentRepository.save(
       Comment.builder()

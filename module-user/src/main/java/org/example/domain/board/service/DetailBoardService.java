@@ -20,7 +20,7 @@ public class DetailBoardService {
   /**
    * 게시판 상세 조회
    */
-  public DetailBoardResponse getBoard(String boardId) {
+  public DetailBoardResponse getBoard(Long boardId) {
     Board board = coreBoardService.findById(boardId);
     DetailBoardResponse response = detailBoardRepository.getBoard(boardId);
     response.setFileUrlList(board.getFileList().stream().map(BoardFile::getFileUrl).toList());

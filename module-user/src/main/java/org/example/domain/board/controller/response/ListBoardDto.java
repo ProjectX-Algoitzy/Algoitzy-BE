@@ -2,7 +2,6 @@ package org.example.domain.board.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ import org.example.util.DateUtils;
 public class ListBoardDto {
 
   @Schema(description = "게시판 ID")
-  private UUID boardId;
+  private long boardId;
 
   @Schema(description = "게시판 제목")
   private String title;

@@ -1,6 +1,5 @@
 package org.example.domain.Board.service;
 
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
@@ -16,8 +15,8 @@ public class CoreBoardService {
 
   private final BoardRepository boardRepository;
 
-  public Board findById(String boardId) {
-    return boardRepository.findById(UUID.fromString(boardId))
+  public Board findById(Long boardId) {
+    return boardRepository.findById(boardId)
       .orElseThrow(() -> new GeneralException(ErrorStatus.KEY_NOT_EXIST, "존재하지 않는 게시판 ID입니다."));
   }
 }

@@ -51,14 +51,14 @@ public class BoardController {
 
   @GetMapping("/{board-id}")
   @Operation(summary = "게시판 상세 조회")
-  public ApiResponse<DetailBoardResponse> getBoard(@PathVariable("board-id") String boardId) {
+  public ApiResponse<DetailBoardResponse> getBoard(@PathVariable("board-id") Long boardId) {
     return ApiResponse.onSuccess(boardService.getBoard(boardId));
   }
 
   @PatchMapping("/{board-id}")
   @Operation(summary = "게시판 수정")
   public ApiResponse<Void> updateBoard(
-    @PathVariable("board-id") String boardId,
+    @PathVariable("board-id") Long boardId,
     @RequestBody @Valid UpdateBoardRequest request) {
     boardService.updateBoard(boardId, request);
     return ApiResponse.onCreate();
@@ -66,7 +66,7 @@ public class BoardController {
 
   @DeleteMapping("/{board-id}")
   @Operation(summary = "게시판 삭제")
-  public ApiResponse<Void> deleteBoard(@PathVariable("board-id") String boardId) {
+  public ApiResponse<Void> deleteBoard(@PathVariable("board-id") Long boardId) {
     boardService.deleteBoard(boardId);
     return ApiResponse.onSuccess();
   }
@@ -74,7 +74,7 @@ public class BoardController {
   @PostMapping("/{board-id}/comment")
   @Operation(summary = "게시판 댓글 생성")
   public ApiResponse<Void> createComment(
-    @PathVariable("board-id") String boardId,
+    @PathVariable("board-id") Long boardId,
     @RequestBody @Valid CreateCommentRequest request) {
     commentService.createComment(boardId, request);
     return ApiResponse.onCreate();
@@ -83,7 +83,7 @@ public class BoardController {
   @GetMapping("/{board-id}/comment")
   @Operation(summary = "댓글 목록 조회")
   public ApiResponse<ListCommentResponse> getCommentList(
-    @PathVariable("board-id") String boardId,
+    @PathVariable("board-id") Long boardId,
     @ParameterObject @ModelAttribute @Valid SearchCommentRequest request) {
     return ApiResponse.onSuccess(commentService.getCommentList(boardId, request));
   }

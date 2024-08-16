@@ -19,7 +19,7 @@ public class ListCommentService {
   /**
    * 댓글 목록 조회
    */
-  public ListCommentResponse getCommentList(String boardId, SearchCommentRequest request) {
+  public ListCommentResponse getCommentList(Long boardId, SearchCommentRequest request) {
     Page<ListCommentDto> page = listCommentRepository.getCommentList(boardId, request);
     for (ListCommentDto dto : page) {
       dto.encryptCreatedName();

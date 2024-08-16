@@ -8,7 +8,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.springframework.stereotype.Repository;
@@ -19,7 +18,7 @@ public class DetailBoardRepository {
 
   private final JPAQueryFactory queryFactory;
 
-  public DetailBoardResponse getBoard(String boardId) {
+  public DetailBoardResponse getBoard(Long boardId) {
     return queryFactory
       .select(Projections.fields(
           DetailBoardResponse.class,
@@ -37,7 +36,7 @@ public class DetailBoardRepository {
       )
       .from(board)
       .innerJoin(boardFile).on(board.eq(boardFile.board))
-      .where(board.id.eq(UUID.fromString(boardId)))
+      .where(board.id.eq(boardId))
       .fetchOne();
   }
 }

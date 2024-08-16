@@ -11,7 +11,6 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.domain.board_file.BoardFile;
 import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.uuid.UuidGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -37,10 +34,8 @@ import org.springframework.util.StringUtils;
 public class Board {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @GenericGenerator(name="UUID", type = UuidGenerator.class)
-  @Column(columnDefinition = "BINARY(16)")
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Setter
   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
