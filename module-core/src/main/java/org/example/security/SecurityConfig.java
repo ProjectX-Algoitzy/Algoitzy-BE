@@ -40,6 +40,7 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/member/login/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/member/refresh-token")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/member/find-email")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/member/check-account")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sign-up/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/email/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sms/**")).permitAll()

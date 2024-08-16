@@ -36,6 +36,21 @@ public class LoginService {
   private final MemberRepository memberRepository;
 
   /**
+   * 계정 존재 여부 확인
+   */
+  public Boolean checkAccount(LoginRequest request) {
+    try {
+      UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(request.email(), request.password());
+      authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    } catch (BadCredentialsException e) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * 로그인
    */
   public LoginResponse login(LoginRequest request) {

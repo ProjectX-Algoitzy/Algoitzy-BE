@@ -27,6 +27,12 @@ public class MemberController {
 
   private final MemberService memberService;
 
+  @PostMapping("/check-account")
+  @Operation(summary = "계정 존재 여부 확인", description = "존재하는 계정일 시 true 반환")
+  public ApiResponse<Boolean> checkAccount(@RequestBody @Valid LoginRequest request) {
+    return ApiResponse.onSuccess(memberService.checkAccount(request));
+  }
+
   @PostMapping("/login")
   @Operation(summary = "로그인")
   public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {

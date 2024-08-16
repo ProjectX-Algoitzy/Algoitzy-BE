@@ -37,6 +37,13 @@ public class MemberService {
   }
 
   /**
+   * 계정 존재 여부 확인
+   */
+  public Boolean checkAccount(LoginRequest request) {
+    return loginService.checkAccount(request);
+  }
+
+  /**
    * 로그인
    */
   public LoginResponse login(LoginRequest request) {
