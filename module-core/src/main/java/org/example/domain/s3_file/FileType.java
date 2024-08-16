@@ -2,7 +2,6 @@ package org.example.domain.s3_file;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.example.util.FileUtils;
 
 @AllArgsConstructor
 @Getter
