@@ -1,7 +1,6 @@
 package org.example.domain.board.repository;
 
 import static org.example.domain.Board.QBoard.board;
-import static org.example.domain.board_file.QBoardFile.boardFile;
 import static org.example.domain.member.QMember.member;
 
 import com.querydsl.core.types.Projections;
@@ -35,7 +34,6 @@ public class DetailBoardRepository {
         )
       )
       .from(board)
-      .innerJoin(boardFile).on(board.eq(boardFile.board))
       .where(board.id.eq(boardId))
       .fetchOne();
   }
