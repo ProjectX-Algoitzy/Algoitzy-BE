@@ -11,6 +11,10 @@ import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.service.BoardService;
+import org.example.domain.comment.controller.request.CreateCommentRequest;
+import org.example.domain.comment.controller.request.SearchCommentRequest;
+import org.example.domain.comment.controller.response.ListCommentResponse;
+import org.example.domain.comment.service.CommentService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BoardController {
 
   private final BoardService boardService;
+  private final CommentService commentService;
 
   @PostMapping()
   @Operation(summary = "게시판 생성")
@@ -64,5 +69,22 @@ public class BoardController {
   public ApiResponse<Void> deleteBoard(@PathVariable("board-id") String boardId) {
     boardService.deleteBoard(boardId);
     return ApiResponse.onSuccess();
+  }
+
+  @PostMapping("/{board-id}/comment")
+  @Operation(summary = "게시판 댓글 생성")
+  public ApiResponse<Void> createComment(
+    @PathVariable("board-id") String boardId,
+    @RequestBody @Valid CreateCommentRequest request) {
+    commentService.createComment(boardId, request);
+    return ApiResponse.onCreate();
+  }
+
+  @GetMapping("/{board-id}/comment")
+  @Operation(summary = "댓글 목록 조회")
+  public ApiResponse<ListCommentResponse> getCommentList(
+    @PathVariable("board-id") String boardId,
+    @ParameterObject @ModelAttribute @Valid SearchCommentRequest request) {
+    return ApiResponse.onSuccess(commentService.getCommentList(boardId, request));
   }
 }
