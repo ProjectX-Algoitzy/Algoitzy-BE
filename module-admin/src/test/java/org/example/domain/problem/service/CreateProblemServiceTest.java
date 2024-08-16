@@ -53,13 +53,9 @@ class CreateProblemServiceTest {
         if (colonIndex != -1) {
           count += Integer.parseInt(tooltip.getText().substring(colonIndex + 1).strip());
         }
-        System.out.println(tooltip.getText());
       }
-      System.out.println("푼 문제 수 : " + count);
-
       webDriver.quit();
     } catch (Exception e) {
-      System.out.println("e.getMessage() = " + e.getMessage());
     }
   }
 
@@ -74,14 +70,9 @@ class CreateProblemServiceTest {
         .map(WebElement::getText)
         .limit(solvedCount)
         .toList();
-      for (String problemNumber : problemNumberList) {
-        System.out.println(problemNumber);
-      }
 
       webDriver.quit();
     } catch (Exception e) {
-      System.out.println("e.getMessage() = " + e.getMessage());
     }
   }
-
 }

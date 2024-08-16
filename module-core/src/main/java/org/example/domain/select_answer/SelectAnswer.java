@@ -23,7 +23,6 @@ import lombok.Setter;
 import org.example.domain.answer.Answer;
 import org.example.domain.select_answer_field.SelectAnswerField;
 import org.example.domain.select_question.SelectQuestion;
-import org.example.domain.text_question.TextQuestion;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
