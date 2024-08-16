@@ -35,7 +35,7 @@ public class CryptoUtils {
       IvParameterSpec ivParameterSpec = new IvParameterSpec(privateKey.substring(0, 16).getBytes());
 
       Cipher c = Cipher.getInstance(transformation);
-      c.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec;
+      c.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
       byte[] encryptByte = c.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
       return Hex.encodeHexString(encryptByte);
     } catch (Exception e) {
