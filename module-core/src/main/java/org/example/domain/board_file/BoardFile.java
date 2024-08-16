@@ -1,27 +1,22 @@
-package org.example.domain.Board;
+package org.example.domain.board_file;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.example.domain.board_file.BoardFile;
+import org.example.domain.Board.Board;
 import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.uuid.UuidGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -33,23 +28,18 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Board {
+public class BoardFile {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @GenericGenerator(name="UUID", type = UuidGenerator.class)
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-  @Setter
-  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<BoardFile> fileList = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "board_id")
+  private Board board;
 
-  @Comment("제목")
-  private String title;
-
-  @Comment("내용")
-  @Column(length = 1000000)
-  private String content;
+  @Comment("게시판 첨부 파일 경로")
+  private String fileUrl;
 
   @CreatedDate
   @Column(updatable = false)
@@ -66,9 +56,8 @@ public class Board {
   private String updatedBy;
 
   @Builder
-  public Board(String title, String content) {
-    this.title = title;
-    this.content = content;
+  public BoardFile(Board board, String fileUrl) {
+    this.board = board;
+    this.fileUrl = fileUrl;
   }
-
 }
