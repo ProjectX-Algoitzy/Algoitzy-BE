@@ -11,9 +11,6 @@ public enum FileType {
     PNG("png"),
     JPG("jpg"),
     JPEG("jpeg"),
-    GIF("gif"),
-    BMP("bmp"),
-    TIFF("tiff"),
 
     // 문서 파일 형식
     PDF("pdf"),
@@ -24,7 +21,9 @@ public enum FileType {
     TXT("txt"),
     CSV("csv"),
     XLS("xls"),
-    XLSX("xlsx");
+    XLSX("xlsx"),
+    HWP("hwp"),
+    HWPX("hwpx");
 
     private final String extension;
 
