@@ -38,6 +38,7 @@ public class Board {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @GenericGenerator(name="UUID", type = UuidGenerator.class)
+  @Column(columnDefinition = "BINARY(16)")
   private UUID id;
 
   @Setter

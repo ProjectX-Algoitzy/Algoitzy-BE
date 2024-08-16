@@ -3,6 +3,7 @@ package org.example.domain.board.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ public class BoardService {
 
   private final CreateBoardService createBoardService;
   private final ListBoardService listBoardService;
+  private final DetailBoardService detailBoardService;
 
   public void createBoard(CreateBoardRequest request) {
     createBoardService.createBoard(request);
@@ -19,5 +21,9 @@ public class BoardService {
 
   public ListBoardResponse getBoardList(SearchBoardRequest request) {
     return listBoardService.getBoardList(request);
+  }
+
+  public DetailBoardResponse getBoard(String boardId) {
+    return detailBoardService.getBoard(boardId);
   }
 }
