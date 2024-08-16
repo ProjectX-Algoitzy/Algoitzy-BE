@@ -17,14 +17,14 @@ public class CommentService {
   /**
    * 댓글 생성
    */
-  public void createComment(String boardId, CreateCommentRequest request) {
+  public void createComment(Long boardId, CreateCommentRequest request) {
     createCommentService.createComment(boardId, request);
   }
 
   /**
    * 댓글 목록 조회
    */
-  public ListCommentResponse getCommentList(String boardId, SearchCommentRequest request) {
+  public ListCommentResponse getCommentList(Long boardId, SearchCommentRequest request) {
     return listCommentService.getCommentList(boardId, request);
   }
 

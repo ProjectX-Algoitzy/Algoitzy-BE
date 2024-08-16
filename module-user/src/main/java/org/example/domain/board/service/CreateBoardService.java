@@ -50,7 +50,7 @@ public class CreateBoardService {
   /**
    * 게시판 수정
    */
-  public void updateBoard(String boardId, UpdateBoardRequest request) {
+  public void updateBoard(Long boardId, UpdateBoardRequest request) {
     Board board = coreBoardService.findById(boardId);
     board.update(request.title(), request.content());
 
@@ -74,7 +74,7 @@ public class CreateBoardService {
   /**
    * 게시판 삭제
    */
-  public void deleteBoard(String boardId) {
+  public void deleteBoard(Long boardId) {
     Board board = coreBoardService.findById(boardId);
     boardRepository.delete(board);
   }

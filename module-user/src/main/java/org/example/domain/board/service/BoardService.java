@@ -33,21 +33,21 @@ public class BoardService {
   /**
    * 게시판 상세 조회
    */
-  public DetailBoardResponse getBoard(String boardId) {
+  public DetailBoardResponse getBoard(Long boardId) {
     return detailBoardService.getBoard(boardId);
   }
 
   /**
    * 게시판 수정
    */
-  public void updateBoard(String boardId, UpdateBoardRequest request) {
+  public void updateBoard(Long boardId, UpdateBoardRequest request) {
     createBoardService.updateBoard(boardId, request);
   }
 
   /**
    * 게시판 삭제
    */
-  public void deleteBoard(String boardId) {
+  public void deleteBoard(Long boardId) {
     createBoardService.deleteBoard(boardId);
   }
 }
