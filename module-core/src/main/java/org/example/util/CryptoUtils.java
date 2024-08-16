@@ -32,10 +32,10 @@ public class CryptoUtils {
   public static String encode(String plainText) {
     try {
       SecretKeySpec secretKey = new SecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), "AES");
-      IvParameterSpec IV = new IvParameterSpec(privateKey.substring(0, 16).getBytes());
+      IvParameterSpec ivParameterSpec = new IvParameterSpec(privateKey.substring(0, 16).getBytes());
 
       Cipher c = Cipher.getInstance(transformation);
-      c.init(Cipher.ENCRYPT_MODE, secretKey, IV);
+      c.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec;
       byte[] encryptByte = c.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
       return Hex.encodeHexString(encryptByte);
     } catch (Exception e) {
@@ -47,10 +47,10 @@ public class CryptoUtils {
   public static String decode(String encodeText) {
     try {
       SecretKeySpec secretKey = new SecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), "AES");
-      IvParameterSpec IV = new IvParameterSpec(privateKey.substring(0, 16).getBytes());
+      IvParameterSpec ivParameterSpec = new IvParameterSpec(privateKey.substring(0, 16).getBytes());
 
       Cipher c = Cipher.getInstance(transformation);
-      c.init(Cipher.DECRYPT_MODE, secretKey, IV);
+      c.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
       byte[] decodeByte = Hex.decodeHex(encodeText.toCharArray());
       return new String(c.doFinal(decodeByte), StandardCharsets.UTF_8);
     } catch (Exception e) {
