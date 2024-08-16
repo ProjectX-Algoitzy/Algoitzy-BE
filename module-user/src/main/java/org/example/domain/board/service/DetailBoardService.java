@@ -17,6 +17,9 @@ public class DetailBoardService {
   private final CoreBoardService coreBoardService;
   private final DetailBoardRepository detailBoardRepository;
 
+  /**
+   * 게시판 상세 조회
+   */
   public DetailBoardResponse getBoard(String boardId) {
     Board board = coreBoardService.findById(boardId);
     DetailBoardResponse response = detailBoardRepository.getBoard(boardId);

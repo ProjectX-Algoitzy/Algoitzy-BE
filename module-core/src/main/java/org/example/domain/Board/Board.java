@@ -27,6 +27,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -70,6 +71,11 @@ public class Board {
   public Board(String title, String content) {
     this.title = title;
     this.content = content;
+  }
+
+  public void update(String title, String content) {
+    if (StringUtils.hasText(title)) this.title = title;
+    if (StringUtils.hasText(content)) this.content = content;
   }
 
 }

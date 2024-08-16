@@ -16,6 +16,9 @@ public class ListBoardService {
 
   private final ListBoardRepository listBoardRepository;
 
+  /**
+   * 게시판 목록 조회
+   */
   public ListBoardResponse getBoardList(SearchBoardRequest request) {
     Page<ListBoardDto> page = listBoardRepository.getBoardList(request);
 

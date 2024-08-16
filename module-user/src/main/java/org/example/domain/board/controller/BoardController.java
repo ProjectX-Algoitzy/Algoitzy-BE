@@ -7,12 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.service.BoardService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,4 +50,19 @@ public class BoardController {
     return ApiResponse.onSuccess(boardService.getBoard(boardId));
   }
 
+  @PatchMapping("/{board-id}")
+  @Operation(summary = "게시판 수정")
+  public ApiResponse<Void> updateBoard(
+    @PathVariable("board-id") String boardId,
+    @RequestBody @Valid UpdateBoardRequest request) {
+    boardService.updateBoard(boardId, request);
+    return ApiResponse.onCreate();
+  }
+
+  @DeleteMapping("/{board-id}")
+  @Operation(summary = "게시판 삭제")
+  public ApiResponse<Void> deleteBoard(@PathVariable("board-id") String boardId) {
+    boardService.deleteBoard(boardId);
+    return ApiResponse.onSuccess();
+  }
 }
