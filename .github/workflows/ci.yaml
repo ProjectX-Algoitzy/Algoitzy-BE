@@ -38,6 +38,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'ap-northeast-2'
         run: |
-          cd common-admin
+          cd module-admin
           eb init -p java-17 koala-admin --region ap-northeast-2
           eb deploy
