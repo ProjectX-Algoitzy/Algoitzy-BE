@@ -57,6 +57,7 @@ public class CreateAttendanceService {
   private static final int CODING_TEST_PREPARE_MIN_REQUEST_COUNT = 3; // 코딩테스트 대비반 최소 문제 인증 개수
   private static final int CODING_TEST_BASIC_MIN_REQUEST_COUNT = 20; // 코딩테스트 기초반 최소 문제 인증 개수
   private static final int WORKBOOK_MIN_REQUEST_COUNT = 2; // 모의테스트 최소 문제 인증 개수
+  private static final int ONE_YEAR = 365;
 
   public void createAttendance() {
     // 갱신 주차 조회
@@ -136,8 +137,8 @@ public class CreateAttendanceService {
     LocalDate today = LocalDate.now().minusDays(7);
     LocalDate nextYear = today.plusYears(1);
     int startRect = today.getDayOfYear()
-      - LocalDate.now().get(ChronoField.DAY_OF_WEEK)
-      + (int) ChronoUnit.DAYS.between(today, nextYear) + 1;
+      - LocalDate.now().get(ChronoField.DAY_OF_WEEK) + 1;
+    if (rectList.size() >= 2 * ONE_YEAR) startRect += (int) ChronoUnit.DAYS.between(today, nextYear);
     int lastRect = startRect + 6;
 
     int count = 0;

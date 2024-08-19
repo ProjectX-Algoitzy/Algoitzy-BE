@@ -30,7 +30,7 @@ public class DetailAnswerService {
 
     DetailAnswerResponse response = detailAnswerRepository.getAnswer(answerId);
     List<DetailSelectAnswerDto> selectAnswerList = listSelectAnswerService.getSelectAnswerList(answer);
-    List<DetailTextAnswerDto> textAnswerList = listTextAnswerService.getTextAnswerList(answerId);
+    List<DetailTextAnswerDto> textAnswerList = listTextAnswerService.getTextAnswerList(answer.getApplication().getId(), answerId);
 
     return response.toBuilder()
       .selectAnswerList(selectAnswerList)

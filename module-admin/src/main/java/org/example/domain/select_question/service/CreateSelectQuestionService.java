@@ -77,6 +77,7 @@ public class CreateSelectQuestionService {
         SelectQuestion.builder()
           .application(newApplication)
           .question(selectQuestion.getQuestion())
+          .sequence(selectQuestion.getSequence())
           .isRequired(selectQuestion.getIsRequired())
           .isMultiSelect(selectQuestion.getIsMultiSelect())
           .build()

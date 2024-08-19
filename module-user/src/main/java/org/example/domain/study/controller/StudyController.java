@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.attendance.service.AttendanceService;
+import org.example.domain.attendance_request.controller.response.DetailAttendanceRequestResponse;
+import org.example.domain.attendance_request.service.AttendanceRequestService;
 import org.example.domain.controller.response.ListWorkbookResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
@@ -34,6 +36,7 @@ public class StudyController {
   private final StudyService studyService;
   private final CurriculumService curriculumService;
   private final AttendanceService attendanceService;
+  private final AttendanceRequestService attendanceRequestService;
   private final WorkbookService workbookService;
 
   @GetMapping("/count")
@@ -110,9 +113,15 @@ public class StudyController {
   @GetMapping("/{study-id}/attendance")
   @Operation(summary = "정규 스터디 출석부 조회")
   public ApiResponse<ListAttendanceResponse> getAttendanceList(
-    @PathVariable("study-id") Long studyId
-  ) {
+    @PathVariable("study-id") Long studyId) {
     return ApiResponse.onSuccess(attendanceService.getAttendanceList(studyId));
+  }
+
+  @GetMapping("/{study-id}/attendance-request")
+  @Operation(summary = "현재 주차 출석 요청 조회")
+  public ApiResponse<DetailAttendanceRequestResponse> getAttendanceRequest(
+    @PathVariable("study-id") Long studyId) {
+    return ApiResponse.onSuccess(attendanceRequestService.getAttendanceRequest(studyId));
   }
 
   @GetMapping("/{study-id}/workbook")
