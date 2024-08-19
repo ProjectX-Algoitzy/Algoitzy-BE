@@ -45,7 +45,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
           # git actions key 값에 오타가 나 있으니 주의할 것
-          aws_secret_ke: ${{ secrets.AWS_ACION_SECRET_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_ACION_SECRET_ACCESS_KEY }}
           region: 'ap-northeast-2'
           application_name: koala-admin
           environment_name: Koala-admin-env-1
