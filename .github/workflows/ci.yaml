@@ -45,5 +45,5 @@ jobs:
           AWS_REGION: 'ap-northeast-2'
         run: |
           cd module-admin
-          eb init -p java-17 koala-admin --region ap-northeast-2
+          eb init -p java-17-corretto koala-admin --region ap-northeast-2
           eb deploy
