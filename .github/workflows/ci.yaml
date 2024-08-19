@@ -49,5 +49,6 @@ jobs:
           region: 'ap-northeast-2'
           application_name: koala-admin
           environment_name: Koala-admin-env-1
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}  # 올바른 형식으로 버전 레이블 지정
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}-${{ github.run_id }}
+          use_existing_version_if_available: true
           deployment_package: admin-deploy/admin-deploy.zip
