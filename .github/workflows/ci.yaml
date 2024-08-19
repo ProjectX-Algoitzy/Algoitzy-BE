@@ -43,10 +43,9 @@ jobs:
       - name: (common-admin) Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v22
         with:
-
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
+          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
           # git actions key 값에 오타가 나 있으니 주의할 것
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACION_SECRET_ACCESS_KEY }}
+          aws_secret_ke: ${{ secrets.AWS_ACION_SECRET_ACCESS_KEY }}
           region: 'ap-northeast-2'
           application_name: koala-admin
           environment_name: Koala-admin-env-1
