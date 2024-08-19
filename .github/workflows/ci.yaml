@@ -32,6 +32,12 @@ jobs:
       - name: Build module-user
         run: ./gradlew :module-user:clean :module-user:bootJar
 
+      - name: Install AWS Elastic Beanstalk CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install awsebcli
+
       - name: Deploy to Elastic Beanstalk (common-admin)
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
