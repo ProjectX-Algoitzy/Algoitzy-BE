@@ -26,7 +26,8 @@ public class CorsConfig implements WebMvcConfigurer {
         "https://user-dev.kau-koala.com",
         "https://admin-dev.kau-koala.com",
         // local
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://localhost:3001"
       )
       .allowedMethods("*")
       .maxAge(3600);
