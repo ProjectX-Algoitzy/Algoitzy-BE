@@ -42,6 +42,7 @@ public class CreateTextQuestionService {
         TextQuestion.builder()
           .application(newApplication)
           .question(textQuestion.getQuestion())
+          .sequence(textQuestion.getSequence())
           .isRequired(textQuestion.getIsRequired())
           .build()
       )).toList();
