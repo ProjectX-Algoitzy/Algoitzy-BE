@@ -45,5 +45,5 @@ jobs:
           AWS_REGION: 'ap-northeast-2'
         run: |
           cd module-admin
-          eb init -p Corretto 17 running on 64bit Amazon Linux 2023/4.3.0 koala-admin --region ap-northeast-2
+          eb init -p java-8-corretto koala-admin --region ap-northeast-2
           eb deploy
