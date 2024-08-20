@@ -37,7 +37,7 @@ jobs:
           mkdir -p admin-deploy
           cp module-admin/build/libs/*.jar admin-deploy/admin-application.jar
           cp Procfile admin-deploy/Procfile
-          cp -r module-admin/.ebextensions admin-deploy/.ebextensions
+          cp -r .ebextensions admin-deploy/.ebextensions
           cp -r .platform admin-deploy/.platform
           cd admin-deploy && zip -r admin-deploy.zip .
       
