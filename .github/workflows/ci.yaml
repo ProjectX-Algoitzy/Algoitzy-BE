@@ -36,11 +36,13 @@ jobs:
         run: |
           mkdir -p admin-deploy
           cp module-admin/build/libs/*.jar admin-deploy/admin-application.jar
+          cp Procfile admin-deploy/Procfile
           cp -r module-admin/.ebextensions admin-deploy/.ebextensions
+          cp -r .platform admin-deploy/.platform
           cd admin-deploy && zip -r admin-deploy.zip .
       
 
-      - name: (common-admin) Deploy to Elastic Beanstalk
+      - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v22
         with:
           aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
