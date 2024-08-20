@@ -50,5 +50,5 @@ jobs:
           application_name: koala-admin
           environment_name: Koala-admin-env-1
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}-${{ github.run_id }}
-          use_existing_version_if_available: true  # 기존 버전 사용 설정
+          use_existing_version_if_available: false  # 기존 버전 사용 설정
           deployment_package: admin-deploy/admin-deploy.zip
