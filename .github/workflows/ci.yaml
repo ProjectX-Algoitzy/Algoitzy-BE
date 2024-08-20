@@ -29,8 +29,8 @@ jobs:
       - name: Build module-admin
         run: ./gradlew :module-admin:clean :module-admin:bootJar
 
-      - name: Build module-user
-        run: ./gradlew :module-user:clean :module-user:bootJar
+     #  - name: Build module-user
+     #    run: ./gradlew :module-user:clean :module-user:bootJar
 
       - name: (common-admin) Generate admin deployment package
         run: |
@@ -49,6 +49,5 @@ jobs:
           region: 'ap-northeast-2'
           application_name: koala-admin
           environment_name: Koala-admin-env-1
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}-${{ github.run_id }}
-          use_existing_version_if_available: true
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           deployment_package: admin-deploy/admin-deploy.zip
