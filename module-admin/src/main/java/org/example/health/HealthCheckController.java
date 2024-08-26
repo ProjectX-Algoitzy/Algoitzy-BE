@@ -8,9 +8,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/health")
+@RestController
+@RequestMapping("/health")
 @RequiredArgsConstructor
 public class HealthCheckController {
 
@@ -23,7 +25,7 @@ public class HealthCheckController {
         return "I'm healthy";
     }
 
-    @GetMapping()
+    @GetMapping("/selenium")
     @Deprecated
     @Operation(summary = "크롤링 테스트용", description = "반환값 : 김두현 백준 문제 풀이 수")
     public ApiResponse<Integer> seleniumCheck() {
