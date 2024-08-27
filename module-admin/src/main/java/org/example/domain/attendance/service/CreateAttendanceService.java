@@ -25,6 +25,8 @@ import org.example.domain.week.Week;
 import org.example.domain.week.repository.DetailWeekRepository;
 import org.example.domain.workbook.enums.CodingTestBasicWorkbook;
 import org.example.domain.workbook_problem.repository.ListWorkbookProblemRepository;
+import org.example.email.enums.EmailType;
+import org.example.email.service.CoreEmailService;
 import org.example.util.ValueUtils;
 import org.example.util.http_request.Url;
 import org.openqa.selenium.By;
@@ -33,6 +35,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -43,6 +46,7 @@ import org.springframework.util.StringUtils;
 @Transactional
 public class CreateAttendanceService {
 
+  private final CoreEmailService coreEmailService;
   private final DetailWeekRepository detailWeekRepository;
   private final ListAttendanceRequestProblemRepository listAttendanceRequestProblemRepository;
   private final ListStudyRepository listStudyRepository;
@@ -54,67 +58,76 @@ public class CreateAttendanceService {
   private final WebDriver webDriver;
   private final Actions actions;
 
+  @Value("${spring.mail.username}")
+  private String koalaEmail;
+
   private static final int CODING_TEST_PREPARE_MIN_REQUEST_COUNT = 3; // 코딩테스트 대비반 최소 문제 인증 개수
   private static final int CODING_TEST_BASIC_MIN_REQUEST_COUNT = 20; // 코딩테스트 기초반 최소 문제 인증 개수
   private static final int WORKBOOK_MIN_REQUEST_COUNT = 2; // 모의테스트 최소 문제 인증 개수
   private static final int ONE_YEAR = 365;
 
   public void createAttendance() {
-    // 갱신 주차 조회
-    Optional<Week> optionalWeek = detailWeekRepository.getLastWeek();
-    if (optionalWeek.isEmpty()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "출석부 갱신 시점이 아닙니다.");
-    }
-    Week lastWeek = optionalWeek.get();
-    if (attendanceRepository.existsAllByWeek(lastWeek)) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, lastWeek.getValue() + "주차 출석부가 이미 갱신되었습니다.");
-    }
+    try { // 갱신 주차 조회
+      Optional<Week> optionalWeek = detailWeekRepository.getLastWeek();
+      if (optionalWeek.isEmpty()) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "출석부 갱신 시점이 아닙니다.");
+      }
+      Week lastWeek = optionalWeek.get();
+      if (attendanceRepository.existsAllByWeek(lastWeek)) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, lastWeek.getValue() + "주차 출석부가 이미 갱신되었습니다.");
+      }
 
-    log.info("{}주차 출석부 갱신 시작", lastWeek.getValue());
-    // 스터디 순회
-    List<ListRegularStudyDto> regularStudyList = listStudyRepository.getRegularStudyList();
-    for (ListRegularStudyDto study : regularStudyList) {
-      List<StudyMember> studyMemberList = studyMemberRepository.findAllByStudyIdAndStatus(study.getStudyId(), StudyMemberStatus.PASS);
+      log.info("{}주차 출석부 갱신 시작", lastWeek.getValue());
+      // 스터디 순회
+      List<ListRegularStudyDto> regularStudyList = listStudyRepository.getRegularStudyList();
+      for (ListRegularStudyDto study : regularStudyList) {
+        List<StudyMember> studyMemberList = studyMemberRepository.findAllByStudyIdAndStatus(study.getStudyId(), StudyMemberStatus.PASS);
 
-      // 스터디원 출석 처리
-      List<Attendance> attendanceList = new ArrayList<>();
-      for (StudyMember studyMember : studyMemberList) {
-        // 출석 인증 정보 조회
-        Optional<AttendanceRequest> optionalAttendanceRequest =
-          attendanceRequestRepository.findByWeekAndStudyMember(lastWeek, studyMember);
+        // 스터디원 출석 처리
+        List<Attendance> attendanceList = new ArrayList<>();
+        for (StudyMember studyMember : studyMemberList) {
+          // 출석 인증 정보 조회
+          Optional<AttendanceRequest> optionalAttendanceRequest =
+            attendanceRequestRepository.findByWeekAndStudyMember(lastWeek, studyMember);
 
-        // 인증 회원
-        if (optionalAttendanceRequest.isPresent()) {
-          AttendanceRequest attendanceRequest = optionalAttendanceRequest.get();
-          int requestCount = listAttendanceRequestProblemRepository.getRequestCount(attendanceRequest);
+          // 인증 회원
+          if (optionalAttendanceRequest.isPresent()) {
+            AttendanceRequest attendanceRequest = optionalAttendanceRequest.get();
+            int requestCount = listAttendanceRequestProblemRepository.getRequestCount(attendanceRequest);
+            Attendance attendance = Attendance.builder()
+              .studyMember(studyMember)
+              .week(lastWeek)
+              .problemYN(getProblemYN(studyMember, requestCount))
+              .blogYN(StringUtils.hasText(attendanceRequest.getBlogUrl()))
+              .workbookYN(getWorkbookYN(lastWeek, studyMember))
+              .build();
+            attendanceList.add(attendance);
+            // 양방향
+            studyMember.getAttendanceList().add(attendance);
+            continue;
+          }
+
+          // 미인증 회원
           Attendance attendance = Attendance.builder()
             .studyMember(studyMember)
             .week(lastWeek)
-            .problemYN(getProblemYN(studyMember, requestCount))
-            .blogYN(StringUtils.hasText(attendanceRequest.getBlogUrl()))
+            .problemYN(getProblemYN(studyMember, 0))
+            .blogYN(false)
             .workbookYN(getWorkbookYN(lastWeek, studyMember))
             .build();
           attendanceList.add(attendance);
           // 양방향
           studyMember.getAttendanceList().add(attendance);
-          continue;
+
         }
 
-        // 미인증 회원
-        Attendance attendance = Attendance.builder()
-          .studyMember(studyMember)
-          .week(lastWeek)
-          .problemYN(getProblemYN(studyMember, 0))
-          .blogYN(false)
-          .workbookYN(getWorkbookYN(lastWeek, studyMember))
-          .build();
-        attendanceList.add(attendance);
-        // 양방향
-        studyMember.getAttendanceList().add(attendance);
-
+        attendanceRepository.saveAll(attendanceList);
       }
 
-      attendanceRepository.saveAll(attendanceList);
+      coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), "출석부 자동갱신 성공");
+    } catch (Exception e) {
+      coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), e.getMessage());
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
     }
 
   }
