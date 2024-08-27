@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.member.Member;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.enums.StudyMemberStatus;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -37,5 +39,18 @@ public class DetailStudyMemberRepository {
         studyMember.member.eq(member)
       )
       .fetchOne());
+  }
+
+  public boolean isRegularStudyMember() {
+    return !queryFactory
+      .selectFrom(studyMember)
+      .innerJoin(study).on(studyMember.study.eq(study))
+      .where(
+        study.type.eq(StudyType.REGULAR),
+        studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail()),
+        studyMember.status.eq(StudyMemberStatus.PASS)
+      )
+      .fetch()
+      .isEmpty();
   }
 }

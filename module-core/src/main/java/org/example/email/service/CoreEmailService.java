@@ -135,14 +135,14 @@ public class CoreEmailService {
     member.updatePassword(encoder.encode(password));
   }
 
-  private void send(String email, String type, String html) {
+  public void send(String email, String type, String text) {
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
       helper.setFrom(mailFrom);
       helper.setTo(email);
       helper.setSubject(EmailType.getSubject(type));
-      helper.setText(html, true);
+      helper.setText(text, true);
       mailSender.send(mimeMessage);
     } catch (Exception e) {
       log.error(e.getMessage());

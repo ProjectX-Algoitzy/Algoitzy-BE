@@ -3,15 +3,21 @@ package org.example.domain.problem.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.algorithm.repository.AlgorithmRepository;
+import org.example.domain.algorithm.service.CreateAlgorithmService;
 import org.example.domain.problem.Problem;
 import org.example.domain.problem.repository.ProblemRepository;
 import org.example.domain.problem_algorithm.ProblemAlgorithm;
 import org.example.domain.problem_algorithm.repository.ProblemAlgorithmRepository;
+import org.example.email.enums.EmailType;
+import org.example.email.service.CoreEmailService;
 import org.example.schedule.solved_ac.SolvedAcClient;
 import org.example.schedule.solved_ac.response.problem.AlgorithmDto;
 import org.example.schedule.solved_ac.response.problem.ProblemDto;
 import org.example.schedule.solved_ac.response.problem.ProblemResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class CreateProblemService {
 
+  private final CoreEmailService coreEmailService;
+  private final CreateAlgorithmService createAlgorithmService;
   private final SolvedAcClient solvedAcClient;
   private final ProblemRepository problemRepository;
   private final AlgorithmRepository algorithmRepository;
@@ -31,9 +39,14 @@ public class CreateProblemService {
   private static final String SORT = "id";
   private static final String DIRECTION = "asc";
 
+  @Value("${spring.mail.username}")
+  private String koalaEmail;
+
   @Async
   public void createProblem() {
     try {
+      createAlgorithmService.createAlgorithm();
+
       problemAlgorithmRepository.deleteAll();
       ProblemResponse initResponse = solvedAcClient.searchProblems(1, QUERY, SORT, DIRECTION);
       int pageCount = initResponse.getCount() / NUMBER_PER_PAGE + 1;
@@ -65,8 +78,13 @@ public class CreateProblemService {
           }
         }
       }
+
+      coreEmailService.send(koalaEmail, EmailType.BAEKJOON_SCHEDULER.toString(), "백준 문제 갱신 성공");
     } catch (Exception e) {
-      log.error("SolveAc 문제 저장 중 오류 발생 : {}", e.getMessage());
+      coreEmailService.send(koalaEmail, EmailType.BAEKJOON_SCHEDULER.toString(), e.getMessage());
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
     }
+
+
   }
 }
