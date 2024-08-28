@@ -34,8 +34,8 @@ jobs:
           mkdir -p user-deploy
           cp module-user/build/libs/*.jar user-deploy/user-application.jar
           cp Procfile user-deploy/Procfile
-          cp -r .ebextensions user-deploy/.ebextensions
-          cp -r .platform user-deploy/.platform
+          cp -r module-user/.ebextensions user-deploy/.ebextensions
+          cp -r module-user/.platform user-deploy/.platform
           cd user-deploy && zip -r user-deploy.zip .
       
 

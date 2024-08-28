@@ -29,16 +29,13 @@ jobs:
       - name: Build module-admin
         run: ./gradlew :module-admin:clean :module-admin:bootJar
 
-     #  - name: Build module-user
-     #    run: ./gradlew :module-user:clean :module-user:bootJar
-
       - name: (common-admin) Generate admin deployment package
         run: |
           mkdir -p admin-deploy
           cp module-admin/build/libs/*.jar admin-deploy/admin-application.jar
           cp Procfile admin-deploy/Procfile
-          cp -r .ebextensions admin-deploy/.ebextensions
-          cp -r .platform admin-deploy/.platform
+          cp -r module-admin/.ebextensions admin-deploy/.ebextensions
+          cp -r module-admin/.platform admin-deploy/.platform
           cd admin-deploy && zip -r admin-deploy.zip .
       
 
