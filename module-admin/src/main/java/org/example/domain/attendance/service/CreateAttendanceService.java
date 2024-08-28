@@ -61,7 +61,7 @@ public class CreateAttendanceService {
   @Value("${spring.mail.username}")
   private String koalaEmail;
 
-  private static final int CODING_TEST_PREPARE_MIN_REQUEST_COUNT = 3; // 코딩테스트 대비반 최소 문제 인증 개수
+  private static final int CODING_TEST_PREPARE_MIN_REQUEST_COUNT = 3; // 코딩테스트 심화반 최소 문제 인증 개수
   private static final int CODING_TEST_BASIC_MIN_REQUEST_COUNT = 20; // 코딩테스트 기초반 최소 문제 인증 개수
   private static final int WORKBOOK_MIN_REQUEST_COUNT = 2; // 모의테스트 최소 문제 인증 개수
   private static final int ONE_YEAR = 365;

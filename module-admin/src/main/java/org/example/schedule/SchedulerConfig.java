@@ -29,7 +29,7 @@ public class SchedulerConfig {
   }
 
   /**
-   * 매주 금요일 00:00 대비반 문제집 생성
+   * 매주 금요일 00:00 정규 스터디 문제집 생성
    */
   @Scheduled(cron = "0 0 0 * * FRI")
   public void createAutoWorkbook() {

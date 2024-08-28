@@ -99,7 +99,7 @@ public class CreateWorkbookService {
   }
 
   /**
-   * 코딩테스트 대비반
+   * 코딩테스트 심화반
    */
   private List<Problem> createPrepareWorkbook(Week week) {
     // 주차별 알고리즘 유형 지정 후 백준 문제 조회
