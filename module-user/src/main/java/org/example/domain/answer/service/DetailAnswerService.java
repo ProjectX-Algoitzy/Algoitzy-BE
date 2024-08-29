@@ -36,7 +36,7 @@ public class DetailAnswerService {
 
     DetailAnswerResponse response = detailAnswerRepository.getAnswer(answerId);
     List<DetailSelectAnswerDto> selectAnswerList = listSelectAnswerService.getSelectAnswerList(answer);
-    List<DetailTextAnswerDto> textAnswerList = listTextAnswerService.getTextAnswerList(answerId);
+    List<DetailTextAnswerDto> textAnswerList = listTextAnswerService.getTextAnswerList(response.getApplicationId(), answerId);
 
     return response.toBuilder()
       .selectAnswerList(selectAnswerList)

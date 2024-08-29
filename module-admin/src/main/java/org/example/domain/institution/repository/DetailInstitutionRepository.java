@@ -22,6 +22,7 @@ public class DetailInstitutionRepository {
       .select(Projections.fields(
           DetailInstitutionResponse.class,
           institution.id.as("institutionId"),
+          institution.type.stringValue().as("type"),
           institution.name,
           institution.content
         )

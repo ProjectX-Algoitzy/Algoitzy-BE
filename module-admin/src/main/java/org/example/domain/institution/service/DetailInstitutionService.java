@@ -16,6 +16,8 @@ public class DetailInstitutionService {
    * 기관 상세 조회
    */
   public DetailInstitutionResponse getInstitution(Long institutionId) {
-    return detailInstitutionRepository.getInstitution(institutionId);
+    DetailInstitutionResponse response = detailInstitutionRepository.getInstitution(institutionId);
+    response.updateType(response.getType());
+    return response;
   }
 }

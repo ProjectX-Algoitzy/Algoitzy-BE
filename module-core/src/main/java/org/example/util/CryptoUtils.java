@@ -31,7 +31,6 @@ public class CryptoUtils {
 
   public static String encode(String plainText) {
     try {
-      System.out.println("privateKey = " + privateKey);
       SecretKeySpec secretKey = new SecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), "AES");
       IvParameterSpec IV = new IvParameterSpec(privateKey.substring(0, 16).getBytes());
 

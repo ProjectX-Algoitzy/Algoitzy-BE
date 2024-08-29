@@ -1,6 +1,7 @@
 package org.example.domain.text_answer.repository;
 
 import static org.example.domain.answer.QAnswer.answer;
+import static org.example.domain.application.QApplication.application;
 import static org.example.domain.text_answer.QTextAnswer.textAnswer;
 import static org.example.domain.text_question.QTextQuestion.textQuestion;
 
@@ -20,7 +21,7 @@ public class ListTextAnswerRepository {
   /**
    * 지원서 상세 주관식 답변 목록 조회
    */
-  public List<DetailTextAnswerDto> getTextAnswerList(Long answerId) {
+  public List<DetailTextAnswerDto> getTextAnswerList(Long applicationId, Long answerId) {
     return queryFactory
       .select(Projections.fields(
           DetailTextAnswerDto.class,
@@ -30,10 +31,12 @@ public class ListTextAnswerRepository {
         )
       )
       .from(textQuestion)
+      .innerJoin(application).on(textQuestion.application.eq(application))
       .leftJoin(textAnswer).on(textQuestion.eq(textAnswer.textQuestion))
       .leftJoin(answer).on(textAnswer.answer.eq(answer))
       .where(
-        answer.id.eq(answerId).or(answer.id.isNull())
+        application.id.eq(applicationId),
+        answer.id.eq(answerId).or(textAnswer.isNull())
       )
       .fetch();
   }

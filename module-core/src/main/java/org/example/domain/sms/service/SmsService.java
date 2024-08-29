@@ -1,4 +1,4 @@
-package org.example.sms.service;
+package org.example.domain.sms.service;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -6,6 +6,7 @@ import io.github.bucket4j.Refill;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +14,11 @@ import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.sms.controller.request.CertificationPhoneNumberRequest;
+import org.example.domain.sms.controller.request.CertificationPhoneNumberRequest;
+import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
 import org.example.util.RandomUtils;
+import org.example.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +36,8 @@ public class SmsService {
 
   @Value("${coolsms.fromnumber}")
   private String fromNumber;
-  private final StringRedisTemplate redisTemplate;
+
+  private final RedisUtils redisUtils;
 
   private static final int MAX_REQUESTS_PER_DAY = 5;
 
@@ -51,7 +54,7 @@ public class SmsService {
     try {
       Message message = new Message(apiKey, apiSecret);
       String code = RandomUtils.getRandomNumber();
-      redisTemplate.opsForValue().set(request.phoneNumber(), code, Duration.ofSeconds(180));
+      redisUtils.saveWithExpireTime(request.phoneNumber(),  code, Duration.ofSeconds(180));
 
       HashMap<String, String> params = new HashMap<>();
       params.put("from", fromNumber);
@@ -81,4 +84,16 @@ public class SmsService {
     return bucket.tryConsume(1);
   }
 
+  /**
+   * 휴대전화 인증
+   */
+  public void validatePhoneNumber(ValidatePhoneNumberRequest request) {
+    String code = Optional.ofNullable(redisUtils.getValue(request.phoneNumber()))
+      .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 번호와 매칭되는 인증코드가 없습니다."));
+
+    if (!code.equals(request.code())) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "인증코드가 일치하지 않습니다.");
+    }
+    redisUtils.delete(request.phoneNumber());
+  }
 }

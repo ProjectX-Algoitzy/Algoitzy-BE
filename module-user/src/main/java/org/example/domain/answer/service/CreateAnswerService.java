@@ -14,6 +14,7 @@ import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.select_answer.service.CreateSelectAnswerService;
 import org.example.domain.study.Study;
 import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.repository.DetailStudyMemberRepository;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.domain.study_member.service.CreateStudyMemberService;
 import org.example.domain.text_answer.service.CreateTextAnswerService;
@@ -32,6 +33,7 @@ public class CreateAnswerService {
   private final CreateSelectAnswerService createSelectAnswerService;
   private final CreateStudyMemberService createStudyMemberService;
   private final DetailAnswerRepository detailAnswerRepository;
+  private final DetailStudyMemberRepository detailStudyMemberRepository;
   private final AnswerRepository answerRepository;
   private final StudyMemberRepository studyMemberRepository;
 
@@ -50,12 +52,13 @@ public class CreateAnswerService {
         .build()
     );
 
-    Study study = answer.getApplication().getStudy();
     Member member = coreMemberService.findByEmail(answer.getCreatedBy());
-    if (studyMemberRepository.findByStudyAndMember(study, member).isPresent()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 지원한 스터디입니다.");
+    Optional<StudyMember> optionalStudyMember = detailStudyMemberRepository.getRegularStudy(member);
+    if (optionalStudyMember.isPresent()) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 지원한 정규 스터디가 존재합니다.");
     }
 
+    Study study = answer.getApplication().getStudy();
     StudyMember studyMember = null;
     if (request.confirmYN()) {
       studyMember = createStudyMemberService.createStudyMember(study, member);

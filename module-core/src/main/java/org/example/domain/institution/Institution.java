@@ -46,6 +46,7 @@ public class Institution {
   private String name;
 
   @Comment("분석 내용")
+  @Column(length = 1000000)
   private String content;
 
   @Enumerated(value = EnumType.STRING)
@@ -84,6 +85,7 @@ public class Institution {
   }
 
   public void syncViewCount(int viewCount) {
-    this.viewCount += viewCount;
+    if (this.viewCount == null) this.viewCount = viewCount;
+    else this.viewCount += viewCount;
   }
 }

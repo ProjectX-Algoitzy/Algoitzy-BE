@@ -14,17 +14,17 @@ import lombok.NoArgsConstructor;
 public class ListAttendanceDto {
 
   @Schema(description = "주차")
-  private int week;
+  private Integer week;
 
   @Schema(description = "출석부 목록 응답 DTO")
   private String name;
 
   @Schema(description = "문제 할당량 충족 여부")
-  private boolean problemYN;
+  private Boolean problemYN;
 
   @Schema(description = "블로그 포스팅 여부")
-  private boolean blogYN;
+  private Boolean blogYN;
 
   @Schema(description = "모의테스트 여부")
-  private boolean workbookYN;
+  private Boolean workbookYN;
 }

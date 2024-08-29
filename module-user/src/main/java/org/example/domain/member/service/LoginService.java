@@ -1,12 +1,14 @@
 package org.example.domain.member.service;
 
+import io.jsonwebtoken.Claims;
 import java.time.Duration;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.LoginRequest;
-import org.example.domain.member.controller.request.RefreshAccessTokenRequest;
+import org.example.domain.member.controller.request.AccessTokenRequest;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
@@ -65,9 +67,20 @@ public class LoginService {
   }
 
   /**
+   * Access Token 만료 임박 확인
+   */
+  public Boolean checkAccessToken(AccessTokenRequest request) {
+    Claims claims = jwtTokenProvider.parseClaims(request.accessToken());
+    Date now = new Date();
+    long remainSeconds = (claims.getExpiration().getTime() - now.getTime()) / 1000;
+
+    return remainSeconds <= 300;
+  }
+
+  /**
    * Access Token 재발급
    */
-  public LoginResponse refreshAccessToken(RefreshAccessTokenRequest request) {
+  public LoginResponse refreshAccessToken(AccessTokenRequest request) {
 
     // Redis에서 Refresh Token 조회
     String accessTokenEmail = jwtTokenProvider.parseClaims(request.accessToken()).get(ValueUtils.EMAIL).toString();

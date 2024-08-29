@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
@@ -111,9 +112,8 @@ public class CreateGenerationService {
       }
 
       // 지원서 양식 마이그레이션
-      Application oldApplication = applicationRepository.findByStudy(oldStudy)
-        .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND, "해당 스터디의 지원서가 존재하지 않습니다."));
-      createApplicationService.renewApplication(newStudy, oldApplication);
+      Optional<Application> optionalApplication = applicationRepository.findByStudy(oldStudy);
+      optionalApplication.ifPresent(application -> createApplicationService.renewApplication(newStudy, application));
 
       // 출석률 50% 미만 or 3주 연속 미출석 시 기수 참여 제한
       List<StudyMember> studyMemberList = studyMemberRepository.findAllByStudyIdAndStatus(oldStudy.getId(), StudyMemberStatus.PASS);
