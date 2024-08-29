@@ -14,10 +14,10 @@ public class CorsConfig implements WebMvcConfigurer {
     registry.addMapping("/**")
       .allowedOrigins(
         // production front
-        "https://kau-koala.com",
+        "https://www.kau-koala.com",
         "https://admin.kau-koala.com",
         // production back
-        "https://api.kau-koala.com",
+        "https://user-api.kau-koala.com",
         "https://admin-api.kau-koala.com",
         // dev front
         "https://user-dev-front.kau-koala.com",
@@ -26,7 +26,9 @@ public class CorsConfig implements WebMvcConfigurer {
         "https://user-dev.kau-koala.com",
         "https://admin-dev.kau-koala.com",
         // local
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://localhost:3333",
+        "http://localhost:4444"
       )
       .allowedMethods("*")
       .maxAge(3600);

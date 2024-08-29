@@ -1,13 +1,17 @@
 name: USER-CI
 
 on:
-  push:
-    branches:
-      - feature/217
+  pull_request:
+    types: [ closed ]
+    paths:
+      - 'module-core/**'
+      - 'module-user/**'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
 
     steps:
       - name: Checkout to repository
@@ -51,4 +55,4 @@ jobs:
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}-${{ github.run_id }}
           use_existing_version_if_available: true # 기존 버전 사용 설정
           deployment_package: user-deploy/user-deploy.zip
-          wait_for_environment_recovery: 180
+          wait_for_environment_recovery: 300

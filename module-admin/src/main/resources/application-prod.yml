@@ -1,0 +1,12 @@
+server:
+  port: ${ADMIN_PORT_PROD}
+
+spring:
+  config:
+    import: application-core-prod.yml
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 300MB
