@@ -3,9 +3,6 @@ name: ADMIN-CI
 on:
   pull_request:
     types: [ closed ]
-    paths:
-      - 'module-core/**'
-      - 'module-admin/**'
   workflow_dispatch:
 
 jobs:
