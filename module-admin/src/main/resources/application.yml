@@ -2,19 +2,13 @@ server:
   port: 8180
 
 spring:
-  servlet:
-    multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
+  config:
+    import: application-core.yml
 
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
+feign:
+  solved-ac:
+    url: https://solved.ac/api/v3
 
-jwt:
-  secret: ${JWT}
+springdoc:
+  swagger-ui:
+    path: /admin-api/

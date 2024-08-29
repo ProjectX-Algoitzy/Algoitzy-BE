@@ -1,0 +1,58 @@
+name: ADMIN-CI
+
+on:
+  pull_request:
+    types: [ closed ]
+    paths:
+      - 'module-core/**'
+      - 'module-admin/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
+
+    steps:
+      - name: Checkout to repository
+        uses: actions/checkout@v2
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Build module-core
+        run: ./gradlew :module-core:clean :module-core:build
+
+      - name: Build module-admin
+        run: ./gradlew :module-admin:clean :module-admin:bootJar
+
+      - name: (common-admin) Generate admin deployment package
+        run: |
+          mkdir -p admin-deploy
+          cp module-admin/build/libs/*.jar admin-deploy/admin-application.jar
+          cp Procfile admin-deploy/Procfile
+          cp -r module-admin/.ebextensions admin-deploy/.ebextensions
+          cp -r module-admin/.platform admin-deploy/.platform
+          cd admin-deploy && zip -r admin-deploy.zip .
+      
+
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
+          # git actions key 값에 오타가 나 있으니 주의할 것
+          aws_secret_key: ${{ secrets.AWS_ACION_SECRET_ACCESS_KEY }}
+          region: 'ap-northeast-2'
+          application_name: admin
+          environment_name: Admin-env-1
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}-${{ github.run_id }}
+          use_existing_version_if_available: true # 기존 버전 사용 설정
+          deployment_package: admin-deploy/admin-deploy.zip
+          wait_for_environment_recovery: 180

@@ -1,22 +1,12 @@
 server:
-  port: 8281
+  port: ${USER_PORT_DEV}
 
 spring:
   config:
-    activate:
-      on-profile: dev
+    import: application-core-dev.yml
 
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL_DEV}
-    username: ${DB_USERNAME_DEV}
-    password: ${DB_PW_DEV}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 300MB

@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    name: prod
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${DB_URL_PROD}
+    username: ${DB_USERNAME_PROD}
+    password: ${DB_PW_PROD}
+
+  data:
+    redis:
+      port: 6379
+      host: ${REDIS_HOST_PROD}
