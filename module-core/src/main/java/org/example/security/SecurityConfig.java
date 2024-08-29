@@ -43,7 +43,7 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/sign-up/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/email/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sms/**")).permitAll()
-            .requestMatchers(new AntPathRequestMatcher("/health")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/health/**")).permitAll()
             // 랜딩 페이지
             .requestMatchers(new AntPathRequestMatcher("/study/count")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/generation/max")).permitAll()
