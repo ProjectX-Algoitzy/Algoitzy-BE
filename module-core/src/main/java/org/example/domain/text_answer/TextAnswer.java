@@ -44,6 +44,7 @@ public class TextAnswer {
   private TextQuestion textQuestion;
 
   @Comment("답변")
+  @Column(length = 10000)
   private String text;
 
   @CreatedDate

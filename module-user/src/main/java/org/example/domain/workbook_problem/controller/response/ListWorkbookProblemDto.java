@@ -23,6 +23,9 @@ public class ListWorkbookProblemDto {
   @Schema(description = "문제 레벨 이미지 URL")
   private String levelUrl;
 
+  @Schema(description = "백준 링크 URL")
+  private String baekjoonUrl;
+
   public void setLevelUrl(Level level) {
     this.levelUrl = level.getImageUrl();
   }

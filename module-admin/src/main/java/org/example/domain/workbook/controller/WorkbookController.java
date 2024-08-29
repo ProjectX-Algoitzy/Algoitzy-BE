@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
+import org.example.domain.workbook.controller.request.UpdateWorkbookRequest;
 import org.example.domain.workbook.controller.response.DetailWorkbookResponse;
 import org.example.domain.workbook.service.WorkbookService;
 import org.example.domain.workbook_problem.controller.request.CreateWorkbookProblemRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +31,15 @@ public class WorkbookController {
   public ApiResponse<DetailWorkbookResponse> getWorkbook(
     @PathVariable("workbook-id") Long workbookId) {
     return ApiResponse.onSuccess(workbookService.getWorkbook(workbookId));
+  }
+
+  @PatchMapping("/{workbook-id}")
+  @Operation(summary = "문제집 이름 수정")
+  public ApiResponse<Void> updateWorkbook(
+    @PathVariable("workbook-id") Long workbookId,
+    @RequestBody UpdateWorkbookRequest request) {
+    workbookService.updateWorkbook(workbookId, request);
+    return ApiResponse.onSuccess();
   }
 
   @DeleteMapping("/{workbook-id}")

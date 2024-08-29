@@ -23,7 +23,12 @@ public enum EmailType {
   PASS("KOALA 면접 결과 발표", "pass.html"),
 
   // 비밀번호 재설정
-  FIND_PASSWORD("KOALA 비밀번호 안내", "reset-password.html");
+  FIND_PASSWORD("KOALA 비밀번호 안내", "reset-password.html"),
+
+  // 스케쥴러
+  ATTENDANCE_SCHEDULER("출석부 갱신 알림", ""),
+  WORKBOOK_SCHEDULER("문제집 자동 생성 알림", ""),
+  BAEKJOON_SCHEDULER("백준 문제 저장 알림", "");
 
   private String subject;
   private String path;

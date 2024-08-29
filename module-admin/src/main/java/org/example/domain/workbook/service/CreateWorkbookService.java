@@ -15,12 +15,16 @@ import org.example.domain.study.repository.StudyRepository;
 import org.example.domain.week.Week;
 import org.example.domain.week.repository.DetailWeekRepository;
 import org.example.domain.workbook.Workbook;
+import org.example.domain.workbook.controller.request.UpdateWorkbookRequest;
 import org.example.domain.workbook.enums.CodingTestBasicWorkbook;
 import org.example.domain.workbook.repository.WorkbookRepository;
 import org.example.domain.workbook_problem.WorkbookProblem;
 import org.example.domain.workbook_problem.controller.request.CreateWorkbookProblemRequest;
 import org.example.domain.workbook_problem.repository.WorkbookProblemRepository;
+import org.example.email.enums.EmailType;
+import org.example.email.service.CoreEmailService;
 import org.example.util.ValueUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,44 +35,55 @@ public class CreateWorkbookService {
 
   private final CoreWorkbookService coreWorkbookService;
   private final CoreProblemService coreProblemService;
+  private final CoreEmailService coreEmailService;
   private final WorkbookRepository workbookRepository;
   private final StudyRepository studyRepository;
   private final DetailWeekRepository detailWeekRepository;
   private final ListProblemRepository listProblemRepository;
   private final WorkbookProblemRepository workbookProblemRepository;
 
+  @Value("${spring.mail.username}")
+  private String koalaEmail;
+
   /**
    * 문제집 자동 생성
    */
   public void createAutoWorkbook() {
-    Optional<Week> optionalWeek = detailWeekRepository.getCurrentWeek();
-    if (optionalWeek.isEmpty()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디 진행 기간이 아닙니다.");
-    }
-    Week currentWeek = optionalWeek.get();
+    try {
+      Optional<Week> optionalWeek = detailWeekRepository.getCurrentWeek();
+      if (optionalWeek.isEmpty()) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디 진행 기간이 아닙니다.");
+      }
+      Week currentWeek = optionalWeek.get();
 
-    List<Study> regularStudyList = studyRepository.findAllByType(StudyType.REGULAR);
-    for (Study study : regularStudyList) {
-      List<Problem> problemList;
-      if (study.getName().equals(ValueUtils.CODING_TEST_BASIC)) problemList = createBasicWorkbook(currentWeek);
-      else if (study.getName().equals(ValueUtils.CODING_TEST_PREPARE)) problemList = createPrepareWorkbook(currentWeek);
-      else continue;
+      List<Study> regularStudyList = studyRepository.findAllByType(StudyType.REGULAR);
+      for (Study study : regularStudyList) {
+        List<Problem> problemList;
+        if (study.getName().equals(ValueUtils.CODING_TEST_BASIC)) problemList = createBasicWorkbook(currentWeek);
+        else if (study.getName().equals(ValueUtils.CODING_TEST_PREPARE)) problemList = createPrepareWorkbook(currentWeek);
+        else continue;
 
-      // 문제집 생성 및 저장
-      Workbook workbook = Workbook.builder()
-        .study(study)
-        .week(currentWeek)
-        .build();
+        // 문제집 생성 및 저장
+        Workbook workbook = Workbook.builder()
+          .study(study)
+          .week(currentWeek)
+          .build();
 
-      List<WorkbookProblem> workbookProblemList = problemList.stream()
-        .map(problem ->
-          WorkbookProblem.builder()
-            .workbook(workbook)
-            .problem(problem)
-            .build()
-        ).toList();
-      workbook.setWorkbookProblemList(workbookProblemList); // 양방향
-      workbookRepository.save(workbook);
+        List<WorkbookProblem> workbookProblemList = problemList.stream()
+          .map(problem ->
+            WorkbookProblem.builder()
+              .workbook(workbook)
+              .problem(problem)
+              .build()
+          ).toList();
+        workbook.setWorkbookProblemList(workbookProblemList); // 양방향
+        workbookRepository.save(workbook);
+      }
+
+      coreEmailService.send(koalaEmail, EmailType.WORKBOOK_SCHEDULER.toString(), "문제집 자동생성 성공");
+    } catch (Exception e) {
+      coreEmailService.send(koalaEmail, EmailType.WORKBOOK_SCHEDULER.toString(), e.getMessage());
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
     }
 
   }
@@ -84,7 +99,7 @@ public class CreateWorkbookService {
   }
 
   /**
-   * 코딩테스트 대비반
+   * 코딩테스트 심화반
    */
   private List<Problem> createPrepareWorkbook(Week week) {
     // 주차별 알고리즘 유형 지정 후 백준 문제 조회
@@ -100,6 +115,14 @@ public class CreateWorkbookService {
       case 8 -> algorithmList = List.of("greedy");
     }
     return listProblemRepository.getProblemList(algorithmList);
+  }
+
+  /**
+   * 문제집 이름 수정
+   */
+  public void updateWorkbook(Long workbookId, UpdateWorkbookRequest request) {
+    Workbook workbook = coreWorkbookService.findById(workbookId);
+    workbook.update(request.name());
   }
 
   /**

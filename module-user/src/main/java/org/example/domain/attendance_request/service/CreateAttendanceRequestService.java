@@ -23,6 +23,7 @@ import org.example.util.SecurityUtils;
 import org.example.util.http_request.HttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +75,7 @@ public class CreateAttendanceRequestService {
     );
 
     List<AttendanceRequestProblem> attendanceRequestProblemList = request.problemUrlList().stream()
+      .filter(StringUtils::hasText)
       .map(problemUrl ->
         AttendanceRequestProblem.builder()
           .attendanceRequest(attendanceRequest)
@@ -99,6 +101,8 @@ public class CreateAttendanceRequestService {
     List<String> problemUrlList = request.problemUrlList();
     for (int i = 0; i < problemUrlList.size(); i++) {
       String problemUrl = problemUrlList.get(i);
+      if (!StringUtils.hasText(problemUrl)) continue;
+
       if (!HttpRequest.getRequest(problemUrl, String.class).getStatusCode().is2xxSuccessful()) {
         throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, (i + 1) + "번째 문제 URL이 유효하지 않습니다.");
       }

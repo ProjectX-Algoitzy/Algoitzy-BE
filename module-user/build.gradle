@@ -1,4 +1,3 @@
 dependencies {
     implementation project(':module-core')
-    implementation 'net.nurigo:javaSDK:2.2'
 }

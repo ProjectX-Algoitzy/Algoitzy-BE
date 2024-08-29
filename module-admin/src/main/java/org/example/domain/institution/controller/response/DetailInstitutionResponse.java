@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.institution.enums.InstitutionType;
 
 @Builder
 @Getter
@@ -16,9 +17,16 @@ public class DetailInstitutionResponse {
   @Schema(description = "기관 ID")
   private long institutionId;
 
+  @Schema(description = "기관 유형")
+  private String type;
+
   @Schema(description = "기관명")
   private String name;
 
   @Schema(description = "분석 내용")
   private String content;
+
+  public void updateType(String type) {
+    this.type = InstitutionType.valueOf(type).getName();
+  }
 }

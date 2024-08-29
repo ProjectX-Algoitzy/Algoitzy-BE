@@ -17,7 +17,7 @@ public class ListTextAnswerService {
   /**
    * 지원서 상세 주관식 답변 목록 조회
    */
-  public List<DetailTextAnswerDto> getTextAnswerList(Long answerId) {
-    return listTextAnswerRepository.getTextAnswerList(answerId);
+  public List<DetailTextAnswerDto> getTextAnswerList(Long applicationId, Long answerId) {
+    return listTextAnswerRepository.getTextAnswerList(applicationId, answerId);
   }
 }
