@@ -3,9 +3,6 @@ name: USER-CI
 on:
   pull_request:
     types: [ closed ]
-    paths:
-      - 'module-core/**'
-      - 'module-user/**'
   workflow_dispatch:
 
 jobs:
