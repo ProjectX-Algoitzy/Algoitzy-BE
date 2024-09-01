@@ -6,6 +6,7 @@ import org.example.security.jwt.JwtExceptionFilter;
 import org.example.security.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -35,6 +36,7 @@ public class SecurityConfig {
       .authorizeHttpRequests(
         auth ->
           auth
+            .requestMatchers(HttpMethod.OPTIONS).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/**/swagger-ui/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/member/login/**")).permitAll()
