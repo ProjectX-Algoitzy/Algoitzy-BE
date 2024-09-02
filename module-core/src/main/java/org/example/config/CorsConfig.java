@@ -26,10 +26,8 @@ public class CorsConfig implements WebMvcConfigurer {
         "https://user-dev.kau-koala.com",
         "https://admin-dev.kau-koala.com",
         // local
-        "http://localhost:3000",
         "http://localhost:3333",
-        "http://localhost:4444",
-        "http://localhost:3001"
+        "http://localhost:4444"
       )
       .allowedHeaders("*")
       .allowedMethods("*")

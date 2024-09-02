@@ -1,7 +1,5 @@
 package org.example.security;
 
-import java.util.Arrays;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.security.jwt.JwtAuthenticationFilter;
 import org.example.security.jwt.JwtExceptionFilter;
@@ -18,9 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -36,35 +31,8 @@ public class SecurityConfig {
   }
 
   @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(
-      Arrays.asList(
-        "https://www.kau-koala.com",
-        "https://admin.kau-koala.com",
-        "https://user-api.kau-koala.com",
-        "https://admin-api.kau-koala.com",
-        "https://user-dev-front.kau-koala.com",
-        "https://admin-dev-front.kau-koala.com",
-        "https://user-dev.kau-koala.com",
-        "https://admin-dev.kau-koala.com",
-        "http://localhost:3333",
-        "http://localhost:4444"
-      ));
-    configuration.setAllowedMethods(List.of("*"));
-    configuration.setAllowedHeaders(List.of("*"));
-    configuration.setAllowCredentials(true);
-    configuration.setMaxAge(3600L);
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
-
-  @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
-      .cors(cors -> cors.configurationSource(corsConfigurationSource()))
       .authorizeHttpRequests(
         auth ->
           auth
