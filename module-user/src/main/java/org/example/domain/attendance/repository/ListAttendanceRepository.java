@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.attendance.controller.response.ListAttendanceDto;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -31,7 +32,8 @@ public class ListAttendanceRepository {
       .from(attendance)
       .innerJoin(studyMember).on(attendance.studyMember.eq(studyMember))
       .where(
-        studyMember.study.id.eq(studyId)
+        studyMember.study.id.eq(studyId),
+        studyMember.status.eq(StudyMemberStatus.PASS)
       )
       .orderBy(
         attendance.week.value.asc(),

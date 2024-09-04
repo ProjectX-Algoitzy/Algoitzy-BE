@@ -85,7 +85,8 @@ public class CoreEmailService {
         html = htmlToString(s3Url + DOCUMENT_PASS.getPath())
           .replace("${name}", member.getName())
           .replace("${phoneNumber}", coreMemberService.getOwner().getPhoneNumber());
-      } else {
+      }
+      else {
         html = htmlToString(s3Url + DOCUMENT_FAIL.getPath()).replace("${name}", member.getName());
       }
       send(email, request.type(), html);
@@ -96,11 +97,11 @@ public class CoreEmailService {
     for (String email : request.emailList()) {
       Member member = coreMemberService.findByEmail(email);
       StudyMember studyMember = studyMemberRepository.findByMemberAndStatus(member, StudyMemberStatus.DOCUMENT_PASS)
-        .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 회원은 서류 합격 단계가 아닙니다."));
+        .orElseThrow(() -> new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "해당 회원은 서류 합격 단계가 아닙니다."));
       Interview interview = interviewRepository.findByStudyMember(studyMember)
-        .orElseThrow(() -> new GeneralException(ErrorStatus.BAD_REQUEST, "해당 스터디원의 면접 일정이 존재하지 않습니다."));
+        .orElseThrow(() -> new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "해당 스터디원의 면접 일정이 존재하지 않습니다."));
       if (interview.getCreatedTime().isEqual(interview.getUpdatedTime())) {
-        throw new GeneralException(ErrorStatus.BAD_REQUEST, "면접 시간을 설정해주세요.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "면접 시간을 설정해주세요.");
       }
       changeStatus(request, member);
 
@@ -117,21 +118,22 @@ public class CoreEmailService {
       changeStatus(request, member);
 
       String html;
-      if (isPass) {
-        html = htmlToString(s3Url + PASS.getPath()).replace("${name}", member.getName());
-      } else {
-        html = htmlToString(s3Url + FAIL.getPath()).replace("${name}", member.getName());
-      }
+      if (isPass) html = htmlToString(s3Url + PASS.getPath()).replace("${name}", member.getName());
+      else html = htmlToString(s3Url + FAIL.getPath()).replace("${name}", member.getName());
+
       send(email, request.type(), html);
     }
   }
 
   private void sendPasswordEmail(SendEmailRequest request) {
+    Member member = coreMemberService.findByEmail(request.emailList().get(0));
+
     String password = RandomUtils.getRandomString(11);
-    String html = htmlToString(s3Url + FIND_PASSWORD.getPath()).replace("${password}", password);
+    String html = htmlToString(s3Url + FIND_PASSWORD.getPath())
+      .replace("${name}", member.getName())
+      .replace("${password}", password);
     send(request.emailList().get(0), request.type(), html);
 
-    Member member = coreMemberService.findByEmail(request.emailList().get(0));
     member.updatePassword(encoder.encode(password));
   }
 

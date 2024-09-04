@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study_member.enums.StudyMemberRole;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
@@ -89,7 +90,8 @@ public class DetailStudyRepository {
               .select(studyMember.count())
               .from(studyMember)
               .where(
-                studyMember.study.eq(study)
+                studyMember.study.eq(study),
+                studyMember.status.eq(StudyMemberStatus.PASS)
               )
             , "memberCount"),
           Expressions.as(
