@@ -19,10 +19,12 @@ import org.example.domain.study_member.StudyMember;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.domain.week.Week;
 import org.example.domain.week.repository.DetailWeekRepository;
+import org.example.util.ArrayUtils;
 import org.example.util.SecurityUtils;
 import org.example.util.http_request.HttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -42,6 +44,9 @@ public class CreateAttendanceRequestService {
    * 출석 요청 생성
    */
   public void createAttendanceRequest(CreateAttendanceRequestRequest request) {
+
+    validate(request);
+
     // 현재 몇주차인지 탐색
     Optional<Week> optionalWeek = detailWeekRepository.getCurrentWeek();
     if (optionalWeek.isEmpty()) {
@@ -86,6 +91,20 @@ public class CreateAttendanceRequestService {
     attendanceRequest.setAttendanceRequestProblemList(attendanceRequestProblemList);
     attendanceRequestProblemRepository.saveAll(attendanceRequestProblemList);
 
+  }
+
+  private void validate(CreateAttendanceRequestRequest request) {
+    if (!ObjectUtils.isEmpty(request.problemUrlList()) && request.problemUrlList().stream()
+      .anyMatch(problemUrl -> !problemUrl.contains("https://"))
+    ) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "https://를 포함한 전체 문제 URL 경로를 입력해주세요.");
+    }
+    if (StringUtils.hasText(request.blogUrl()) && !request.blogUrl().contains("https://")) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "https://를 포함한 전체 블로그 URL 경로를 입력해주세요.");
+    }
+    if (!ArrayUtils.isUniqueArray(request.problemUrlList())) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "중복된 URL이 존재합니다.");
+    }
   }
 
   private void validateUrl(CreateAttendanceRequestRequest request, StudyMember studyMember) {
