@@ -41,20 +41,22 @@ public class SmsService {
 
   private final RedisUtils redisUtils;
 
-  private static final int MAX_REQUESTS_PER_DAY = 2;
+  private static final int MAX_REQUESTS_PER_DAY = 5;
 
   private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-  public String sendCertificationPhoneNumber(CertificationPhoneNumberRequest request, String userRandomId) {
-    if (!StringUtils.hasText(userRandomId)) {
-      return generateRandomString();
+  public String sendCertificationPhoneNumber(CertificationPhoneNumberRequest request) {
+    if (!StringUtils.hasText(request.userRandomId())) {
+      String randomId = generateRandomString();
+      sendCertificationSms(request);
+      return randomId;
     } else {
-      if (!tryConsumeBucket(userRandomId)) {
+      if (!tryConsumeBucket(request.userRandomId())) {
         throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "SMS 인증 요청 횟수를 초과하였습니다.");
       }
       sendCertificationSms(request);
     }
-    return userRandomId;
+    return request.userRandomId();
   }
 
   /*
@@ -111,7 +113,5 @@ public class SmsService {
   /*
   * 사용자에 대한 랜덤 String 생성
   * */
-  private String generateRandomString() {
-    return UUID.randomUUID().toString();
-  }
+  private String generateRandomString() {return RandomUtils.getRandomString(36);}
 }
