@@ -21,6 +21,7 @@ import org.example.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -43,13 +44,24 @@ public class SmsService {
 
   private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-  public void sendCertificationPhoneNumber(CertificationPhoneNumberRequest request, String ipAddress) {
-    if (!tryConsumeBucket(ipAddress)) {
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "SMS 인증 요청 횟수를 초과하였습니다.");
+  public String sendCertificationPhoneNumber(CertificationPhoneNumberRequest request) {
+    if (!StringUtils.hasText(request.userRandomId())) {
+      String userRandomId = RandomUtils.getRandomString(36);
+      tryConsumeBucket(userRandomId);
+      sendCertificationSms(request);
+      return userRandomId;
+    } else {
+      if (!tryConsumeBucket(request.userRandomId())) {
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "SMS 인증 요청 횟수를 초과하였습니다.");
+      }
+      sendCertificationSms(request);
     }
-    sendCertificationSms(request);
+    return request.userRandomId();
   }
 
+  /*
+  * 인증 번호 API 요청
+  * */
   private void sendCertificationSms(CertificationPhoneNumberRequest request) {
     try {
       Message message = new Message(apiKey, apiSecret);
@@ -72,20 +84,21 @@ public class SmsService {
     }
   }
 
-  private boolean tryConsumeBucket(String ipAddress) {
-    // 해당 IP 주소에 대한 Bucket 가져오기
-    Bucket bucket = buckets.computeIfAbsent(ipAddress, key -> {
+  /*
+  * Bucket 토큰 소비
+  * */
+  private boolean tryConsumeBucket(String userRandomId) {
+    Bucket bucket = buckets.computeIfAbsent(userRandomId, key -> {
       Bandwidth limit = Bandwidth.classic(MAX_REQUESTS_PER_DAY, Refill.intervally(MAX_REQUESTS_PER_DAY, Duration.ofDays(1)));
       return Bucket.builder()
         .addLimit(limit)
         .build();
     });
-
     return bucket.tryConsume(1);
   }
 
   /**
-   * 휴대전화 인증
+   * 휴대전화 인증 확인
    */
   public void validatePhoneNumber(ValidatePhoneNumberRequest request) {
     String code = Optional.ofNullable(redisUtils.getValue(request.phoneNumber()))
