@@ -49,6 +49,7 @@ public class SmsService {
       String userRandomId = RandomUtils.getRandomString(36);
       tryConsumeBucket(userRandomId);
       sendCertificationSms(request);
+      return userRandomId;
     } else {
       if (!tryConsumeBucket(request.userRandomId())) {
         throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "SMS 인증 요청 횟수를 초과하였습니다.");
