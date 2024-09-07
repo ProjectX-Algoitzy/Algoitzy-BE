@@ -25,11 +25,9 @@ public class SmsController {
 
   @PostMapping("/certification")
   @Operation(summary = "SMS 인증코드 전송")
-  public ApiResponse<Void> sendCertificationPhoneNumber(
-      @RequestBody @Valid CertificationPhoneNumberRequest request,
-      HttpServletRequest httpServletRequest) {
-    smsService.sendCertificationPhoneNumber(request, IpUtils.getClientIp(httpServletRequest));
-    return ApiResponse.onSuccess();
+  public ApiResponse<String> sendCertificationPhoneNumber(
+      @RequestBody @Valid CertificationPhoneNumberRequest request, String userRandomId) {
+    return ApiResponse.onSuccess(smsService.sendCertificationPhoneNumber(request, userRandomId));
   }
 
   @PostMapping("/phone-number")
