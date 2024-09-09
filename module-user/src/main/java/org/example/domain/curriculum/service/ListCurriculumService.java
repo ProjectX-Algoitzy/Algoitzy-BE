@@ -6,6 +6,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.repository.ListCurriculumRepository;
 import org.example.domain.member.Member;
+import org.example.domain.member.enums.Role;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
@@ -35,7 +36,8 @@ public class ListCurriculumService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디가 아닙니다.");
     }
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
-    if (studyMemberRepository.findByStudyAndMemberAndStatus(study, member, StudyMemberStatus.PASS).isEmpty()) {
+    if (studyMemberRepository.findByStudyAndMemberAndStatus(study, member, StudyMemberStatus.PASS).isEmpty()
+    && member.getRole().equals(Role.ROLE_USER)) {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
 

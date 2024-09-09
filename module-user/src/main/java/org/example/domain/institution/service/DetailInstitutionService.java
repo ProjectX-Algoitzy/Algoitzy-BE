@@ -9,8 +9,11 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.institution.Institution;
 import org.example.domain.institution.controller.response.DetailInstitutionResponse;
 import org.example.domain.institution.repository.DetailInstitutionRepository;
+import org.example.domain.member.enums.Role;
+import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study_member.repository.DetailStudyMemberRepository;
 import org.example.util.RedisUtils;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class DetailInstitutionService {
 
+  private final CoreMemberService coreMemberService;
   private final CoreInstitutionService coreInstitutionService;
   private final DetailStudyMemberRepository detailStudyMemberRepository;
   private final DetailInstitutionRepository detailInstitutionRepository;
@@ -28,7 +32,8 @@ public class DetailInstitutionService {
    * 기관 상세 조회
    */
   public DetailInstitutionResponse getInstitution(Long institutionId) {
-    if (!detailStudyMemberRepository.isRegularStudyMember()) {
+    if (!detailStudyMemberRepository.isRegularStudyMember()
+    && coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()).getRole().equals(Role.ROLE_USER)) {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
 
