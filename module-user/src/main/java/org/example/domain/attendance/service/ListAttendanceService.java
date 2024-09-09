@@ -8,6 +8,7 @@ import org.example.domain.attendance.controller.response.ListAttendanceDto;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.attendance.repository.ListAttendanceRepository;
 import org.example.domain.member.Member;
+import org.example.domain.member.enums.Role;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study.Study;
 import org.example.domain.study.service.CoreStudyService;
@@ -33,7 +34,8 @@ public class ListAttendanceService {
   public ListAttendanceResponse getAttendanceList(Long studyId) {
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     Study study = coreStudyService.findById(studyId);
-    if (studyMemberRepository.findByStudyAndMemberAndStatus(study, member, StudyMemberStatus.PASS).isEmpty()) {
+    if (studyMemberRepository.findByStudyAndMemberAndStatus(study, member, StudyMemberStatus.PASS).isEmpty()
+    && member.getRole().equals(Role.ROLE_USER)) {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
 
