@@ -61,6 +61,9 @@ public class CreateAttendanceService {
   @Value("${spring.mail.username}")
   private String koalaEmail;
 
+  @Value("${spring.profiles.active}")
+  private String profiles;
+
   private static final int CODING_TEST_PREPARE_MIN_REQUEST_COUNT = 3; // 코딩테스트 심화반 최소 문제 인증 개수
   private static final int CODING_TEST_BASIC_MIN_REQUEST_COUNT = 20; // 코딩테스트 기초반 최소 문제 인증 개수
   private static final int WORKBOOK_MIN_REQUEST_COUNT = 2; // 모의테스트 최소 문제 인증 개수
@@ -124,7 +127,7 @@ public class CreateAttendanceService {
         attendanceRepository.saveAll(attendanceList);
       }
 
-      coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), "출석부 자동갱신 성공");
+      coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), "[" + profiles + "]" + " 출석부 자동갱신 성공");
     } catch (Exception e) {
       coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), e.getMessage());
       throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
