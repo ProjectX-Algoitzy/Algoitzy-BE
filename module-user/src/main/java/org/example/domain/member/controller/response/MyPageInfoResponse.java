@@ -25,4 +25,7 @@ public class MyPageInfoResponse {
   @Schema(description = "백준 링크 URL")
   private String baekjoonUrl;
 
+  @Schema(description = "본인 여부")
+  private Boolean meYN;
+
 }

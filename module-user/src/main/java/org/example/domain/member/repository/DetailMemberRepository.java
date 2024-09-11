@@ -3,6 +3,7 @@ package org.example.domain.member.repository;
 import static org.example.domain.member.QMember.member;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,10 @@ public class DetailMemberRepository {
         member.profileUrl,
         member.name,
         member.handle,
+        new CaseBuilder()
+          .when(member.email.eq(SecurityUtils.getCurrentMemberEmail()))
+          .then(true)
+          .otherwise(false).as("meYN"),
         Expressions.stringTemplate("concat({0}, {1})",
             Url.BAEKJOON_USER.getUri(), member.handle.stringValue())
           .as("baekjoonUrl"))
