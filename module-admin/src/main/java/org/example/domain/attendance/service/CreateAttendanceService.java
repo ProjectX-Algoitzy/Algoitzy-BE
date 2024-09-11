@@ -129,7 +129,7 @@ public class CreateAttendanceService {
 
       coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), "[" + profiles + "]" + " 출석부 자동갱신 성공");
     } catch (Exception e) {
-      coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), e.getMessage());
+      coreEmailService.send(koalaEmail, EmailType.ATTENDANCE_SCHEDULER.toString(), "[" + profiles + "] " + e.getMessage());
       throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
     }
 
