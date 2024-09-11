@@ -84,7 +84,7 @@ public class CreateProblemService {
 
       coreEmailService.send(koalaEmail, EmailType.BAEKJOON_SCHEDULER.toString(), "[" + profiles + "] 백준 문제 갱신 성공");
     } catch (Exception e) {
-      coreEmailService.send(koalaEmail, EmailType.BAEKJOON_SCHEDULER.toString(), e.getMessage());
+      coreEmailService.send(koalaEmail, EmailType.BAEKJOON_SCHEDULER.toString(), "[" + profiles + "] " + e.getMessage());
       throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
     }
 
