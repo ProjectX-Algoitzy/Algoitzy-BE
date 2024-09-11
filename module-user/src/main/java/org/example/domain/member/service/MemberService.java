@@ -6,6 +6,7 @@ import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.AccessTokenRequest;
 import org.example.domain.member.controller.response.MyPageInfoResponse;
+import org.example.domain.member.controller.response.MyPageStudyResponse;
 import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
@@ -84,5 +85,9 @@ public class MemberService {
    */
   public MyPageInfoResponse getMyPageInfo(Long memberId) {
     return detailMemberService.getMyPageInfo(memberId);
+  }
+
+  public MyPageStudyResponse getMyPageStudy(Long memberId) {
+    return detailMemberService.getMyPageStudy(memberId);
   }
 }
