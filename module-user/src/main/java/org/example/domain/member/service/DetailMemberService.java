@@ -8,6 +8,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.response.MemberInfoResponse;
+import org.example.domain.member.controller.response.MyPageInfoResponse;
 import org.example.domain.member.repository.DetailMemberRepository;
 import org.example.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,12 @@ public class DetailMemberService {
     }
 
     return optionalMember.get().getEmail();
+  }
+
+  /**
+   * 마이페이지 멤버 정보
+   */
+  public MyPageInfoResponse getMyPageInfo(Long memberId) {
+    return detailMemberRepository.getMyPageInfo(memberId);
   }
 }
