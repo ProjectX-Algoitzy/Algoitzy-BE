@@ -11,6 +11,7 @@ import org.example.domain.member.controller.request.AccessTokenRequest;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.controller.response.MyPageInfoResponse;
+import org.example.domain.member.controller.response.MyPageStudyResponse;
 import org.example.domain.member.service.MemberService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,5 +71,11 @@ public class MemberController {
   @Operation(summary = "마이페이지 멤버 정보")
   public ApiResponse<MyPageInfoResponse> getMyPageInfo(@PathVariable("member-id") Long memberId) {
     return ApiResponse.onSuccess(memberService.getMyPageInfo(memberId));
+  }
+
+  @GetMapping("/{member-id}/study")
+  @Operation(summary = "마이페이지 스터디 정보")
+  public ApiResponse<MyPageStudyResponse> getMyPageStudy(@PathVariable("member-id") Long memberId) {
+    return ApiResponse.onSuccess(memberService.getMyPageStudy(memberId));
   }
 }
