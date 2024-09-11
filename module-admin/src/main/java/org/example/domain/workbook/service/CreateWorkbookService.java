@@ -45,6 +45,9 @@ public class CreateWorkbookService {
   @Value("${spring.mail.username}")
   private String koalaEmail;
 
+  @Value("${spring.profiles.active}")
+  private String profiles;
+
   /**
    * 문제집 자동 생성
    */
@@ -80,9 +83,9 @@ public class CreateWorkbookService {
         workbookRepository.save(workbook);
       }
 
-      coreEmailService.send(koalaEmail, EmailType.WORKBOOK_SCHEDULER.toString(), "문제집 자동생성 성공");
+      coreEmailService.send(koalaEmail, EmailType.WORKBOOK_SCHEDULER.toString(), "[" + profiles + "] 문제집 자동생성 성공");
     } catch (Exception e) {
-      coreEmailService.send(koalaEmail, EmailType.WORKBOOK_SCHEDULER.toString(), e.getMessage());
+      coreEmailService.send(koalaEmail, EmailType.WORKBOOK_SCHEDULER.toString(), "[" + profiles + "] " + e.getMessage());
       throw new GeneralException(ErrorStatus.BAD_REQUEST, e.getMessage());
     }
 
