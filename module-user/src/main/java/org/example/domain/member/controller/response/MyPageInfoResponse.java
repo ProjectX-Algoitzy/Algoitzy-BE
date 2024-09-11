@@ -5,17 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.member.enums.Role;
 
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "로그인 멤버 정보 응답 객체")
-public class MemberInfoResponse {
-
-  @Schema(description = "멤버 ID")
-  private Long memberId;
+@Schema(description = "마이페이지 멤버 정보 응답 객체")
+public class MyPageInfoResponse {
 
   @Schema(description = "프로필 이미지")
   private String profileUrl;
@@ -23,6 +19,13 @@ public class MemberInfoResponse {
   @Schema(description = "이름")
   private String name;
 
-  @Schema(description = "역할")
-  private Role role;
+  @Schema(description = "백준 닉네임")
+  private String handle;
+
+  @Schema(description = "백준 링크 URL")
+  private String baekjoonUrl;
+
+  @Schema(description = "본인 여부")
+  private Boolean meYN;
+
 }

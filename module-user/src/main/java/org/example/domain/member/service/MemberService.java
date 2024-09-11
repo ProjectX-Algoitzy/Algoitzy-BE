@@ -5,6 +5,7 @@ import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.AccessTokenRequest;
+import org.example.domain.member.controller.response.MyPageInfoResponse;
 import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
@@ -76,5 +77,12 @@ public class MemberService {
    */
   public String findEmail(FindEmailRequest request) {
     return detailMemberService.findEmail(request);
+  }
+
+  /**
+   * 마이페이지 멤버 정보
+   */
+  public MyPageInfoResponse getMyPageInfo(Long memberId) {
+    return detailMemberService.getMyPageInfo(memberId);
   }
 }
