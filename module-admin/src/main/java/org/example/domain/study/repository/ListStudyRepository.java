@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.study.Study;
 import org.example.domain.study.controller.response.ListRegularStudyDto;
 import org.example.domain.study.enums.StudyType;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,7 +41,10 @@ public class ListStudyRepository {
             JPAExpressions
               .select(studyMember.count())
               .from(studyMember)
-              .where(studyMember.study.eq(study))
+              .where(
+                studyMember.study.eq(study),
+                studyMember.status.eq(StudyMemberStatus.PASS)
+              )
             , "memberCount")
         )
       )
