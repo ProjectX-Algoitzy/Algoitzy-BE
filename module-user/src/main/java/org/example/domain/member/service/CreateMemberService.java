@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.controller.request.CreateMemberRequest;
+import org.example.domain.member.controller.request.UpdateMemberRequest;
+import org.example.domain.s3_file.service.CoreCreateS3FileService;
 import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.member.Member;
@@ -13,6 +15,7 @@ import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
 import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.MemberRepository;
 import org.example.util.RedisUtils;
+import org.example.util.SecurityUtils;
 import org.example.util.http_request.HttpRequest;
 import org.example.util.http_request.Url;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +31,8 @@ import org.springframework.util.StringUtils;
 @Transactional
 public class CreateMemberService {
 
+  private final CoreMemberService coreMemberService;
+  private final CoreCreateS3FileService coreCreateS3FileService;
   private final MemberRepository memberRepository;
   private final PasswordEncoder encoder;
   private final RedisUtils redisUtils;
@@ -95,5 +100,30 @@ public class CreateMemberService {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "인증코드가 일치하지 않습니다.");
     }
     redisUtils.delete(request.phoneNumber());
+  }
+
+  /**
+   * 내 정보 수정
+   */
+  public void updateMember(UpdateMemberRequest request) {
+    Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
+
+    // 기존 프로필 이미지 삭제
+    if (StringUtils.hasText(request.profileUrl())) {
+      coreCreateS3FileService.deleteS3File(member.getProfileUrl());
+    }
+
+    member.update(
+      request.profileUrl(),
+      request.name(),
+      request.grade(),
+      request.major(),
+      request.handle(),
+      request.phoneNumber()
+    );
+
+    if (StringUtils.hasText(request.password())) {
+      member.updatePassword(encoder.encode(request.password()));
+    }
   }
 }

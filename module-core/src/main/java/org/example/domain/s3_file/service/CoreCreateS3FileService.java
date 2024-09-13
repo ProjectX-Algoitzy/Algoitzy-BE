@@ -89,6 +89,8 @@ public class CoreCreateS3FileService {
    * S3 파일 삭제
    */
   public void deleteS3File(String fileUrl) {
+    // 기본 이미지 삭제 안 함
+    if (FileUtils.isBasicImage(fileUrl)) return;
 
     String fileName = extractFileNameFromUrl(fileUrl);
     fileName = profile + File.separator + fileName;
@@ -100,7 +102,9 @@ public class CoreCreateS3FileService {
     s3FileRepository.deleteByFileName(fileName);
   }
 
-  // 파일 URL에서 파일 이름을 추출
+  /**
+   * 파일 URL에서 파일 이름을 추출
+   */
   private String extractFileNameFromUrl(String fileUrl) {
     int fileIndex = fileUrl.lastIndexOf('/');
     return fileUrl.substring(fileIndex + 1);

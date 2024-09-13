@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.study.enums.StudyType;
 
 @Builder
 @Getter
@@ -15,23 +16,30 @@ import lombok.NoArgsConstructor;
 public class ListStudyDto {
 
   @Schema(description = "스터디 ID")
-  long studyId;
+  private long studyId;
 
   @Schema(description = "스터디 대표 이미지 URL")
-  String profileUrl;
+  private String profileUrl;
 
   @Schema(description = "스터디 이름")
-  String studyName;
+  private String studyName;
+
+  @Schema(description = "스터디 유형")
+  private String studyType;
 
   @Schema(description = "현재 스터디원 수")
-  long memberCount;
+  private long memberCount;
 
   @Schema(description = "스터디장 프로필 이미지")
-  String leaderProfileUrl;
+  private String leaderProfileUrl;
 
   @Schema(description = "스터디장 이름")
-  String leaderName;
+  private String leaderName;
 
   @Schema(description = "최초 제작일")
-  LocalDateTime createdTime;
+  private LocalDateTime createdTime;
+
+  public void updateType(String studyType) {
+    this.studyType = StudyType.valueOf(studyType).getName();
+  }
 }

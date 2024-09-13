@@ -22,6 +22,7 @@ import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -106,5 +107,16 @@ public class Member {
 
   public void updateBlockYN(Boolean blockYN) {
     this.blockYN = blockYN;
+  }
+
+  public void update(
+    String profileUrl, String name, Integer grade,
+    String major, String handle, String phoneNumber) {
+    if (StringUtils.hasText(profileUrl)) this.profileUrl = profileUrl;
+    if (StringUtils.hasText(name)) this.name = name;
+    if (grade != null) this.grade = grade;
+    if (StringUtils.hasText(major)) this.major = major;
+    if (StringUtils.hasText(handle)) this.handle = handle;
+    if (StringUtils.hasText(phoneNumber)) this.phoneNumber = phoneNumber;
   }
 }
