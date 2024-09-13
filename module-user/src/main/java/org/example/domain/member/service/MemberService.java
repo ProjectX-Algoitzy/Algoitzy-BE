@@ -5,6 +5,7 @@ import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.AccessTokenRequest;
+import org.example.domain.member.controller.request.UpdateMemberRequest;
 import org.example.domain.member.controller.response.MyPageInfoResponse;
 import org.example.domain.member.controller.response.MyPageStudyResponse;
 import org.example.email.controller.request.ValidateEmailRequest;
@@ -89,5 +90,12 @@ public class MemberService {
 
   public MyPageStudyResponse getMyPageStudy(Long memberId) {
     return detailMemberService.getMyPageStudy(memberId);
+  }
+
+  /**
+   * 내 정보 수정
+   */
+  public void updateMember(UpdateMemberRequest request) {
+    createMemberService.updateMember(request);
   }
 }

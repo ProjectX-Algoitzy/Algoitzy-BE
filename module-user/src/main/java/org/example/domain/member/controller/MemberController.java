@@ -8,6 +8,7 @@ import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.AccessTokenRequest;
+import org.example.domain.member.controller.request.UpdateMemberRequest;
 import org.example.domain.member.controller.response.LoginResponse;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.controller.response.MyPageInfoResponse;
@@ -16,6 +17,7 @@ import org.example.domain.member.service.MemberService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,5 +79,12 @@ public class MemberController {
   @Operation(summary = "마이페이지 스터디 정보")
   public ApiResponse<MyPageStudyResponse> getMyPageStudy(@PathVariable("member-id") Long memberId) {
     return ApiResponse.onSuccess(memberService.getMyPageStudy(memberId));
+  }
+
+  @PatchMapping()
+  @Operation(summary = "내 정보 수정")
+  public ApiResponse<Void> updateMember(@RequestBody @Valid UpdateMemberRequest request) {
+    memberService.updateMember(request);
+    return ApiResponse.onSuccess();
   }
 }
