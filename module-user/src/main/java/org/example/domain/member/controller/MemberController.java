@@ -60,7 +60,7 @@ public class MemberController {
   @GetMapping("/info")
   @Operation(summary = "로그인 멤버 정보")
   public ApiResponse<MemberInfoResponse> getLoginMemberInfo() {
-    return ApiResponse.onSuccess(memberService.getMemberInfo());
+    return ApiResponse.onSuccess(memberService.getLoginMemberInfo());
   }
 
   @GetMapping("/find-email")
@@ -79,6 +79,12 @@ public class MemberController {
   @Operation(summary = "마이페이지 스터디 정보")
   public ApiResponse<MyPageStudyResponse> getMyPageStudy(@PathVariable("member-id") Long memberId) {
     return ApiResponse.onSuccess(memberService.getMyPageStudy(memberId));
+  }
+
+  @GetMapping("/my-info")
+  @Operation(summary = "내 정보 조회")
+  public ApiResponse<MemberInfoResponse> getMyInfo() {
+    return ApiResponse.onSuccess(memberService.getMyInfo());
   }
 
   @PatchMapping()

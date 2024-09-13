@@ -33,8 +33,8 @@ public class DetailMemberService {
   /**
    * 로그인 멤버 정보
    */
-  public MemberInfoResponse getMemberInfo() {
-    return detailMemberRepository.getMemberInfo();
+  public MemberInfoResponse getLoginMemberInfo() {
+    return detailMemberRepository.getLoginMemberInfo();
   }
 
   /**
@@ -76,5 +76,12 @@ public class DetailMemberService {
       .passStudyList(passStudyList)
       .applyStudyList(applyStudyList)
       .build();
+  }
+
+  /**
+   * 내 정보 조회
+   */
+  public MemberInfoResponse getMyInfo() {
+    return detailMemberRepository.getMyInfo();
   }
 }

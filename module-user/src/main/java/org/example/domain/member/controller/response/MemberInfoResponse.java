@@ -11,7 +11,7 @@ import org.example.domain.member.enums.Role;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "로그인 멤버 정보 응답 객체")
+@Schema(description = "멤버 정보 응답 객체")
 public class MemberInfoResponse {
 
   @Schema(description = "멤버 ID")
@@ -22,6 +22,21 @@ public class MemberInfoResponse {
 
   @Schema(description = "이름")
   private String name;
+
+  @Schema(description = "이메일")
+  private String email;
+
+  @Schema(description = "학년")
+  private Integer grade;
+
+  @Schema(description = "학과")
+  private String major;
+
+  @Schema(description = "백준 닉네임")
+  private String handle;
+
+  @Schema(description = "핸드폰 번호")
+  private String phoneNumber;
 
   @Schema(description = "역할")
   private Role role;

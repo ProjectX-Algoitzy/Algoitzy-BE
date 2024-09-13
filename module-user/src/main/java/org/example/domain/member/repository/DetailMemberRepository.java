@@ -22,7 +22,7 @@ public class DetailMemberRepository {
   /**
    * 로그인 멤버 정보
    */
-  public MemberInfoResponse getMemberInfo() {
+  public MemberInfoResponse getLoginMemberInfo() {
     return queryFactory
       .select(Projections.fields(
           MemberInfoResponse.class,
@@ -57,6 +57,29 @@ public class DetailMemberRepository {
       )
       .from(member)
       .where(member.id.eq(memberId))
+      .fetchOne();
+  }
+
+  /**
+   * 내 정보 조회
+   */
+  public MemberInfoResponse getMyInfo() {
+    return queryFactory
+      .select(Projections.fields(
+          MemberInfoResponse.class,
+          member.id.as("memberId"),
+          member.profileUrl,
+          member.name,
+          member.email,
+          member.grade,
+          member.major,
+          member.handle,
+          member.phoneNumber,
+          member.role
+        )
+      )
+      .from(member)
+      .where(member.email.eq(SecurityUtils.getCurrentMemberEmail()))
       .fetchOne();
   }
 }

@@ -70,8 +70,8 @@ public class MemberService {
   /**
    * 로그인 멤버 정보
    */
-  public MemberInfoResponse getMemberInfo() {
-    return detailMemberService.getMemberInfo();
+  public MemberInfoResponse getLoginMemberInfo() {
+    return detailMemberService.getLoginMemberInfo();
   }
 
   /**
@@ -88,8 +88,19 @@ public class MemberService {
     return detailMemberService.getMyPageInfo(memberId);
   }
 
+  /**
+   * 마이페이지 스터디 정보
+   */
   public MyPageStudyResponse getMyPageStudy(Long memberId) {
     return detailMemberService.getMyPageStudy(memberId);
+  }
+
+
+  /**
+   * 내 정보 조회
+   */
+  public MemberInfoResponse getMyInfo() {
+    return detailMemberService.getMyInfo();
   }
 
   /**
