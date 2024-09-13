@@ -31,8 +31,8 @@ public class CoreS3FileService {
   /**
    * S3 파일 삭제
    */
-  public void deleteS3File(String fileName) {
-    coreCreateS3FileService.deleteS3File(fileName);
+  public void deleteS3File(String fileUrl) {
+    coreCreateS3FileService.deleteS3File(fileUrl);
   }
 
 }
