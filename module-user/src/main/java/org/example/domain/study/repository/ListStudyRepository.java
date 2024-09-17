@@ -76,7 +76,8 @@ public class ListStudyRepository {
         (studyType == null) ?
           studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
             .and(studyMember.status.eq(StudyMemberStatus.PASS))// 나의 스터디
-          : study.type.eq(studyType)
+          : study.type.eq(studyType),
+        study.endYN.isFalse()
       )
       .groupBy(study)
       .orderBy(study.createdTime.desc())
