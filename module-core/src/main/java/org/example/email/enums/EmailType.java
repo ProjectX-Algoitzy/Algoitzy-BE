@@ -28,7 +28,12 @@ public enum EmailType {
   // 스케쥴러
   ATTENDANCE_SCHEDULER("출석부 갱신 알림", ""),
   WORKBOOK_SCHEDULER("문제집 자동 생성 알림", ""),
-  BAEKJOON_SCHEDULER("백준 문제 저장 알림", "");
+  BAEKJOON_SCHEDULER("백준 문제 저장 알림", ""),
+
+  // 자율 스터디
+  TEMP_APPLY("자율 스터디 지원자 안내", "temp-apply.html"),
+  TEMP_PASS("자율 스터디 수라 안내", "temp-pass.html");
+
 
   private String subject;
   private String path;

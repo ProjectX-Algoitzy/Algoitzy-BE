@@ -78,6 +78,14 @@ public class StudyController {
     return ApiResponse.onCreate();
   }
 
+  @PostMapping("/{study-id}/apply")
+  @Operation(summary = "자율 스터디 지원")
+  public ApiResponse<Void> applyTempStudy(
+    @PathVariable("study-id") Long studyId) {
+    studyService.applyTempStudy(studyId);
+    return ApiResponse.onSuccess();
+  }
+
   /************* 정규 스터디 *************/
 
   @GetMapping("/regular")

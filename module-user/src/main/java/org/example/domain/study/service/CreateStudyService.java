@@ -15,7 +15,9 @@ import org.example.domain.study.repository.StudyRepository;
 import org.example.domain.study_member.StudyMember;
 import org.example.domain.study_member.enums.StudyMemberRole;
 import org.example.domain.study_member.enums.StudyMemberStatus;
+import org.example.domain.study_member.repository.DetailStudyMemberRepository;
 import org.example.domain.study_member.repository.StudyMemberRepository;
+import org.example.email.service.CoreEmailService;
 import org.example.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class CreateStudyService {
   private final CoreStudyService coreStudyService;
   private final CoreS3FileService coreS3FileService;
   private final CoreMemberService coreMemberService;
+  private final CoreEmailService coreEmailService;
+  private final DetailStudyMemberRepository detailStudyMemberRepository;
   private final StudyRepository studyRepository;
   private final StudyMemberRepository studyMemberRepository;
   private final GenerationRepository generationRepository;
@@ -78,5 +82,34 @@ public class CreateStudyService {
 
     String profileUrl = (StringUtils.hasText(request.profileUrl())) ? request.profileUrl() : basicStudyImage;
     study.update(profileUrl, request.name(), request.content());
+  }
+
+  /**
+   * 자율 스터디 지원
+   */
+  public void applyTempStudy(Long studyId) {
+    Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
+    Study study = coreStudyService.findById(studyId);
+
+    if (studyMemberRepository.findByStudyAndMember(study, member).isPresent()) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 지원한 스터디입니다.");
+    }
+
+    if (study.getType().equals(StudyType.REGULAR)) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자율 스터디가 아닙니다.");
+    }
+
+    studyMemberRepository.save(
+      StudyMember.builder()
+        .study(study)
+        .member(member)
+        .role(StudyMemberRole.MEMBER)
+        .status(StudyMemberStatus.TEMP_APPLY)
+        .build()
+    );
+
+    // 스터디장에게 메일 발송
+    StudyMember leader = detailStudyMemberRepository.getTempStudyLeader(studyId);
+    coreEmailService.sendTempApplyEmail(leader);
   }
 }
