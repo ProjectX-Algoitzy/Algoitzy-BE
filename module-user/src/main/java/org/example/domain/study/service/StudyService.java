@@ -59,6 +59,14 @@ public class StudyService {
     createStudyService.applyTempStudy(studyId);
   }
 
+
+  /**
+   * 자율 스터디원 수락
+   */
+  public void passTempStudy(Long studyMemberId) {
+    createStudyService.passTempStudy(studyMemberId);
+  }
+
   /**
    * 정규 스터디 목록 조회
    */
