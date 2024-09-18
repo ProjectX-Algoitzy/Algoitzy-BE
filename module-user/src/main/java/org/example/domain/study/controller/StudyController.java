@@ -18,6 +18,8 @@ import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
+import org.example.domain.study_member.controller.response.ListTempStudyMemberResponse;
+import org.example.domain.study_member.service.StudyMemberService;
 import org.example.domain.workbook.service.WorkbookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,6 +40,7 @@ public class StudyController {
   private final AttendanceService attendanceService;
   private final AttendanceRequestService attendanceRequestService;
   private final WorkbookService workbookService;
+  private final StudyMemberService studyMemberService;
 
   @GetMapping("/count")
   @Operation(summary = "최신 기수 스터디 개수")
@@ -99,6 +102,13 @@ public class StudyController {
     @PathVariable("study-member-id") Long studyMemberId) {
     studyService.passTempStudy(studyMemberId);
     return ApiResponse.onSuccess();
+  }
+
+  @GetMapping("/{study-id}/study-member")
+  @Operation(summary = "자율 스터디원 목록 조회")
+  public ApiResponse<ListTempStudyMemberResponse> getTempStudyMemberList(
+    @PathVariable("study-id") Long studyId) {
+    return ApiResponse.onSuccess(studyMemberService.getTempStudyMemberList(studyId));
   }
 
   /************* 정규 스터디 *************/
