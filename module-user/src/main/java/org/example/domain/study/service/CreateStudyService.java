@@ -74,7 +74,7 @@ public class CreateStudyService {
   }
 
   /**
-   * 스터디 수정
+   * 자율 스터디 수정
    */
   public void updateStudy(Long studyId, UpdateStudyRequest request) {
     Study study = coreStudyService.findById(studyId);
@@ -87,11 +87,31 @@ public class CreateStudyService {
   }
 
   /**
+   * 자율 스터디 종료
+   */
+  public void endTempStudy(Long studyId) {
+    Study study = coreStudyService.findById(studyId);
+    if (study.getType().equals(StudyType.REGULAR)) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디는 종료할 수 없습니다.");
+    }
+
+    StudyMember leader = detailStudyMemberRepository.getTempStudyLeader(studyId);
+    if (!leader.getMember().getEmail().equals(SecurityUtils.getCurrentMemberEmail())) {
+      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디장만 접근 가능합니다.");
+    }
+
+    study.end();
+  }
+
+  /**
    * 자율 스터디 지원
    */
   public void applyTempStudy(Long studyId) {
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     Study study = coreStudyService.findById(studyId);
+    if (study.getEndYN()) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "종료된 스터디입니다.");
+    }
 
     if (studyMemberRepository.findByStudyAndMember(study, member).isPresent()) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 지원한 스터디입니다.");
@@ -120,6 +140,9 @@ public class CreateStudyService {
    */
   public void passTempStudy(Long studyMemberId) {
     StudyMember studyMember = coreStudyMemberService.findById(studyMemberId);
+    if (studyMember.getStudy().getEndYN()) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "종료된 스터디입니다.");
+    }
     if (studyMember.getStudy().getType().equals(StudyType.REGULAR)) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자율 스터디가 아닙니다.");
     }

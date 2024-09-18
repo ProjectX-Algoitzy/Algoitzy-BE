@@ -70,12 +70,19 @@ public class StudyController {
   }
 
   @PatchMapping("/{study-id}")
-  @Operation(summary = "스터디 수정")
+  @Operation(summary = "자율 스터디 수정")
   public ApiResponse<Void> updateStudy(
     @PathVariable("study-id") Long studyId,
     @RequestBody @Valid UpdateStudyRequest request) {
     studyService.updateStudy(studyId, request);
     return ApiResponse.onCreate();
+  }
+
+  @PatchMapping("/{study-id}/end")
+  @Operation(summary = "자율 스터디 종료")
+  public ApiResponse<Void> endTempStudy(@PathVariable("study-id") Long studyId) {
+    studyService.endTempStudy(studyId);
+    return ApiResponse.onSuccess();
   }
 
   @PostMapping("/{study-id}/apply")
