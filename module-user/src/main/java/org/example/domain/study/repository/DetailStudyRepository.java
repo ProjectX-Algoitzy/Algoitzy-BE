@@ -67,7 +67,16 @@ public class DetailStudyRepository {
                 studyMember.study.eq(study),
                 studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               )
-            , "memberRole")
+            , "memberRole"),
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.status)
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study),
+                studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+              )
+            , "status")
         )
       )
       .from(study)
