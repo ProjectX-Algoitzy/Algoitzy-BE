@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.enums.Role;
+import org.example.util.ValueUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -101,8 +102,8 @@ public class JwtTokenProvider {
       log.error("사용자 인증에 실패했습니다. : {}", e.getMessage());
       throw new JwtException("사용자 인증에 실패했습니다.");
     } catch (ExpiredJwtException e) {
-      log.error("만료된 토큰입니다 : {}", e.getMessage());
-      throw new JwtException("만료된 토큰입니다.");
+      log.error("{} : {}",ValueUtils.TOKEN_EXPIRED_MESSAGE, e.getMessage());
+      throw new JwtException(ValueUtils.TOKEN_EXPIRED_MESSAGE);
     } catch (SecurityException e) {
       log.error("허가되지 않는 사용자입니다. : {}", e.getMessage());
       throw new JwtException("허가되지 않는 사용자입니다.");

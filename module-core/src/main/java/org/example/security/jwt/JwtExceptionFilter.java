@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.ApiResponse;
+import org.example.api_response.status.ErrorStatus;
+import org.example.util.ValueUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -55,11 +57,12 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
   }
 
   public void setErrorResponse(HttpStatus status, HttpServletResponse response, Throwable e) throws IOException {
+    String code = (e.getMessage().equals(ValueUtils.TOKEN_EXPIRED_MESSAGE)) ? ErrorStatus.TOKEN_EXPIRED.getCode() : "40000";
     String json = new ObjectMapper()
       .writeValueAsString(
         ApiResponse.builder()
           .isSuccess(false)
-          .code("40000")
+          .code(code)
           .message(e.getMessage())
           .build()
       );
