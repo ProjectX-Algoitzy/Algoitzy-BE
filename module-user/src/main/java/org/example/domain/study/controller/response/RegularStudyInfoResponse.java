@@ -15,26 +15,26 @@ import lombok.NoArgsConstructor;
 public class RegularStudyInfoResponse {
 
   @Schema(description = "스터디 대표 이미지 URL")
-  String profileUrl;
+  private String profileUrl;
 
   @Schema(description = "스터디 이름")
-  String studyName;
+  private String studyName;
 
   @Schema(description = "현재 스터디원 수")
-  long memberCount;
+  private long memberCount;
 
   @Schema(description = "지원서 ID")
-  Long applicationId;
+  private Long applicationId;
 
   @Schema(description = "답변 ID")
-  Long answerId;
+  private Long answerId;
 
   @Schema(description = "지원서 작성 여부")
-  boolean answerYN;
+  private boolean answerYN;
 
   @Schema(description = "최초 제작일")
-  LocalDateTime createdTime;
+  private LocalDateTime createdTime;
 
   @Schema(description = "스터디원 역할")
-  String memberRole;
+  private String memberRole;
 }

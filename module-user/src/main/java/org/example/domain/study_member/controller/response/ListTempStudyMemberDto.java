@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.study_member.enums.StudyMemberRole;
 import org.example.domain.study_member.enums.StudyMemberStatus;
 
 @Builder
@@ -23,7 +24,10 @@ public class ListTempStudyMemberDto {
   @Schema(description = "휴대폰 번호")
   private String phoneNumber;
 
-  @Schema(description = "상태")
+  @Schema(description = "스터디원 역할")
+  private StudyMemberRole memberRole;
+
+  @Schema(description = "스터디원 상태")
   private StudyMemberStatus status;
 
   public void blindPhoneNumber() {

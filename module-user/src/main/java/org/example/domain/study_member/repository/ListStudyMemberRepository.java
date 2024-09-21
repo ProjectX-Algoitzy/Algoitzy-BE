@@ -44,6 +44,7 @@ public class ListStudyMemberRepository {
           studyMember.id.as("studyMemberId"),
           studyMember.member.name,
           studyMember.member.phoneNumber,
+          studyMember.role.as("memberRole"),
           studyMember.status
         )
       )
