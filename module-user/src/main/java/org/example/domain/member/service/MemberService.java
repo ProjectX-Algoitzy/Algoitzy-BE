@@ -109,4 +109,11 @@ public class MemberService {
   public void updateMember(UpdateMemberRequest request) {
     createMemberService.updateMember(request);
   }
+
+  /**
+   * 비밀번호 일치 여부 확인
+   */
+  public Boolean checkPassword(String password) {
+    return detailMemberService.checkPassword(password);
+  }
 }

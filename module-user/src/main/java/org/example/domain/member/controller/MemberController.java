@@ -3,6 +3,7 @@ package org.example.domain.member.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.member.controller.request.FindEmailRequest;
@@ -93,4 +94,11 @@ public class MemberController {
     memberService.updateMember(request);
     return ApiResponse.onSuccess();
   }
+
+  @PostMapping("/check-password")
+  @Operation(summary = "비밀번호 일치 여부 확인")
+  public ApiResponse<Boolean> checkPassword(@RequestBody @NotBlank String password) {
+    return ApiResponse.onSuccess(memberService.checkPassword(password));
+  }
+
 }
