@@ -35,7 +35,8 @@ public class DetailStudyRepository {
               .select(studyMember.count())
               .from(studyMember)
               .where(
-                studyMember.study.eq(study)
+                studyMember.study.eq(study),
+                studyMember.status.eq(StudyMemberStatus.PASS)
               )
             , "memberCount"),
           study.name.as("studyName"),
