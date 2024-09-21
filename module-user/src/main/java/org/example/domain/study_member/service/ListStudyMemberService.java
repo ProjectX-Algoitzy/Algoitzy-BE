@@ -45,9 +45,10 @@ public class ListStudyMemberService {
     // 스터디장 아닌 경우 번호 미노출 및 수락된 스터디원만 노출
     StudyMember leader = detailStudyMemberRepository.getTempStudyLeader(studyId);
     if (!leader.getMember().getEmail().equals(SecurityUtils.getCurrentMemberEmail())) {
-      studyMemberList
+      studyMemberList = studyMemberList
         .stream().filter(studyMember -> studyMember.getStatus().equals(StudyMemberStatus.PASS))
-        .forEach(ListTempStudyMemberDto::blindPhoneNumber);
+        .peek(ListTempStudyMemberDto::blindPhoneNumber)
+        .toList();
     }
 
     return ListTempStudyMemberResponse.builder()
