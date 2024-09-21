@@ -17,6 +17,7 @@ import org.example.domain.member.repository.MemberRepository;
 import org.example.domain.study.controller.response.ListStudyDto;
 import org.example.domain.study.repository.ListStudyRepository;
 import org.example.util.SecurityUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ public class DetailMemberService {
   private final DetailMemberRepository detailMemberRepository;
   private final ListStudyRepository listStudyRepository;
   private final MemberRepository memberRepository;
+
+  private final PasswordEncoder encoder;
 
   /**
    * 로그인 멤버 정보
@@ -83,5 +86,13 @@ public class DetailMemberService {
    */
   public MemberInfoResponse getMyInfo() {
     return detailMemberRepository.getMyInfo();
+  }
+
+  /**
+   * 비밀번호 일치 여부 확인
+   */
+  public Boolean checkPassword(String password) {
+    Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
+    return encoder.matches(password, member.getPassword());
   }
 }
