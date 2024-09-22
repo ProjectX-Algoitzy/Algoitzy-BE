@@ -1,6 +1,7 @@
 package org.example.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
@@ -111,9 +112,9 @@ public class MemberService {
   }
 
   /**
-   * 비밀번호 일치 여부 확인
+   * 비밀번호 확인
    */
-  public Boolean checkPassword(String password) {
-    return detailMemberService.checkPassword(password);
+  public Boolean checkPassword(CheckPasswordRequest request) {
+    return detailMemberService.checkPassword(request);
   }
 }

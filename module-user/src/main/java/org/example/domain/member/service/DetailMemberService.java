@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.Member;
+import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.controller.response.MyPageInfoResponse;
@@ -89,10 +90,10 @@ public class DetailMemberService {
   }
 
   /**
-   * 비밀번호 일치 여부 확인
+   * 비밀번호 확인
    */
-  public Boolean checkPassword(String password) {
+  public Boolean checkPassword(CheckPasswordRequest request) {
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
-    return encoder.matches(password, member.getPassword());
+    return encoder.matches(request.password(), member.getPassword());
   }
 }
