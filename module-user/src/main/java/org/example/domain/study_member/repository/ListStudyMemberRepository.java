@@ -29,6 +29,9 @@ public class ListStudyMemberRepository {
         studyMember.study.eq(study),
         studyMember.status.eq(StudyMemberStatus.PASS)
       )
+      .orderBy(
+        studyMember.member.name.asc()
+      )
       .fetch();
   }
 }
