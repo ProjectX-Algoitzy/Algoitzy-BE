@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.board_file_list.BoardFileList;
+import org.example.domain.board_file.BoardFile;
 import org.example.domain.member.Member;
 import org.example.domain.reply.Reply;
 import org.hibernate.annotations.Comment;
@@ -41,19 +41,22 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Comment("게시물 카테고리")
     private String category;
 
+    @Comment("게시물 제목")
     private String title;
 
+    @Comment("게시물 내용")
     @Lob
     private String content;
 
     @Comment("게시물 조회수")
-    private Integer viewCounter;
+    private Integer viewCount = 0;
 
     @Column(nullable = false, columnDefinition = "char(1) default 'N'")
     @Comment("임시저장 여부")
-    private Boolean save_yn;
+    private Boolean saveYn;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -63,7 +66,7 @@ public class Board {
     private List<Reply> replyList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardFileList> boardFileList = new ArrayList<>();
+    private List<BoardFile> boardFileList = new ArrayList<>();
 
     @CreatedDate
     @Column(updatable = false)
@@ -80,14 +83,12 @@ public class Board {
     private String updatedBy;
 
     @Builder
-    // Todo [기획 질문] title, content는 Not null로 할 건지? 아니면 서비스 단에서 (제목없음) 등으로 할 건지?
-    public Board(Long id, String category, String title, String content, Integer viewCounter,
-        Boolean save_yn) {
+    public Board(Long id, String category, String title, String content,
+        Boolean saveYn) {
         this.id = id;
         this.category = category;
         this.title = title;
         this.content = content;
-        this.viewCounter = viewCounter;
-        this.save_yn = save_yn;
+        this.saveYn = saveYn;
     }
 }
