@@ -95,6 +95,10 @@ public class CreateStudyService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디는 수정할 수 없습니다.");
     }
 
+    if (study.getEndYN()) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "종료된 스터디는 수정할 수 없습니다.");
+    }
+
     String profileUrl = (StringUtils.hasText(request.profileUrl())) ? request.profileUrl() : basicStudyImage;
     study.update(profileUrl, request.name(), request.content());
   }
