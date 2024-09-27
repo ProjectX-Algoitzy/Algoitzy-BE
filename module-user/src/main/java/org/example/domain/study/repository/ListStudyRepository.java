@@ -73,16 +73,27 @@ public class ListStudyRepository {
       .leftJoin(studyMember).on(studyMember.study.eq(study))
       .innerJoin(generation).on(study.generation.eq(generation))
       .where(
-        generation.value.eq(maxGeneration),
-        (studyType == null) ?
-          studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
-            .and(studyMember.status.eq(StudyMemberStatus.PASS))// 나의 스터디
-          : study.type.eq(studyType),
+        isMaxGeneration(studyType, maxGeneration),
+        filterByStudyType(studyType),
         study.endYN.isFalse()
       )
       .groupBy(study)
       .orderBy(study.createdTime.desc())
       .fetch();
+  }
+
+  private static BooleanExpression filterByStudyType(StudyType studyType) {
+    return (studyType == null) ?
+      studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+        .and(studyMember.status.eq(StudyMemberStatus.PASS)) // 나의 스터디
+      : study.type.eq(studyType);
+  }
+
+  private static BooleanExpression isMaxGeneration(StudyType studyType, Integer maxGeneration) {
+    if (studyType != null && studyType.equals(StudyType.TEMP)) {
+      return null;
+    }
+    return generation.value.eq(maxGeneration);
   }
 
   /**
