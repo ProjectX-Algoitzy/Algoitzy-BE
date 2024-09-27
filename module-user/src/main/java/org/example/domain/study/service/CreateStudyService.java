@@ -5,6 +5,7 @@ import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.generation.repository.GenerationRepository;
 import org.example.domain.member.Member;
+import org.example.domain.member.enums.Role;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.s3_file.service.CoreS3FileService;
 import org.example.domain.study.Study;
@@ -47,6 +48,11 @@ public class CreateStudyService {
    * 자율 스터디 생성
    */
   public void createTempStudy(CreateTempStudyRequest request) {
+    if (!detailStudyMemberRepository.isRegularStudyMember()
+      && coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()).getRole().equals(Role.ROLE_USER)) {
+      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
+    }
+
     if (StringUtils.hasText(request.profileUrl())) {
       coreS3FileService.findByFileUrl(request.profileUrl());
     }
@@ -113,12 +119,17 @@ public class CreateStudyService {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "종료된 스터디입니다.");
     }
 
+    if (study.getType().equals(StudyType.REGULAR)) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자율 스터디가 아닙니다.");
+    }
+
     if (studyMemberRepository.findByStudyAndMember(study, member).isPresent()) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 지원한 스터디입니다.");
     }
 
-    if (study.getType().equals(StudyType.REGULAR)) {
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자율 스터디가 아닙니다.");
+    if (!detailStudyMemberRepository.isRegularStudyMember()
+      && coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()).getRole().equals(Role.ROLE_USER)) {
+      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
     }
 
     studyMemberRepository.save(
