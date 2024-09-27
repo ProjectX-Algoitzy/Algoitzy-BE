@@ -137,6 +137,20 @@ public class CoreEmailService {
     member.updatePassword(encoder.encode(password));
   }
 
+  public void sendTempApplyEmail(StudyMember studyMember) {
+    String html = htmlToString(s3Url + EmailType.TEMP_APPLY.getPath())
+      .replace("${name}", studyMember.getMember().getName())
+      .replace("${studyName}", studyMember.getStudy().getName());
+    send(studyMember.getMember().getEmail(), EmailType.TEMP_APPLY.toString(), html);
+  }
+
+  public void sendTempPassEmail(StudyMember studyMember) {
+    String html = htmlToString(s3Url + EmailType.TEMP_PASS.getPath())
+      .replace("${name}", studyMember.getMember().getName())
+      .replace("${studyName}", studyMember.getStudy().getName());
+    send(studyMember.getMember().getEmail(), EmailType.TEMP_PASS.toString(), html);
+  }
+
   public void send(String email, String type, String text) {
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();

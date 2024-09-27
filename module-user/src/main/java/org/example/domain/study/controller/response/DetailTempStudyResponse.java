@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 
 @Builder
 @Getter
@@ -37,5 +38,8 @@ public class DetailTempStudyResponse {
 
   @Schema(description = "스터디원 역할")
   String memberRole;
+
+  @Schema(description = "상태")
+  private StudyMemberStatus status;
 
 }

@@ -42,7 +42,8 @@ public class ListStudyRepository {
               .select(studyMember.count())
               .from(studyMember)
               .where(
-                studyMember.study.eq(study)
+                studyMember.study.eq(study),
+                studyMember.status.eq(StudyMemberStatus.PASS)
               )
             , "memberCount"),
           study.name.as("studyName"),
@@ -76,7 +77,8 @@ public class ListStudyRepository {
         (studyType == null) ?
           studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
             .and(studyMember.status.eq(StudyMemberStatus.PASS))// 나의 스터디
-          : study.type.eq(studyType)
+          : study.type.eq(studyType),
+        study.endYN.isFalse()
       )
       .groupBy(study)
       .orderBy(study.createdTime.desc())

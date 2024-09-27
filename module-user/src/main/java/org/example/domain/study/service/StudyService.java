@@ -45,10 +45,32 @@ public class StudyService {
   }
 
   /**
-   * 스터디 수정
+   * 자율 스터디 수정
    */
   public void updateStudy(Long studyId, UpdateStudyRequest request) {
     createStudyService.updateStudy(studyId, request);
+  }
+
+  /**
+   * 자율 스터디 종료
+   */
+  public void endTempStudy(Long studyId) {
+    createStudyService.endTempStudy(studyId);
+  }
+
+  /**
+   * 자율 스터디 지원
+   */
+  public void applyTempStudy(Long studyId) {
+    createStudyService.applyTempStudy(studyId);
+  }
+
+
+  /**
+   * 자율 스터디원 수락
+   */
+  public void passTempStudy(Long studyMemberId) {
+    createStudyService.passTempStudy(studyMemberId);
   }
 
   /**
