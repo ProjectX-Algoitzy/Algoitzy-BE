@@ -53,6 +53,13 @@ public class CreateStudyService {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
     }
 
+    if (!StringUtils.hasText(request.name())) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "스터디 이름은 필수입니다.");
+    }
+    if (!StringUtils.hasText(request.content())) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "스터디 내용은 필수입니다.");
+    }
+
     if (StringUtils.hasText(request.profileUrl())) {
       coreS3FileService.findByFileUrl(request.profileUrl());
     }
