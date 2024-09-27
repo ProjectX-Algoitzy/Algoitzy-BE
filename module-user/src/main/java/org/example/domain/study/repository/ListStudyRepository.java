@@ -149,6 +149,9 @@ public class ListStudyRepository {
 
   private BooleanExpression getPassStudy(Long memberId, boolean passYN) {
     if (passYN) return studyMember.member.id.eq(memberId).and(studyMember.status.eq(StudyMemberStatus.PASS));
-    else return studyMember.member.id.eq(memberId).and(studyMember.status.ne(StudyMemberStatus.PASS));
+    else return studyMember.member.id.eq(memberId)
+      .and(studyMember.status.ne(StudyMemberStatus.PASS))
+      .and(studyMember.status.ne(StudyMemberStatus.DOCUMENT_FAIL))
+      .and(studyMember.status.ne(StudyMemberStatus.FAIL));
   }
 }
