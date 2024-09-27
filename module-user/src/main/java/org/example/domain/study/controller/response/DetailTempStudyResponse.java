@@ -42,4 +42,7 @@ public class DetailTempStudyResponse {
   @Schema(description = "상태")
   private StudyMemberStatus status;
 
+  @Schema(description = "종료 여부")
+  private boolean endYN;
+
 }

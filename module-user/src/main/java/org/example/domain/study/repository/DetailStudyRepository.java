@@ -77,7 +77,8 @@ public class DetailStudyRepository {
                 studyMember.study.eq(study),
                 studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               )
-            , "status")
+            , "status"),
+          study.endYN
         )
       )
       .from(study)
