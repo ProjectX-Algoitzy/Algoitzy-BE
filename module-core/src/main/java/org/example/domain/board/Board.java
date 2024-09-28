@@ -4,6 +4,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,6 +44,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(value = EnumType.STRING)
     @Comment("게시물 카테고리")
     private String category;
 
@@ -53,7 +56,8 @@ public class Board {
     private String content;
 
     @Comment("게시물 조회수")
-    private Integer viewCount = 0;
+    @Column(columnDefinition = "integer default 0")
+    private Integer viewCount;
 
     @Column(nullable = false, columnDefinition = "char(1) default 'N'")
     @Comment("임시저장 여부")
