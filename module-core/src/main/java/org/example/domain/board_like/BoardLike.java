@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.board.Board;
@@ -53,4 +54,10 @@ public class BoardLike {
     @LastModifiedBy
     private String updatedBy;
 
+    @Builder
+    public BoardLike(Long id, Board board, Member member) {
+        this.id = id;
+        this.board = board;
+        this.member = member;
+    }
 }

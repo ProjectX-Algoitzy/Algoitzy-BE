@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.board_file.BoardFile;
+import org.example.domain.board_like.BoardLike;
 import org.example.domain.member.Member;
 import org.example.domain.reply.Reply;
 import org.hibernate.annotations.Comment;
@@ -67,6 +68,9 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardFile> boardFileList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardLike> boardLikes = new ArrayList<>();
 
     @CreatedDate
     @Column(updatable = false)
