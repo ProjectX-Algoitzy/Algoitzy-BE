@@ -74,7 +74,7 @@ public class Board {
     private List<BoardFile> boardFileList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardLike> boardLikes = new ArrayList<>();
+    private List<BoardLike> boardLikeList = new ArrayList<>();
 
     @CreatedDate
     @Column(updatable = false)
@@ -91,12 +91,18 @@ public class Board {
     private String updatedBy;
 
     @Builder
-    public Board(Long id, String category, String title, String content,
-        Boolean saveYn) {
+    public Board(Long id, String category, String title, String content, Integer viewCount,
+        Boolean saveYn, Member member, List<Reply> replyList, List<BoardFile> boardFileList,
+        List<BoardLike> boardLikeList) {
         this.id = id;
         this.category = category;
         this.title = title;
         this.content = content;
+        this.viewCount = viewCount;
         this.saveYn = saveYn;
+        this.member = member;
+        this.replyList = replyList;
+        this.boardFileList = boardFileList;
+        this.boardLikeList = boardLikeList;
     }
 }
