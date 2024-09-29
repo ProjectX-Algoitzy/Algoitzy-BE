@@ -94,8 +94,10 @@ public class CreateAttendanceRequestService {
   }
 
   private void validate(CreateAttendanceRequestRequest request) {
-    if (!ObjectUtils.isEmpty(request.problemUrlList()) && request.problemUrlList().stream()
-      .anyMatch(problemUrl -> !problemUrl.contains("https://"))
+    if (!ObjectUtils.isEmpty(request.problemUrlList()) &&
+      request.problemUrlList().stream()
+        .filter(StringUtils::hasText)
+        .anyMatch(problemUrl -> !problemUrl.contains("https://"))
     ) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "https://를 포함한 전체 문제 URL 경로를 입력해주세요.");
     }
