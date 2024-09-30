@@ -153,7 +153,10 @@ public class ListStudyRepository {
       )
       .from(study)
       .innerJoin(studyMember).on(studyMember.study.eq(study))
-      .where(getPassStudy(memberId, passYN))
+      .where(
+        getPassStudy(memberId, passYN),
+        (passYN) ? null : study.endYN.isFalse()
+      )
       .groupBy(study)
       .orderBy(study.id.desc())
       .fetch();
