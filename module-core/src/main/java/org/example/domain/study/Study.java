@@ -1,6 +1,7 @@
 package org.example.domain.study;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.generation.Generation;
 import org.example.domain.study.enums.StudyType;
 import org.hibernate.annotations.Comment;
@@ -57,6 +59,11 @@ public class Study {
   @Comment("스터디 유형")
   private StudyType type;
 
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  @Comment("스터디 종료 여부")
+  private Boolean endYN;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -92,5 +99,9 @@ public class Study {
 
   public void markOldGeneration(Generation oldGeneration) {
     this.name = oldGeneration.getValue() + "기 " + this.name;
+  }
+
+  public void end() {
+    this.endYN = true;
   }
 }

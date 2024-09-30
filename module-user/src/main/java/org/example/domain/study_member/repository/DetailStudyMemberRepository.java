@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.member.Member;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.StudyMember;
+import org.example.domain.study_member.enums.StudyMemberRole;
 import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
@@ -52,5 +53,16 @@ public class DetailStudyMemberRepository {
       )
       .fetch()
       .isEmpty();
+  }
+
+  public StudyMember getTempStudyLeader(Long studyId) {
+    return queryFactory
+      .selectFrom(studyMember)
+      .where(
+        study.type.eq(StudyType.TEMP),
+        studyMember.role.eq(StudyMemberRole.LEADER),
+        study.id.eq(studyId)
+      )
+      .fetchOne();
   }
 }

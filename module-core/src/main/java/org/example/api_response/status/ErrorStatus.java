@@ -20,11 +20,11 @@ public enum ErrorStatus implements BaseErrorCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON4000"),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "COMMON4001"),
     NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON4002"),
-    KEY_NOT_EXIST(HttpStatus.BAD_REQUEST, "COMMON4003"),
+    KEY_NOT_EXIST(HttpStatus.NOT_FOUND, "COMMON4003"),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5000"),
     DATA_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5001"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized401"),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "40000");
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "TOKEN_EXPIRED");
     private final HttpStatus httpStatus;
     private final String code;
     private String message;

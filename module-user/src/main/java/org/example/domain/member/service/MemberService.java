@@ -1,10 +1,14 @@
 package org.example.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
 import org.example.domain.member.controller.request.AccessTokenRequest;
+import org.example.domain.member.controller.request.UpdateMemberRequest;
+import org.example.domain.member.controller.response.MyPageInfoResponse;
+import org.example.domain.member.controller.response.MyPageStudyResponse;
 import org.example.email.controller.request.ValidateEmailRequest;
 import org.example.domain.member.controller.request.ValidateHandleRequest;
 import org.example.domain.sms.controller.request.ValidatePhoneNumberRequest;
@@ -67,8 +71,8 @@ public class MemberService {
   /**
    * 로그인 멤버 정보
    */
-  public MemberInfoResponse getMemberInfo() {
-    return detailMemberService.getMemberInfo();
+  public MemberInfoResponse getLoginMemberInfo() {
+    return detailMemberService.getLoginMemberInfo();
   }
 
   /**
@@ -76,5 +80,41 @@ public class MemberService {
    */
   public String findEmail(FindEmailRequest request) {
     return detailMemberService.findEmail(request);
+  }
+
+  /**
+   * 마이페이지 멤버 정보
+   */
+  public MyPageInfoResponse getMyPageInfo(Long memberId) {
+    return detailMemberService.getMyPageInfo(memberId);
+  }
+
+  /**
+   * 마이페이지 스터디 정보
+   */
+  public MyPageStudyResponse getMyPageStudy(Long memberId) {
+    return detailMemberService.getMyPageStudy(memberId);
+  }
+
+
+  /**
+   * 내 정보 조회
+   */
+  public MemberInfoResponse getMyInfo() {
+    return detailMemberService.getMyInfo();
+  }
+
+  /**
+   * 내 정보 수정
+   */
+  public void updateMember(UpdateMemberRequest request) {
+    createMemberService.updateMember(request);
+  }
+
+  /**
+   * 비밀번호 확인
+   */
+  public Boolean checkPassword(CheckPasswordRequest request) {
+    return detailMemberService.checkPassword(request);
   }
 }

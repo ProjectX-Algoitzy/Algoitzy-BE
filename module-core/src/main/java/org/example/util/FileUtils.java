@@ -6,6 +6,9 @@ import org.springframework.util.StringUtils;
 
 public class FileUtils {
 
+  private static final String BASIC_IMAGE = "/basic-image/";
+  private static final String EMAIL = "/email/";
+
   /**
    * 확장자 추출
    */
@@ -15,4 +18,14 @@ public class FileUtils {
     }
     return originalName.substring(originalName.lastIndexOf("."));
   }
+
+  /**
+   * 기본 이미지 여부
+   */
+  public static boolean isBasicImage(String fileUrl) {
+    System.out.println("fileUrl = " + fileUrl);
+    return fileUrl.contains(BASIC_IMAGE) || fileUrl.contains(EMAIL);
+  }
+
+
 }

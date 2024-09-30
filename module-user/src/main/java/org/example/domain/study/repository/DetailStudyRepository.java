@@ -35,7 +35,8 @@ public class DetailStudyRepository {
               .select(studyMember.count())
               .from(studyMember)
               .where(
-                studyMember.study.eq(study)
+                studyMember.study.eq(study),
+                studyMember.status.eq(StudyMemberStatus.PASS)
               )
             , "memberCount"),
           study.name.as("studyName"),
@@ -67,7 +68,17 @@ public class DetailStudyRepository {
                 studyMember.study.eq(study),
                 studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               )
-            , "memberRole")
+            , "memberRole"),
+          Expressions.as(
+            JPAExpressions
+              .select(studyMember.status)
+              .from(studyMember)
+              .where(
+                studyMember.study.eq(study),
+                studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+              )
+            , "status"),
+          study.endYN
         )
       )
       .from(study)
