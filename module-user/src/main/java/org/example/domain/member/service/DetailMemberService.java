@@ -62,18 +62,14 @@ public class DetailMemberService {
 
   public MyPageStudyResponse getMyPageStudy(Long memberId) {
     List<ListStudyDto> passStudyList = listStudyRepository.getMyPageStudy(memberId, true);
-    for (ListStudyDto dto : passStudyList) {
-      dto.updateType(dto.getStudyType());
-    }
+    passStudyList.forEach(dto -> dto.updateType(dto.getStudyType()));
 
     List<ListStudyDto> applyStudyList = new ArrayList<>();
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     // 타인의 마이페이지 열람 시 지원한 스터디 미노출
     if (member.getId().equals(memberId)) {
       applyStudyList = new ArrayList<>(listStudyRepository.getMyPageStudy(memberId, false));
-      for (ListStudyDto dto : applyStudyList) {
-        dto.updateType(dto.getStudyType());
-      }
+      applyStudyList.forEach(dto -> dto.updateType(dto.getStudyType()));
     }
 
     return MyPageStudyResponse.builder()

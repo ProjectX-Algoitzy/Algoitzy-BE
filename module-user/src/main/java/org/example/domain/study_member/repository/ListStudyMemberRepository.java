@@ -59,6 +59,9 @@ public class ListStudyMemberRepository {
       )
       .orderBy(
         new CaseBuilder()
+          .when(studyMember.status.eq(StudyMemberStatus.PASS)).then(0)
+          .otherwise(1).asc(),
+        new CaseBuilder()
           .when(studyMember.role.eq(StudyMemberRole.LEADER)).then(0)
           .otherwise(1).asc(),
         studyMember.member.name.asc()

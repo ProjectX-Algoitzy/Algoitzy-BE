@@ -73,16 +73,27 @@ public class ListStudyRepository {
       .leftJoin(studyMember).on(studyMember.study.eq(study))
       .innerJoin(generation).on(study.generation.eq(generation))
       .where(
-        generation.value.eq(maxGeneration),
-        (studyType == null) ?
-          studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
-            .and(studyMember.status.eq(StudyMemberStatus.PASS))// 나의 스터디
-          : study.type.eq(studyType),
+        isMaxGeneration(studyType, maxGeneration),
+        filterByStudyType(studyType),
         study.endYN.isFalse()
       )
       .groupBy(study)
       .orderBy(study.createdTime.desc())
       .fetch();
+  }
+
+  private static BooleanExpression filterByStudyType(StudyType studyType) {
+    return (studyType == null) ?
+      studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+        .and(studyMember.status.eq(StudyMemberStatus.PASS)) // 나의 스터디
+      : study.type.eq(studyType);
+  }
+
+  private static BooleanExpression isMaxGeneration(StudyType studyType, Integer maxGeneration) {
+    if (studyType != null && studyType.equals(StudyType.TEMP)) {
+      return null;
+    }
+    return generation.value.eq(maxGeneration);
   }
 
   /**
@@ -113,7 +124,8 @@ public class ListStudyRepository {
               .select(studyMember.count())
               .from(studyMember)
               .where(
-                studyMember.study.eq(study)
+                studyMember.study.eq(study),
+                studyMember.status.eq(StudyMemberStatus.PASS)
               )
             , "memberCount"),
           study.name.as("studyName"),
@@ -141,7 +153,10 @@ public class ListStudyRepository {
       )
       .from(study)
       .innerJoin(studyMember).on(studyMember.study.eq(study))
-      .where(getPassStudy(memberId, passYN))
+      .where(
+        getPassStudy(memberId, passYN),
+        (passYN) ? null : study.endYN.isFalse()
+      )
       .groupBy(study)
       .orderBy(study.id.desc())
       .fetch();
@@ -149,6 +164,9 @@ public class ListStudyRepository {
 
   private BooleanExpression getPassStudy(Long memberId, boolean passYN) {
     if (passYN) return studyMember.member.id.eq(memberId).and(studyMember.status.eq(StudyMemberStatus.PASS));
-    else return studyMember.member.id.eq(memberId).and(studyMember.status.ne(StudyMemberStatus.PASS));
+    else return studyMember.member.id.eq(memberId)
+      .and(studyMember.status.ne(StudyMemberStatus.PASS))
+      .and(studyMember.status.ne(StudyMemberStatus.DOCUMENT_FAIL))
+      .and(studyMember.status.ne(StudyMemberStatus.FAIL));
   }
 }
