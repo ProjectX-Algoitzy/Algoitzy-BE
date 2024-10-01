@@ -68,32 +68,4 @@ public class ListStudyMemberRepository {
       )
       .fetch();
   }
-
-  /**
-   * 자율 스터디원 목록 조회
-   */
-  public List<ListTempStudyMemberDto> getTempStudyMemberList(Long studyId) {
-    return queryFactory
-      .select(
-        Projections.fields(
-          ListTempStudyMemberDto.class,
-          studyMember.id.as("studyMemberId"),
-          studyMember.member.name,
-          studyMember.member.phoneNumber,
-          studyMember.role.as("memberRole"),
-          studyMember.status
-        )
-      )
-      .from(studyMember)
-      .where(
-        studyMember.study.id.eq(studyId)
-      )
-      .orderBy(
-        new CaseBuilder()
-          .when(studyMember.role.eq(StudyMemberRole.LEADER)).then(0)
-          .otherwise(1).asc(),
-        studyMember.member.name.asc()
-      )
-      .fetch();
-  }
 }
