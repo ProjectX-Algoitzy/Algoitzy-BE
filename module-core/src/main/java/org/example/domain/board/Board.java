@@ -92,8 +92,7 @@ public class Board {
 
     @Builder
     public Board(Long id, String category, String title, String content, Integer viewCount,
-        Boolean saveYn, Member member, List<Reply> replyList, List<BoardFile> boardFileList,
-        List<BoardLike> boardLikeList) {
+        Boolean saveYn, Member member) {
         this.id = id;
         this.category = category;
         this.title = title;
@@ -101,8 +100,5 @@ public class Board {
         this.viewCount = viewCount;
         this.saveYn = saveYn;
         this.member = member;
-        this.replyList = replyList;
-        this.boardFileList = boardFileList;
-        this.boardLikeList = boardLikeList;
     }
 }
