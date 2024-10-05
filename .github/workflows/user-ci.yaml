@@ -52,4 +52,4 @@ jobs:
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}-${{ github.run_id }}
           use_existing_version_if_available: true # 기존 버전 사용 설정
           deployment_package: user-deploy/user-deploy.zip
-          wait_for_environment_recovery: 300
+          wait_for_environment_recovery: 500
