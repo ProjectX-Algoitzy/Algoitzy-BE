@@ -111,10 +111,10 @@ public class CreateAttendanceRequestService {
 
   private void validateUrl(CreateAttendanceRequestRequest request, StudyMember studyMember) {
     // 블로그 URL 유효성 검사
-    if (attendanceRequestRepository.findByBlogUrl(request.blogUrl()).isPresent()) {
+    if (StringUtils.hasText(request.blogUrl()) && attendanceRequestRepository.findByBlogUrl(request.blogUrl()).isPresent()) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "해당 블로그 URL의 인증 이력이 존재합니다.");
     }
-    if (!HttpRequest.getRequest(request.blogUrl(), String.class).getStatusCode().is2xxSuccessful()) {
+    if (StringUtils.hasText(request.blogUrl()) && !HttpRequest.getRequest(request.blogUrl(), String.class).getStatusCode().is2xxSuccessful()) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "유효하지 않은 블로그 URL입니다.");
     }
 
