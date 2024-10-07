@@ -55,8 +55,7 @@ public class BoardLike {
     private String updatedBy;
 
     @Builder
-    public BoardLike(Long id, Board board, Member member) {
-        this.id = id;
+    public BoardLike( Board board, Member member) {
         this.board = board;
         this.member = member;
     }

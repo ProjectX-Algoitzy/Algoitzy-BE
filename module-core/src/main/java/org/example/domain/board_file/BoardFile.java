@@ -54,8 +54,7 @@ public class BoardFile {
     private String updatedBy;
 
     @Builder
-    public BoardFile(Long id, String fileUrl, Board board) {
-        this.id = id;
+    public BoardFile(String fileUrl, Board board) {
         this.fileUrl = fileUrl;
         this.board = board;
     }

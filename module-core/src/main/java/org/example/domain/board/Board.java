@@ -91,9 +91,8 @@ public class Board {
     private String updatedBy;
 
     @Builder
-    public Board(Long id, String category, String title, String content, Integer viewCount,
+    public Board(String category, String title, String content, Integer viewCount,
         Boolean saveYn, Member member) {
-        this.id = id;
         this.category = category;
         this.title = title;
         this.content = content;

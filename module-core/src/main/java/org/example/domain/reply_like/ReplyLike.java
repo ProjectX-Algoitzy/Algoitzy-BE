@@ -56,8 +56,7 @@ public class ReplyLike {
     private String updatedBy;
 
     @Builder
-    public ReplyLike(Long id, Member member, Reply reply) {
-        this.id = id;
+    public ReplyLike(Member member, Reply reply) {
         this.member = member;
         this.reply = reply;
     }

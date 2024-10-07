@@ -84,9 +84,8 @@ public class Reply {
     private String updatedBy;
 
     @Builder
-    public Reply(Long id, String content, Integer depth, Integer orderNumber,
+    public Reply(String content, Integer depth, Integer orderNumber,
         Long parentReplyId, Reply parent,  Member member, Board board) {
-        this.id = id;
         this.content = content;
         this.depth = depth;
         this.orderNumber = orderNumber;
