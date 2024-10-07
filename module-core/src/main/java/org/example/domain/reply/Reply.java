@@ -85,12 +85,12 @@ public class Reply {
 
     @Builder
     public Reply(Long id, String content, Integer depth, Integer orderNumber,
-        Integer parent_reply_id, Reply parent,  Member member, Board board) {
+        Long parentReplyId, Reply parent,  Member member, Board board) {
         this.id = id;
         this.content = content;
         this.depth = depth;
         this.orderNumber = orderNumber;
-        this.parent_reply_id = parent_reply_id;
+        this.parentReplyId = parentReplyId;
         this.parent = parent;
         this.member = member;
         this.board = board;
