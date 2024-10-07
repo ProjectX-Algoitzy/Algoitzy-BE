@@ -49,7 +49,7 @@ public class Reply {
     private Integer orderNumber;
 
     @Comment("부모 댓글 참조 id")
-    private Integer parent_reply_id;
+    private Long parentReplyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_reply_id")
