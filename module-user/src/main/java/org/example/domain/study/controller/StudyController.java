@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.attendance.service.AttendanceService;
@@ -51,6 +52,7 @@ public class StudyController {
   /************* 자율 스터디 *************/
 
   @PostMapping
+  @LimitRegularStudyMember
   @Operation(summary = "자율 스터디 생성")
   public ApiResponse<Void> createTempStudy(
     @RequestBody @Valid CreateTempStudyRequest request) {
@@ -65,6 +67,7 @@ public class StudyController {
   }
 
   @GetMapping("/{study-id}")
+  @LimitRegularStudyMember
   @Operation(summary = "자율 스터디 상세 조회")
   public ApiResponse<DetailTempStudyResponse> getTempStudy(
     @PathVariable("study-id") Long studyId
@@ -89,6 +92,7 @@ public class StudyController {
   }
 
   @PostMapping("/{study-id}/apply")
+  @LimitRegularStudyMember
   @Operation(summary = "자율 스터디 지원")
   public ApiResponse<Void> applyTempStudy(
     @PathVariable("study-id") Long studyId) {

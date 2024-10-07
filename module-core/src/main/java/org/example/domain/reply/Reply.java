@@ -49,7 +49,7 @@ public class Reply {
     private Integer orderNumber;
 
     @Comment("부모 댓글 참조 id")
-    private Long parentReplyId;
+    private Long parentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_reply_id")
@@ -85,11 +85,11 @@ public class Reply {
 
     @Builder
     public Reply(String content, Integer depth, Integer orderNumber,
-        Long parentReplyId, Reply parent,  Member member, Board board) {
+        Long parentId, Reply parent,  Member member, Board board) {
         this.content = content;
         this.depth = depth;
         this.orderNumber = orderNumber;
-        this.parentReplyId = parentReplyId;
+        this.parentId = parentId;
         this.parent = parent;
         this.member = member;
         this.board = board;
