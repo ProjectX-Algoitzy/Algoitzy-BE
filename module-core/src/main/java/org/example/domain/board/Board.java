@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.board.enums.Category;
 import org.example.domain.board_file.BoardFile;
@@ -79,6 +80,7 @@ public class Board {
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();
 
+    @Setter
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardFile> boardFileList = new ArrayList<>();
 
