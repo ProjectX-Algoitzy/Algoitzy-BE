@@ -2,6 +2,7 @@ package org.example.domain.board;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -22,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.board.enums.Category;
 import org.example.domain.board_file.BoardFile;
 import org.example.domain.board_like.BoardLike;
@@ -58,11 +60,17 @@ public class Board {
 
     @Comment("게시물 조회수")
     @Column(columnDefinition = "integer default 0")
-    private Integer viewCount;
+    private Integer viewCount = 0;
 
+    @Convert(converter = BooleanToYNConverter.class)
     @Column(nullable = false, columnDefinition = "char(1) default 'N'")
     @Comment("임시저장 여부")
     private Boolean saveYn;
+
+    @Convert(converter = BooleanToYNConverter.class)
+    @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+    @Comment("고정 여부(공지사항 한정 필드")
+    private Boolean fixYn;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -92,13 +100,13 @@ public class Board {
     private String updatedBy;
 
     @Builder
-    public Board(Category category, String title, String content, Integer viewCount,
-        Boolean saveYn, Member member) {
+    public Board(Category category, String title, String content,
+        Boolean saveYn, Boolean fixYn, Member member) {
         this.category = category;
         this.title = title;
         this.content = content;
-        this.viewCount = viewCount;
         this.saveYn = saveYn;
+        this.fixYn = fixYn;
         this.member = member;
     }
 }
