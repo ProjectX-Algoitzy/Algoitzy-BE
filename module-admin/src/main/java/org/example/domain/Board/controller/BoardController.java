@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.Board.controller.request.CreateBoardRequest;
 import org.example.domain.Board.controller.request.SearchBoardRequest;
+import org.example.domain.Board.controller.response.DetailBoardResponse;
 import org.example.domain.Board.controller.response.ListBoardResponse;
 import org.example.domain.Board.service.BoardService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +38,13 @@ public class BoardController {
   public ApiResponse<ListBoardResponse> getBoardList(
     @ParameterObject @ModelAttribute @Valid SearchBoardRequest request) {
     return ApiResponse.onSuccess(boardService.getBoardList(request));
+  }
+
+  @GetMapping("/{board-id}")
+  @Operation(summary = "게시글 상세 조회")
+  public ApiResponse<DetailBoardResponse> getBoard(
+    @PathVariable("board-id") Long boardId) {
+    return ApiResponse.onSuccess(boardService.getBoard(boardId));
   }
 
 }
