@@ -43,4 +43,11 @@ public class BoardService {
   public void updateBoard(Long boardId, UpdateBoardRequest request) {
     createBoardService.updateBoard(boardId, request);
   }
+
+  /**
+   * 게시글 삭제
+   */
+  public void deleteBoard(Long boardId) {
+    createBoardService.deleteBoard(boardId);
+  }
 }

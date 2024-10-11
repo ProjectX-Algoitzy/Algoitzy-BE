@@ -14,6 +14,7 @@ import org.example.domain.board.repository.BoardRepository;
 import org.example.domain.board.service.CoreBoardService;
 import org.example.domain.board_file.BoardFile;
 import org.example.domain.member.service.CoreMemberService;
+import org.example.domain.s3_file.service.CoreCreateS3FileService;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -25,6 +26,7 @@ public class CreateBoardService {
 
   private final CoreBoardService coreBoardService;
   private final CoreMemberService coreMemberService;
+  private final CoreCreateS3FileService coreCreateS3FileService;
   private final BoardRepository boardRepository;
   private final BadWordFiltering badWordFiltering;
 
@@ -91,5 +93,16 @@ public class CreateBoardService {
           ).toList());
     }
 
+  }
+
+  /**
+   * 게시글 삭제
+   */
+  public void deleteBoard(Long boardId) {
+    // todo 관리자가 삭제한 게시글 어떻게 노출시킬건지?
+    Board board = coreBoardService.findById(boardId);
+    board.getBoardFileList()
+      .forEach(boardFile -> coreCreateS3FileService.deleteS3File(boardFile.getFileUrl()));
+    boardRepository.deleteById(boardId);
   }
 }

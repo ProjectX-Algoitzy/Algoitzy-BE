@@ -12,6 +12,7 @@ import org.example.domain.Board.controller.response.DetailBoardResponse;
 import org.example.domain.Board.controller.response.ListBoardResponse;
 import org.example.domain.Board.service.BoardService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -55,6 +56,13 @@ public class BoardController {
     @PathVariable("board-id") Long boardId,
     UpdateBoardRequest request) {
     boardService.updateBoard(boardId, request);
+    return ApiResponse.onSuccess();
+  }
+
+  @DeleteMapping("/{board-id}")
+  @Operation(summary = "게시글 삭제")
+  public ApiResponse<DetailBoardResponse> deleteBoard(@PathVariable("board-id") Long boardId) {
+    boardService.deleteBoard(boardId);
     return ApiResponse.onSuccess();
   }
 
