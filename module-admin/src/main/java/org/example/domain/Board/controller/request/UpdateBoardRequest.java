@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
-@Schema(description = "게시글 생성 요청 객체")
-public record CreateBoardRequest(
+@Schema(description = "게시글 수정 요청 객체")
+public record UpdateBoardRequest(
 
   @Schema(description = "게시글 제목")
   String title,

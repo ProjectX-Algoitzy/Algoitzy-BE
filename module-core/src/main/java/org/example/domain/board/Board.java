@@ -36,6 +36,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -110,5 +111,11 @@ public class Board {
         this.saveYn = saveYn;
         this.fixYn = fixYn;
         this.member = member;
+    }
+
+    public void updateNoticeBoard(String title, String content, Boolean fixYn) {
+        if (StringUtils.hasText(title)) this.title = title;
+        if (StringUtils.hasText(content)) this.content = content;
+        this.fixYn = fixYn;
     }
 }

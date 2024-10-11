@@ -3,6 +3,7 @@ package org.example.domain.Board.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.Board.controller.request.CreateBoardRequest;
 import org.example.domain.Board.controller.request.SearchBoardRequest;
+import org.example.domain.Board.controller.request.UpdateBoardRequest;
 import org.example.domain.Board.controller.response.DetailBoardResponse;
 import org.example.domain.Board.controller.response.ListBoardResponse;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,12 @@ public class BoardService {
    */
   public DetailBoardResponse getBoard(Long boardId) {
     return detailBoardService.getBoard(boardId);
+  }
+
+  /**
+   * 공지사항 게시글 수정
+   */
+  public void updateBoard(Long boardId, UpdateBoardRequest request) {
+    createBoardService.updateBoard(boardId, request);
   }
 }
