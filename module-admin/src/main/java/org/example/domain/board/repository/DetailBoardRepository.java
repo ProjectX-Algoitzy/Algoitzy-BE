@@ -1,4 +1,4 @@
-package org.example.domain.Board.repository;
+package org.example.domain.board.repository;
 
 import static org.example.domain.board.QBoard.board;
 import static org.example.domain.board_like.QBoardLike.boardLike;
@@ -8,7 +8,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.Board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package org.example.domain.Board.controller.request;
+package org.example.domain.board.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;

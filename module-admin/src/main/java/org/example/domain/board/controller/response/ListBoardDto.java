@@ -1,4 +1,4 @@
-package org.example.domain.Board.controller.response;
+package org.example.domain.board.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;

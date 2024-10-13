@@ -10,7 +10,7 @@ import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.attendance.service.AttendanceService;
 import org.example.domain.attendance_request.controller.response.DetailAttendanceRequestResponse;
 import org.example.domain.attendance_request.service.AttendanceRequestService;
-import org.example.domain.controller.response.ListWorkbookResponse;
+import org.example.domain.workbook.controller.response.ListWorkbookResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.study.controller.request.CreateTempStudyRequest;

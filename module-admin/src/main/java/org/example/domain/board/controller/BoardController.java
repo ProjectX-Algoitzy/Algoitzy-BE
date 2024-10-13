@@ -1,16 +1,16 @@
-package org.example.domain.Board.controller;
+package org.example.domain.board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
-import org.example.domain.Board.controller.request.CreateBoardRequest;
-import org.example.domain.Board.controller.request.SearchBoardRequest;
-import org.example.domain.Board.controller.request.UpdateBoardRequest;
-import org.example.domain.Board.controller.response.DetailBoardResponse;
-import org.example.domain.Board.controller.response.ListBoardResponse;
-import org.example.domain.Board.service.BoardService;
+import org.example.domain.board.controller.request.CreateBoardRequest;
+import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.request.UpdateBoardRequest;
+import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.ListBoardResponse;
+import org.example.domain.board.service.BoardService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

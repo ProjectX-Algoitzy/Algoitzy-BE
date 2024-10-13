@@ -1,9 +1,9 @@
-package org.example.domain.Board.service;
+package org.example.domain.board.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.Board.controller.response.DetailBoardResponse;
-import org.example.domain.Board.repository.DetailBoardRepository;
+import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.repository.DetailBoardRepository;
 import org.example.domain.board_file.controller.response.ListBoardFileDto;
 import org.example.domain.board_file.repository.ListBoardFileRepository;
 import org.springframework.stereotype.Service;

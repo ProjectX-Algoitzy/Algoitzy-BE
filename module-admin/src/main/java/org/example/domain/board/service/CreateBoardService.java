@@ -1,4 +1,4 @@
-package org.example.domain.Board.service;
+package org.example.domain.board.service;
 
 import com.vane.badwordfiltering.BadWordFiltering;
 import jakarta.transaction.Transactional;
@@ -6,12 +6,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.domain.Board.controller.request.CreateBoardRequest;
-import org.example.domain.Board.controller.request.UpdateBoardRequest;
+import org.example.domain.board.controller.request.CreateBoardRequest;
+import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.Board;
 import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board.repository.BoardRepository;
-import org.example.domain.board.service.CoreBoardService;
 import org.example.domain.board_file.BoardFile;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.s3_file.service.CoreCreateS3FileService;

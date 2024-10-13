@@ -1,11 +1,11 @@
-package org.example.domain.Board.service;
+package org.example.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.Board.controller.request.CreateBoardRequest;
-import org.example.domain.Board.controller.request.SearchBoardRequest;
-import org.example.domain.Board.controller.request.UpdateBoardRequest;
-import org.example.domain.Board.controller.response.DetailBoardResponse;
-import org.example.domain.Board.controller.response.ListBoardResponse;
+import org.example.domain.board.controller.request.CreateBoardRequest;
+import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.request.UpdateBoardRequest;
+import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.ListBoardResponse;
 import org.springframework.stereotype.Service;
 
 @Service

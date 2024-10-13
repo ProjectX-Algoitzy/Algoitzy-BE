@@ -1,4 +1,4 @@
-package org.example.domain.Board.repository;
+package org.example.domain.board.repository;
 
 import static org.example.domain.board.QBoard.board;
 import static org.example.domain.board_like.QBoardLike.boardLike;
@@ -12,8 +12,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.Board.controller.request.SearchBoardRequest;
-import org.example.domain.Board.controller.response.ListBoardDto;
+import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.response.ListBoardDto;
 import org.example.domain.board.enums.BoardSort;
 import org.example.domain.board.enums.BoardCategory;
 import org.springframework.data.domain.Page;
