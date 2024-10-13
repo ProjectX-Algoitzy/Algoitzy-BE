@@ -23,7 +23,6 @@ public class FileUtils {
    * 기본 이미지 여부
    */
   public static boolean isBasicImage(String fileUrl) {
-    System.out.println("fileUrl = " + fileUrl);
     return fileUrl.contains(BASIC_IMAGE) || fileUrl.contains(EMAIL);
   }
 
