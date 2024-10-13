@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.board.enums.Category;
+import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board_file.controller.response.ListBoardFileDto;
 
 @Builder(toBuilder = true)
@@ -27,6 +27,9 @@ public class DetailBoardResponse {
 
   @Schema(description = "작성자 ID")
   private long createMemberId;
+
+  @Schema(description = "작성자 프로필 이미지")
+  private String profileUrl;
 
   @Schema(description = "작성자")
   private String createdName;
@@ -60,6 +63,6 @@ public class DetailBoardResponse {
   private boolean fixYn;
 
   public void updateCategory(String type) {
-    this.category = Category.valueOf(type).getName();
+    this.category = BoardCategory.valueOf(type).getName();
   }
 }

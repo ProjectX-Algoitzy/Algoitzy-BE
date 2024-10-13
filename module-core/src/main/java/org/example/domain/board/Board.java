@@ -25,7 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.config.jpa.BooleanToYNConverter;
-import org.example.domain.board.enums.Category;
+import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board_file.BoardFile;
 import org.example.domain.board_like.BoardLike;
 import org.example.domain.member.Member;
@@ -51,7 +51,7 @@ public class Board {
 
     @Enumerated(value = EnumType.STRING)
     @Comment("게시물 카테고리")
-    private Category category;
+    private BoardCategory category;
 
     @Comment("게시물 제목")
     private String title;
@@ -103,7 +103,7 @@ public class Board {
     private String updatedBy;
 
     @Builder
-    public Board(Category category, String title, String content,
+    public Board(BoardCategory category, String title, String content,
         Boolean saveYn, Boolean fixYn, Member member) {
         this.category = category;
         this.title = title;

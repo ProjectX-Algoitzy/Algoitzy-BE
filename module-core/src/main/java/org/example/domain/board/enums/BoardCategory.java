@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Category {
+public enum BoardCategory {
     NOTICE("공지"),
     FREE("자유"),
     QUESTION("질문"),

@@ -9,7 +9,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.Board.controller.request.CreateBoardRequest;
 import org.example.domain.Board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.Board;
-import org.example.domain.board.enums.Category;
+import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board.repository.BoardRepository;
 import org.example.domain.board.service.CoreBoardService;
 import org.example.domain.board_file.BoardFile;
@@ -43,7 +43,7 @@ public class CreateBoardService {
     Board board = Board.builder()
       .title(request.title())
       .content(request.content())
-      .category(Category.NOTICE)
+      .category(BoardCategory.NOTICE)
       .member(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))
       .saveYn(true)
       .fixYn(request.fixYn())
@@ -69,7 +69,7 @@ public class CreateBoardService {
    */
   public void updateBoard(Long boardId, UpdateBoardRequest request) {
     Board board = coreBoardService.findById(boardId);
-    if (!board.getCategory().equals(Category.NOTICE)) {
+    if (!board.getCategory().equals(BoardCategory.NOTICE)) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "공지사항 외 게시글은 수정할 수 없습니다.");
     }
 

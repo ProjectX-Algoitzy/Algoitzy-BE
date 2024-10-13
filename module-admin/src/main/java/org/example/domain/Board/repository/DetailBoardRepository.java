@@ -29,6 +29,7 @@ public class DetailBoardRepository {
           board.category.stringValue().as("category"),
           board.title,
           board.member.id.as("createMemberId"),
+          board.member.profileUrl,
           board.member.name.as("createdName"),
           board.createdTime,
           board.viewCount,

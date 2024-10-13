@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.board.enums.Category;
+import org.example.domain.board.enums.BoardCategory;
 
 @Builder
 @Getter
@@ -37,6 +37,6 @@ public class ListBoardDto {
   private boolean fixYn;
 
   public void updateCategory(String type) {
-    this.category = Category.valueOf(type).getName();
+    this.category = BoardCategory.valueOf(type).getName();
   }
 }

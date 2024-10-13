@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.Min;
 import org.example.domain.board.enums.BoardSort;
-import org.example.domain.board.enums.Category;
+import org.example.domain.board.enums.BoardCategory;
 import org.springframework.data.domain.PageRequest;
 
 @Schema(description = "게시글 목록 검색 요청 객체")
@@ -14,7 +14,7 @@ public record SearchBoardRequest(
   String searchKeyword,
 
   @Schema(description = "게시글 카테고리")
-  Category category,
+  BoardCategory category,
 
   @Schema(description = "게시글 정렬 조건", allowableValues = {"LIKE", "VIEW_COUNT"})
   BoardSort sort,

@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.Board.controller.request.SearchBoardRequest;
 import org.example.domain.Board.controller.response.ListBoardDto;
 import org.example.domain.board.enums.BoardSort;
-import org.example.domain.board.enums.Category;
+import org.example.domain.board.enums.BoardCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -76,7 +76,7 @@ public class ListBoardRepository {
   /**
    * 카테고리 검색
    */
-  private static Predicate searchCategory(Category category) {
+  private static Predicate searchCategory(BoardCategory category) {
     if (category == null) {
       return null;
     }
