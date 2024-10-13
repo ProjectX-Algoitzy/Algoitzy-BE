@@ -50,4 +50,11 @@ public class BoardService {
   public void deleteBoard(Long boardId) {
     createBoardService.deleteBoard(boardId);
   }
+
+  /**
+   * 공지사항 게시글 고정 여부 변경
+   */
+  public void updateBoardFix(Long boardId) {
+    createBoardService.updateBoardFix(boardId);
+  }
 }

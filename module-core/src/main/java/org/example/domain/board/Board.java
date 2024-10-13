@@ -104,18 +104,20 @@ public class Board {
 
     @Builder
     public Board(BoardCategory category, String title, String content,
-        Boolean saveYn, Boolean fixYn, Member member) {
+        Boolean saveYn, Member member) {
         this.category = category;
         this.title = title;
         this.content = content;
         this.saveYn = saveYn;
-        this.fixYn = fixYn;
         this.member = member;
     }
 
-    public void updateNoticeBoard(String title, String content, Boolean fixYn) {
+    public void updateNoticeBoard(String title, String content) {
         if (StringUtils.hasText(title)) this.title = title;
         if (StringUtils.hasText(content)) this.content = content;
-        this.fixYn = fixYn;
+    }
+
+    public void updateFixYn() {
+        this.fixYn = !this.fixYn;
     }
 }

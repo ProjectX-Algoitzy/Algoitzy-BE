@@ -52,7 +52,7 @@ public class BoardController {
 
   @PatchMapping("/{board-id}")
   @Operation(summary = "게시글 수정")
-  public ApiResponse<DetailBoardResponse> updateBoard(
+  public ApiResponse<Void> updateBoard(
     @PathVariable("board-id") Long boardId,
     UpdateBoardRequest request) {
     boardService.updateBoard(boardId, request);
@@ -61,8 +61,15 @@ public class BoardController {
 
   @DeleteMapping("/{board-id}")
   @Operation(summary = "게시글 삭제")
-  public ApiResponse<DetailBoardResponse> deleteBoard(@PathVariable("board-id") Long boardId) {
+  public ApiResponse<Void> deleteBoard(@PathVariable("board-id") Long boardId) {
     boardService.deleteBoard(boardId);
+    return ApiResponse.onSuccess();
+  }
+
+  @PatchMapping("/{board-id}/fix")
+  @Operation(summary = "게시글 고정 여부 변경")
+  public ApiResponse<Void> updateBoardFix(@PathVariable("board-id") Long boardId) {
+    boardService.updateBoardFix(boardId);
     return ApiResponse.onSuccess();
   }
 

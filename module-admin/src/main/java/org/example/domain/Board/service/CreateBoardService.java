@@ -46,7 +46,6 @@ public class CreateBoardService {
       .category(BoardCategory.NOTICE)
       .member(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))
       .saveYn(true)
-      .fixYn(request.fixYn())
       .build();
 
     // 첨부파일 생성
@@ -73,10 +72,14 @@ public class CreateBoardService {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "공지사항 외 게시글은 수정할 수 없습니다.");
     }
 
+    if (badWordFiltering.blankCheck(request.title()) ||
+      badWordFiltering.blankCheck(request.content())) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목/내용에 욕설을 포함할 수 없습니다.");
+    }
+
     board.updateNoticeBoard(
       request.title(),
-      request.content(),
-      request.fixYn()
+      request.content()
     );
 
     List<BoardFile> boardFileList = board.getBoardFileList();
@@ -104,5 +107,17 @@ public class CreateBoardService {
     board.getBoardFileList()
       .forEach(boardFile -> coreCreateS3FileService.deleteS3File(boardFile.getFileUrl()));
     boardRepository.deleteById(boardId);
+  }
+
+  /**
+   * 공지사항 게시글 고정 여부 변경
+   */
+  public void updateBoardFix(Long boardId) {
+    Board board = coreBoardService.findById(boardId);
+    if (!board.getCategory().equals(BoardCategory.NOTICE)) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "공지사항 외 게시글은 고정할 수 없습니다.");
+    }
+
+    board.updateFixYn();
   }
 }
