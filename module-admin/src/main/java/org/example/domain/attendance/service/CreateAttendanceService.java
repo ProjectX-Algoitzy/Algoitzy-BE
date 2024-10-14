@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.domain.week.Week;
 import org.example.domain.week.repository.DetailWeekRepository;
+import org.example.domain.workbook.enums.CodingTestBasicMockTest;
 import org.example.domain.workbook.enums.CodingTestBasicWorkbook;
 import org.example.domain.workbook_problem.repository.ListWorkbookProblemRepository;
 import org.example.email.enums.EmailType;
@@ -65,7 +67,6 @@ public class CreateAttendanceService {
   private String profiles;
 
   private static final int CODING_TEST_PREPARE_MIN_REQUEST_COUNT = 3; // 코딩테스트 심화반 최소 문제 인증 개수
-  private static final int CODING_TEST_BASIC_MIN_REQUEST_COUNT = 20; // 코딩테스트 기초반 최소 문제 인증 개수
   private static final int WORKBOOK_MIN_REQUEST_COUNT = 2; // 모의테스트 최소 문제 인증 개수
   private static final int ONE_YEAR = 365;
 
@@ -100,7 +101,7 @@ public class CreateAttendanceService {
             Attendance attendance = Attendance.builder()
               .studyMember(studyMember)
               .week(lastWeek)
-              .problemYN(getProblemYN(studyMember, requestCount))
+              .problemYN(getProblemYN(lastWeek, studyMember, requestCount))
               .blogYN(StringUtils.hasText(attendanceRequest.getBlogUrl()))
               .workbookYN(getWorkbookYN(lastWeek, studyMember))
               .build();
@@ -114,7 +115,7 @@ public class CreateAttendanceService {
           Attendance attendance = Attendance.builder()
             .studyMember(studyMember)
             .week(lastWeek)
-            .problemYN(getProblemYN(studyMember, 0))
+            .problemYN(getProblemYN(lastWeek, studyMember, 0))
             .blogYN(false)
             .workbookYN(getWorkbookYN(lastWeek, studyMember))
             .build();
@@ -142,78 +143,80 @@ public class CreateAttendanceService {
    * @rect : 유저 페이지 달력 영역
    * @google-visualization-tooltip : 해결 일자, 해결 수 툴팁
    */
-  private boolean getProblemYN(StudyMember studyMember, int requestCount) {
-    // 페이지 랜딩 대기
-    webDriver.get(Url.BAEKJOON_USER.getBaekjoonUserUrl(studyMember.getMember().getHandle()));
-    new WebDriverWait(webDriver, Duration.ofSeconds(10))
-      .until(ExpectedConditions.presenceOfElementLocated(By.tagName("rect")));
-    List<WebElement> rectList = webDriver.findElements(By.tagName("rect"));
-
-    // 지난주 범위 계산
-    LocalDate today = LocalDate.now().minusDays(7);
-    LocalDate nextYear = today.plusYears(1);
-    int startRect = today.getDayOfYear()
-      - LocalDate.now().get(ChronoField.DAY_OF_WEEK) + 1;
-    if (rectList.size() >= 2 * ONE_YEAR) startRect += (int) ChronoUnit.DAYS.between(today, nextYear);
-    int lastRect = startRect + 6;
-
-    int count = 0;
-    for (int i = startRect; i <= lastRect; i++) {
-      WebElement rect = rectList.get(i);
-      actions.moveToElement(rect).perform();
-
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        log.error(e.getMessage());
-      }
-      WebElement tooltip = webDriver.findElement(By.className("google-visualization-tooltip"));
-      int colonIndex = tooltip.getText().indexOf(":");
-      if (colonIndex != -1) {
-        count += Integer.parseInt(tooltip.getText().substring(colonIndex + 1).strip());
-      }
+  private boolean getProblemYN(Week week, StudyMember studyMember, int requestCount) {
+    if (studyMember.getStudy().getName().equals(ValueUtils.CODING_TEST_BASIC)) {
+      return getBasicProblemYN(week, studyMember);
     }
 
-    // 백준 풀이 수 + requestCount
-    int solvedCount = count + requestCount;
-    log.info("{} 문제 풀이 수 : {}", studyMember.getMember().getName(), solvedCount);
-    return switch (studyMember.getStudy().getName()) {
-      case ValueUtils.CODING_TEST_PREPARE -> solvedCount >= CODING_TEST_PREPARE_MIN_REQUEST_COUNT;
-      case ValueUtils.CODING_TEST_BASIC -> solvedCount >= CODING_TEST_BASIC_MIN_REQUEST_COUNT;
-      default -> true;
-    };
+    //== 심화반 ==//
+    else {
+      // 페이지 랜딩 대기
+      webDriver.get(Url.BAEKJOON_USER.getBaekjoonUserUrl(studyMember.getMember().getHandle()));
+      new WebDriverWait(webDriver, Duration.ofSeconds(10))
+        .until(ExpectedConditions.presenceOfElementLocated(By.tagName("rect")));
+      List<WebElement> rectList = webDriver.findElements(By.tagName("rect"));
+
+      // 지난주 범위 계산
+      LocalDate today = LocalDate.now().minusDays(7);
+      LocalDate nextYear = today.plusYears(1);
+      int startRect = today.getDayOfYear()
+        - LocalDate.now().get(ChronoField.DAY_OF_WEEK) + 1;
+      if (rectList.size() >= 2 * ONE_YEAR) startRect += (int) ChronoUnit.DAYS.between(today, nextYear);
+      int lastRect = startRect + 6;
+
+      int count = 0;
+      for (int i = startRect; i <= lastRect; i++) {
+        WebElement rect = rectList.get(i);
+        actions.moveToElement(rect).perform();
+
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+          log.error(e.getMessage());
+        }
+        WebElement tooltip = webDriver.findElement(By.className("google-visualization-tooltip"));
+        int colonIndex = tooltip.getText().indexOf(":");
+        if (colonIndex != -1) {
+          count += Integer.parseInt(tooltip.getText().substring(colonIndex + 1).strip());
+        }
+      }
+
+      // 백준 풀이 수 + requestCount
+      int solvedCount = count + requestCount;
+      log.info("{} 문제 풀이 수 : {}", studyMember.getMember().getName(), solvedCount);
+      if (studyMember.getStudy().getName().equals(ValueUtils.CODING_TEST_PREPARE)) {
+        return solvedCount >= CODING_TEST_PREPARE_MIN_REQUEST_COUNT;
+      }
+      return true;
+    }
+
+  }
+
+  /**
+   * 기초반 문제집 풀이 여부 반환
+   */
+  private Boolean getBasicProblemYN(Week week, StudyMember studyMember) {
+    List<Integer> problemNumberList = getSolvedProblemNumberList(studyMember);
+
+    CodingTestBasicMockTest mockTest = CodingTestBasicMockTest.findByWeek(week.getValue());
+    return new HashSet<>(problemNumberList).containsAll(mockTest.problemNumberList);
   }
 
   /**
    * 백준 해결한 문제 번호 크롤링
-   *
-   * @u-solved : 맞힌 문제 수 선택자
-   * @.problem-list a : 문제 번호 선택자
    */
   private Boolean getWorkbookYN(Week week, StudyMember studyMember) {
-    webDriver.get(Url.BAEKJOON_USER.getBaekjoonUserUrl(studyMember.getMember().getHandle()));
-
-    // 맞힌 문제 개수로 제한
-    int limitCount = Integer.parseInt(webDriver.findElement(By.id("u-solved")).getText());
-    List<Integer> problemNumberList = webDriver.findElements(By.cssSelector(".problem-list a"))
-      .stream()
-      .map(problemNumber -> Integer.parseInt(problemNumber.getText()))
-      .limit(limitCount)
-      .toList();
+    List<Integer> problemNumberList = getSolvedProblemNumberList(studyMember);
 
     int solvedCount = 0;
     switch (studyMember.getStudy().getName()) {
       case ValueUtils.CODING_TEST_PREPARE -> {
         List<Integer> workbookProblemList = listWorkbookProblemRepository.getWorkbookProblemList(week, studyMember.getStudy());
-        for (Integer problemNumber : workbookProblemList) {
-          if (problemNumberList.contains(problemNumber)) solvedCount++;
-        }
+        solvedCount = (int) workbookProblemList.stream().filter(problemNumberList::contains).count();
       }
       case ValueUtils.CODING_TEST_BASIC -> {
         CodingTestBasicWorkbook workbook = CodingTestBasicWorkbook.findByWeek(week.getValue());
-        for (Integer problemNumber : workbook.problemNumberList) {
-          if (problemNumberList.contains(problemNumber)) solvedCount++;
-        }
+        solvedCount = (int) workbook.problemNumberList.stream().filter(problemNumberList::contains).count();
       }
     }
 
@@ -221,4 +224,22 @@ public class CreateAttendanceService {
     return solvedCount >= WORKBOOK_MIN_REQUEST_COUNT;
   }
 
+  /**
+   * 백준 맞힌 문제 번호 리스트 반환
+   *
+   * @u-solved : 맞힌 문제 수 선택자
+   * @.problem-list a : 문제 번호 선택자
+   */
+  private List<Integer> getSolvedProblemNumberList(StudyMember studyMember) {
+    webDriver.get(Url.BAEKJOON_USER.getBaekjoonUserUrl(studyMember.getMember().getHandle()));
+
+    // 맞힌 문제 개수로 제한
+    int limitCount = Integer.parseInt(webDriver.findElement(By.id("u-solved")).getText());
+    return
+      webDriver.findElements(By.cssSelector(".problem-list a"))
+        .stream()
+        .map(problemNumber -> Integer.parseInt(problemNumber.getText()))
+        .limit(limitCount)
+        .toList();
+  }
 }
