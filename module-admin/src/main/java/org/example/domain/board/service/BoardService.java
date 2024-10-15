@@ -5,6 +5,7 @@ import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,13 @@ public class BoardService {
   private final CreateBoardService createBoardService;
   private final ListBoardService listBoardService;
   private final DetailBoardService detailBoardService;
+
+  /**
+   * 게시글 카테고리 목록 조회
+   */
+  public ListBoardCategoryResponse getBoardCategoryList() {
+    return listBoardService.getBoardCategoryList();
+  }
 
   /**
    * 공지사항 게시글 생성

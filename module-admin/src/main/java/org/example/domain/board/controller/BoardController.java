@@ -9,6 +9,7 @@ import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.service.BoardService;
 import org.springdoc.core.annotations.ParameterObject;
@@ -28,6 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class BoardController {
 
   private final BoardService boardService;
+
+  @GetMapping("/category")
+  @Operation(summary = "게시글 카테고리 목록 조회")
+  public ApiResponse<ListBoardCategoryResponse> getBoardCategoryList() {
+    return ApiResponse.onSuccess(boardService.getBoardCategoryList());
+  }
 
   @PostMapping
   @Operation(summary = "공지사항 게시글 생성")
