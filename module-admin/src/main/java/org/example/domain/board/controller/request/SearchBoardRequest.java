@@ -16,7 +16,7 @@ public record SearchBoardRequest(
   @Schema(description = "게시글 카테고리")
   BoardCategory category,
 
-  @Schema(description = "게시글 정렬 조건", allowableValues = {"LIKE", "VIEW_COUNT"})
+  @Schema(description = "게시글 정렬 조건", allowableValues = {"LATEST", "LIKE", "VIEW_COUNT"})
   BoardSort sort,
 
   @Min(1)

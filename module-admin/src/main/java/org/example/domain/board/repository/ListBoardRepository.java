@@ -108,6 +108,7 @@ public class ListBoardRepository {
     }
 
     return switch (sort) {
+      case LATEST -> board.createdTime.desc();
       case LIKE -> boardLike.count().desc();
       case VIEW_COUNT -> board.viewCount.desc();
     };
