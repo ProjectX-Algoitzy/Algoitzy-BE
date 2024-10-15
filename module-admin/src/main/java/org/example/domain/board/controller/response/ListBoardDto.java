@@ -30,6 +30,9 @@ public class ListBoardDto {
   @Schema(description = "작성일")
   private LocalDateTime createdTime;
 
+  @Schema(description = "새 게시물 여부")
+  private boolean newBoardYn;
+
   @Schema(description = "조회수")
   private int viewCount;
 

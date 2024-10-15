@@ -8,8 +8,10 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.board.controller.request.SearchBoardRequest;
@@ -40,6 +42,10 @@ public class ListBoardRepository {
             board.title,
             board.member.name.as("createdName"),
             board.createdTime,
+            Expressions.booleanTemplate(
+                "case when {0} > {1} then true else false end",
+                board.createdTime, LocalDateTime.now().minusDays(3))
+              .as("newBoardYn"),
             board.viewCount,
             board.fixYn
           )
