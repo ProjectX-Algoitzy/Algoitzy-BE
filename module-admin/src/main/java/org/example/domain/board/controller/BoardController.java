@@ -12,6 +12,9 @@ import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.service.BoardService;
+import org.example.domain.reply.controller.request.SearchReplyRequest;
+import org.example.domain.reply.controller.response.ListReplyResponse;
+import org.example.domain.reply.service.ReplyService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BoardController {
 
   private final BoardService boardService;
+  private final ReplyService replyService;
 
   @GetMapping("/category")
   @Operation(summary = "게시글 카테고리 목록 조회")
@@ -80,4 +84,11 @@ public class BoardController {
     return ApiResponse.onSuccess();
   }
 
+  @GetMapping("/{board-id}/reply")
+  @Operation(summary = "게시글 댓글 목록 조회")
+  public ApiResponse<ListReplyResponse> getReplyList(
+    @PathVariable("board-id") Long boardId,
+    @ParameterObject @ModelAttribute @Valid SearchReplyRequest request) {
+    return ApiResponse.onSuccess(replyService.getReplyList(boardId, request));
+  }
 }
