@@ -101,11 +101,15 @@ public class CreateBoardService {
    * 게시글 삭제
    */
   public void deleteBoard(Long boardId) {
-    // todo 관리자가 삭제한 게시글 어떻게 노출시킬건지?
     Board board = coreBoardService.findById(boardId);
     board.getBoardFileList()
       .forEach(boardFile -> coreCreateS3FileService.deleteS3File(boardFile.getFileUrl()));
-    boardRepository.deleteById(boardId);
+
+    if (board.getCategory().equals(BoardCategory.NOTICE)) {
+      boardRepository.deleteById(boardId);
+      return;
+    }
+    board.delete();
   }
 
   /**

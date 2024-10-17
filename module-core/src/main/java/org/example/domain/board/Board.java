@@ -45,79 +45,89 @@ import org.springframework.util.StringUtils;
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Enumerated(value = EnumType.STRING)
-    @Comment("게시물 카테고리")
-    private BoardCategory category;
+  @Enumerated(value = EnumType.STRING)
+  @Comment("게시물 카테고리")
+  private BoardCategory category;
 
-    @Comment("게시물 제목")
-    private String title;
+  @Comment("게시물 제목")
+  private String title;
 
-    @Comment("게시물 내용")
-    @Lob
-    private String content;
+  @Comment("게시물 내용")
+  @Lob
+  private String content;
 
-    @Comment("게시물 조회수")
-    @Column(columnDefinition = "integer default 0")
-    private Integer viewCount = 0;
+  @Comment("게시물 조회수")
+  @Column(columnDefinition = "integer default 0")
+  private Integer viewCount = 0;
 
-    @Convert(converter = BooleanToYNConverter.class)
-    @Column(nullable = false, columnDefinition = "char(1) default 'N'")
-    @Comment("임시저장 여부")
-    private Boolean saveYn;
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  @Comment("임시저장 여부")
+  private Boolean saveYn;
 
-    @Convert(converter = BooleanToYNConverter.class)
-    @Column(nullable = false, columnDefinition = "char(1) default 'N'")
-    @Comment("고정 여부(공지사항 한정 필드")
-    private Boolean fixYn;
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  @Comment("고정 여부(공지사항 한정 필드)")
+  private Boolean fixYn;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+  @Convert(converter = BooleanToYNConverter.class)
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  @Comment("삭제 여부")
+  private Boolean deleteYn;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
-    private List<Reply> replyList = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
-    @Setter
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardFile> boardFileList = new ArrayList<>();
+  @OneToMany(mappedBy = "board", orphanRemoval = true)
+  private List<Reply> replyList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardLike> boardLikeList = new ArrayList<>();
+  @Setter
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<BoardFile> boardFileList = new ArrayList<>();
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<BoardLike> boardLikeList = new ArrayList<>();
 
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
+  @CreatedDate
+  @Column(updatable = false)
+  private LocalDateTime createdTime;
 
-    @CreatedBy
-    @Column(updatable = false)
-    private String createdBy;
+  @LastModifiedDate
+  private LocalDateTime updatedTime;
 
-    @LastModifiedBy
-    private String updatedBy;
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
 
-    @Builder
-    public Board(BoardCategory category, String title, String content,
-        Boolean saveYn, Member member) {
-        this.category = category;
-        this.title = title;
-        this.content = content;
-        this.saveYn = saveYn;
-        this.member = member;
-    }
+  @LastModifiedBy
+  private String updatedBy;
 
-    public void updateNoticeBoard(String title, String content) {
-        if (StringUtils.hasText(title)) this.title = title;
-        if (StringUtils.hasText(content)) this.content = content;
-    }
+  @Builder
+  public Board(BoardCategory category, String title, String content,
+    Boolean saveYn, Member member) {
+    this.category = category;
+    this.title = title;
+    this.content = content;
+    this.saveYn = saveYn;
+    this.member = member;
+  }
 
-    public void updateFixYn() {
-        this.fixYn = !this.fixYn;
-    }
+  public void updateNoticeBoard(String title, String content) {
+    if (StringUtils.hasText(title)) this.title = title;
+    if (StringUtils.hasText(content)) this.content = content;
+  }
+
+  public void updateFixYn() {
+    this.fixYn = !this.fixYn;
+  }
+
+  public void delete() {
+    this.deleteYn = true;
+    this.content = null;
+  }
 }
