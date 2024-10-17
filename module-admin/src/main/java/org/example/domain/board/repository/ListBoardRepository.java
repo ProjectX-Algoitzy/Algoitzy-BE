@@ -47,7 +47,8 @@ public class ListBoardRepository {
                 board.createdTime, LocalDateTime.now().minusDays(3))
               .as("newBoardYn"),
             board.viewCount,
-            board.fixYn
+            board.fixYn,
+            board.deleteYn
           )
         )
         .from(board)

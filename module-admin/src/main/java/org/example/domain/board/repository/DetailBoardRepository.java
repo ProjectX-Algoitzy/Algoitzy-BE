@@ -45,7 +45,8 @@ public class DetailBoardRepository {
               ).exists()
           ,"myLikeYn"),
           board.replyList.size().as("replyCount"),
-          board.fixYn
+          board.fixYn,
+          board.deleteYn
         )
       )
       .from(board)

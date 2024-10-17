@@ -39,6 +39,9 @@ public class ListBoardDto {
   @Schema(description = "고정 여부")
   private boolean fixYn;
 
+  @Schema(description = "삭제 여부")
+  private boolean deleteYn;
+
   public void updateCategory(String type) {
     this.category = BoardCategory.valueOf(type).getName();
   }
