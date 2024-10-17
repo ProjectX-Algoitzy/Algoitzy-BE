@@ -40,7 +40,7 @@ public class ListReplyRepository {
     return PageableExecutionUtils.getPage(boardList, request.pageRequest(), () -> 0L);
   }
 
-  public List<ListReplyDto> getChildrenReplyList(Long boardId, List<Long> parentIdList) {
+  public List<ListReplyDto> getChildrenReplyList(Long boardId) {
     return queryFactory
       .select(Projections.fields(
           ListReplyDto.class,
@@ -64,7 +64,7 @@ public class ListReplyRepository {
       .leftJoin(replyLike).on(reply.eq(replyLike.reply))
       .where(
         reply.board.id.eq(boardId),
-        reply.parentId.in(parentIdList)
+        reply.parentId.isNotNull()
       )
       .orderBy(reply.createdTime.asc())
       .fetch();

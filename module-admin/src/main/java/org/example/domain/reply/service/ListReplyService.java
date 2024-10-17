@@ -28,8 +28,7 @@ public class ListReplyService {
     Page<ListReplyDto> parentReplyList = listReplyRepository.getParentReplyList(boardId, request);
 
     // 자식(depth 1 이상) 댓글 조회
-    List<Long> parentIdList = parentReplyList.stream().map(ListReplyDto::getReplyId).toList();
-    List<ListReplyDto> childrenReplyList = listReplyRepository.getChildrenReplyList(boardId, parentIdList);
+    List<ListReplyDto> childrenReplyList = listReplyRepository.getChildrenReplyList(boardId);
 
     Map<Long, ListReplyDto> map = new HashMap<>();
     List<ListReplyDto> replyList = new ArrayList<>(parentReplyList.getContent());
@@ -39,8 +38,7 @@ public class ListReplyService {
       map.put(reply.getReplyId(), reply);
 
       // 부모 댓글이 존재하면, 부모 댓글의 하위 댓글 목록에 추가
-      if (reply.getParentReplyId() != null) {
-        System.out.println("reply.getReplyId() = " + reply.getReplyId());
+      if (map.get(reply.getParentReplyId()) != null) {
         map.get(reply.getParentReplyId())
           .getChildrenReplyList()
           .add(reply);
