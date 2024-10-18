@@ -41,25 +41,7 @@ public class ListReplyRepository {
   }
 
   public List<ListReplyDto> getChildrenReplyList(Long boardId) {
-    return queryFactory
-      .select(Projections.fields(
-          ListReplyDto.class,
-          reply.parentId.as("parentReplyId"),
-          reply.id.as("replyId"),
-          reply.member.profileUrl,
-          reply.content,
-          reply.createdTime,
-          Expressions.as(
-            JPAExpressions
-              .selectFrom(replyLike)
-              .where(
-                replyLike.reply.eq(reply),
-                replyLike.member.email.eq(SecurityUtils.getCurrentMemberEmail())
-              ).exists()
-            , "myLikeYn"),
-          reply.depth
-        )
-      )
+    return selectFields()
       .from(reply)
       .leftJoin(replyLike).on(reply.eq(replyLike.reply))
       .where(
