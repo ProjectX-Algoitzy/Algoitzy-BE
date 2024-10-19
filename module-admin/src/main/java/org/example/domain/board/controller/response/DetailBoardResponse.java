@@ -47,7 +47,7 @@ public class DetailBoardResponse {
   private String content;
 
   @Default
-  @Schema(description = "게시글 내용")
+  @Schema(description = "첨부파일 목록")
   private List<ListBoardFileDto> boardFileList = new ArrayList<>();
 
   @Schema(description = "좋아요 수")
@@ -58,6 +58,9 @@ public class DetailBoardResponse {
 
   @Schema(description = "댓글 수")
   private int replyCount;
+
+  @Schema(description = "임시저장 여부")
+  private boolean saveYn;
 
   @Schema(description = "고정 여부")
   private boolean fixYn;

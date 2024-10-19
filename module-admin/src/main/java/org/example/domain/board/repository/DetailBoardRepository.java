@@ -9,6 +9,8 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.DetailDraftBoardResponse;
+import org.example.domain.board.enums.BoardCategory;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
@@ -45,6 +47,7 @@ public class DetailBoardRepository {
               ).exists()
           ,"myLikeYn"),
           board.replyList.size().as("replyCount"),
+          board.saveYn,
           board.fixYn,
           board.deleteYn
         )
@@ -53,6 +56,31 @@ public class DetailBoardRepository {
       .where(
         board.id.eq(boardId),
         board.saveYn.isTrue()
+      )
+      .groupBy(board)
+      .fetchOne();
+  }
+
+  /**
+   * 임시저장 게시글 조회
+   */
+  public DetailDraftBoardResponse getDraftBoard() {
+    return queryFactory
+      .select(
+        Projections.fields(
+          DetailDraftBoardResponse.class,
+          board.title,
+          board.id.as("boardId"),
+          board.content,
+          board.saveYn
+        )
+      )
+      .from(board)
+      .where(
+        board.member.email.eq(SecurityUtils.getCurrentMemberEmail()),
+        board.saveYn.isFalse(),
+        // User Server에서 다른 카테고리의 글 임시저장 가능성 O
+        board.category.eq(BoardCategory.NOTICE)
       )
       .groupBy(board)
       .fetchOne();

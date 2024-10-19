@@ -79,6 +79,9 @@ public class CreateBoardService {
     if (!board.getCategory().equals(BoardCategory.NOTICE)) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "공지사항 외 게시글은 수정할 수 없습니다.");
     }
+    if (!board.getSaveYn()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "최종 저장된 게시글만 수정할 수 있습니다.");
+    }
 
     if (badWordFiltering.blankCheck(request.title()) ||
       badWordFiltering.blankCheck(request.content())) {
