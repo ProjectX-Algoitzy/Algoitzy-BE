@@ -41,10 +41,9 @@ public class BoardController {
   }
 
   @PostMapping
-  @Operation(summary = "공지사항 게시글 생성")
-  public ApiResponse<Void> createBoard(CreateBoardRequest request) {
-    boardService.createBoard(request);
-    return ApiResponse.onCreate();
+  @Operation(summary = "공지사항 게시글 임시 생성/생성")
+  public ApiResponse<Long> createBoard(CreateBoardRequest request) {
+    return ApiResponse.onCreate(boardService.createBoard(request));
   }
 
   @GetMapping

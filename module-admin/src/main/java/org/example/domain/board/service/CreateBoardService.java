@@ -30,12 +30,20 @@ public class CreateBoardService {
   private final BadWordFiltering badWordFiltering;
 
   /**
-   * 공지사항 게시글 생성
+   * 공지사항 게시글 임시 생성/생성
    */
-  public void createBoard(CreateBoardRequest request) {
+  public long createBoard(CreateBoardRequest request) {
     if (badWordFiltering.blankCheck(request.title()) ||
       badWordFiltering.blankCheck(request.content())) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목/내용에 욕설을 포함할 수 없습니다.");
+    }
+
+    // 기존 게시글 삭제
+    if (request.boardId() != null) {
+      if (coreBoardService.findById(request.boardId()).getSaveYn()) {
+        throw new GeneralException(ErrorStatus.BAD_REQUEST, "최종 저장된 게시글입니다.");
+      }
+      deleteBoard(request.boardId());
     }
 
     // 게시글 생성
@@ -59,7 +67,8 @@ public class CreateBoardService {
           ).toList());
     }
 
-    boardRepository.save(board);
+    Board newBoard = boardRepository.save(board);
+    return newBoard.getId();
   }
 
   /**

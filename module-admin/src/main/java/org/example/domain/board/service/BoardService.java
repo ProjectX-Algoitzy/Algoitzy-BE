@@ -25,10 +25,10 @@ public class BoardService {
   }
 
   /**
-   * 공지사항 게시글 생성
+   * 공지사항 게시글 임시 생성/생성
    */
-  public void createBoard(CreateBoardRequest request) {
-    createBoardService.createBoard(request);
+  public long createBoard(CreateBoardRequest request) {
+    return createBoardService.createBoard(request);
   }
 
   /**

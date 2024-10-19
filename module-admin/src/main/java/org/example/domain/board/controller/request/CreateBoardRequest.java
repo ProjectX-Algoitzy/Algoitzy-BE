@@ -9,6 +9,9 @@ import java.util.List;
 public record CreateBoardRequest(
 
   @Schema(description = "게시글 제목")
+  Long boardId,
+
+  @Schema(description = "게시글 제목")
   String title,
 
   @NotBlank
@@ -19,8 +22,8 @@ public record CreateBoardRequest(
   List<String> fileUrlList,
 
   @NotNull
-  @Schema(description = "공지사항 고정 여부")
-  Boolean fixYn
+  @Schema(description = "공지사항 임시저장 여부")
+  Boolean saveYn
 
 ) {
 
