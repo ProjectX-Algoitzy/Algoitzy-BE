@@ -9,8 +9,10 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.Board;
+import org.example.domain.board.controller.response.DetailDraftBoardResponse;
 import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board.repository.BoardRepository;
+import org.example.domain.board.repository.DetailBoardRepository;
 import org.example.domain.board_file.BoardFile;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.s3_file.service.CoreCreateS3FileService;
@@ -26,6 +28,7 @@ public class CreateBoardService {
   private final CoreBoardService coreBoardService;
   private final CoreMemberService coreMemberService;
   private final CoreCreateS3FileService coreCreateS3FileService;
+  private final DetailBoardRepository detailBoardRepository;
   private final BoardRepository boardRepository;
   private final BadWordFiltering badWordFiltering;
 
@@ -44,6 +47,12 @@ public class CreateBoardService {
         throw new GeneralException(ErrorStatus.BAD_REQUEST, "최종 저장된 게시글입니다.");
       }
       deleteBoard(request.boardId());
+    }
+
+    // 기존 임시저장 게시글 삭제
+    DetailDraftBoardResponse draftBoard = detailBoardRepository.getDraftBoard();
+    if (draftBoard != null) {
+      deleteBoard(draftBoard.getBoardId());
     }
 
     // 게시글 생성

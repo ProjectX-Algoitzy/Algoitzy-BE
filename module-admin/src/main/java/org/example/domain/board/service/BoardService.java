@@ -47,6 +47,13 @@ public class BoardService {
   }
 
   /**
+   * 임시저장 게시글 존재 여부 조회
+   */
+  public boolean checkDraftBoard() {
+    return detailBoardService.checkDraftBoard();
+  }
+
+  /**
    * 임시저장 게시글 조회
    */
   public DetailDraftBoardResponse getDraftBoard() {

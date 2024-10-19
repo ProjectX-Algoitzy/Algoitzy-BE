@@ -36,6 +36,13 @@ public class DetailBoardService {
   }
 
   /**
+   * 임시저장 게시글 존재 여부 조회
+   */
+  public boolean checkDraftBoard() {
+    return detailBoardRepository.getDraftBoard() != null;
+  }
+
+  /**
    * 임시저장 게시글 조회
    */
   public DetailDraftBoardResponse getDraftBoard() {
