@@ -1,6 +1,6 @@
 package org.example.domain.board.enums;
 
-public enum Category {
+public enum BoardCategory {
     NOTICE,
     FREE,
     QUESTION,
