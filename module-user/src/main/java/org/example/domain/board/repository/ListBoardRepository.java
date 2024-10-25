@@ -13,10 +13,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.board.controller.response.ListBoardDto;
 import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board.enums.BoardSort;
-import org.example.domain.board.request.SearchBoardRequest;
-import org.example.domain.board.response.ListBoardDto;
+import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 

@@ -1,4 +1,4 @@
-package org.example.domain.board.response;
+package org.example.domain.board.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import org.example.domain.board.enums.BoardCategory;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "게시판 목록 응답 객체")
+@Schema(description = "게시글 목록 조회 응답 DTO")
 public class ListBoardDto {
 
     @Schema(description = "게시글 ID")
