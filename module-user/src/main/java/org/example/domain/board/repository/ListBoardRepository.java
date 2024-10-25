@@ -9,6 +9,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.example.domain.board.controller.response.ListBoardDto;
 import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board.enums.BoardSort;
 import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -29,7 +32,7 @@ public class ListBoardRepository {
     /*
     * 게시판 목록 조회
     * */
-    public List<ListBoardDto> getBoardList(SearchBoardRequest request) {
+    public Page<ListBoardDto> getBoardList(SearchBoardRequest request) {
         List<ListBoardDto> boardList =
             queryFactory
                 .select(Projections.fields(ListBoardDto.class,
@@ -63,7 +66,18 @@ public class ListBoardRepository {
                     searchOrderBy(request.sort())
                 )
                 .fetch();
-        return boardList;
+
+        JPAQuery<Long> countQuery = queryFactory
+            .select(board.count())
+            .from(board)
+            .where(
+                searchCategory(request.category()),
+                searchKeyword(request.searchKeyword()),
+                board.saveYn.isTrue()
+            );
+
+        return PageableExecutionUtils.getPage(boardList, request.pageRequest(), countQuery::fetchOne);
+
     }
 
     /**
