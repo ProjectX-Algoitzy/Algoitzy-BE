@@ -1,4 +1,4 @@
-package org.example.domain.member.controller.response;
+package org.example.domain.board.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "유저 목록 조회 응답 객체")
-public class ListMemberResponse {
+@Schema(description = "게시글 목록 조회 응답 객체")
+public class ListBoardResponse {
 
   @Default
-  @Schema(description = "유저 목록")
-  private List<ListMemberDto> memberList = new ArrayList<>();
+  @Schema(description = "게시글 목록")
+  private List<ListBoardDto> boardList = new ArrayList<>();
 
-  @Schema(description = "총 유저 수")
+  @Schema(description = "총 게시글 수")
   private long totalCount;
 }
