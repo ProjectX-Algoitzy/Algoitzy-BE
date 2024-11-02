@@ -2,6 +2,7 @@ package org.example.domain.reply;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.BooleanToYNConverter;
 import org.example.domain.board.Board;
 import org.example.domain.member.Member;
 import org.example.domain.reply_like.ReplyLike;
@@ -83,6 +85,11 @@ public class Reply {
     @LastModifiedBy
     private String updatedBy;
 
+    @Convert(converter = BooleanToYNConverter.class)
+    @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+    @Comment("삭제 여부")
+    private Boolean deleteYn;
+
     @Builder
     public Reply(String content, Integer depth, Integer orderNumber,
         Long parentId, Reply parent,  Member member, Board board) {
@@ -93,5 +100,10 @@ public class Reply {
         this.parent = parent;
         this.member = member;
         this.board = board;
+    }
+
+    public void delete() {
+        this.deleteYn = true;
+        this.content = null;
     }
 }
