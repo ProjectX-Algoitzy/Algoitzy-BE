@@ -29,7 +29,7 @@ public class BoardController {
 
     @GetMapping("/category")
     @Operation(summary = "게시글 카테고리 목록 조회")
-    public ApiResponse<ListBoardCategoryResponse> getBoardList(@RequestParam BoardCategory boardCategory) {
+    public ApiResponse<ListBoardCategoryResponse> getBoardList() {
         return ApiResponse.onSuccess(boardService.getBoardCategoryList());
     }
 
