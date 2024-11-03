@@ -37,7 +37,7 @@ public class ListBoardRepository {
             queryFactory
                 .select(Projections.fields(ListBoardDto.class,
                     board.id.as("boardId"),
-                    board.category.stringValue().as("boardCategory"),
+                    board.category.stringValue().as("category"),
                     board.title,
                     board.member.name.as("createdName"),
                     board.createdTime,
