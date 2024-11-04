@@ -24,6 +24,7 @@ public class ListAttendanceRepository {
           ListAttendanceDto.class,
           attendance.week.value.as("week"),
           studyMember.member.name,
+          studyMember.member.handle,
           attendance.problemYN,
           attendance.blogYN,
           attendance.workbookYN
