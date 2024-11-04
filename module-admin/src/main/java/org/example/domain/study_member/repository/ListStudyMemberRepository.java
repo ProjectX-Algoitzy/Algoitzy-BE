@@ -20,7 +20,8 @@ public class ListStudyMemberRepository {
     return queryFactory
       .select(Projections.fields(
           ListAttendanceDto.class,
-          studyMember.member.name
+          studyMember.member.name,
+          studyMember.member.handle
         )
       )
       .from(studyMember)
