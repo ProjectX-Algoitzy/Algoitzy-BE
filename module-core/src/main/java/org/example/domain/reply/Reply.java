@@ -38,72 +38,71 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Reply {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String content;
+  @Comment("내용")
+  private String content;
 
-    @Comment("댓글/대댓글의 깊이")
-    private Integer depth;
+  @Comment("댓글/대댓글의 깊이")
+  private Integer depth;
 
-    @Comment("댓글 순서")
-    private Integer orderNumber;
+  @Comment("부모 댓글 참조 id")
+  private Long parentId;
 
-    @Comment("부모 댓글 참조 id")
-    private Long parentId;
+  @Convert(converter = BooleanToYNConverter.class)
+  @Comment("삭제 여부")
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  private Boolean deleteYn;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_reply_id")
-    private Reply parent;
+  @Convert(converter = BooleanToYNConverter.class)
+  @Comment("관리자 삭제 여부")
+  @Column(nullable = false, columnDefinition = "char(1) default 'N'")
+  private Boolean deleteByAdminYn;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Reply> childrenList;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "board_id")
+  private Board board;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+  @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ReplyLike> replyLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReplyLike> replyLikeList = new ArrayList<>();
+  @CreatedDate
+  @Column(updatable = false)
+  private LocalDateTime createdTime;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
+  @LastModifiedDate
+  private LocalDateTime updatedTime;
 
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
+  @CreatedBy
+  @Column(updatable = false)
+  private String createdBy;
 
-    @CreatedBy
-    @Column(updatable = false)
-    private String createdBy;
+  @LastModifiedBy
+  private String updatedBy;
 
-    @LastModifiedBy
-    private String updatedBy;
+  @Builder
+  public Reply(String content, Integer depth,
+    Long parentId, Member member, Board board) {
+    this.content = content;
+    this.depth = depth;
+    this.parentId = parentId;
+    this.member = member;
+    this.board = board;
+  }
 
-    @Convert(converter = BooleanToYNConverter.class)
-    @Column(nullable = false, columnDefinition = "char(1) default 'N'")
-    @Comment("삭제 여부")
-    private Boolean deleteYn;
+  public void delete() {
+    this.deleteYn = true;
+    this.content = null;
+  }
 
-    @Builder
-    public Reply(String content, Integer depth, Integer orderNumber,
-        Long parentId, Reply parent,  Member member, Board board) {
-        this.content = content;
-        this.depth = depth;
-        this.orderNumber = orderNumber;
-        this.parentId = parentId;
-        this.parent = parent;
-        this.member = member;
-        this.board = board;
-    }
-
-    public void delete() {
-        this.deleteYn = true;
-        this.content = null;
-    }
+  public void deleteByAdmin() {
+    this.deleteByAdminYn = true;
+    delete();
+  }
 }

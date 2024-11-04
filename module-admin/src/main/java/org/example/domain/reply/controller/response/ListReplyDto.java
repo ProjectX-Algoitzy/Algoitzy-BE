@@ -41,6 +41,12 @@ public class ListReplyDto {
   @Schema(description = "댓글 깊이")
   private int depth;
 
+  @Schema(description = "삭제 여부")
+  private boolean deleteYn;
+
+  @Schema(description = "관리자 삭제 여부")
+  private boolean deleteByAdminYn;
+
   @Default
   @Schema(description = "자식 댓글 목록")
   private List<ListReplyDto> childrenReplyList = new ArrayList<>();
