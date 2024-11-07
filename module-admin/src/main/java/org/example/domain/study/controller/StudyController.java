@@ -9,15 +9,20 @@ import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.attendance.service.AttendanceService;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
+import org.example.domain.member.controller.request.SearchMemberRequest;
+import org.example.domain.member.controller.response.ListMemberResponse;
 import org.example.domain.study.controller.request.CreateRegularStudyRequest;
 import org.example.domain.study.controller.request.UpdateStudyRequest;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListRegularStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
+import org.example.domain.study_member.service.StudyMemberService;
 import org.example.domain.workbook.controller.response.ListWorkbookResponse;
 import org.example.domain.workbook.service.WorkbookService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +40,7 @@ public class StudyController {
   private final CurriculumService curriculumService;
   private final AttendanceService attendanceService;
   private final WorkbookService workbookService;
+  private final StudyMemberService studyMemberService;
 
   @GetMapping("/{study-id}")
   @Operation(summary = "자율 스터디 상세 조회")
@@ -105,5 +111,13 @@ public class StudyController {
     @PathVariable("study-id") Long studyId
   ) {
     return ApiResponse.onSuccess(workbookService.getWorkbookList(studyId));
+  }
+
+  @GetMapping("/{study-id}/non-study-member")
+  @Operation(summary = "정규 스터디 스터디원 추가 대상 목록 조회")
+  public ApiResponse<ListMemberResponse> getNonStudyMemberList(
+    @PathVariable("study-id") Long studyId,
+    @ParameterObject @ModelAttribute @Valid SearchMemberRequest request) {
+    return ApiResponse.onSuccess(studyMemberService.getNonStudyMemberList(studyId, request));
   }
 }
