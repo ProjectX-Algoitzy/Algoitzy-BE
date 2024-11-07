@@ -17,6 +17,7 @@ import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.ListRegularStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.service.StudyService;
+import org.example.domain.study_member.controller.request.AddRegularStudyMemberRequest;
 import org.example.domain.study_member.service.StudyMemberService;
 import org.example.domain.workbook.controller.response.ListWorkbookResponse;
 import org.example.domain.workbook.service.WorkbookService;
@@ -119,5 +120,14 @@ public class StudyController {
     @PathVariable("study-id") Long studyId,
     @ParameterObject @ModelAttribute @Valid SearchMemberRequest request) {
     return ApiResponse.onSuccess(studyMemberService.getNonStudyMemberList(studyId, request));
+  }
+
+  @PostMapping("/{study-id}/study-member")
+  @Operation(summary = "정규 스터디 스터디원 추가")
+  public ApiResponse<Void> addRegularStudyMember(
+    @PathVariable("study-id") Long studyId,
+    @RequestBody @Valid AddRegularStudyMemberRequest request) {
+    studyMemberService.addRegularStudyMember(studyId, request);
+    return ApiResponse.onSuccess();
   }
 }
