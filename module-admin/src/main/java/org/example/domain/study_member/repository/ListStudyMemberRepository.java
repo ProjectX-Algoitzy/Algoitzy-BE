@@ -14,7 +14,6 @@ import org.example.domain.attendance.controller.response.ListAttendanceDto;
 import org.example.domain.member.controller.request.SearchMemberRequest;
 import org.example.domain.member.controller.response.ListMemberDto;
 import org.example.domain.member.enums.Role;
-import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.controller.request.AddRegularStudyMemberRequest;
 import org.example.domain.study_member.enums.StudyMemberStatus;

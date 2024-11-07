@@ -15,7 +15,7 @@ import org.example.domain.select_answer.service.CreateSelectAnswerService;
 import org.example.domain.study.Study;
 import org.example.domain.study_member.StudyMember;
 import org.example.domain.study_member.repository.DetailStudyMemberRepository;
-import org.example.domain.study_member.repository.StudyMemberRepository;
+import org.example.domain.study_member.repository.ListStudyMemberRepository;
 import org.example.domain.study_member.service.CreateStudyMemberService;
 import org.example.domain.text_answer.service.CreateTextAnswerService;
 import org.example.util.SecurityUtils;
@@ -32,15 +32,19 @@ public class CreateAnswerService {
   private final CreateTextAnswerService createTextAnswerService;
   private final CreateSelectAnswerService createSelectAnswerService;
   private final CreateStudyMemberService createStudyMemberService;
+  private final ListStudyMemberRepository listStudyMemberRepository;
   private final DetailAnswerRepository detailAnswerRepository;
   private final DetailStudyMemberRepository detailStudyMemberRepository;
   private final AnswerRepository answerRepository;
-  private final StudyMemberRepository studyMemberRepository;
 
   /**
    * 지원서 작성
    */
   public void createAnswer(Long applicationId, CreateAnswerRequest request) {
+    if (listStudyMemberRepository.canAddRegularStudyMember()) {
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "정규 스터디 수료 이력이 있습니다. 임원진에게 문의 바랍니다.");
+    }
+
     // 기존 지원서 삭제 후 저장
     Optional<Answer> optionalAnswer = detailAnswerRepository.getAnswer(applicationId, SecurityUtils.getCurrentMemberEmail());
     optionalAnswer.ifPresent(answerRepository::delete);
