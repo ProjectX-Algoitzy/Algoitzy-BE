@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,8 +41,8 @@ public class BoardController {
     return ApiResponse.onSuccess(boardService.getBoardCategoryList());
   }
 
-  @PutMapping
-  @Operation(summary = "공지사항 게시글 임시저장/생성")
+  @PostMapping
+  @Operation(summary = "공지사항 게시글 생성")
   public ApiResponse<Long> createBoard(CreateBoardRequest request) {
     return ApiResponse.onCreate(boardService.createBoard(request));
   }
@@ -61,6 +61,7 @@ public class BoardController {
     return ApiResponse.onSuccess(boardService.getBoard(boardId));
   }
 
+  @Deprecated
   @GetMapping("/check-draft")
   @Operation(summary = "임시저장 게시글 존재 여부 조회")
   public ApiResponse<Boolean> checkDraftBoard() {

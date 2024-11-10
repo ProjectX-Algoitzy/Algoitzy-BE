@@ -9,9 +9,6 @@ import java.util.List;
 public record CreateBoardRequest(
 
   @Schema(description = "게시글 제목")
-  Long boardId,
-
-  @Schema(description = "게시글 제목")
   String title,
 
   @NotBlank

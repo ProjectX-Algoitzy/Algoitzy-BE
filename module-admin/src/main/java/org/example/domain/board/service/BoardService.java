@@ -26,7 +26,7 @@ public class BoardService {
   }
 
   /**
-   * 공지사항 게시글 임시 생성/생성
+   * 공지사항 게시글 생성
    */
   public long createBoard(CreateBoardRequest request) {
     return createBoardService.createBoard(request);
