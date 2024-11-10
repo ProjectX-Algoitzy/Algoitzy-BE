@@ -18,6 +18,7 @@ import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.response.ListBoardDto;
 import org.example.domain.board.enums.BoardSort;
 import org.example.domain.board.enums.BoardCategory;
+import org.example.util.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -120,4 +121,36 @@ public class ListBoardRepository {
       case VIEW_COUNT -> board.viewCount.desc();
     };
   }
+
+  /**
+   * 임시저장 게시글 목록 조회
+   */
+  public List<ListBoardDto> getDraftBoardList() {
+    return queryFactory
+      .select(Projections.fields(
+          ListBoardDto.class,
+          board.id.as("boardId"),
+          board.category.stringValue().as("category"),
+          board.title,
+          board.member.name.as("createdName"),
+          board.createdTime,
+          Expressions.booleanTemplate(
+              "case when {0} > {1} then true else false end",
+              board.createdTime, LocalDateTime.now().minusDays(3))
+            .as("newBoardYn"),
+          board.viewCount,
+          board.fixYn,
+          board.deleteYn
+        )
+      )
+      .from(board)
+      .where(
+        board.saveYn.isFalse(),
+        board.category.eq(BoardCategory.NOTICE),
+        board.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+      )
+      .orderBy(board.createdTime.desc())
+      .fetch();
+  }
 }
+
