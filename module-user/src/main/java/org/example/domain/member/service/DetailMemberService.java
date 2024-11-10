@@ -7,6 +7,10 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.response.ListBoardDto;
+import org.example.domain.board.controller.response.ListBoardResponse;
+import org.example.domain.board.repository.ListBoardRepository;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
@@ -18,6 +22,7 @@ import org.example.domain.member.repository.MemberRepository;
 import org.example.domain.study.controller.response.ListStudyDto;
 import org.example.domain.study.repository.ListStudyRepository;
 import org.example.util.SecurityUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +35,7 @@ public class DetailMemberService {
   private final CoreMemberService coreMemberService;
   private final DetailMemberRepository detailMemberRepository;
   private final ListStudyRepository listStudyRepository;
+  private final ListBoardRepository listBoardRepository;
   private final MemberRepository memberRepository;
 
   private final PasswordEncoder encoder;
@@ -60,6 +66,9 @@ public class DetailMemberService {
     return detailMemberRepository.getMyPageInfo(memberId);
   }
 
+  /**
+   * 마이페이지 스터디 정보
+   */
   public MyPageStudyResponse getMyPageStudy(Long memberId) {
     List<ListStudyDto> passStudyList = listStudyRepository.getMyPageStudy(memberId, true);
     passStudyList.forEach(dto -> dto.updateType(dto.getStudyType()));
@@ -77,6 +86,21 @@ public class DetailMemberService {
       .applyStudyList(applyStudyList)
       .build();
   }
+
+  /**
+   * 마이페이지 게시글 정보
+   */
+  public ListBoardResponse getMyPageBoard(Long memberId, SearchBoardRequest request) {
+    Page<ListBoardDto> page = listBoardRepository.getMyPageBoard(memberId, request);
+    page.forEach(board -> board.updateCategory(board.getCategory()));
+
+    return ListBoardResponse.builder()
+      .boardList(page.getContent())
+      .totalCount(page.getTotalElements())
+      .build();
+  }
+
+
 
   /**
    * 내 정보 조회

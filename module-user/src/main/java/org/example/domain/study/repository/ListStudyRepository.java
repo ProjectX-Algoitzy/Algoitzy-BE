@@ -113,6 +113,9 @@ public class ListStudyRepository {
       .fetch().size();
   }
 
+  /**
+   * 마이페이지 스터디 정보
+   */
   public List<ListStudyDto> getMyPageStudy(Long memberId, boolean passYN) {
     return queryFactory
       .select(Projections.fields(
