@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
+import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
@@ -17,6 +18,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +48,12 @@ public class BoardController {
     @Operation(summary = "게시글 상세 조회")
     public ApiResponse<DetailBoardResponse> getDetailBoard(@PathVariable("board-id") Long boardId) {
         return ApiResponse.onSuccess(boardService.getDetailBoard(boardId));
+    }
+
+    @PostMapping
+    @Operation(summary = "게시글 생성")
+    public ApiResponse<Long> createBoard(CreateBoardRequest request) {
+        return ApiResponse.onSuccess(boardService.createBoard(request));
     }
 
     @GetMapping("/{board-id}/reply")
