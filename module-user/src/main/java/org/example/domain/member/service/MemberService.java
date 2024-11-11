@@ -1,6 +1,8 @@
 package org.example.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
@@ -94,6 +96,13 @@ public class MemberService {
    */
   public MyPageStudyResponse getMyPageStudy(Long memberId) {
     return detailMemberService.getMyPageStudy(memberId);
+  }
+
+  /**
+   * 마이페이지 게시글 정보
+   */
+  public ListBoardResponse getMyPageBoard(Long memberId, SearchBoardRequest request) {
+    return detailMemberService.getMyPageBoard(memberId, request);
   }
 
 

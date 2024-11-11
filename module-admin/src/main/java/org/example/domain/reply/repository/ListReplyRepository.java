@@ -4,12 +4,14 @@ import static org.example.domain.reply.QReply.reply;
 import static org.example.domain.reply_like.QReplyLike.replyLike;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.reply.Reply;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.reply.controller.response.ListReplyDto;
 import org.example.util.SecurityUtils;
@@ -70,9 +72,21 @@ public class ListReplyRepository {
                 replyLike.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               ).exists()
             , "myLikeYn"),
-          reply.depth
+          reply.depth,
+          reply.deleteYn,
+          reply.deleteByAdminYn
         )
       );
+  }
+
+  public List<Reply> getChildrenList(Long parentId) {
+    return queryFactory
+      .selectFrom(reply)
+      .where(
+        (parentId == null) ? reply.parentId.isNull() : reply.parentId.eq(parentId)
+      )
+      .orderBy(reply.deleteYn.asc())
+      .fetch();
   }
 
 }

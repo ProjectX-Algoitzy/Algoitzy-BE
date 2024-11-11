@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReplyService {
 
+  private final CreateReplyService createReplyService;
   private final ListReplyService listReplyService;
 
   /**
@@ -16,5 +17,12 @@ public class ReplyService {
    */
   public ListReplyResponse getReplyList(Long boardId, SearchReplyRequest request) {
     return listReplyService.getReplyList(boardId, request);
+  }
+
+  /**
+   * 댓글 삭제
+   */
+  public void deleteReply(Long replyId) {
+    createReplyService.deleteReply(replyId);
   }
 }

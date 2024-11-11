@@ -9,7 +9,6 @@ import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
-import org.example.domain.board.controller.response.DetailDraftBoardResponse;
 import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.service.BoardService;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,8 +40,8 @@ public class BoardController {
     return ApiResponse.onSuccess(boardService.getBoardCategoryList());
   }
 
-  @PutMapping
-  @Operation(summary = "공지사항 게시글 임시저장/생성")
+  @PostMapping
+  @Operation(summary = "공지사항 게시글 생성")
   public ApiResponse<Long> createBoard(CreateBoardRequest request) {
     return ApiResponse.onCreate(boardService.createBoard(request));
   }
@@ -61,16 +60,10 @@ public class BoardController {
     return ApiResponse.onSuccess(boardService.getBoard(boardId));
   }
 
-  @GetMapping("/check-draft")
-  @Operation(summary = "임시저장 게시글 존재 여부 조회")
-  public ApiResponse<Boolean> checkDraftBoard() {
-    return ApiResponse.onSuccess(boardService.checkDraftBoard());
-  }
-
   @GetMapping("/draft")
   @Operation(summary = "임시저장 게시글 조회")
-  public ApiResponse<DetailDraftBoardResponse> getDraftBoard() {
-    return ApiResponse.onSuccess(boardService.getDraftBoard());
+  public ApiResponse<ListBoardResponse> getDraftBoardList() {
+    return ApiResponse.onSuccess(boardService.getDraftBoardList());
   }
 
   @PatchMapping("/{board-id}")
