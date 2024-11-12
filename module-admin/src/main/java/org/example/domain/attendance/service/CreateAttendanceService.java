@@ -166,6 +166,7 @@ public class CreateAttendanceService {
 
       int count = 0;
       for (int i = startRect; i <= lastRect; i++) {
+        rectList = webDriver.findElements(By.tagName("rect"));
         WebElement rect = rectList.get(i);
         actions.moveToElement(rect).perform();
 
@@ -174,6 +175,7 @@ public class CreateAttendanceService {
         } catch (InterruptedException e) {
           log.error(e.getMessage());
         }
+        // tooltip에 기록된 해당 날짜에 푼 문제 수 추출
         WebElement tooltip = webDriver.findElement(By.className("google-visualization-tooltip"));
         int colonIndex = tooltip.getText().indexOf(":");
         if (colonIndex != -1) {
