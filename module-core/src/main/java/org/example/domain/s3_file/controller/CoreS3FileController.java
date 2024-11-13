@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
+import org.example.domain.s3_file.controller.response.UploadS3FileResponse;
 import org.example.domain.s3_file.service.CoreS3FileService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -24,10 +24,17 @@ public class CoreS3FileController {
 
   private final CoreS3FileService coreS3FileService;
 
+  @Deprecated
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   @Operation(summary = "S3 파일 업로드")
   public ApiResponse<List<String>> uploadS3File(@RequestPart List<MultipartFile> multipartFileList) {
     return ApiResponse.onCreate(coreS3FileService.uploadS3File(multipartFileList));
+  }
+
+  @PostMapping(value = "/v2", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  @Operation(summary = "S3 파일 업로드 v2")
+  public ApiResponse<UploadS3FileResponse> uploadS3FileV2(@RequestPart List<MultipartFile> multipartFileList) {
+    return ApiResponse.onCreate(coreS3FileService.uploadS3FileV2(multipartFileList));
   }
 
   @DeleteMapping("")

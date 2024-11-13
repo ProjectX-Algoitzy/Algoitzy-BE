@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.s3_file.S3File;
+import org.example.domain.s3_file.controller.response.UploadS3FileDto;
+import org.example.domain.s3_file.controller.response.UploadS3FileResponse;
 import org.example.domain.s3_file.repository.S3FileRepository;
 import org.example.util.FileUtils;
 import org.example.util.RandomUtils;
@@ -71,6 +73,46 @@ public class CoreCreateS3FileService {
     }
 
     return fileUrlList;
+  }
+
+  /**
+   * S3 파일 업로드 v2
+   */
+  public UploadS3FileResponse uploadS3FileV2(List<MultipartFile> multipartFileList) {
+    List<UploadS3FileDto> s3FileList = new ArrayList<>();
+    for (MultipartFile multipartFile : multipartFileList) {
+      String fileName = generateRandomFileName(multipartFile.getOriginalFilename());
+
+      try (InputStream inputStream = multipartFile.getInputStream()) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
+        PutObjectRequest request = new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+          .withCannedAcl(PublicRead);
+        amazonS3.putObject(request);
+      } catch (IOException e) {
+        throw new GeneralException(ErrorStatus.INTERNAL_ERROR, "파일 업로드에 실패했습니다.");
+      }
+
+      String fileUrl = amazonS3Client.getUrl(bucket, fileName).toString();
+
+      s3FileRepository.save(
+        S3File.builder()
+          .originalName(multipartFile.getOriginalFilename())
+          .fileName(fileName)
+          .fileUrl(fileUrl)
+          .build());
+      s3FileList.add(
+        UploadS3FileDto.builder()
+          .originalName(multipartFile.getOriginalFilename())
+          .fileUrl(fileUrl)
+          .build()
+      );
+    }
+
+    return UploadS3FileResponse.builder()
+      .s3FileList(s3FileList)
+      .build();
   }
 
   /**
