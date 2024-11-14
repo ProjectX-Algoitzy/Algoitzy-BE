@@ -29,11 +29,17 @@ public class ListReplyDto {
   @Schema(description = "내용")
   private String content;
 
-  @Schema(description = "작성자")
+  @Schema(description = "작성자 ID")
+  private long memberId;
+
+  @Schema(description = "작성자 이름")
   private String createdName;
 
   @Schema(description = "작성일")
   private LocalDateTime createdTime;
+
+  @Schema(description = "게시판 작성자 여부")
+  private boolean myBoardYn;
 
   @Schema(description = "내 좋아요 여부")
   private boolean myLikeYn;

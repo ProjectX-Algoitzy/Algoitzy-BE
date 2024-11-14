@@ -1,5 +1,6 @@
 package org.example.domain.reply.repository;
 
+import static org.example.domain.board.QBoard.board;
 import static org.example.domain.reply.QReply.reply;
 import static org.example.domain.reply_like.QReplyLike.replyLike;
 
@@ -11,6 +12,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.board.QBoard;
 import org.example.domain.reply.Reply;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.reply.controller.response.ListReplyDto;
@@ -27,7 +29,7 @@ public class ListReplyRepository {
 
   public Page<ListReplyDto> getParentReplyList(Long boardId, SearchReplyRequest request) {
     List<ListReplyDto> boardList =
-      selectFields()
+      selectFields(boardId)
         .from(reply)
         .leftJoin(replyLike).on(reply.eq(replyLike.reply))
         .where(
@@ -43,7 +45,7 @@ public class ListReplyRepository {
   }
 
   public List<ListReplyDto> getChildrenReplyList(Long boardId) {
-    return selectFields()
+    return selectFields(boardId)
       .from(reply)
       .leftJoin(replyLike).on(reply.eq(replyLike.reply))
       .where(
@@ -54,16 +56,23 @@ public class ListReplyRepository {
       .fetch();
   }
 
-  private JPAQuery<ListReplyDto> selectFields() {
+  private JPAQuery<ListReplyDto> selectFields(Long boardId) {
     return queryFactory
       .select(Projections.fields(
           ListReplyDto.class,
           reply.parentId.as("parentReplyId"),
           reply.id.as("replyId"),
+          reply.member.id.as("memberId"),
           reply.member.name.as("createdName"),
           reply.member.profileUrl,
           reply.content,
           reply.createdTime,
+          reply.member.eq(
+            JPAExpressions
+              .select(board.member)
+              .from(board)
+              .where(board.id.eq(boardId))
+          ).as("myBoardYn"),
           Expressions.as(
             JPAExpressions
               .selectFrom(replyLike)
