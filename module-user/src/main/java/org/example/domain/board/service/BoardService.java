@@ -1,6 +1,7 @@
 package org.example.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardCategoryResponse;
@@ -13,6 +14,7 @@ public class BoardService {
 
     private final ListBoardService listBoardService;
     private final DetailBoardService detailBoardService;
+    private final CreateBoardService createBoardService;
 
     /*
     * 게시글 카테고리 목록 조회
@@ -33,6 +35,13 @@ public class BoardService {
     * */
     public DetailBoardResponse getDetailBoard(Long boardId) {
         return detailBoardService.getDetailBoard(boardId);
+    }
+
+    /*
+    * 게시글 생성
+    * */
+    public Long createBoard(CreateBoardRequest request) {
+        return createBoardService.createBoard(request);
     }
 
 }
