@@ -112,30 +112,16 @@ public class ListBoardRepository {
   /**
    * 마이페이지 게시글 정보
    */
-  public Page<ListBoardDto> getMyPageBoard(Long memberId, SearchBoardRequest request) {
-    List<ListBoardDto> boardList =
-      selectFields()
-        .from(board)
-        .where(
-          board.member.id.eq(memberId),
-          board.category.ne(BoardCategory.NOTICE),
-          filterMyBoard(memberId)
-        )
-        .orderBy(board.createdTime.desc())
-        .offset(request.pageRequest().getOffset())
-        .limit(request.pageRequest().getPageSize())
-        .fetch();
-
-    JPAQuery<Long> countQuery = queryFactory
-      .select(board.count())
+  public List<ListBoardDto> getMyPageBoard(Long memberId) {
+    return selectFields()
       .from(board)
       .where(
         board.member.id.eq(memberId),
         board.category.ne(BoardCategory.NOTICE),
         filterMyBoard(memberId)
-      );
-
-    return PageableExecutionUtils.getPage(boardList, request.pageRequest(), countQuery::fetchOne);
+      )
+      .orderBy(board.createdTime.desc())
+      .fetch();
   }
 
   /**

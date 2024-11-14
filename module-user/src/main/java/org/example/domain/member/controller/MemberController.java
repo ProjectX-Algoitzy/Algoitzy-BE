@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
-import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
@@ -85,11 +84,10 @@ public class MemberController {
   }
 
   @GetMapping("/{member-id}/board")
-  @Operation(summary = "마이페이지 게시판 정보")
+  @Operation(summary = "마이페이지 게시글 정보")
   public ApiResponse<ListBoardResponse> getMyPageBoard(
-    @PathVariable("member-id") Long memberId,
-    @ParameterObject @ModelAttribute @Valid SearchBoardRequest request) {
-    return ApiResponse.onSuccess(memberService.getMyPageBoard(memberId, request));
+    @PathVariable("member-id") Long memberId) {
+    return ApiResponse.onSuccess(memberService.getMyPageBoard(memberId));
   }
 
   @GetMapping("/my-info")

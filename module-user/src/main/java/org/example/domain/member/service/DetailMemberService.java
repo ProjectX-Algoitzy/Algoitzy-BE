@@ -7,7 +7,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.response.ListBoardDto;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.repository.ListBoardRepository;
@@ -22,7 +21,6 @@ import org.example.domain.member.repository.MemberRepository;
 import org.example.domain.study.controller.response.ListStudyDto;
 import org.example.domain.study.repository.ListStudyRepository;
 import org.example.util.SecurityUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,13 +88,13 @@ public class DetailMemberService {
   /**
    * 마이페이지 게시글 정보
    */
-  public ListBoardResponse getMyPageBoard(Long memberId, SearchBoardRequest request) {
-    Page<ListBoardDto> page = listBoardRepository.getMyPageBoard(memberId, request);
-    page.forEach(board -> board.updateCategory(board.getCategory()));
+  public ListBoardResponse getMyPageBoard(Long memberId) {
+    List<ListBoardDto> boardList = listBoardRepository.getMyPageBoard(memberId);
+    boardList.forEach(board -> board.updateCategory(board.getCategory()));
 
     return ListBoardResponse.builder()
-      .boardList(page.getContent())
-      .totalCount(page.getTotalElements())
+      .boardList(boardList)
+      .totalCount(boardList.size())
       .build();
   }
 
