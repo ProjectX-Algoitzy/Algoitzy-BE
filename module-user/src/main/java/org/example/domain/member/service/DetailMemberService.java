@@ -60,22 +60,22 @@ public class DetailMemberService {
   /**
    * 마이페이지 멤버 정보
    */
-  public MyPageInfoResponse getMyPageInfo(Long memberId) {
-    return detailMemberRepository.getMyPageInfo(memberId);
+  public MyPageInfoResponse getMyPageInfo(String handle) {
+    return detailMemberRepository.getMyPageInfo(handle);
   }
 
   /**
    * 마이페이지 스터디 정보
    */
-  public MyPageStudyResponse getMyPageStudy(Long memberId) {
-    List<ListStudyDto> passStudyList = listStudyRepository.getMyPageStudy(memberId, true);
+  public MyPageStudyResponse getMyPageStudy(String handle) {
+    List<ListStudyDto> passStudyList = listStudyRepository.getMyPageStudy(handle, true);
     passStudyList.forEach(dto -> dto.updateType(dto.getStudyType()));
 
     List<ListStudyDto> applyStudyList = new ArrayList<>();
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
     // 타인의 마이페이지 열람 시 지원한 스터디 미노출
-    if (member.getId().equals(memberId)) {
-      applyStudyList = new ArrayList<>(listStudyRepository.getMyPageStudy(memberId, false));
+    if (member.getHandle().equals(handle)) {
+      applyStudyList = new ArrayList<>(listStudyRepository.getMyPageStudy(handle, false));
       applyStudyList.forEach(dto -> dto.updateType(dto.getStudyType()));
     }
 
@@ -88,8 +88,8 @@ public class DetailMemberService {
   /**
    * 마이페이지 게시글 정보
    */
-  public ListBoardResponse getMyPageBoard(Long memberId) {
-    List<ListBoardDto> boardList = listBoardRepository.getMyPageBoard(memberId);
+  public ListBoardResponse getMyPageBoard(String handle) {
+    List<ListBoardDto> boardList = listBoardRepository.getMyPageBoard(handle);
     boardList.forEach(board -> board.updateCategory(board.getCategory()));
 
     return ListBoardResponse.builder()

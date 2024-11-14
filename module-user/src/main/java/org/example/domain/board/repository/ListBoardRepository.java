@@ -112,13 +112,13 @@ public class ListBoardRepository {
   /**
    * 마이페이지 게시글 정보
    */
-  public List<ListBoardDto> getMyPageBoard(Long memberId) {
+  public List<ListBoardDto> getMyPageBoard(String handle) {
     return selectFields()
       .from(board)
       .where(
-        board.member.id.eq(memberId),
+        board.member.handle.eq(handle),
         board.category.ne(BoardCategory.NOTICE),
-        filterMyBoard(memberId)
+        filterMyBoard(handle)
       )
       .orderBy(board.createdTime.desc())
       .fetch();
@@ -127,7 +127,7 @@ public class ListBoardRepository {
   /**
    * 나의 마이페이지가 아닌 경우, 관리자 삭제 글과 임시저장 글 미노출
    */
-  private Predicate filterMyBoard(Long memberId) {
+  private Predicate filterMyBoard(String handle) {
     Member currentMember = queryFactory
       .selectFrom(member)
       .where(member.email.eq(SecurityUtils.getCurrentMemberEmail()))
@@ -136,7 +136,7 @@ public class ListBoardRepository {
     BooleanBuilder builder = new BooleanBuilder();
 
     // 나의 마이페이지 조회한 경우
-    if (Objects.requireNonNull(currentMember).getId().equals(memberId)) {
+    if (Objects.requireNonNull(currentMember).getHandle().equals(handle)) {
       return null;
     }
 

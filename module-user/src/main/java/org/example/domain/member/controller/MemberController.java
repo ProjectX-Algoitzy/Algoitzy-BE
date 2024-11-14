@@ -71,23 +71,23 @@ public class MemberController {
     return ApiResponse.onSuccess(memberService.findEmail(request));
   }
 
-  @GetMapping("/{member-id}/info")
+  @GetMapping("/{handle}/info")
   @Operation(summary = "마이페이지 멤버 정보")
-  public ApiResponse<MyPageInfoResponse> getMyPageInfo(@PathVariable("member-id") Long memberId) {
-    return ApiResponse.onSuccess(memberService.getMyPageInfo(memberId));
+  public ApiResponse<MyPageInfoResponse> getMyPageInfo(@PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(memberService.getMyPageInfo(handle));
   }
 
-  @GetMapping("/{member-id}/study")
+  @GetMapping("/{handle}/study")
   @Operation(summary = "마이페이지 스터디 정보")
-  public ApiResponse<MyPageStudyResponse> getMyPageStudy(@PathVariable("member-id") Long memberId) {
-    return ApiResponse.onSuccess(memberService.getMyPageStudy(memberId));
+  public ApiResponse<MyPageStudyResponse> getMyPageStudy(@PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(memberService.getMyPageStudy(handle));
   }
 
-  @GetMapping("/{member-id}/board")
+  @GetMapping("/{handle}/board")
   @Operation(summary = "마이페이지 게시글 정보")
   public ApiResponse<ListBoardResponse> getMyPageBoard(
-    @PathVariable("member-id") Long memberId) {
-    return ApiResponse.onSuccess(memberService.getMyPageBoard(memberId));
+    @PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(memberService.getMyPageBoard(handle));
   }
 
   @GetMapping("/my-info")

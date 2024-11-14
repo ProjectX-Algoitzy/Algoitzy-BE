@@ -41,7 +41,7 @@ public class DetailMemberRepository {
   /**
    * 마이페이지 멤버 정보
    */
-  public MyPageInfoResponse getMyPageInfo(Long memberId) {
+  public MyPageInfoResponse getMyPageInfo(String handle) {
     return queryFactory
       .select(Projections.fields(
         MyPageInfoResponse.class,
@@ -57,7 +57,7 @@ public class DetailMemberRepository {
           .as("baekjoonUrl"))
       )
       .from(member)
-      .where(member.id.eq(memberId))
+      .where(member.handle.eq(handle))
       .fetchOne();
   }
 
