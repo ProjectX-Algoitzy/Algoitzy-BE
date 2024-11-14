@@ -29,6 +29,7 @@ public class DetailMemberRepository {
           member.id.as("memberId"),
           member.profileUrl,
           member.name,
+          member.handle,
           member.role
         )
       )

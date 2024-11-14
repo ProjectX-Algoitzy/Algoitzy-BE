@@ -93,7 +93,7 @@ public class MemberController {
   }
 
   @GetMapping("/my-info")
-  @Operation(summary = "내 정보 조회")
+  @Operation(summary = "내 정보 조회", description = "내 정보 수정 페이지")
   public ApiResponse<MemberInfoResponse> getMyInfo() {
     return ApiResponse.onSuccess(memberService.getMyInfo());
   }

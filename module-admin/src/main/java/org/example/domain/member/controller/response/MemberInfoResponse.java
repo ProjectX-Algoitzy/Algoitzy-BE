@@ -20,6 +20,9 @@ public class MemberInfoResponse {
   @Schema(description = "이름")
   private String name;
 
+  @Schema(description = "백준 닉네임")
+  private String handle;
+
   @Schema(description = "역할")
   private Role role;
 }
