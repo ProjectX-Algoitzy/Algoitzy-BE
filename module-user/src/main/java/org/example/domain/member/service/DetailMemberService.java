@@ -61,7 +61,8 @@ public class DetailMemberService {
    * 마이페이지 멤버 정보
    */
   public MyPageInfoResponse getMyPageInfo(String handle) {
-    return detailMemberRepository.getMyPageInfo(handle);
+    return Optional.ofNullable(detailMemberRepository.getMyPageInfo(handle))
+      .orElseThrow(() -> new GeneralException(ErrorStatus.PAGE_NOT_FOUND, "존재하지 않는 회원입니다."));
   }
 
   /**
