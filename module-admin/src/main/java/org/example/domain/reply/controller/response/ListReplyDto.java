@@ -29,8 +29,8 @@ public class ListReplyDto {
   @Schema(description = "내용")
   private String content;
 
-  @Schema(description = "작성자 ID")
-  private long memberId;
+  @Schema(description = "작성자 백준 닉네임")
+  private String handle;
 
   @Schema(description = "작성자 이름")
   private String createdName;

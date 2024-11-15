@@ -26,11 +26,17 @@ public class ListReplyDto {
     @Schema(description = "내용")
     private String content;
 
+    @Schema(description = "작성자 백준 닉네임")
+    private String handle;
+
     @Schema(description = "작성자")
     private String createdName;
 
     @Schema(description = "작성일")
     private LocalDateTime createdTime;
+
+    @Schema(description = "게시판 작성자 여부")
+    private boolean myBoardYn;
 
     @Schema(description = "작성자 프로필 이미지 URL")
     private String profileUrl;
@@ -40,6 +46,12 @@ public class ListReplyDto {
 
     @Schema(description = "댓글 깊이")
     private int depth;
+
+    @Schema(description = "삭제 여부")
+    private boolean deleteYn;
+
+    @Schema(description = "관리자 삭제 여부")
+    private boolean deleteByAdminYn;
 
     @Default
     @Schema(description = "자식 댓글 목록")

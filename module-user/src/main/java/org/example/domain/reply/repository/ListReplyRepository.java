@@ -1,5 +1,6 @@
 package org.example.domain.reply.repository;
 
+import static org.example.domain.board.QBoard.board;
 import static org.example.domain.reply.QReply.reply;
 import static org.example.domain.reply_like.QReplyLike.replyLike;
 
@@ -21,58 +22,68 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ListReplyRepository {
 
-    private final JPAQueryFactory queryFactory;
+  private final JPAQueryFactory queryFactory;
 
 
-    public Page<ListReplyDto> getParentReplyList(Long boardId, SearchReplyRequest request) {
-        List<ListReplyDto> boardList =
-            selectFields()
-                .from(reply)
-                .leftJoin(replyLike).on(reply.eq(replyLike.reply))
-                .where(
-                    reply.board.id.eq(boardId),
-                    reply.parentId.isNull()
-                )
-                .offset(request.pageRequest().getOffset())
-                .limit(request.pageRequest().getPageSize())
-                .orderBy(reply.createdTime.desc())
-                .fetch();
+  public Page<ListReplyDto> getParentReplyList(Long boardId, SearchReplyRequest request) {
+    List<ListReplyDto> boardList =
+      selectFields(boardId)
+        .from(reply)
+        .leftJoin(replyLike).on(reply.eq(replyLike.reply))
+        .where(
+          reply.board.id.eq(boardId),
+          reply.parentId.isNull()
+        )
+        .offset(request.pageRequest().getOffset())
+        .limit(request.pageRequest().getPageSize())
+        .orderBy(reply.createdTime.desc())
+        .fetch();
 
-        return PageableExecutionUtils.getPage(boardList, request.pageRequest(), () -> 0L);
-    }
+    return PageableExecutionUtils.getPage(boardList, request.pageRequest(), () -> 0L);
+  }
 
-    public List<ListReplyDto> getChildrenReplyList(Long boardId) {
-        return selectFields()
-            .from(reply)
-            .leftJoin(replyLike).on(reply.eq(replyLike.reply))
+  public List<ListReplyDto> getChildrenReplyList(Long boardId) {
+    return selectFields(boardId)
+      .from(reply)
+      .leftJoin(replyLike).on(reply.eq(replyLike.reply))
+      .where(
+        reply.board.id.eq(boardId),
+        reply.parentId.isNotNull()
+      )
+      .orderBy(reply.createdTime.asc())
+      .fetch();
+  }
+
+  private JPAQuery<ListReplyDto> selectFields(Long boardId) {
+    return queryFactory.select(
+      Projections.fields(ListReplyDto.class,
+        reply.id.as("replyId"),
+        reply.parentId.as("parentReplyId"),
+        reply.member.handle.as("handle"),
+        reply.member.name.as("createdName"),
+        reply.member.profileUrl,
+        reply.content,
+        reply.createdTime,
+        reply.member.eq(
+          JPAExpressions
+            .select(board.member)
+            .from(board)
+            .where(board.id.eq(boardId))
+        ).as("myBoardYn"),
+        reply.depth,
+        Expressions.as(
+          JPAExpressions
+            .selectFrom(replyLike)
             .where(
-                reply.board.id.eq(boardId),
-                reply.parentId.isNotNull()
-            )
-            .orderBy(reply.createdTime.asc())
-            .fetch();
-    }
+              replyLike.reply.eq(reply),
+              replyLike.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+            ).exists(),
+          "myLikeYn"),
+        reply.deleteYn,
+        reply.deleteByAdminYn
 
-    private JPAQuery<ListReplyDto> selectFields() {
-        return queryFactory.select(Projections.fields(ListReplyDto.class,
-            reply.id.as("replyId"),
-            reply.id.as("parentReplyId"),
-            reply.member.name.as("createdName"),
-            reply.member.profileUrl,
-            reply.content,
-            reply.createdTime,
-            reply.depth,
-            Expressions.as(
-                JPAExpressions
-                    .selectFrom(replyLike)
-                    .where(
-                        replyLike.reply.eq(reply),
-                        replyLike.member.email.eq(SecurityUtils.getCurrentMemberEmail())
-                    ).exists(),
-                "myLikeYn"
-            )
-        ));
-    }
+      ));
+  }
 
 
 }

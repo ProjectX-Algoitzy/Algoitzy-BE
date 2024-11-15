@@ -5,14 +5,12 @@ import static org.example.domain.reply.QReply.reply;
 import static org.example.domain.reply_like.QReplyLike.replyLike;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.board.QBoard;
 import org.example.domain.reply.Reply;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.reply.controller.response.ListReplyDto;
@@ -62,7 +60,7 @@ public class ListReplyRepository {
           ListReplyDto.class,
           reply.parentId.as("parentReplyId"),
           reply.id.as("replyId"),
-          reply.member.id.as("memberId"),
+          reply.member.handle.as("handle"),
           reply.member.name.as("createdName"),
           reply.member.profileUrl,
           reply.content,
