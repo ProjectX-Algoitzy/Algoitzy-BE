@@ -9,6 +9,7 @@ import org.example.domain.board.service.CoreBoardService;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.reply.Reply;
 import org.example.domain.reply.controller.request.CreateReplyRequest;
+import org.example.domain.reply.controller.request.UpdateReplyRequest;
 import org.example.domain.reply.repository.ReplyRepository;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
@@ -75,5 +76,31 @@ public class CreateReplyService {
         if (!parentReply.getBoard().getId().equals(request.boardId())) {
             throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "대댓글을 남길 게시물을 확인해주세요.");
         }
+    }
+
+    /**
+     * 댓글 수정
+     */
+    public void updateReply(Long replyId, UpdateReplyRequest request) {
+        Reply reply = coreReplyService.findById(replyId);
+
+        if (!reply.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))) {
+            throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자신이 남긴 댓글 이외에는 수정할 수 없습니다.");
+        }
+
+        if (badWordFiltering.blankCheck(request.content())) {
+            throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "댓글에 욕설을 포함할 수 없습니다.");
+        }
+
+        reply.updateReply(
+            request.content()
+        );
+    }
+
+    /**
+     * 댓글 삭제
+     */
+    public void deleteReply(Long replyId) {
+
     }
 }
