@@ -30,6 +30,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -105,4 +106,17 @@ public class Reply {
     this.deleteByAdminYn = true;
     delete();
   }
+
+  public void updateReply(String content) {
+    if (StringUtils.hasText(content)) this.content = content;
+  }
+
+  public void addReplyLike(ReplyLike replyLike) {
+    replyLikeList.add(replyLike);
+  }
+
+  public void removeReplyLike(ReplyLike replyLike) {
+    replyLikeList.remove(replyLike);
+  }
+
 }

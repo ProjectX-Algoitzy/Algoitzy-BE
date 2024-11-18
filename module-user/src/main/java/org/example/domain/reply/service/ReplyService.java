@@ -3,6 +3,7 @@ package org.example.domain.reply.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.reply.controller.request.CreateReplyRequest;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
+import org.example.domain.reply.controller.request.UpdateReplyRequest;
 import org.example.domain.reply.controller.response.ListReplyResponse;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,16 @@ public class ReplyService {
     public void createReply(CreateReplyRequest request) {
         createReplyService.createReply(request);
     }
+
+    /**
+     * 게시글 댓글 수정
+     */
+    public void updateReply(Long replyId, UpdateReplyRequest request) { createReplyService.updateReply(replyId, request);}
+
+    /**
+     * 게시글 댓글 삭제
+     */
+    public void deleteReply(Long replyId) {createReplyService.deleteReply(replyId);}
+
 
 }
