@@ -144,12 +144,17 @@ public class CreateAttendanceService {
    * @google-visualization-tooltip : 해결 일자, 해결 수 툴팁
    */
   private boolean getProblemYN(Week week, StudyMember studyMember, int requestCount) {
+    // 코딩테스트 기초반
     if (studyMember.getStudy().getName().equals(ValueUtils.CODING_TEST_BASIC)) {
       return getBasicProblemYN(week, studyMember);
     }
 
-    //== 심화반 ==//
-    else {
+    // 코딩테스트 심화반
+    else if (studyMember.getStudy().getName().equals(ValueUtils.CODING_TEST_PREPARE)) {
+
+      // 8주차는 문제 인증 X
+      if (week.getValue().equals(8)) return true;
+
       // 페이지 랜딩 대기
       webDriver.get(Url.BAEKJOON_USER.getBaekjoonUserUrl(studyMember.getMember().getHandle()));
       new WebDriverWait(webDriver, Duration.ofSeconds(10))
@@ -186,12 +191,10 @@ public class CreateAttendanceService {
       // 백준 풀이 수 + requestCount
       int solvedCount = count + requestCount;
       log.info("{} 문제 풀이 수 : {}", studyMember.getMember().getName(), solvedCount);
-      if (studyMember.getStudy().getName().equals(ValueUtils.CODING_TEST_PREPARE)) {
-        return solvedCount >= CODING_TEST_PREPARE_MIN_REQUEST_COUNT;
-      }
-      return true;
+      return solvedCount >= CODING_TEST_PREPARE_MIN_REQUEST_COUNT;
     }
 
+    return true;
   }
 
   /**
