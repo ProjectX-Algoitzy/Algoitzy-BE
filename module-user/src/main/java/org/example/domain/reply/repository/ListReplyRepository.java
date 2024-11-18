@@ -11,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.reply.Reply;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.reply.controller.response.ListReplyDto;
 import org.example.util.SecurityUtils;
@@ -85,6 +86,14 @@ public class ListReplyRepository {
       ));
   }
 
-
+  public List<Reply> getChildrenList(Long parentId) {
+    return queryFactory
+        .selectFrom(reply)
+        .where(
+            (parentId == null) ? reply.parentId.isNull() : reply.parentId.eq(parentId)
+        )
+        .orderBy(reply.deleteYn.asc())
+        .fetch();
+  }
 }
 
