@@ -105,8 +105,4 @@ public class Study {
   public void end() {
     this.endYN = true;
   }
-
-  public void end() {
-    this.endYN = true;
-  }
 }
