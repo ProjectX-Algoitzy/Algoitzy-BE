@@ -99,6 +99,11 @@ public class Study {
 
   public void markOldGeneration(Generation oldGeneration) {
     this.name = oldGeneration.getValue() + "기 " + this.name;
+    this.endYN = true;
+  }
+
+  public void end() {
+    this.endYN = true;
   }
 
   public void end() {

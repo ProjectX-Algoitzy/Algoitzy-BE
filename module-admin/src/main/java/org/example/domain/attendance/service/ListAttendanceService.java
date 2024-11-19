@@ -18,6 +18,9 @@ public class ListAttendanceService {
   private final ListAttendanceRepository listAttendanceRepository;
   private final ListStudyMemberRepository listStudyMemberRepository;
 
+  /**
+   * 정규 스터디 출석부 조회
+   */
   public ListAttendanceResponse getAttendanceList(Long studyId) {
     List<ListAttendanceDto> attendanceList = listAttendanceRepository.getAttendanceList(studyId);
     if (ObjectUtils.isEmpty(attendanceList)) {
