@@ -1,7 +1,9 @@
 package org.example.domain.attendance.repository;
 
 import static org.example.domain.attendance.QAttendance.attendance;
+import static org.example.domain.member.QMember.member;
 import static org.example.domain.study_member.QStudyMember.studyMember;
+import static org.example.domain.week.QWeek.week;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -31,7 +33,9 @@ public class ListAttendanceRepository {
         )
       )
       .from(attendance)
-      .innerJoin(studyMember).on(attendance.studyMember.eq(studyMember))
+      .rightJoin(studyMember).on(attendance.studyMember.eq(studyMember))
+      .innerJoin(member).on(studyMember.member.eq(member))
+      .leftJoin(week).on(attendance.week.eq(week))
       .where(
         studyMember.study.id.eq(studyId),
         studyMember.status.eq(StudyMemberStatus.PASS)

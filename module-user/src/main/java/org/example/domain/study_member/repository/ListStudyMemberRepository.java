@@ -1,17 +1,22 @@
 package org.example.domain.study_member.repository;
 
+import static org.example.domain.member.QMember.member;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.attendance.controller.response.ListAttendanceDto;
+import org.example.domain.member.enums.Role;
 import org.example.domain.study.Study;
+import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.controller.response.ListTempStudyMemberDto;
 import org.example.domain.study_member.enums.StudyMemberRole;
 import org.example.domain.study_member.enums.StudyMemberStatus;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -68,4 +73,36 @@ public class ListStudyMemberRepository {
       )
       .fetch();
   }
+
+  /**
+   * 정규 스터디 스터디원 추가 가능 여부 반환
+   */
+  public boolean canAddRegularStudyMember() {
+    return !queryFactory
+      .selectFrom(member)
+      .where(
+        member.role.eq(Role.ROLE_USER),
+        member.blockYN.isFalse(),
+        isRegularStudyMember()
+      )
+      .fetch()
+      .isEmpty();
+  }
+
+  /**
+   * 정규 스터디 참여 이력 있는 멤버
+   */
+  private Predicate isRegularStudyMember() {
+    return member.eq(
+      queryFactory
+        .select(studyMember.member)
+        .from(studyMember)
+        .where(
+          studyMember.study.type.eq(StudyType.REGULAR),
+          studyMember.status.eq(StudyMemberStatus.PASS),
+          studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
+        )
+    );
+  }
+
 }
