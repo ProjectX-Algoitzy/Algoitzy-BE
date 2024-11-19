@@ -1,6 +1,5 @@
 package org.example.domain.board.service;
 
-import com.vane.badwordfiltering.BadWordFiltering;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +26,11 @@ public class CreateBoardService {
   private final CoreMemberService coreMemberService;
   private final CoreCreateS3FileService coreCreateS3FileService;
   private final BoardRepository boardRepository;
-  private final BadWordFiltering badWordFiltering;
 
   /**
    * 공지사항 게시글 생성
    */
   public long createBoard(CreateBoardRequest request) {
-    if (badWordFiltering.blankCheck(request.title()) ||
-      badWordFiltering.blankCheck(request.content())) {
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목/내용에 욕설을 포함할 수 없습니다.");
-    }
 
     // 게시글 생성
     Board board = Board.builder()
@@ -70,11 +64,6 @@ public class CreateBoardService {
     Board board = coreBoardService.findById(boardId);
     if (!board.getCategory().equals(BoardCategory.NOTICE)) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "공지사항 외 게시글은 수정할 수 없습니다.");
-    }
-
-    if (badWordFiltering.blankCheck(request.title()) ||
-      badWordFiltering.blankCheck(request.content())) {
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목/내용에 욕설을 포함할 수 없습니다.");
     }
 
     board.updateNoticeBoard(
