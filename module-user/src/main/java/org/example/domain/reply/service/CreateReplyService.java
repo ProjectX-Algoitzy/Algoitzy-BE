@@ -1,6 +1,5 @@
 package org.example.domain.reply.service;
 
-import com.vane.badwordfiltering.BadWordFiltering;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateReplyService {
 
-    private final BadWordFiltering badWordFiltering;
     private final CoreMemberService coreMemberService;
     private final CoreBoardService coreBoardService;
     private final CoreReplyService coreReplyService;
@@ -37,9 +35,6 @@ public class CreateReplyService {
      * 댓글 생성
      */
     public void createReply(CreateReplyRequest request) {
-        if (badWordFiltering.blankCheck(request.content())) {
-            throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "댓글에 욕설을 포함할 수 없습니다.");
-        }
 
         Board board = coreBoardService.findById(request.boardId());
         Reply reply = null;
@@ -93,10 +88,6 @@ public class CreateReplyService {
 
         if (!reply.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))) {
             throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자신이 남긴 댓글 이외에는 수정할 수 없습니다.");
-        }
-
-        if (badWordFiltering.blankCheck(request.content())) {
-            throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "댓글에 욕설을 포함할 수 없습니다.");
         }
 
         reply.updateReply(

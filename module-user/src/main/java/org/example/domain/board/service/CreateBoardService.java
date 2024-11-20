@@ -1,9 +1,6 @@
 package org.example.domain.board.service;
 
-import com.vane.badwordfiltering.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
-import org.example.api_response.exception.GeneralException;
-import org.example.api_response.status.ErrorStatus;
 import org.example.domain.board.Board;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.repository.BoardRepository;
@@ -20,17 +17,12 @@ import org.springframework.util.ObjectUtils;
 public class CreateBoardService {
 
     private final BoardRepository boardRepository;
-    private final BadWordFiltering badWordFiltering;
     private final CoreMemberService coreMemberService;
 
     /*
     * 게시글 생성
     * */
     public long createBoard(CreateBoardRequest request) {
-        if (badWordFiltering.blankCheck(request.title()) ||
-            badWordFiltering.blankCheck(request.content())) {
-            throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목/내용에 욕설을 포함할 수 없습니다.");
-        }
 
         // 게시글 생성
         Board board = Board.builder()
