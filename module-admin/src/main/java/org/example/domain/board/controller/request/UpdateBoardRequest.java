@@ -19,7 +19,7 @@ public record UpdateBoardRequest(
   List<String> fileUrlList,
 
   @NotNull
-  @Schema(description = "공지사항 임시저장 여부")
+  @Schema(description = "공지사항 최종 저장 여부")
   Boolean saveYn
 
 ) {

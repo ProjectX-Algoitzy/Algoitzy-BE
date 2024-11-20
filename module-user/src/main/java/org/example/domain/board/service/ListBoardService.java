@@ -3,7 +3,6 @@ package org.example.domain.board.service;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.board.Board;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.response.ListBoardDto;
 import org.example.domain.board.controller.response.ListBoardResponse;
@@ -18,34 +17,36 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ListBoardService {
 
-    private final ListBoardRepository listBoardRepository;
+  private final ListBoardRepository listBoardRepository;
 
-    /*
-    * 게시글 카테고리 목록 조회
-    * */
-    public ListBoardCategoryResponse getBoardCategoryList() {
-        List<ListBoardCategoryDto> categoryList = Stream.of(BoardCategory.values())
-            .map(category -> ListBoardCategoryDto.builder()
-                .code(category.name())
-                .name(category.getName())
-                .build())
-            .toList();
+  /**
+   * 게시글 카테고리 목록 조회
+   */
+  public ListBoardCategoryResponse getBoardCategoryList() {
+    List<ListBoardCategoryDto> categoryList = Stream.of(BoardCategory.values())
+      .map(category -> ListBoardCategoryDto.builder()
+        .code(category.name())
+        .name(category.getName())
+        .build())
+      .toList();
 
-        return ListBoardCategoryResponse.builder()
-            .categoryList(categoryList)
-            .build();
-    }
+    return ListBoardCategoryResponse.builder()
+      .categoryList(categoryList)
+      .build();
+  }
 
-    /*
-    * 게시글 목록 조회
-    * */
-    public ListBoardResponse getBoardList(SearchBoardRequest request) {
-        Page<ListBoardDto> boardList = listBoardRepository.getBoardList(request);
-        boardList.forEach(board -> board.updateCategory(board.getCategory()));
+  /**
+   * 게시글 목록 조회
+   */
+  public ListBoardResponse getBoardList(SearchBoardRequest request) {
+    Page<ListBoardDto> boardList = listBoardRepository.getBoardList(request);
+    boardList.forEach(board -> board.updateCategory(board.getCategory()));
 
-        return ListBoardResponse.builder()
-            .boardList(boardList.getContent())
-            .totalCount(boardList.getTotalElements())
-            .build();
-    }
+    return ListBoardResponse.builder()
+      .boardList(boardList.getContent())
+      .totalCount(boardList.getTotalElements())
+      .saveCount(boardList.getTotalElements())
+      .tempSaveCount(0)
+      .build();
+  }
 }

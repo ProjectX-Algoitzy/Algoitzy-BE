@@ -66,7 +66,7 @@ public class Board {
 
   @Convert(converter = BooleanToYNConverter.class)
   @Column(nullable = false, columnDefinition = "char(1) default 'N'")
-  @Comment("임시저장 여부")
+  @Comment("최종 저장 여부")
   private Boolean saveYn;
 
   @Convert(converter = BooleanToYNConverter.class)

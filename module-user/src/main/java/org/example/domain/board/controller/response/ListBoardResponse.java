@@ -23,4 +23,10 @@ public class ListBoardResponse {
     @Schema(description = "총 게시글 수")
     private long totalCount;
 
+    @Schema(description = "최종 저장 게시글 수")
+    private long saveCount;
+
+    @Schema(description = "임시 저장 게시글 수")
+    private long tempSaveCount;
+
 }

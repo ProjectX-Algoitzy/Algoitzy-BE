@@ -23,7 +23,7 @@ public record CreateBoardRequest(
     List<String> fileUrlList,
 
     @NotNull
-    @Schema(description = "게시글 임시저장 여부")
+    @Schema(description = "게시글 최종 저장 여부")
     Boolean saveYn,
 
     @NotNull
