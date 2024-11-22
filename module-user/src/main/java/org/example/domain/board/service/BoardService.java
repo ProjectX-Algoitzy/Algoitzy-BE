@@ -39,6 +39,13 @@ public class BoardService {
     }
 
     /**
+     * 임시저장 게시글 조회
+     */
+    public ListBoardResponse getDraftBoardList() {
+        return listBoardService.getDraftBoardList();
+    }
+
+    /**
      * 게시글 생성
      */
     public Long createBoard(CreateBoardRequest request) {

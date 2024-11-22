@@ -67,6 +67,12 @@ public class BoardController {
         return ApiResponse.onSuccess(replyService.getReplyList(boardId, request));
     }
 
+    @GetMapping("/draft")
+    @Operation(summary = "임시저장 게시글 조회")
+    public ApiResponse<ListBoardResponse> getDraftBoardList() {
+        return ApiResponse.onSuccess(boardService.getDraftBoardList());
+    }
+
     @PatchMapping("/{board-id}")
     @Operation(summary = "게시글 수정")
     public ApiResponse<Void> updateBoard(@PathVariable("board-id") long boardId, UpdateBoardRequest request) {
