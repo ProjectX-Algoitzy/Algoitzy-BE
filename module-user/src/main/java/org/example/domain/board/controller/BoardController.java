@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
+import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
@@ -15,8 +16,10 @@ import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.service.BoardService;
 import org.example.domain.reply.service.ReplyService;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,4 +66,19 @@ public class BoardController {
         @ParameterObject @ModelAttribute @Valid SearchReplyRequest request) {
         return ApiResponse.onSuccess(replyService.getReplyList(boardId, request));
     }
+
+    @PatchMapping("/{board-id}")
+    @Operation(summary = "게시글 수정")
+    public ApiResponse<Void> updateBoard(@PathVariable("board-id") long boardId, UpdateBoardRequest request) {
+        boardService.updateBoard(boardId, request);
+        return ApiResponse.onSuccess();
+    }
+
+    @DeleteMapping("{board-id}")
+    @Operation(summary = "게시글 삭제")
+    public ApiResponse<Void> deleteBoard(@PathVariable("board-id") long boardId) {
+        boardService.deleteBoard(boardId);
+        return ApiResponse.onSuccess();
+    }
+
 }

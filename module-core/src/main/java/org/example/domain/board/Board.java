@@ -117,7 +117,7 @@ public class Board {
     this.member = member;
   }
 
-  public void updateNoticeBoard(String title, String content) {
+  public void updateBoard(String title, String content) {
     if (StringUtils.hasText(title)) this.title = title;
     if (StringUtils.hasText(content)) this.content = content;
   }

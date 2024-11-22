@@ -77,7 +77,7 @@ public class CreateBoardService {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목/내용에 욕설을 포함할 수 없습니다.");
     }
 
-    board.updateNoticeBoard(
+    board.updateBoard(
       request.title(),
       request.content()
     );
