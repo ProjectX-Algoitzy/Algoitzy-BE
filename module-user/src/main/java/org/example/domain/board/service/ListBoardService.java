@@ -49,4 +49,21 @@ public class ListBoardService {
       .tempSaveCount(0)
       .build();
   }
+        return ListBoardResponse.builder()
+            .boardList(boardList.getContent())
+            .totalCount(boardList.getTotalElements())
+            .build();
+    }
+
+    /**
+     * 임시저장 게시글 목록 조회
+     */
+    public ListBoardResponse getDraftBoardList() {
+        List<ListBoardDto> boardList = listBoardRepository.getDraftBoardList();
+
+        return ListBoardResponse.builder()
+            .boardList(boardList)
+            .totalCount(boardList.size())
+            .build();
+    }
 }

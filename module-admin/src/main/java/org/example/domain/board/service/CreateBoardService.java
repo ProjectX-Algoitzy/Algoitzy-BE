@@ -66,7 +66,7 @@ public class CreateBoardService {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "공지사항 외 게시글은 수정할 수 없습니다.");
     }
 
-    board.updateNoticeBoard(
+    board.updateBoard(
       request.title(),
       request.content()
     );

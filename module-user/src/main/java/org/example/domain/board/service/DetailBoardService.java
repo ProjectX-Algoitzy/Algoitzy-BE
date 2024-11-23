@@ -20,7 +20,6 @@ public class DetailBoardService {
     /*
     * 게시글 상세 조회
     * */
-
     public DetailBoardResponse getDetailBoard(Long boardId) {
         DetailBoardResponse board = detailBoardRepository.getDetailBoard(boardId);
         board.updateCategory(board.getCategory());
