@@ -20,6 +20,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.s3_file.S3File;
 import org.example.domain.s3_file.controller.response.UploadS3FileDto;
 import org.example.domain.s3_file.controller.response.UploadS3FileResponse;
+import org.example.domain.s3_file.enums.FileExtension;
 import org.example.domain.s3_file.repository.S3FileRepository;
 import org.example.util.FileUtils;
 import org.example.util.RandomUtils;
@@ -41,11 +42,14 @@ public class CoreCreateS3FileService {
   private final AmazonS3Client amazonS3Client;
   private final S3FileRepository s3FileRepository;
 
+  private static final int _5MB = 5 * 1024 * 1024;
 
   /**
    * S3 파일 업로드
    */
   public List<String> uploadS3File(List<MultipartFile> multipartFileList) {
+    validate(multipartFileList);
+
     List<String> fileUrlList = new ArrayList<>();
     for (MultipartFile multipartFile : multipartFileList) {
       String fileName = generateRandomFileName(multipartFile.getOriginalFilename());
@@ -79,6 +83,8 @@ public class CoreCreateS3FileService {
    * S3 파일 업로드 v2
    */
   public UploadS3FileResponse uploadS3FileV2(List<MultipartFile> multipartFileList) {
+    validate(multipartFileList);
+
     List<UploadS3FileDto> s3FileList = new ArrayList<>();
     for (MultipartFile multipartFile : multipartFileList) {
       String fileName = generateRandomFileName(multipartFile.getOriginalFilename());
@@ -115,13 +121,24 @@ public class CoreCreateS3FileService {
       .build();
   }
 
+  private void validate(List<MultipartFile> multipartFileList) {
+    for (MultipartFile multipartFile : multipartFileList) {
+      if (multipartFile.getSize() >= _5MB)
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "파일 용량은 5MB를 초과할 수 없습니다.");
+
+      String fileExtension = FileUtils.getFileExtension(multipartFile.getOriginalFilename());
+      if (!FileExtension.exist(fileExtension))
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, fileExtension + " 확장자는 허용되지 않습니다.");
+    }
+  }
+
   /**
    * 중복 방지를 위한 파일명 난수화
    */
   private String generateRandomFileName(String originalName) {
     String fileName;
     do {
-      fileName = RandomUtils.getRandomString(16).concat(FileUtils.getFileExtension(originalName));
+      fileName = RandomUtils.getRandomString(16).concat(".").concat(FileUtils.getFileExtension(originalName));
     } while (s3FileRepository.existsByFileName(fileName));
 
     return profile + File.separator + fileName;
