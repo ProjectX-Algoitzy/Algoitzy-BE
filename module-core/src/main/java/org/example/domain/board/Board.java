@@ -130,4 +130,13 @@ public class Board {
     this.deleteYn = true;
     this.content = null;
   }
+
+  public void createBoardLlike(BoardLike boardLike) {
+    boardLikeList.add(boardLike);
+  }
+
+  public void deleteBoardLike(BoardLike boardLike) {
+    boardLikeList.remove(boardLike);
+  }
+
 }

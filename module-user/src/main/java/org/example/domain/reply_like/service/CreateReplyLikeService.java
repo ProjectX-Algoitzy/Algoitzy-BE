@@ -27,12 +27,12 @@ public class CreateReplyLikeService {
         Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
 
         // 사용자가 해당 댓글에 좋아요를 눌렀는지 확인
-        ReplyLike existingReplyLike = replyLikeRepository.findByMemberAndReply(member, reply).orElse(null);
+        ReplyLike isReplyLiked = replyLikeRepository.findByMemberAndReply(member, reply).orElse(null);
 
-        if (existingReplyLike != null) {
+        if (isReplyLiked != null) {
             // 이미 좋아요가 눌러져 있으면 삭제
-            replyLikeRepository.delete(existingReplyLike);
-            reply.removeReplyLike(existingReplyLike);
+            replyLikeRepository.delete(isReplyLiked);
+            reply.deleteReplyLike(isReplyLiked);
         } else {
             // 좋아요가 눌러져 있지 않으면 생성
             ReplyLike replyLike = ReplyLike.builder()
@@ -41,7 +41,7 @@ public class CreateReplyLikeService {
                 .build();
 
             replyLikeRepository.save(replyLike);
-            reply.addReplyLike(replyLike);
+            reply.createReplyLike(replyLike);
         }
         replyRepository.save(reply);
     }

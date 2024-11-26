@@ -111,11 +111,11 @@ public class Reply {
     if (StringUtils.hasText(content)) this.content = content;
   }
 
-  public void addReplyLike(ReplyLike replyLike) {
+  public void createReplyLike(ReplyLike replyLike) {
     replyLikeList.add(replyLike);
   }
 
-  public void removeReplyLike(ReplyLike replyLike) {
+  public void deleteReplyLike(ReplyLike replyLike) {
     replyLikeList.remove(replyLike);
   }
 
