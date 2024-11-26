@@ -1,7 +1,6 @@
 package org.example.domain.board.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
@@ -11,7 +10,6 @@ public record CreateBoardRequest(
   @Schema(description = "게시글 제목")
   String title,
 
-  @NotBlank
   @Schema(description = "내용(에디터)")
   String content,
 

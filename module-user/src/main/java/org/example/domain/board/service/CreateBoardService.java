@@ -7,16 +7,15 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.board.Board;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
-import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board.repository.BoardRepository;
 import org.example.domain.board_file.BoardFile;
-import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.s3_file.service.CoreCreateS3FileService;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class CreateBoardService {
       .content(request.content())
       .category(request.category())
       .member(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))
-      .saveYn(true)
+      .saveYn(request.saveYn())
       .build();
 
     // 첨부파일 생성
@@ -63,14 +62,22 @@ public class CreateBoardService {
    * 게시글 수정
    */
   public void updateBoard(long boardId, UpdateBoardRequest request) {
+    if (!StringUtils.hasText(request.title()) || !StringUtils.hasText(request.content()))
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
+
     Board board = coreBoardService.findById(boardId);
     if (!board.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자신이 남긴 게시글 이외에는 수정할 수 없습니다.");
     }
 
+    if (board.getSaveYn() && !request.saveYn()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "등록된 게시글은 임시 저장할 수 없습니다.");
+    }
+
     board.updateBoard(
       request.title(),
-      request.content()
+      request.content(),
+      request.saveYn()
     );
 
     List<BoardFile> boardFileList = board.getBoardFileList();

@@ -16,6 +16,7 @@ import org.example.domain.s3_file.service.CoreCreateS3FileService;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,8 @@ public class CreateBoardService {
    * 공지사항 게시글 생성
    */
   public long createBoard(CreateBoardRequest request) {
+    if (!StringUtils.hasText(request.title()) || !StringUtils.hasText(request.content()))
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
 
     // 게시글 생성
     Board board = Board.builder()
@@ -38,7 +41,7 @@ public class CreateBoardService {
       .content(request.content())
       .category(BoardCategory.NOTICE)
       .member(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))
-      .saveYn(true)
+      .saveYn(request.saveYn())
       .build();
 
     // 첨부파일 생성
@@ -61,14 +64,22 @@ public class CreateBoardService {
    * 공지사항 게시글 수정
    */
   public void updateBoard(Long boardId, UpdateBoardRequest request) {
+    if (!StringUtils.hasText(request.title()) || !StringUtils.hasText(request.content()))
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
+
     Board board = coreBoardService.findById(boardId);
     if (!board.getCategory().equals(BoardCategory.NOTICE)) {
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "공지사항 외 게시글은 수정할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "공지사항 외 게시글은 수정할 수 없습니다.");
+    }
+
+    if (board.getSaveYn() && !request.saveYn()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "등록된 게시글은 임시 저장할 수 없습니다.");
     }
 
     board.updateBoard(
       request.title(),
-      request.content()
+      request.content(),
+      request.saveYn()
     );
 
     List<BoardFile> boardFileList = board.getBoardFileList();
