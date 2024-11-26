@@ -36,6 +36,9 @@ public class ListBoardDto {
     @Schema(description = "조회수")
     private int viewCount;
 
+    @Schema(description = "최종 저장 여부")
+    private boolean saveYn;
+
     @Schema(description = "고정 여부")
     private boolean fixYn;
 

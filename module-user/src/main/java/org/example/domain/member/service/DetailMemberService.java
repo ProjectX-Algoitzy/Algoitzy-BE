@@ -91,11 +91,20 @@ public class DetailMemberService {
    */
   public ListBoardResponse getMyPageBoard(String handle) {
     List<ListBoardDto> boardList = listBoardRepository.getMyPageBoard(handle);
-    boardList.forEach(board -> board.updateCategory(board.getCategory()));
+
+    long saveCount = 0, tempSaveCount = 0;
+    for (ListBoardDto board : boardList) {
+      board.updateCategory(board.getCategory());
+
+      if (board.isSaveYn()) saveCount++;
+      else tempSaveCount++;
+    }
 
     return ListBoardResponse.builder()
       .boardList(boardList)
       .totalCount(boardList.size())
+      .saveCount(saveCount)
+      .tempSaveCount(tempSaveCount)
       .build();
   }
 

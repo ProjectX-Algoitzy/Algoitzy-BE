@@ -60,7 +60,7 @@ public class DetailBoardResponse {
     @Schema(description = "댓글 수")
     private int replyCount;
 
-    @Schema(description = "임시저장 여부")
+    @Schema(description = "최종 저장 여부")
     private boolean saveYn;
 
     @Schema(description = "고정 여부")

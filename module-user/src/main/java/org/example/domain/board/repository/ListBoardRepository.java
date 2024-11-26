@@ -160,6 +160,7 @@ public class ListBoardRepository {
             "case when {0} > {1} then true else false end",
             board.createdTime, LocalDateTime.now().minusDays(3)).as("newBoardYn"),
           board.viewCount,
+          board.saveYn,
           board.fixYn,
           board.deleteYn
         )
