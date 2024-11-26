@@ -9,6 +9,7 @@ import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.DetailDraftBoardResponse;
 import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.service.BoardService;
@@ -61,9 +62,15 @@ public class BoardController {
   }
 
   @GetMapping("/draft")
-  @Operation(summary = "임시저장 게시글 조회")
+  @Operation(summary = "임시저장 게시글 목록 조회")
   public ApiResponse<ListBoardResponse> getDraftBoardList() {
     return ApiResponse.onSuccess(boardService.getDraftBoardList());
+  }
+
+  @GetMapping("/draft/{board-id}")
+  @Operation(summary = "임시저장 게시글 상세 조회")
+  public ApiResponse<DetailDraftBoardResponse> getDraftBoard(@PathVariable("board-id") Long boardId) {
+    return ApiResponse.onSuccess(boardService.getDraftBoard(boardId));
   }
 
   @PatchMapping("/{board-id}")
