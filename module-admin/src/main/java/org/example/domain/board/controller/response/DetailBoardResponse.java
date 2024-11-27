@@ -34,9 +34,6 @@ public class DetailBoardResponse {
   @Schema(description = "작성자")
   private String createdName;
 
-  @Schema(description = "작성자 백준 닉네임")
-  private String handle;
-
   @Schema(description = "작성일")
   private LocalDateTime createdTime;
 

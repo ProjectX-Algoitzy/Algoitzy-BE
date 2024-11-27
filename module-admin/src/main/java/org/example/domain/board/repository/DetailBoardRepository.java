@@ -33,7 +33,6 @@ public class DetailBoardRepository {
           board.member.id.as("createMemberId"),
           board.member.profileUrl,
           board.member.name.as("createdName"),
-          board.member.handle,
           board.createdTime,
           board.viewCount,
           board.id.as("boardId"),

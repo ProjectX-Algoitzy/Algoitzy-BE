@@ -27,6 +27,7 @@ public class DetailBoardRepository {
             board.content,
             board.member.id.as("createMemberId"),
             board.member.name.as("createdName"),
+            board.member.handle,
             board.member.profileUrl,
             board.createdTime,
             board.viewCount,

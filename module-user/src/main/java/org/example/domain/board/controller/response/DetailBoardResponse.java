@@ -1,6 +1,5 @@
 package org.example.domain.board.controller.response;
 
-import com.querydsl.core.types.Expression;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,6 +33,9 @@ public class DetailBoardResponse {
 
     @Schema(description = "작성자")
     private String createdName;
+
+    @Schema(description = "작성자 백준 닉네임")
+    private String handle;
 
     @Schema(description = "작성일")
     private LocalDateTime createdTime;
