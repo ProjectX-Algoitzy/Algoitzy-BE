@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,7 +56,8 @@ public class BoardController {
 
     @PostMapping
     @Operation(summary = "게시글 생성")
-    public ApiResponse<Long> createBoard(CreateBoardRequest request) {
+    public ApiResponse<Long> createBoard(
+      @RequestBody @Valid CreateBoardRequest request) {
         return ApiResponse.onSuccess(boardService.createBoard(request));
     }
 
@@ -75,7 +77,9 @@ public class BoardController {
 
     @PatchMapping("/{board-id}")
     @Operation(summary = "게시글 수정")
-    public ApiResponse<Void> updateBoard(@PathVariable("board-id") long boardId, UpdateBoardRequest request) {
+    public ApiResponse<Void> updateBoard(
+      @PathVariable("board-id") long boardId,
+      @RequestBody @Valid UpdateBoardRequest request) {
         boardService.updateBoard(boardId, request);
         return ApiResponse.onSuccess();
     }
