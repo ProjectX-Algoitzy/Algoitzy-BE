@@ -31,6 +31,8 @@ public class CreateBoardService {
    * 게시글 생성
    */
   public long createBoard(CreateBoardRequest request) {
+    if (!StringUtils.hasText(request.title()) || !StringUtils.hasText(request.content()))
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
 
     // 게시글 생성
     Board board = Board.builder()
