@@ -4,12 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
-import org.example.domain.board_like.service.BoardLikeService;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,38 +33,34 @@ public class BoardController {
 
     private final BoardService boardService;
     private final ReplyService replyService;
-    private final BoardLikeService boardLikeService;
 
     @GetMapping("/category")
     @Operation(summary = "게시글 카테고리 목록 조회")
-    public ApiResponse<ListBoardCategoryResponse> getBoardCategoryList() {
+    public ApiResponse<ListBoardCategoryResponse> getBoardList() {
         return ApiResponse.onSuccess(boardService.getBoardCategoryList());
     }
 
     @GetMapping
     @Operation(summary = "게시글 목록 조회")
-    public ApiResponse<ListBoardResponse> getBoardList(@ParameterObject @ModelAttribute @Valid
+    public ApiResponse<ListBoardResponse> getBoardCategoryList(@ParameterObject @ModelAttribute @Valid
         SearchBoardRequest request) {
         return ApiResponse.onSuccess(boardService.getBoardList(request));
     }
 
     @GetMapping("/{board-id}")
     @Operation(summary = "게시글 상세 조회")
-    @LimitRegularStudyMember
-    public ApiResponse<DetailBoardResponse> getBoard(@PathVariable("board-id") Long boardId) {
+    public ApiResponse<DetailBoardResponse> getDetailBoard(@PathVariable("board-id") Long boardId) {
         return ApiResponse.onSuccess(boardService.getBoard(boardId));
     }
 
     @PostMapping
     @Operation(summary = "게시글 생성")
-    @LimitRegularStudyMember
     public ApiResponse<Long> createBoard(CreateBoardRequest request) {
         return ApiResponse.onSuccess(boardService.createBoard(request));
     }
 
     @GetMapping("/{board-id}/reply")
     @Operation(summary = "게시글 댓글 목록 조회")
-    @LimitRegularStudyMember
     public ApiResponse<ListReplyResponse> getReplyList(
         @PathVariable("board-id") Long boardId,
         @ParameterObject @ModelAttribute @Valid SearchReplyRequest request) {
@@ -94,10 +87,4 @@ public class BoardController {
         return ApiResponse.onSuccess();
     }
 
-    @PutMapping("/{board-id}/like")
-    @Operation(summary = "게시글 좋아요")
-    public ApiResponse<Void> createBoardLike(@PathVariable("board-id") long boardId) {
-        boardLikeService.createBoardLike(boardId);
-        return ApiResponse.onSuccess();
-    }
 }
