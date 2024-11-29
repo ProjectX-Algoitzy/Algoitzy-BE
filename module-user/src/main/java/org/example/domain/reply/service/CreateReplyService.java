@@ -35,18 +35,10 @@ public class CreateReplyService {
      * 댓글 생성
      */
     public void createReply(CreateReplyRequest request) {
-
         Board board = coreBoardService.findById(request.boardId());
-        Reply reply = null;
-        
-        // 부모 댓글 생성
-        if (request.parentId() == null) {
-            reply = createParentReply(request, board);
-        } else { // 자식 댓글 생성
-            Reply parentReply = coreReplyService.findById(request.parentId());
-            validateParentReply(parentReply, request);
-            reply = createChildrenReply(request, board, parentReply);
-        }
+        Reply reply = (request.parentId() == null)
+            ? createParentReply(request, board)
+            : createChildrenReply(request, board, coreReplyService.findById(request.parentId()));
         replyRepository.save(reply);
     }
 
@@ -70,14 +62,6 @@ public class CreateReplyService {
             .depth(parentReply.getDepth() + 1)
             .content(request.content())
             .build();
-    }
-
-    // 자식 댓글 오류 검출
-    private void validateParentReply (Reply parentReply, CreateReplyRequest request) {
-        // 부모 댓글의 게시물과 자식 댓글의 게시물이 같은지 확인
-        if (!parentReply.getBoard().getId().equals(request.boardId())) {
-            throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "대댓글을 남길 게시물을 확인해주세요.");
-        }
     }
 
     /**
