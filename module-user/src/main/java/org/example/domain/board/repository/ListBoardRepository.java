@@ -190,7 +190,7 @@ public class ListBoardRepository {
         .from(board)
         .where(
             board.saveYn.isFalse(),
-            board.category.eq(BoardCategory.NOTICE),
+            board.category.ne(BoardCategory.NOTICE),
             board.member.email.eq(SecurityUtils.getCurrentMemberEmail())
         )
         .orderBy(board.createdTime.desc())

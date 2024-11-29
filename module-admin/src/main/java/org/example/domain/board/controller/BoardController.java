@@ -9,6 +9,7 @@ import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.DetailDraftBoardResponse;
 import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.service.BoardService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +44,8 @@ public class BoardController {
 
   @PostMapping
   @Operation(summary = "공지사항 게시글 생성")
-  public ApiResponse<Long> createBoard(CreateBoardRequest request) {
+  public ApiResponse<Long> createBoard(
+    @RequestBody @Valid CreateBoardRequest request) {
     return ApiResponse.onCreate(boardService.createBoard(request));
   }
 
@@ -61,16 +64,22 @@ public class BoardController {
   }
 
   @GetMapping("/draft")
-  @Operation(summary = "임시저장 게시글 조회")
+  @Operation(summary = "임시저장 게시글 목록 조회")
   public ApiResponse<ListBoardResponse> getDraftBoardList() {
     return ApiResponse.onSuccess(boardService.getDraftBoardList());
+  }
+
+  @GetMapping("/draft/{board-id}")
+  @Operation(summary = "임시저장 게시글 상세 조회")
+  public ApiResponse<DetailDraftBoardResponse> getDraftBoard(@PathVariable("board-id") Long boardId) {
+    return ApiResponse.onSuccess(boardService.getDraftBoard(boardId));
   }
 
   @PatchMapping("/{board-id}")
   @Operation(summary = "게시글 수정")
   public ApiResponse<Void> updateBoard(
     @PathVariable("board-id") Long boardId,
-    UpdateBoardRequest request) {
+    @RequestBody @Valid UpdateBoardRequest request) {
     boardService.updateBoard(boardId, request);
     return ApiResponse.onSuccess();
   }
