@@ -9,6 +9,8 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.DetailDraftBoardResponse;
+import org.example.domain.board.enums.BoardCategory;
 import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,9 @@ public class DetailBoardRepository {
 
     private final JPAQueryFactory queryFactory;
 
+    /**
+     * 게시글 상세 조회
+     */
     public DetailBoardResponse getBoard(Long boardId) {
         return queryFactory.select(Projections.fields(
             DetailBoardResponse.class,
@@ -48,6 +53,31 @@ public class DetailBoardRepository {
             .where(
                 board.id.eq(boardId),
                 board.saveYn.isTrue()
+            )
+            .groupBy(board)
+            .fetchOne();
+    }
+
+    /**
+     * 임시저장 게시글 상세 조회
+     */
+    public DetailDraftBoardResponse getDraftBoard(Long boardId) {
+        return queryFactory
+            .select(
+                Projections.fields(
+                    DetailDraftBoardResponse.class,
+                    board.category.stringValue().as("category"),
+                    board.title,
+                    board.id.as("boardId"),
+                    board.content,
+                    board.saveYn
+                )
+            )
+            .from(board)
+            .where(
+                board.id.eq(boardId),
+                board.saveYn.isFalse(),
+                board.category.ne(BoardCategory.NOTICE)
             )
             .groupBy(board)
             .fetchOne();

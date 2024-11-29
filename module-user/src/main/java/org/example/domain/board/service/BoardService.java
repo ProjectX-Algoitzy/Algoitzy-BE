@@ -5,6 +5,7 @@ import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
+import org.example.domain.board.controller.response.DetailDraftBoardResponse;
 import org.example.domain.board.controller.response.ListBoardCategoryResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,13 @@ public class BoardService {
      */
     public ListBoardResponse getDraftBoardList() {
         return listBoardService.getDraftBoardList();
+    }
+
+    /**
+     * 임시저장 게시글 상세 조회
+     */
+    public DetailDraftBoardResponse getDraftBoard(Long boardId) {
+        return detailBoardService.getDraftBoard(boardId);
     }
 
     /**
