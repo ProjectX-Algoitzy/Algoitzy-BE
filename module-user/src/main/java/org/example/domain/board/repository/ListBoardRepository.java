@@ -81,7 +81,7 @@ public class ListBoardRepository {
   }
 
   /**
-   * 키워드 검색(제목, 내용, 작성자)
+   * 키워드 검색(제목, 작성자)
    */
   private Predicate searchKeyword(String searchKeyword) {
     if (!StringUtils.hasText(searchKeyword)) {
@@ -89,7 +89,6 @@ public class ListBoardRepository {
     }
     BooleanBuilder builder = new BooleanBuilder();
     builder.or(board.title.contains(searchKeyword));
-    builder.or(board.content.contains(searchKeyword));
     builder.or(board.member.name.contains(searchKeyword));
     return builder;
   }

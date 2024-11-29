@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
@@ -39,7 +40,7 @@ public class BoardController {
 
     @GetMapping("/category")
     @Operation(summary = "게시글 카테고리 목록 조회")
-    public ApiResponse<ListBoardCategoryResponse> getBoardList() {
+    public ApiResponse<ListBoardCategoryResponse> getBoardCategoryList() {
         return ApiResponse.onSuccess(boardService.getBoardCategoryList());
     }
 
@@ -52,18 +53,21 @@ public class BoardController {
 
     @GetMapping("/{board-id}")
     @Operation(summary = "게시글 상세 조회")
-    public ApiResponse<DetailBoardResponse> getDetailBoard(@PathVariable("board-id") Long boardId) {
-        return ApiResponse.onSuccess(boardService.getDetailBoard(boardId));
+    @LimitRegularStudyMember
+    public ApiResponse<DetailBoardResponse> getBoard(@PathVariable("board-id") Long boardId) {
+        return ApiResponse.onSuccess(boardService.getBoard(boardId));
     }
 
     @PostMapping
     @Operation(summary = "게시글 생성")
+    @LimitRegularStudyMember
     public ApiResponse<Long> createBoard(CreateBoardRequest request) {
         return ApiResponse.onSuccess(boardService.createBoard(request));
     }
 
     @GetMapping("/{board-id}/reply")
     @Operation(summary = "게시글 댓글 목록 조회")
+    @LimitRegularStudyMember
     public ApiResponse<ListReplyResponse> getReplyList(
         @PathVariable("board-id") Long boardId,
         @ParameterObject @ModelAttribute @Valid SearchReplyRequest request) {

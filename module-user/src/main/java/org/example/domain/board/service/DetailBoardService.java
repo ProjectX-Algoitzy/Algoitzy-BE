@@ -20,8 +20,8 @@ public class DetailBoardService {
     /*
     * 게시글 상세 조회
     * */
-    public DetailBoardResponse getDetailBoard(Long boardId) {
-        DetailBoardResponse board = detailBoardRepository.getDetailBoard(boardId);
+    public DetailBoardResponse getBoard(Long boardId) {
+        DetailBoardResponse board = detailBoardRepository.getBoard(boardId);
         board.updateCategory(board.getCategory());
 
         List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());

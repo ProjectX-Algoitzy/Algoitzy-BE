@@ -34,8 +34,8 @@ public class BoardService {
     /**
      * 게시글 상세 조회
      */
-    public DetailBoardResponse getDetailBoard(Long boardId) {
-        return detailBoardService.getDetailBoard(boardId);
+    public DetailBoardResponse getBoard(Long boardId) {
+        return detailBoardService.getBoard(boardId);
     }
 
     /**

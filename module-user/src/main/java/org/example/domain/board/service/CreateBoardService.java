@@ -65,7 +65,7 @@ public class CreateBoardService {
   public void updateBoard(long boardId, UpdateBoardRequest request) {
     Board board = coreBoardService.findById(boardId);
     if (!board.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))) {
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자신이 남긴 게시글 이외에는 수정할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "자신이 남긴 게시글 이외에는 수정할 수 없습니다.");
     }
 
     board.updateBoard(
@@ -97,7 +97,7 @@ public class CreateBoardService {
       .forEach(boardFile -> coreCreateS3FileService.deleteS3File(boardFile.getFileUrl()));
 
     if (!board.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))) {
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자신이 남긴 게시글 이외에는 삭제할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "자신이 남긴 게시글 이외에는 삭제할 수 없습니다.");
     }
 
     boardRepository.deleteById(boardId);

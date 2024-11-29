@@ -18,7 +18,7 @@ public class DetailBoardRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public DetailBoardResponse getDetailBoard(Long boardId) {
+    public DetailBoardResponse getBoard(Long boardId) {
         return queryFactory.select(Projections.fields(
             DetailBoardResponse.class,
             board.id.as("boardId"),
