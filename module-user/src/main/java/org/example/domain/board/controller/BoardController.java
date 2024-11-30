@@ -9,6 +9,7 @@ import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.SearchBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
 import org.example.domain.board.controller.response.DetailDraftBoardResponse;
+import org.example.domain.board_like.service.BoardLikeService;
 import org.example.domain.reply.controller.request.SearchReplyRequest;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +37,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final ReplyService replyService;
+    private final BoardLikeService boardLikeService;
 
     @GetMapping("/category")
     @Operation(summary = "게시글 카테고리 목록 조회")
@@ -98,4 +101,10 @@ public class BoardController {
         return ApiResponse.onSuccess();
     }
 
+    @PutMapping("{board-id}/like")
+    @Operation(summary = "게시글 좋아요")
+    public ApiResponse<Void> createBoardLike(@PathVariable("board-id") long boardId) {
+        boardLikeService.createBoardLike(boardId);
+        return ApiResponse.onSuccess();
+    }
 }
