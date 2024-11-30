@@ -24,6 +24,7 @@ public class DetailMemberRepository {
           MemberInfoResponse.class,
           member.profileUrl,
           member.name,
+          member.handle,
           member.role
         )
       )

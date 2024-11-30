@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.s3_file.S3File;
+import org.example.domain.s3_file.controller.response.UploadS3FileResponse;
 import org.example.domain.s3_file.repository.S3FileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,13 @@ public class CoreS3FileService {
    */
   public List<String> uploadS3File(List<MultipartFile> multipartFileList) {
     return coreCreateS3FileService.uploadS3File(multipartFileList);
+  }
+
+  /**
+   * S3 파일 업로드 v2
+   */
+  public UploadS3FileResponse uploadS3FileV2(List<MultipartFile> multipartFileList) {
+    return coreCreateS3FileService.uploadS3FileV2(multipartFileList);
   }
 
   /**

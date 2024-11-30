@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
+import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
@@ -70,20 +71,27 @@ public class MemberController {
     return ApiResponse.onSuccess(memberService.findEmail(request));
   }
 
-  @GetMapping("/{member-id}/info")
+  @GetMapping("/{handle}/info")
   @Operation(summary = "마이페이지 멤버 정보")
-  public ApiResponse<MyPageInfoResponse> getMyPageInfo(@PathVariable("member-id") Long memberId) {
-    return ApiResponse.onSuccess(memberService.getMyPageInfo(memberId));
+  public ApiResponse<MyPageInfoResponse> getMyPageInfo(@PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(memberService.getMyPageInfo(handle));
   }
 
-  @GetMapping("/{member-id}/study")
+  @GetMapping("/{handle}/study")
   @Operation(summary = "마이페이지 스터디 정보")
-  public ApiResponse<MyPageStudyResponse> getMyPageStudy(@PathVariable("member-id") Long memberId) {
-    return ApiResponse.onSuccess(memberService.getMyPageStudy(memberId));
+  public ApiResponse<MyPageStudyResponse> getMyPageStudy(@PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(memberService.getMyPageStudy(handle));
+  }
+
+  @GetMapping("/{handle}/board")
+  @Operation(summary = "마이페이지 게시글 정보")
+  public ApiResponse<ListBoardResponse> getMyPageBoard(
+    @PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(memberService.getMyPageBoard(handle));
   }
 
   @GetMapping("/my-info")
-  @Operation(summary = "내 정보 조회")
+  @Operation(summary = "내 정보 조회", description = "내 정보 수정 페이지")
   public ApiResponse<MemberInfoResponse> getMyInfo() {
     return ApiResponse.onSuccess(memberService.getMyInfo());
   }

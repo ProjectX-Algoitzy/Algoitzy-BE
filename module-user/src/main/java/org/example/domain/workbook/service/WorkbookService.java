@@ -1,7 +1,7 @@
 package org.example.domain.workbook.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.controller.response.ListWorkbookResponse;
+import org.example.domain.workbook.controller.response.ListWorkbookResponse;
 import org.example.domain.workbook.controller.response.DetailWorkbookResponse;
 import org.springframework.stereotype.Service;
 

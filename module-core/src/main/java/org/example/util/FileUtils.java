@@ -16,14 +16,13 @@ public class FileUtils {
     if (!StringUtils.hasText(originalName) || !originalName.contains(".")) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "확장자를 추출할 수 없습니다.");
     }
-    return originalName.substring(originalName.lastIndexOf("."));
+    return originalName.substring(originalName.lastIndexOf(".") + 1);
   }
 
   /**
    * 기본 이미지 여부
    */
   public static boolean isBasicImage(String fileUrl) {
-    System.out.println("fileUrl = " + fileUrl);
     return fileUrl.contains(BASIC_IMAGE) || fileUrl.contains(EMAIL);
   }
 

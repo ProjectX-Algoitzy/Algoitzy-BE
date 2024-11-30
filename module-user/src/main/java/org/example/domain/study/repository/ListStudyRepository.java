@@ -113,7 +113,10 @@ public class ListStudyRepository {
       .fetch().size();
   }
 
-  public List<ListStudyDto> getMyPageStudy(Long memberId, boolean passYN) {
+  /**
+   * 마이페이지 스터디 정보
+   */
+  public List<ListStudyDto> getMyPageStudy(String handle, boolean passYN) {
     return queryFactory
       .select(Projections.fields(
           ListStudyDto.class,
@@ -154,7 +157,7 @@ public class ListStudyRepository {
       .from(study)
       .innerJoin(studyMember).on(studyMember.study.eq(study))
       .where(
-        getPassStudy(memberId, passYN),
+        getPassStudy(handle, passYN),
         (passYN) ? null : study.endYN.isFalse()
       )
       .groupBy(study)
@@ -162,9 +165,9 @@ public class ListStudyRepository {
       .fetch();
   }
 
-  private BooleanExpression getPassStudy(Long memberId, boolean passYN) {
-    if (passYN) return studyMember.member.id.eq(memberId).and(studyMember.status.eq(StudyMemberStatus.PASS));
-    else return studyMember.member.id.eq(memberId)
+  private BooleanExpression getPassStudy(String handle, boolean passYN) {
+    if (passYN) return studyMember.member.handle.eq(handle).and(studyMember.status.eq(StudyMemberStatus.PASS));
+    else return studyMember.member.handle.eq(handle)
       .and(studyMember.status.ne(StudyMemberStatus.PASS))
       .and(studyMember.status.ne(StudyMemberStatus.DOCUMENT_FAIL))
       .and(studyMember.status.ne(StudyMemberStatus.FAIL));

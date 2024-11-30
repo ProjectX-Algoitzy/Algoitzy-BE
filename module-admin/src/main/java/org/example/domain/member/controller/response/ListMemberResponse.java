@@ -21,5 +21,5 @@ public class ListMemberResponse {
   private List<ListMemberDto> memberList = new ArrayList<>();
 
   @Schema(description = "총 유저 수")
-  long totalCount;
+  private long totalCount;
 }

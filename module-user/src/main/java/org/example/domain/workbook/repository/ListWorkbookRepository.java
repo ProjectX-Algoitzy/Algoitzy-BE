@@ -6,7 +6,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.controller.response.ListWorkbookDto;
+import org.example.domain.workbook.controller.response.ListWorkbookDto;
 import org.example.domain.study.Study;
 import org.example.domain.workbook.controller.response.ListInstitutionWorkbookDto;
 import org.springframework.stereotype.Repository;
