@@ -2,6 +2,7 @@ package org.example.domain.reply.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.reply.controller.request.CreateReplyRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,14 +29,16 @@ public class ReplyController {
 
     @PostMapping
     @Operation(summary = "게시물 댓글/대댓글 생성")
-    public ApiResponse<Void> createReply(CreateReplyRequest request) {
+    public ApiResponse<Void> createReply(
+      @RequestBody @Valid CreateReplyRequest request) {
         replyService.createReply(request);
         return ApiResponse.onSuccess();
     }
 
     @PatchMapping("/{reply-id}")
     @Operation(summary = "댓글 수정")
-    public ApiResponse<Void> updateReply(@PathVariable("reply-id") Long replyId, UpdateReplyRequest request) {
+    public ApiResponse<Void> updateReply(@PathVariable("reply-id") Long replyId,
+      @RequestBody @Valid UpdateReplyRequest request) {
         replyService.updateReply(replyId, request);
         return ApiResponse.onSuccess();
     }
