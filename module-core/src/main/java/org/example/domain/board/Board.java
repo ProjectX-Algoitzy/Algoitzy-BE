@@ -94,7 +94,6 @@ public class Board {
   private List<BoardLike> boardLikeList = new ArrayList<>();
 
   @CreatedDate
-  @Column(updatable = false)
   private LocalDateTime createdTime;
 
   @LastModifiedDate
@@ -121,6 +120,8 @@ public class Board {
     this.category = category;
     if (StringUtils.hasText(title)) this.title = title;
     if (StringUtils.hasText(content)) this.content = content;
+    // 작성일에 최종 저장 시점이 노출되도록
+    if (!this.saveYn && saveYn) this.createdTime = LocalDateTime.now();
     this.saveYn = saveYn;
   }
 
