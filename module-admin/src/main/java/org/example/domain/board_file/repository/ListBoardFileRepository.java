@@ -22,7 +22,8 @@ public class ListBoardFileRepository {
         Projections.fields(
           ListBoardFileDto.class,
           s3File.originalName,
-          boardFile.fileUrl
+          boardFile.fileUrl,
+          s3File.fileSize
         )
       )
       .from(boardFile)

@@ -14,20 +14,21 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ListBoardFileRepository {
 
-    private final JPAQueryFactory queryFactory;
+  private final JPAQueryFactory queryFactory;
 
-    public List<ListBoardFileDto> getBoardFileList(Long boardId) {
-        return queryFactory
-            .select(
-                Projections.fields(
-                    ListBoardFileDto.class,
-                    s3File.originalName,
-                    boardFile.fileUrl
-                )
-            )
-            .from(boardFile)
-            .innerJoin(s3File).on(boardFile.fileUrl.eq(s3File.fileUrl))
-            .where(boardFile.board.id.eq(boardId))
-            .fetch();
-    }
+  public List<ListBoardFileDto> getBoardFileList(Long boardId) {
+    return queryFactory
+      .select(
+        Projections.fields(
+          ListBoardFileDto.class,
+          s3File.originalName,
+          boardFile.fileUrl,
+          s3File.fileSize
+        )
+      )
+      .from(boardFile)
+      .innerJoin(s3File).on(boardFile.fileUrl.eq(s3File.fileUrl))
+      .where(boardFile.board.id.eq(boardId))
+      .fetch();
+  }
 }
