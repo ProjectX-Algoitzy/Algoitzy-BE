@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.reply.Reply;
 import org.example.domain.reply.repository.ListReplyRepository;
 import org.example.domain.reply.repository.ReplyRepository;
@@ -25,6 +27,9 @@ public class CreateReplyService {
    */
   public void deleteReply(Long replyId) {
     Reply reply = coreReplyService.findById(replyId);
+    if (reply.getDeleteYn()) {
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 삭제된 댓글입니다.");
+    }
 
     //***** 하위 댓글이 모두 삭제됐다면 DB에서 삭제 *****//
     boolean childDeleteYn = false;
