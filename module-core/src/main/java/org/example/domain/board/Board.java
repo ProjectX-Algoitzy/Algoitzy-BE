@@ -117,7 +117,8 @@ public class Board {
     this.member = member;
   }
 
-  public void updateBoard(String title, String content, boolean saveYn) {
+  public void updateBoard(BoardCategory category, String title, String content, boolean saveYn) {
+    this.category = category;
     if (StringUtils.hasText(title)) this.title = title;
     if (StringUtils.hasText(content)) this.content = content;
     this.saveYn = saveYn;

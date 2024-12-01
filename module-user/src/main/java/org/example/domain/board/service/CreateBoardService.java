@@ -7,6 +7,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.board.Board;
 import org.example.domain.board.controller.request.CreateBoardRequest;
 import org.example.domain.board.controller.request.UpdateBoardRequest;
+import org.example.domain.board.enums.BoardCategory;
 import org.example.domain.board.repository.BoardRepository;
 import org.example.domain.board_file.BoardFile;
 import org.example.domain.member.service.CoreMemberService;
@@ -31,6 +32,10 @@ public class CreateBoardService {
    * 게시글 생성
    */
   public long createBoard(CreateBoardRequest request) {
+    if (request.category() == null)
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "카테고리는 필수입니다.");
+    if (request.category().equals(BoardCategory.NOTICE))
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "공지는 작성할 수 없습니다.");
     if (!StringUtils.hasText(request.title()) || !StringUtils.hasText(request.content()))
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
 
@@ -64,19 +69,24 @@ public class CreateBoardService {
    * 게시글 수정
    */
   public void updateBoard(long boardId, UpdateBoardRequest request) {
+    if (request.category() == null)
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "카테고리는 필수입니다.");
+    if (request.category().equals(BoardCategory.NOTICE))
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "공지는 작성할 수 없습니다.");
     if (!StringUtils.hasText(request.title()) || !StringUtils.hasText(request.content()))
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
 
     Board board = coreBoardService.findById(boardId);
-    if (!board.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "자신이 남긴 게시글 이외에는 수정할 수 없습니다.");
-    }
-
+    if (board.getCategory().equals(BoardCategory.NOTICE))
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "공지는 수정할 수 없습니다.");
+    if (!board.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail())))
+      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "자신이 남긴 게시글 이외에는 수정할 수 없습니다.");
     if (board.getSaveYn() && !request.saveYn()) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "등록된 게시글은 임시 저장할 수 없습니다.");
     }
 
     board.updateBoard(
+      request.category(),
       request.title(),
       request.content(),
       request.saveYn()
