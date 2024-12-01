@@ -35,6 +35,9 @@ public class ListReplyDto {
     @Schema(description = "작성일")
     private LocalDateTime createdTime;
 
+    @Schema(description = "내 댓글 여부")
+    private boolean myReplyYn;
+
     @Schema(description = "게시판 작성자 여부")
     private boolean myBoardYn;
 

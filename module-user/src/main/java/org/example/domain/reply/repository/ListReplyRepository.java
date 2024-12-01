@@ -65,6 +65,7 @@ public class ListReplyRepository {
         reply.member.profileUrl,
         reply.content,
         reply.createdTime,
+        reply.member.email.eq(SecurityUtils.getCurrentMemberEmail()).as("myReplyYn"),
         reply.member.eq(
           JPAExpressions
             .select(board.member)
