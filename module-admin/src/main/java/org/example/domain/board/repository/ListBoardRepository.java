@@ -104,7 +104,6 @@ public class ListBoardRepository {
     }
     BooleanBuilder builder = new BooleanBuilder();
     builder.or(board.title.contains(searchKeyword));
-    builder.or(board.content.contains(searchKeyword));
     builder.or(board.member.name.contains(searchKeyword));
     return builder;
   }
