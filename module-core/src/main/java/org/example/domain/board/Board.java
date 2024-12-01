@@ -57,7 +57,7 @@ public class Board {
   private String title;
 
   @Comment("게시물 내용")
-  @Lob
+  @Column(length = 1000000)
   private String content;
 
   @Comment("게시물 조회수")
