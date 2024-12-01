@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.domain.member.enums.Role;
 
 @Builder
@@ -40,4 +41,8 @@ public class MemberInfoResponse {
 
   @Schema(description = "역할")
   private Role role;
+
+  @Setter
+  @Schema(description = "정규 스터디 참여 여부")
+  private boolean regularStudyMemberYn;
 }

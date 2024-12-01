@@ -1,14 +1,18 @@
 package org.example.domain.member.repository;
 
 import static org.example.domain.member.QMember.member;
+import static org.example.domain.study_member.QStudyMember.studyMember;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.controller.response.MyPageInfoResponse;
+import org.example.domain.study.enums.StudyType;
+import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.util.SecurityUtils;
 import org.example.util.http_request.Url;
 import org.springframework.stereotype.Repository;
@@ -25,14 +29,21 @@ public class DetailMemberRepository {
   public MemberInfoResponse getLoginMemberInfo() {
     return queryFactory
       .select(Projections.fields(
-          MemberInfoResponse.class,
-          member.id.as("memberId"),
-          member.profileUrl,
-          member.name,
-          member.handle,
-          member.role
-        )
-      )
+        MemberInfoResponse.class,
+        member.id.as("memberId"),
+        member.profileUrl,
+        member.name,
+        member.handle,
+        member.role,
+        Expressions.as(JPAExpressions
+            .selectFrom(studyMember)
+            .where(
+              studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail()),
+              studyMember.status.eq(StudyMemberStatus.PASS),
+              studyMember.study.type.eq(StudyType.REGULAR)
+            ).exists()
+          , "regularStudyMemberYn")
+      ))
       .from(member)
       .where(member.email.eq(SecurityUtils.getCurrentMemberEmail()))
       .fetchOne();
@@ -76,7 +87,15 @@ public class DetailMemberRepository {
           member.major,
           member.handle,
           member.phoneNumber,
-          member.role
+          member.role,
+          Expressions.as(JPAExpressions
+              .selectFrom(studyMember)
+              .where(
+                studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail()),
+                studyMember.status.eq(StudyMemberStatus.PASS),
+                studyMember.study.type.eq(StudyType.REGULAR)
+              ).exists()
+            , "regularStudyMemberYn")
         )
       )
       .from(member)

@@ -8,4 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface LimitRegularStudyMember {
+  boolean notice() default true; // true라면 프론트에서 alert창 띄움
 }
