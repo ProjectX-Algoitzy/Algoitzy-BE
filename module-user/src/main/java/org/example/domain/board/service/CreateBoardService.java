@@ -77,13 +77,14 @@ public class CreateBoardService {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
 
     Board board = coreBoardService.findById(boardId);
+    if (board.getDeleteYn())
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "제제된 글은 수정할 수 없습니다.");
     if (board.getCategory().equals(BoardCategory.NOTICE))
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "공지는 수정할 수 없습니다.");
     if (!board.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail())))
       throw new GeneralException(ErrorStatus.UNAUTHORIZED, "자신이 남긴 게시글 이외에는 수정할 수 없습니다.");
-    if (board.getSaveYn() && !request.saveYn()) {
+    if (board.getSaveYn() && !request.saveYn())
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "등록된 게시글은 임시 저장할 수 없습니다.");
-    }
 
     board.updateBoard(
       request.category(),

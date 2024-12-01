@@ -33,7 +33,7 @@ public class BoardService {
     }
 
     /**
-     * 게시글 상세 조회
+     * 최종 저장 게시글 상세 조회
      */
     public DetailBoardResponse getBoard(Long boardId) {
         return detailBoardService.getBoard(boardId);

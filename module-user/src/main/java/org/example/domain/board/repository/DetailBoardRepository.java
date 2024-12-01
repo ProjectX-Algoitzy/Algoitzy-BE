@@ -21,7 +21,7 @@ public class DetailBoardRepository {
   private final JPAQueryFactory queryFactory;
 
   /**
-   * 게시글 상세 조회
+   * 최종 저장 게시글 상세 조회
    */
   public DetailBoardResponse getBoard(Long boardId) {
     return queryFactory.select(Projections.fields(

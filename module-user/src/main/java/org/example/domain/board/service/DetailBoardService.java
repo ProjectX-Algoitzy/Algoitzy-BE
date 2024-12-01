@@ -17,35 +17,37 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class DetailBoardService {
 
-    private final DetailBoardRepository detailBoardRepository;
-    private final ListBoardFileRepository listBoardFileRepository;
+  private final DetailBoardRepository detailBoardRepository;
+  private final ListBoardFileRepository listBoardFileRepository;
 
-    /*
-    * 게시글 상세 조회
-    * */
-    public DetailBoardResponse getBoard(Long boardId) {
-        DetailBoardResponse board = detailBoardRepository.getBoard(boardId);
-        board.updateCategory(board.getCategory());
+  /**
+   * 최종 저장 게시글 상세 조회
+   */
+  public DetailBoardResponse getBoard(Long boardId) {
+    DetailBoardResponse board = detailBoardRepository.getBoard(boardId);
+    if (board.isDeleteYn())
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "관리자에 의해 삭제된 글입니다.");
+    board.updateCategory(board.getCategory());
 
-        List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
+    List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
 
-        return board.toBuilder()
-            .boardFileList(boardFileList)
-            .build();
-    }
+    return board.toBuilder()
+      .boardFileList(boardFileList)
+      .build();
+  }
 
-    /**
-     * 임시저장 게시글 상세 조회
-     */
-    public DetailDraftBoardResponse getDraftBoard(Long boardId) {
-        DetailDraftBoardResponse board = detailBoardRepository.getDraftBoard(boardId);
-        if (board == null) throw new GeneralException(ErrorStatus.NOT_FOUND, "해당 ID의 임시저장 게시글이 존재하지 않습니다.");
-        board.updateCategory(board.getCategory());
+  /**
+   * 임시저장 게시글 상세 조회
+   */
+  public DetailDraftBoardResponse getDraftBoard(Long boardId) {
+    DetailDraftBoardResponse board = detailBoardRepository.getDraftBoard(boardId);
+    if (board == null) throw new GeneralException(ErrorStatus.NOT_FOUND, "해당 ID의 임시저장 게시글이 존재하지 않습니다.");
+    board.updateCategory(board.getCategory());
 
-        List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
+    List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
 
-        return board.toBuilder()
-            .boardFileList(boardFileList)
-            .build();
-    }
+    return board.toBuilder()
+      .boardFileList(boardFileList)
+      .build();
+  }
 }
