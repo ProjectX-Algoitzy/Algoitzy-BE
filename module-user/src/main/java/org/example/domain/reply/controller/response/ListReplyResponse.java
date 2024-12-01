@@ -17,4 +17,6 @@ public class ListReplyResponse {
     @Schema(description = "댓글 목록")
     private List<ListReplyDto> replyList;
 
+    @Schema(description = "최상위 댓글 수")
+    private long parentReplyCount;
 }

@@ -40,7 +40,15 @@ public class ListReplyRepository {
         .orderBy(reply.createdTime.desc())
         .fetch();
 
-    return PageableExecutionUtils.getPage(boardList, request.pageRequest(), () -> 0L);
+    JPAQuery<Long> countQuery = queryFactory
+      .select(reply.count())
+      .from(reply)
+      .where(
+        reply.board.id.eq(boardId),
+        reply.parentId.isNull()
+      );
+
+    return PageableExecutionUtils.getPage(boardList, request.pageRequest(), countQuery::fetchOne);
   }
 
   public List<ListReplyDto> getChildrenReplyList(Long boardId) {
@@ -89,12 +97,12 @@ public class ListReplyRepository {
 
   public List<Reply> getChildrenList(Long parentId) {
     return queryFactory
-        .selectFrom(reply)
-        .where(
-            (parentId == null) ? reply.parentId.isNull() : reply.parentId.eq(parentId)
-        )
-        .orderBy(reply.deleteYn.asc())
-        .fetch();
+      .selectFrom(reply)
+      .where(
+        (parentId == null) ? reply.parentId.isNull() : reply.parentId.eq(parentId)
+      )
+      .orderBy(reply.deleteYn.asc())
+      .fetch();
   }
 }
 
