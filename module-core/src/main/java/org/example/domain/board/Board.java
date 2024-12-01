@@ -133,7 +133,7 @@ public class Board {
     this.content = null;
   }
 
-  public void createBoardLlike(BoardLike boardLike) {
+  public void createBoardLike(BoardLike boardLike) {
     boardLikeList.add(boardLike);
   }
 

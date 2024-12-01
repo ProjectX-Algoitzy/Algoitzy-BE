@@ -41,7 +41,7 @@ public class CreateBoardLikeService {
                 .build();
 
             boardLikeRepository.save(boardLike);
-            board.createBoardLlike(boardLike);
+            board.createBoardLike(boardLike);
         }
         boardRepository.save(board);
     }
