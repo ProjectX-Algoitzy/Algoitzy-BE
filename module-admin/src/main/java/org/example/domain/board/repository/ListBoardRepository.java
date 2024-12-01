@@ -57,7 +57,8 @@ public class ListBoardRepository {
         .where(
           searchCategory(request.category()),
           searchKeyword(request.searchKeyword()),
-          board.saveYn.isTrue()
+          board.saveYn.isTrue(),
+          board.deleteYn.isFalse()
         )
         .groupBy(board)
         .offset(request.pageRequest().getOffset())
@@ -76,7 +77,8 @@ public class ListBoardRepository {
       .where(
         searchCategory(request.category()),
         searchKeyword(request.searchKeyword()),
-        board.saveYn.isTrue()
+        board.saveYn.isTrue(),
+        board.deleteYn.isFalse()
       );
 
     return PageableExecutionUtils.getPage(boardList, request.pageRequest(), countQuery::fetchOne);
