@@ -150,7 +150,7 @@ public class ListBoardRepository {
         board.category.eq(BoardCategory.NOTICE),
         board.member.email.eq(SecurityUtils.getCurrentMemberEmail())
       )
-      .orderBy(board.createdTime.desc())
+      .orderBy(board.updatedTime.desc())
       .fetch();
   }
 }
