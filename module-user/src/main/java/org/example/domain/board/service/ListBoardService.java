@@ -71,6 +71,7 @@ public class ListBoardService {
    */
   public ListBoardResponse getDraftBoardList() {
     List<ListBoardDto> boardList = listBoardRepository.getDraftBoardList();
+    boardList.forEach(board -> board.updateCategory(board.getCategory()));
 
     return ListBoardResponse.builder()
       .boardList(boardList)

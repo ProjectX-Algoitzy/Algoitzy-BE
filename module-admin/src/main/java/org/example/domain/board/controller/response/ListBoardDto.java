@@ -18,7 +18,10 @@ public class ListBoardDto {
   @Schema(description = "게시글 ID")
   private long boardId;
 
-  @Schema(description = "카테고리")
+  @Schema(description = "카테고리 코드")
+  private String categoryCode;
+
+  @Schema(description = "카테고리명")
   private String category;
 
   @Schema(description = "제목")

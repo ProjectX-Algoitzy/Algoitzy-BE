@@ -19,7 +19,10 @@ import org.example.domain.board_file.controller.response.ListBoardFileDto;
 @Schema(description = "게시글 상세 조회 응답 객체")
 public class DetailBoardResponse {
 
-  @Schema(description = "카테고리")
+  @Schema(description = "카테고리 코드")
+  private String categoryCode;
+
+  @Schema(description = "카테고리명")
   private String category;
 
   @Schema(description = "게시글 제목")

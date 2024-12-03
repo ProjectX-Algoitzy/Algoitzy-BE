@@ -27,6 +27,7 @@ public class DetailBoardRepository {
     return queryFactory.select(Projections.fields(
         DetailBoardResponse.class,
         board.id.as("boardId"),
+        board.category.stringValue().as("categoryCode"),
         board.category.stringValue().as("category"),
         board.title,
         board.content,

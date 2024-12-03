@@ -176,6 +176,7 @@ public class ListBoardRepository {
         .select(Projections.fields(
             ListBoardDto.class,
             board.id.as("boardId"),
+            board.category.stringValue().as("categoryCode"),
             board.category.stringValue().as("category"),
             board.title,
             board.member.name.as("createdName"),
