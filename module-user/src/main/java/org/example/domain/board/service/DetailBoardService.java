@@ -1,6 +1,9 @@
 package org.example.domain.board.service;
 
+import static org.example.util.ValueUtils.BOARD_VIEW_COUNT_KEY;
+
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
@@ -9,6 +12,7 @@ import org.example.domain.board.controller.response.DetailDraftBoardResponse;
 import org.example.domain.board.repository.DetailBoardRepository;
 import org.example.domain.board_file.controller.ListBoardFileDto;
 import org.example.domain.board_file.repository.ListBoardFileRepository;
+import org.example.util.RedisUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,7 @@ public class DetailBoardService {
 
   private final DetailBoardRepository detailBoardRepository;
   private final ListBoardFileRepository listBoardFileRepository;
+  private final RedisUtils redisUtils;
 
   /**
    * 최종 저장 게시글 상세 조회
@@ -30,6 +35,10 @@ public class DetailBoardService {
     board.updateCategory(board.getCategory());
 
     List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
+
+    int viewCount = Integer.parseInt(Optional.ofNullable(redisUtils.getValue(BOARD_VIEW_COUNT_KEY + boardId))
+      .orElse("0"));
+    redisUtils.save(BOARD_VIEW_COUNT_KEY + boardId, Integer.toString(viewCount + 1));
 
     return board.toBuilder()
       .boardFileList(boardFileList)

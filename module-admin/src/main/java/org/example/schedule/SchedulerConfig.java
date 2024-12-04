@@ -47,9 +47,9 @@ public class SchedulerConfig {
   }
 
   /**
-   * 10분마다 조회수 동기화
+   * 5분마다 조회수 동기화
    */
-  @Scheduled(fixedDelay = 600000L)
+  @Scheduled(fixedDelay = 300000L)
   public void syncViewCount() {
     log.info("=========조회수 동기화 스케쥴러 실행=========");
     createViewCountService.syncViewCount();

@@ -8,5 +8,6 @@ public class ValueUtils {
   public static final String CODING_TEST_PREPARE = "코딩테스트 심화반";
   public static final String TOKEN_EXPIRED_MESSAGE = "만료된 토큰입니다.";
   public static final String INSTITUTION_VIEW_COUNT_KEY = "institution:view_count:";
+  public static final String BOARD_VIEW_COUNT_KEY = "board:view_count:";
 
 }

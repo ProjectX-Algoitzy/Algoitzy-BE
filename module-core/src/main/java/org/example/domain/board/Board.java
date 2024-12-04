@@ -141,4 +141,8 @@ public class Board {
     boardLikeList.remove(boardLike);
   }
 
+  public void syncViewCount(int viewCount) {
+    if (this.viewCount == null) this.viewCount = viewCount;
+    else this.viewCount += viewCount;
+  }
 }
