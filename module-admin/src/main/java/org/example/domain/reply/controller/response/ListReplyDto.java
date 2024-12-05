@@ -44,6 +44,9 @@ public class ListReplyDto {
   @Schema(description = "내 좋아요 여부")
   private boolean myLikeYn;
 
+  @Schema(description = "좋아요 수")
+  private int likeCount;
+
   @Schema(description = "댓글 깊이")
   private int depth;
 

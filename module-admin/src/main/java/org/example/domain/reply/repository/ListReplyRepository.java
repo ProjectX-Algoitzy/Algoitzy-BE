@@ -34,6 +34,7 @@ public class ListReplyRepository {
           reply.board.id.eq(boardId),
           reply.parentId.isNull()
         )
+        .groupBy(reply)
         .offset(request.pageRequest().getOffset())
         .limit(request.pageRequest().getPageSize())
         .orderBy(reply.createdTime.desc())
@@ -58,6 +59,7 @@ public class ListReplyRepository {
         reply.board.id.eq(boardId),
         reply.parentId.isNotNull()
       )
+      .groupBy(reply)
       .orderBy(reply.createdTime.asc())
       .fetch();
   }
@@ -87,6 +89,7 @@ public class ListReplyRepository {
                 replyLike.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               ).exists()
             , "myLikeYn"),
+          reply.replyLikeList.size().as("likeCount"),
           reply.depth,
           reply.deleteYn,
           reply.deleteByAdminYn
