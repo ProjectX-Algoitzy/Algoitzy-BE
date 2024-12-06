@@ -29,10 +29,9 @@ public class CreateBoardLikeService {
         Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
 
         if (board.getDeleteYn()) {
-            throw new GeneralException(ErrorStatus.BAD_REQUEST, "삭제된 댓글은 좋아요를 할 수 없습니다.");
+            throw new GeneralException(ErrorStatus.BAD_REQUEST, "삭제된 게시글은 좋아요를 할 수 없습니다.");
         }
-
-        if (board.getSaveYn()) {
+        if (!board.getSaveYn()) {
             throw new GeneralException(ErrorStatus.BAD_REQUEST, "임시저장된 게시글은 좋아요를 할 수 없습니다.");
         }
 

@@ -70,6 +70,7 @@ public class DetailBoardRepository {
       .select(
         Projections.fields(
           DetailDraftBoardResponse.class,
+          board.category.stringValue().as("categoryCode"),
           board.category.stringValue().as("category"),
           board.title,
           board.id.as("boardId"),

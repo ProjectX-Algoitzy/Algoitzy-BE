@@ -18,6 +18,9 @@ import org.example.domain.board_file.controller.ListBoardFileDto;
 @Schema(description = "게시글 상세 조회 응답 객체")
 public class DetailDraftBoardResponse {
 
+    @Schema(description = "카테고리 enum code")
+    private String categoryCode;
+
     @Schema(description = "카테고리")
     private String category;
 
