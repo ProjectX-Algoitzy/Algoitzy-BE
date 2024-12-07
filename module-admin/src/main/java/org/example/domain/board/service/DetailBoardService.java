@@ -25,6 +25,7 @@ public class DetailBoardService {
    */
   public DetailBoardResponse getBoard(Long boardId) {
     DetailBoardResponse board = detailBoardRepository.getBoard(boardId);
+    if (board == null) throw new GeneralException(ErrorStatus.BAD_REQUEST, "존재하지 않는 게시글 ID입니다.");
     board.updateCategory(board.getCategory());
 
     List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
