@@ -43,6 +43,10 @@ public class S3File {
     @Comment("S3 파일 경로")
     private String fileUrl;
 
+    @Column(nullable = false)
+    @Comment("S3 파일 용량(Byte)")
+    private double fileSize;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdTime;
@@ -58,9 +62,10 @@ public class S3File {
     private String updatedBy;
 
     @Builder
-    public S3File(String originalName, String fileName, String fileUrl) {
+    public S3File(String originalName, String fileName, String fileUrl, long fileSize) {
         this.originalName = originalName;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
+        this.fileSize = fileSize;
     }
 }

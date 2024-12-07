@@ -3,15 +3,11 @@ package org.example.domain.study.service;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.domain.member.enums.Role;
-import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study.Study;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.repository.DetailStudyRepository;
-import org.example.domain.study_member.repository.DetailStudyMemberRepository;
-import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class DetailStudyService {
 
-  private final CoreMemberService coreMemberService;
   private final CoreStudyService coreStudyService;
   private final DetailStudyRepository detailStudyRepository;
-  private final DetailStudyMemberRepository detailStudyMemberRepository;
 
   /**
    * 자율 스터디 상세 조회
@@ -32,11 +26,6 @@ public class DetailStudyService {
     Study study = coreStudyService.findById(studyId);
     if (study.getType().equals(StudyType.REGULAR)) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "자율 스터디가 아닙니다.");
-    }
-
-    if (!detailStudyMemberRepository.isRegularStudyMember()
-      && coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()).getRole().equals(Role.ROLE_USER)) {
-      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "정규 스터디원만 열람할 수 있습니다.");
     }
 
     return detailStudyRepository.getTempStudy(studyId);
