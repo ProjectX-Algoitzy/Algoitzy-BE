@@ -36,9 +36,7 @@ public class DetailBoardService {
 
     List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
 
-    int viewCount = Integer.parseInt(Optional.ofNullable(redisUtils.getValue(BOARD_VIEW_COUNT_KEY + boardId))
-      .orElse("0"));
-    redisUtils.save(BOARD_VIEW_COUNT_KEY + boardId, Integer.toString(viewCount + 1));
+    redisUtils.addViewCount(BOARD_VIEW_COUNT_KEY + boardId);
 
     return board.toBuilder()
       .boardFileList(boardFileList)
