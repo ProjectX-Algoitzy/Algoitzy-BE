@@ -7,7 +7,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.board_file.controller.ListBoardFileDto;
+import org.example.domain.board_file.controller.response.ListBoardFileDto;
 import org.springframework.stereotype.Repository;
 
 @Repository

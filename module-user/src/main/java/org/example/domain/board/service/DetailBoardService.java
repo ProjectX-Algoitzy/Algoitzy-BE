@@ -3,14 +3,13 @@ package org.example.domain.board.service;
 import static org.example.util.ValueUtils.BOARD_VIEW_COUNT_KEY;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.board.controller.response.DetailBoardResponse;
 import org.example.domain.board.controller.response.DetailDraftBoardResponse;
 import org.example.domain.board.repository.DetailBoardRepository;
-import org.example.domain.board_file.controller.ListBoardFileDto;
+import org.example.domain.board_file.controller.response.ListBoardFileDto;
 import org.example.domain.board_file.repository.ListBoardFileRepository;
 import org.example.util.RedisUtils;
 import org.springframework.stereotype.Service;

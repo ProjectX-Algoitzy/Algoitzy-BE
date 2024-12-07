@@ -10,7 +10,7 @@ import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.board.enums.BoardCategory;
-import org.example.domain.board_file.controller.ListBoardFileDto;
+import org.example.domain.board_file.controller.response.ListBoardFileDto;
 
 @Builder(toBuilder = true)
 @Getter

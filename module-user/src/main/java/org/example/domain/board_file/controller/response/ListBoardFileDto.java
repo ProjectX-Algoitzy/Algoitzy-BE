@@ -1,4 +1,4 @@
-package org.example.domain.board_file.controller;
+package org.example.domain.board_file.controller.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
