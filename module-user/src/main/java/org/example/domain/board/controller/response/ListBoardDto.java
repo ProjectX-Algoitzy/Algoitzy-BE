@@ -15,37 +15,44 @@ import org.example.domain.board.enums.BoardCategory;
 @Schema(description = "게시글 목록 조회 응답 DTO")
 public class ListBoardDto {
 
-    @Schema(description = "게시글 ID")
-    private long boardId;
+  @Schema(description = "게시글 ID")
+  private long boardId;
 
-    @Schema(description = "카테고리")
-    private String category;
+  @Schema(description = "카테고리 코드")
+  private String categoryCode;
 
-    @Schema(description = "제목")
-    private String title;
+  @Schema(description = "카테고리명")
+  private String category;
 
-    @Schema(description = "작성자")
-    private String createdName;
+  @Schema(description = "제목")
+  private String title;
 
-    @Schema(description = "작성일")
-    private LocalDateTime createdTime;
+  @Schema(description = "작성자")
+  private String createdName;
 
-    @Schema(description = "새 게시물 여부")
-    private boolean newBoardYn;
+  @Schema(description = "작성일")
+  private LocalDateTime createdTime;
 
-    @Schema(description = "조회수")
-    private int viewCount;
+  @Schema(description = "새 게시물 여부")
+  private boolean newBoardYn;
 
-    @Schema(description = "최종 저장 여부")
-    private boolean saveYn;
+  @Schema(description = "조회수")
+  private int viewCount;
 
-    @Schema(description = "고정 여부")
-    private boolean fixYn;
+  @Schema(description = "최종 저장 여부")
+  private boolean saveYn;
 
-    @Schema(description = "삭제 여부")
-    private boolean deleteYn;
+  @Schema(description = "고정 여부")
+  private boolean fixYn;
 
-    public void updateCategory(String type) {
-        this.category = BoardCategory.valueOf(type).getName();
-    }
+  @Schema(description = "삭제 여부")
+  private boolean deleteYn;
+
+  public void updateCategory(String type) {
+    this.category = BoardCategory.valueOf(type).getName();
+  }
+
+  public void blindCreatedName() {
+    this.createdName = null;
+  }
 }

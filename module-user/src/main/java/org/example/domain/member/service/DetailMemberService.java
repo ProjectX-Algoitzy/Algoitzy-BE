@@ -16,6 +16,7 @@ import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.response.MemberInfoResponse;
 import org.example.domain.member.controller.response.MyPageInfoResponse;
 import org.example.domain.member.controller.response.MyPageStudyResponse;
+import org.example.domain.member.enums.Role;
 import org.example.domain.member.repository.DetailMemberRepository;
 import org.example.domain.member.repository.MemberRepository;
 import org.example.domain.study.controller.response.ListStudyDto;
@@ -42,7 +43,9 @@ public class DetailMemberService {
    * 로그인 멤버 정보
    */
   public MemberInfoResponse getLoginMemberInfo() {
-    return detailMemberRepository.getLoginMemberInfo();
+    MemberInfoResponse response = detailMemberRepository.getLoginMemberInfo();
+    if (!response.getRole().equals(Role.ROLE_USER)) response.setRegularStudyMemberYn(true);
+    return response;
   }
 
   /**
@@ -114,7 +117,9 @@ public class DetailMemberService {
    * 내 정보 조회
    */
   public MemberInfoResponse getMyInfo() {
-    return detailMemberRepository.getMyInfo();
+    MemberInfoResponse response = detailMemberRepository.getMyInfo();
+    if (!response.getRole().equals(Role.ROLE_USER)) response.setRegularStudyMemberYn(true);
+    return response;
   }
 
   /**

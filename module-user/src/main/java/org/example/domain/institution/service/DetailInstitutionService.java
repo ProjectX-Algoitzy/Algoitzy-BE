@@ -6,7 +6,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
-import org.example.domain.institution.Institution;
 import org.example.domain.institution.controller.response.DetailInstitutionResponse;
 import org.example.domain.institution.repository.DetailInstitutionRepository;
 import org.example.domain.member.enums.Role;
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DetailInstitutionService {
 
   private final CoreMemberService coreMemberService;
-  private final CoreInstitutionService coreInstitutionService;
   private final DetailStudyMemberRepository detailStudyMemberRepository;
   private final DetailInstitutionRepository detailInstitutionRepository;
   private final RedisUtils redisUtils;
@@ -37,11 +35,9 @@ public class DetailInstitutionService {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
     }
 
-    int viewCount = Integer.parseInt(Optional.ofNullable(redisUtils.getValue(INSTITUTION_VIEW_COUNT_KEY + institutionId))
-      .orElse("0"));
-    redisUtils.save(INSTITUTION_VIEW_COUNT_KEY + institutionId, Integer.toString(viewCount + 1));
+    redisUtils.addViewCount(INSTITUTION_VIEW_COUNT_KEY + institutionId);
 
-    Institution institution = coreInstitutionService.findById(institutionId);
-    return detailInstitutionRepository.getInstitution(institution.getId());
+    return Optional.ofNullable(detailInstitutionRepository.getInstitution(institutionId))
+      .orElseThrow(() -> new GeneralException(ErrorStatus.PAGE_NOT_FOUND));
   }
 }

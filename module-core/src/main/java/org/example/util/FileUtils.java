@@ -26,5 +26,13 @@ public class FileUtils {
     return fileUrl.contains(BASIC_IMAGE) || fileUrl.contains(EMAIL);
   }
 
+  /**
+   * 파일 용량 변환
+   */
+  public static String getFileSize(double fileSize) {
+    if (fileSize < 100) return Math.round(fileSize * 100) / 100.0 + "B";
+    else if (fileSize < 1000000) return Math.round(fileSize / 1000 * 100) / 100.0 + "KB";
+    else return Math.round(fileSize / 1000000 * 100) / 100.0 + "MB";
+  }
 
 }

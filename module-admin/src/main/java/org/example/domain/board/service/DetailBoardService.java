@@ -25,6 +25,7 @@ public class DetailBoardService {
    */
   public DetailBoardResponse getBoard(Long boardId) {
     DetailBoardResponse board = detailBoardRepository.getBoard(boardId);
+    if (board == null) throw new GeneralException(ErrorStatus.BAD_REQUEST, "존재하지 않는 게시글 ID입니다.");
     board.updateCategory(board.getCategory());
 
     List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());
@@ -39,7 +40,7 @@ public class DetailBoardService {
    */
   public DetailDraftBoardResponse getDraftBoard(Long boardId) {
     DetailDraftBoardResponse board = detailBoardRepository.getDraftBoard(boardId);
-    if (board == null) throw new GeneralException(ErrorStatus.NOT_FOUND, "해당 ID의 임시저장 게시글이 존재하지 않습니다.");
+    if (board == null) throw new GeneralException(ErrorStatus.NOTICE_NOT_FOUND, "해당 ID의 임시저장 게시글이 존재하지 않습니다.");
     board.updateCategory(board.getCategory());
 
     List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());

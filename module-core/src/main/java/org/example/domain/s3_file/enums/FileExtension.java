@@ -9,14 +9,23 @@ import lombok.RequiredArgsConstructor;
 public enum FileExtension {
 
   ZIP("zip"),
+
   PDF("pdf"),
+
   HWP("hwp"),
   HWPX("hwpx"),
+
   DOC("doc"),
   DOCX("docx"),
+
   PPT("ppt"),
   PPTX("pptx"),
+
+  XLS("xls"),
+  XLSX("xlsx"),
+
   TXT("txt"),
+
   JPG("jpg"),
   JPEG("jpeg"),
   PNG("png"),

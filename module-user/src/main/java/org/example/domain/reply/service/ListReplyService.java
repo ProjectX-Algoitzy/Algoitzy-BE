@@ -51,6 +51,7 @@ public class ListReplyService {
 
     return ListReplyResponse.builder()
       .replyList(replyList)
+      .parentReplyCount(parentReplyList.getTotalElements())
       .build();
   }
 

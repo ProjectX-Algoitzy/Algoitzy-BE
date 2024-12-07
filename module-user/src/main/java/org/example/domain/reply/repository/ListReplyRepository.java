@@ -35,12 +35,21 @@ public class ListReplyRepository {
           reply.board.id.eq(boardId),
           reply.parentId.isNull()
         )
+        .groupBy(reply)
         .offset(request.pageRequest().getOffset())
         .limit(request.pageRequest().getPageSize())
         .orderBy(reply.createdTime.desc())
         .fetch();
 
-    return PageableExecutionUtils.getPage(boardList, request.pageRequest(), () -> 0L);
+    JPAQuery<Long> countQuery = queryFactory
+      .select(reply.count())
+      .from(reply)
+      .where(
+        reply.board.id.eq(boardId),
+        reply.parentId.isNull()
+      );
+
+    return PageableExecutionUtils.getPage(boardList, request.pageRequest(), countQuery::fetchOne);
   }
 
   public List<ListReplyDto> getChildrenReplyList(Long boardId) {
@@ -51,6 +60,7 @@ public class ListReplyRepository {
         reply.board.id.eq(boardId),
         reply.parentId.isNotNull()
       )
+      .groupBy(reply)
       .orderBy(reply.createdTime.asc())
       .fetch();
   }
@@ -65,6 +75,7 @@ public class ListReplyRepository {
         reply.member.profileUrl,
         reply.content,
         reply.createdTime,
+        reply.member.email.eq(SecurityUtils.getCurrentMemberEmail()).as("myReplyYn"),
         reply.member.eq(
           JPAExpressions
             .select(board.member)
@@ -80,6 +91,7 @@ public class ListReplyRepository {
               replyLike.member.email.eq(SecurityUtils.getCurrentMemberEmail())
             ).exists(),
           "myLikeYn"),
+        reply.replyLikeList.size().as("likeCount"),
         reply.deleteYn,
         reply.deleteByAdminYn
 
@@ -88,12 +100,12 @@ public class ListReplyRepository {
 
   public List<Reply> getChildrenList(Long parentId) {
     return queryFactory
-        .selectFrom(reply)
-        .where(
-            (parentId == null) ? reply.parentId.isNull() : reply.parentId.eq(parentId)
-        )
-        .orderBy(reply.deleteYn.asc())
-        .fetch();
+      .selectFrom(reply)
+      .where(
+        (parentId == null) ? reply.parentId.isNull() : reply.parentId.eq(parentId)
+      )
+      .orderBy(reply.deleteYn.asc())
+      .fetch();
   }
 }
 

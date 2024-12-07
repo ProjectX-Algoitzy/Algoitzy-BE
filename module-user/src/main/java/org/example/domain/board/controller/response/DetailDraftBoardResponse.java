@@ -9,7 +9,7 @@ import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.board.enums.BoardCategory;
-import org.example.domain.board_file.controller.ListBoardFileDto;
+import org.example.domain.board_file.controller.response.ListBoardFileDto;
 
 @Builder(toBuilder = true)
 @Getter
@@ -17,6 +17,9 @@ import org.example.domain.board_file.controller.ListBoardFileDto;
 @AllArgsConstructor
 @Schema(description = "게시글 상세 조회 응답 객체")
 public class DetailDraftBoardResponse {
+
+    @Schema(description = "카테고리 enum code")
+    private String categoryCode;
 
     @Schema(description = "카테고리")
     private String category;

@@ -8,7 +8,6 @@ import org.example.domain.board.enums.BoardCategory;
 @Schema(description = "게시글 생성 요청 객체")
 public record CreateBoardRequest(
 
-  @NotNull
   @Schema(description = "게시글 카테고리")
   BoardCategory category,
 

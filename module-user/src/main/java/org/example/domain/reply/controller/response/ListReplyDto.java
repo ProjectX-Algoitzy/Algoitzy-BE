@@ -35,6 +35,9 @@ public class ListReplyDto {
     @Schema(description = "작성일")
     private LocalDateTime createdTime;
 
+    @Schema(description = "내 댓글 여부")
+    private boolean myReplyYn;
+
     @Schema(description = "게시판 작성자 여부")
     private boolean myBoardYn;
 
@@ -43,6 +46,9 @@ public class ListReplyDto {
 
     @Schema(description = "내 좋아요 여부")
     private boolean myLikeYn;
+
+    @Schema(description = "좋아요 수")
+    private int likeCount;
 
     @Schema(description = "댓글 깊이")
     private int depth;

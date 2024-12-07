@@ -12,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
@@ -57,7 +56,7 @@ public class Board {
   private String title;
 
   @Comment("게시물 내용")
-  @Lob
+  @Column(length = 1000000)
   private String content;
 
   @Comment("게시물 조회수")
@@ -94,7 +93,6 @@ public class Board {
   private List<BoardLike> boardLikeList = new ArrayList<>();
 
   @CreatedDate
-  @Column(updatable = false)
   private LocalDateTime createdTime;
 
   @LastModifiedDate
@@ -117,9 +115,12 @@ public class Board {
     this.member = member;
   }
 
-  public void updateBoard(String title, String content, boolean saveYn) {
+  public void updateBoard(BoardCategory category, String title, String content, boolean saveYn) {
+    this.category = category;
     if (StringUtils.hasText(title)) this.title = title;
     if (StringUtils.hasText(content)) this.content = content;
+    // 작성일에 최종 저장 시점이 노출되도록
+    if (!this.saveYn && saveYn) this.createdTime = LocalDateTime.now();
     this.saveYn = saveYn;
   }
 
@@ -132,7 +133,7 @@ public class Board {
     this.content = null;
   }
 
-  public void createBoardLlike(BoardLike boardLike) {
+  public void createBoardLike(BoardLike boardLike) {
     boardLikeList.add(boardLike);
   }
 
@@ -140,4 +141,8 @@ public class Board {
     boardLikeList.remove(boardLike);
   }
 
+  public void syncViewCount(int viewCount) {
+    if (this.viewCount == null) this.viewCount = viewCount;
+    else this.viewCount += viewCount;
+  }
 }

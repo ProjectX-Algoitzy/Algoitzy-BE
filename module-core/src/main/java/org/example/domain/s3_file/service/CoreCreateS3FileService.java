@@ -72,6 +72,7 @@ public class CoreCreateS3FileService {
           .originalName(multipartFile.getOriginalFilename())
           .fileName(fileName)
           .fileUrl(fileUrl)
+          .fileSize(multipartFile.getSize())
           .build());
       fileUrlList.add(fileUrl);
     }
@@ -107,11 +108,13 @@ public class CoreCreateS3FileService {
           .originalName(multipartFile.getOriginalFilename())
           .fileName(fileName)
           .fileUrl(fileUrl)
+          .fileSize(multipartFile.getSize())
           .build());
       s3FileList.add(
         UploadS3FileDto.builder()
           .originalName(multipartFile.getOriginalFilename())
           .fileUrl(fileUrl)
+          .fileSize(multipartFile.getSize())
           .build()
       );
     }

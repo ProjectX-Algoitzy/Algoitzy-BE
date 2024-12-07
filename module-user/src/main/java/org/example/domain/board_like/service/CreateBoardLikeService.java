@@ -1,6 +1,8 @@
 package org.example.domain.board_like.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.board.Board;
 import org.example.domain.board.repository.BoardRepository;
 import org.example.domain.board.service.CoreBoardService;
@@ -26,6 +28,13 @@ public class CreateBoardLikeService {
         Board board = coreBoardService.findById(boardId);
         Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
 
+        if (board.getDeleteYn()) {
+            throw new GeneralException(ErrorStatus.BAD_REQUEST, "삭제된 게시글은 좋아요를 할 수 없습니다.");
+        }
+        if (!board.getSaveYn()) {
+            throw new GeneralException(ErrorStatus.BAD_REQUEST, "임시저장된 게시글은 좋아요를 할 수 없습니다.");
+        }
+
         // 사용자가 해당 게시물에 좋아요를 눌렀는지 확인
         BoardLike isBoardLiked = boardLikeRepository.findByMemberAndBoard(member, board).orElse(null);
 
@@ -41,7 +50,7 @@ public class CreateBoardLikeService {
                 .build();
 
             boardLikeRepository.save(boardLike);
-            board.createBoardLlike(boardLike);
+            board.createBoardLike(boardLike);
         }
         boardRepository.save(board);
     }

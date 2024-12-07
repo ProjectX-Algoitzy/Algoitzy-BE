@@ -44,6 +44,7 @@ public class Reply {
   private Long id;
 
   @Comment("내용")
+  @Column(length = 1000)
   private String content;
 
   @Comment("댓글/대댓글의 깊이")

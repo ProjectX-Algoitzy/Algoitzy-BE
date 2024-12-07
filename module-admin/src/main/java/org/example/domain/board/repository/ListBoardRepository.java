@@ -39,6 +39,7 @@ public class ListBoardRepository {
         .select(Projections.fields(
             ListBoardDto.class,
             board.id.as("boardId"),
+            board.category.stringValue().as("categoryCode"),
             board.category.stringValue().as("category"),
             board.title,
             board.member.name.as("createdName"),
@@ -57,7 +58,8 @@ public class ListBoardRepository {
         .where(
           searchCategory(request.category()),
           searchKeyword(request.searchKeyword()),
-          board.saveYn.isTrue()
+          board.saveYn.isTrue(),
+          board.deleteYn.isFalse()
         )
         .groupBy(board)
         .offset(request.pageRequest().getOffset())
@@ -76,7 +78,8 @@ public class ListBoardRepository {
       .where(
         searchCategory(request.category()),
         searchKeyword(request.searchKeyword()),
-        board.saveYn.isTrue()
+        board.saveYn.isTrue(),
+        board.deleteYn.isFalse()
       );
 
     return PageableExecutionUtils.getPage(boardList, request.pageRequest(), countQuery::fetchOne);
@@ -102,7 +105,6 @@ public class ListBoardRepository {
     }
     BooleanBuilder builder = new BooleanBuilder();
     builder.or(board.title.contains(searchKeyword));
-    builder.or(board.content.contains(searchKeyword));
     builder.or(board.member.name.contains(searchKeyword));
     return builder;
   }
@@ -130,6 +132,7 @@ public class ListBoardRepository {
       .select(Projections.fields(
           ListBoardDto.class,
           board.id.as("boardId"),
+          board.category.stringValue().as("categoryCode"),
           board.category.stringValue().as("category"),
           board.title,
           board.member.name.as("createdName"),
@@ -149,7 +152,7 @@ public class ListBoardRepository {
         board.category.eq(BoardCategory.NOTICE),
         board.member.email.eq(SecurityUtils.getCurrentMemberEmail())
       )
-      .orderBy(board.createdTime.desc())
+      .orderBy(board.updatedTime.desc())
       .fetch();
   }
 }

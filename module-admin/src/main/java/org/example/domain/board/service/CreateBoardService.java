@@ -77,6 +77,7 @@ public class CreateBoardService {
     }
 
     board.updateBoard(
+      BoardCategory.NOTICE,
       request.title(),
       request.content(),
       request.saveYn()

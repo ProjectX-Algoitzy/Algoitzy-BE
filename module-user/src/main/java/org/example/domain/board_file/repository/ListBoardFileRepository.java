@@ -7,27 +7,28 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.board_file.controller.ListBoardFileDto;
+import org.example.domain.board_file.controller.response.ListBoardFileDto;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class ListBoardFileRepository {
 
-    private final JPAQueryFactory queryFactory;
+  private final JPAQueryFactory queryFactory;
 
-    public List<ListBoardFileDto> getBoardFileList(Long boardId) {
-        return queryFactory
-            .select(
-                Projections.fields(
-                    ListBoardFileDto.class,
-                    s3File.originalName,
-                    boardFile.fileUrl
-                )
-            )
-            .from(boardFile)
-            .innerJoin(s3File).on(boardFile.fileUrl.eq(s3File.fileUrl))
-            .where(boardFile.board.id.eq(boardId))
-            .fetch();
-    }
+  public List<ListBoardFileDto> getBoardFileList(Long boardId) {
+    return queryFactory
+      .select(
+        Projections.fields(
+          ListBoardFileDto.class,
+          s3File.originalName,
+          boardFile.fileUrl,
+          s3File.fileSize
+        )
+      )
+      .from(boardFile)
+      .innerJoin(s3File).on(boardFile.fileUrl.eq(s3File.fileUrl))
+      .where(boardFile.board.id.eq(boardId))
+      .fetch();
+  }
 }
