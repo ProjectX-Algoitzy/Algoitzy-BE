@@ -28,7 +28,7 @@ public class CreateReplyService {
   public void deleteReply(Long replyId) {
     Reply reply = coreReplyService.findById(replyId);
     if (reply.getDeleteYn()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 삭제된 댓글입니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 삭제된 댓글입니다.");
     }
 
     //***** 하위 댓글이 모두 삭제됐다면 DB에서 삭제 *****//
