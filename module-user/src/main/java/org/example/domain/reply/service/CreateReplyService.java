@@ -126,7 +126,7 @@ public class CreateReplyService {
     }
 
     if (parentDeleteYn || childDeleteYn) replyRepository.deleteAllById(deleteReplyIdList);
-    else reply.deleteByAdmin();
+    else reply.delete();
   }
 
   /**

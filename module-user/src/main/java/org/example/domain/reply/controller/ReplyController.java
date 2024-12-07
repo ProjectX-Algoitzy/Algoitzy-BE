@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.reply.controller.request.CreateReplyRequest;
 import org.example.domain.reply.controller.request.UpdateReplyRequest;
@@ -28,6 +29,7 @@ public class ReplyController {
     private final ReplyLikeService replyLikeService;
 
     @PostMapping
+    @LimitRegularStudyMember(notice = false)
     @Operation(summary = "게시물 댓글/대댓글 생성")
     public ApiResponse<Void> createReply(
       @RequestBody @Valid CreateReplyRequest request) {

@@ -1,6 +1,8 @@
 package org.example.domain.reply_like.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.api_response.exception.GeneralException;
+import org.example.api_response.status.ErrorStatus;
 import org.example.domain.member.Member;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.reply.Reply;
@@ -24,6 +26,8 @@ public class CreateReplyLikeService {
 
     public void createReplyLike(long replyId) {
         Reply reply = coreReplyService.findById(replyId);
+        if (reply.getDeleteYn()) throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "삭제된 댓글입니다.");
+
         Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
 
         // 사용자가 해당 댓글에 좋아요를 눌렀는지 확인
