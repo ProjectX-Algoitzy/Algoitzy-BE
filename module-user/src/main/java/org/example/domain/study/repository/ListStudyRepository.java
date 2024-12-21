@@ -108,7 +108,8 @@ public class ListStudyRepository {
     return queryFactory
       .selectFrom(study)
       .where(
-        study.generation.value.eq(maxGeneration)
+        study.generation.value.eq(maxGeneration),
+        study.endYN.isFalse()
       )
       .fetch().size();
   }
