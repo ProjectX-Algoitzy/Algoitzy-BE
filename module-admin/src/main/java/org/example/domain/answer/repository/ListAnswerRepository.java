@@ -70,7 +70,8 @@ public class ListAnswerRepository {
       .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
         study.generation.value.eq(request.generation()),
-        statusEq(request.status())
+        statusEq(request.status()),
+        answer.confirmYN.isTrue()
       );
 
     return PageableExecutionUtils.getPage(answerList, request.pageRequest(), countQuery::fetchOne);

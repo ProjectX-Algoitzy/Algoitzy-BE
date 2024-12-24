@@ -8,6 +8,7 @@ import org.example.api_response.ApiResponse;
 import org.example.domain.answer.controller.request.SearchAnswerRequest;
 import org.example.domain.answer.controller.response.DetailAnswerResponse;
 import org.example.domain.answer.controller.response.ListAnswerResponse;
+import org.example.domain.answer.controller.response.ListAnswerStatusResponse;
 import org.example.domain.answer.service.AnswerService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnswerController {
 
   private final AnswerService answerService;
+
+  @GetMapping("/status")
+  @Operation(summary = "지원서 전형 단계 목록 조회")
+  public ApiResponse<ListAnswerStatusResponse> getAnswerStatusList() {
+    return ApiResponse.onSuccess(answerService.getAnswerStatusList());
+  }
 
   @GetMapping()
   @Operation(summary = "작성한 지원서 목록 조회")
