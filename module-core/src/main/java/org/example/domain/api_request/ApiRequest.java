@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.api_request.enums.ApiModule;
 import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -28,7 +28,7 @@ public class ApiRequest {
   @Comment("요청받은 모듈")
   private ApiModule module;
 
-  @LastModifiedBy
+  @LastModifiedDate
   private LocalDateTime lastRequestTime;
 
   @Builder
