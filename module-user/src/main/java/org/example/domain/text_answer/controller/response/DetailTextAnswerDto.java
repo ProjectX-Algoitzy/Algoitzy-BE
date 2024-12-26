@@ -3,6 +3,7 @@ package org.example.domain.text_answer.controller.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -18,6 +19,7 @@ public class DetailTextAnswerDto {
   @Schema(description = "필수 여부")
   private boolean isRequired;
 
+  @Setter
   @Schema(description = "답변")
   private String text;
 
