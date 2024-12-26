@@ -34,7 +34,8 @@ public class LoggingAspect {
   }
 
   @Before("controller()")
-  public void createApiRequest() {
+  public void createApiRequest(JoinPoint joinPoint) {
+    if (joinPoint.getSignature().getName().equals("healthCheck")) return;
     apiRequestRepository.save(
       ApiRequest.builder()
         .module(ApiModule.USER_MODULE)
