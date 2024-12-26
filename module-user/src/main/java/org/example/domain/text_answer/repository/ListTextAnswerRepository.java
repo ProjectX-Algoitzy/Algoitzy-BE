@@ -1,8 +1,6 @@
 package org.example.domain.text_answer.repository;
 
-import static org.example.domain.answer.QAnswer.answer;
 import static org.example.domain.application.QApplication.application;
-import static org.example.domain.text_answer.QTextAnswer.textAnswer;
 import static org.example.domain.text_question.QTextQuestion.textQuestion;
 
 import com.querydsl.core.types.Projections;
@@ -21,24 +19,20 @@ public class ListTextAnswerRepository {
   /**
    * 지원서 상세 주관식 답변 목록 조회
    */
-  public List<DetailTextAnswerDto> getTextAnswerList(Long applicationId, Long answerId) {
+  public List<DetailTextAnswerDto> getTextQuestionList(Long applicationId) {
     return queryFactory
       .select(Projections.fields(
           DetailTextAnswerDto.class,
           textQuestion.id.as("textQuestionId"),
           textQuestion.question,
           textQuestion.isRequired,
-          textAnswer.text,
           textQuestion.sequence
         )
       )
       .from(textQuestion)
       .innerJoin(application).on(textQuestion.application.eq(application))
-      .leftJoin(textAnswer).on(textQuestion.eq(textAnswer.textQuestion))
-      .leftJoin(answer).on(textAnswer.answer.eq(answer))
       .where(
-        application.id.eq(applicationId),
-        answer.id.eq(answerId).or(textAnswer.isNull())
+        application.id.eq(applicationId)
       )
       .fetch();
   }
