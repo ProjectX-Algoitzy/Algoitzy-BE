@@ -49,7 +49,7 @@ public class ListAnswerRepository {
       .innerJoin(application).on(answer.application.eq(application))
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
-      .innerJoin(studyMember).on(member.eq(studyMember.member))
+      .innerJoin(studyMember).on(member.eq(studyMember.member), study.eq(studyMember.study))
       .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
         study.generation.value.eq(request.generation()),
@@ -66,7 +66,7 @@ public class ListAnswerRepository {
       .innerJoin(application).on(answer.application.eq(application))
       .innerJoin(study).on(application.study.eq(study))
       .innerJoin(member).on(answer.createdBy.eq(member.email))
-      .innerJoin(studyMember).on(member.eq(studyMember.member))
+      .innerJoin(studyMember).on(member.eq(studyMember.member), study.eq(studyMember.study))
       .innerJoin(interview).on(studyMember.eq(interview.studyMember))
       .where(
         study.generation.value.eq(request.generation()),
