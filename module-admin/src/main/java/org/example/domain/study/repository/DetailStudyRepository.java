@@ -9,8 +9,10 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.study.Study;
 import org.example.domain.study.controller.response.DetailTempStudyResponse;
 import org.example.domain.study.controller.response.RegularStudyInfoResponse;
+import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.enums.StudyMemberRole;
 import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.example.util.SecurityUtils;
@@ -107,6 +109,16 @@ public class DetailStudyRepository {
       .from(study)
       .where(
         study.id.eq(studyId)
+      )
+      .fetchOne();
+  }
+
+  public Study getRegularStudyById(Long studyId) {
+    return queryFactory
+      .selectFrom(study)
+      .where(
+        study.id.eq(studyId),
+        study.type.eq(StudyType.REGULAR)
       )
       .fetchOne();
   }
