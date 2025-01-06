@@ -21,6 +21,7 @@ public class AttendanceController {
 
   private final AttendanceService attendanceService;
 
+  @Deprecated
   @PostMapping()
   @Operation(summary = "출석부 갱신")
   public ApiResponse<Void> createAttendance() {
