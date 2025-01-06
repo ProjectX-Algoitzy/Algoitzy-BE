@@ -64,8 +64,13 @@ public class DetailMemberService {
    * 마이페이지 멤버 정보
    */
   public MyPageInfoResponse getMyPageInfo(String handle) {
-    return Optional.ofNullable(detailMemberRepository.getMyPageInfo(handle))
+    MyPageInfoResponse response = Optional.ofNullable(detailMemberRepository.getMyPageInfo(handle))
       .orElseThrow(() -> new GeneralException(ErrorStatus.PAGE_NOT_FOUND, "존재하지 않는 회원입니다."));
+
+    if (!coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()).getHandle().equals(handle)) {
+      throw new GeneralException(ErrorStatus.PAGE_UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
+    }
+    return response;
   }
 
   /**

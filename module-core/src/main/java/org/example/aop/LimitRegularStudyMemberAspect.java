@@ -38,7 +38,8 @@ public class LimitRegularStudyMemberAspect {
     if (!coreDetailStudyMemberRepository.isRegularStudyMember()
       && coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()).getRole().equals(Role.ROLE_USER)) {
 
-      if (annotation.notice()) throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
+      if (annotation.page()) throw new GeneralException(ErrorStatus.PAGE_UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
+      else if (annotation.notice()) throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
       else throw new GeneralException(ErrorStatus.UNAUTHORIZED, "정규 스터디원만 접근 가능합니다.");
     }
   }

@@ -46,12 +46,10 @@ public class DetailStudyService {
    * 정규 스터디 홈 조회
    */
   public String getContent(Long studyId) {
-    Study study = coreStudyService.findById(studyId);
-    if (study.getType().equals(StudyType.TEMP)) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "정규 스터디가 아닙니다.");
-    }
+    Study study = detailStudyRepository.getRegularStudyById(studyId);
+    if (study == null) throw new GeneralException(ErrorStatus.PAGE_NOT_FOUND, "존재하지 않는 스터디입니다.");
 
-    return coreStudyService.findById(studyId).getContent();
+    return study.getContent();
   }
 
 }
