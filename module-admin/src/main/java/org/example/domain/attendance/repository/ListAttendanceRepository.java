@@ -24,6 +24,7 @@ public class ListAttendanceRepository {
       .select(
         Projections.fields(
           ListAttendanceDto.class,
+          attendance.id.as("attendanceId"),
           attendance.week.value.as("week"),
           studyMember.member.name,
           studyMember.member.handle,

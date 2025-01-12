@@ -20,6 +20,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 404_PAGE : 프론트 404 Page
     PAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "404_PAGE"),
+    // 401_PAGE : 프론트 401 Page
+    PAGE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "401_PAGE"),
 
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON4000"),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "COMMON4001"),

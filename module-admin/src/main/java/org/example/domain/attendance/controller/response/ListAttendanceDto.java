@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "출석부 목록 응답 DTO")
 public class ListAttendanceDto {
 
+  @Schema(description = "출석부 ID")
+  private Long attendanceId;
+
   @Schema(description = "주차")
   private Integer week;
 

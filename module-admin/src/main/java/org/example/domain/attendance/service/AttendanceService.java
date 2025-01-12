@@ -1,6 +1,7 @@
 package org.example.domain.attendance.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.domain.attendance.controller.request.UpdateAttendanceRequest;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,10 @@ public class AttendanceService {
     return listAttendanceService.getAttendanceList(studyId);
   }
 
+  /**
+   * 정규 스터디 출석부 수정
+   */
+  public void updateAttendanceList(UpdateAttendanceRequest request) {
+    createAttendanceService.updateAttendanceList(request);
+  }
 }

@@ -29,8 +29,8 @@ public class DetailBoardService {
    */
   public DetailBoardResponse getBoard(Long boardId) {
     DetailBoardResponse board = detailBoardRepository.getBoard(boardId);
-    if (board.isDeleteYn())
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "관리자에 의해 삭제된 글입니다.");
+    if (board == null) throw new GeneralException(ErrorStatus.PAGE_NOT_FOUND, "존재하지 않는 게시글입니다.");
+    if (board.isDeleteYn()) throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "관리자에 의해 삭제된 글입니다.");
     board.updateCategory(board.getCategory());
 
     List<ListBoardFileDto> boardFileList = listBoardFileRepository.getBoardFileList(board.getBoardId());

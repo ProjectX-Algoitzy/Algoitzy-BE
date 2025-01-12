@@ -67,7 +67,7 @@ public class StudyController {
   }
 
   @GetMapping("/{study-id}")
-  @LimitRegularStudyMember
+  @LimitRegularStudyMember(page = true)
   @Operation(summary = "자율 스터디 상세 조회")
   public ApiResponse<DetailTempStudyResponse> getTempStudy(
     @PathVariable("study-id") Long studyId

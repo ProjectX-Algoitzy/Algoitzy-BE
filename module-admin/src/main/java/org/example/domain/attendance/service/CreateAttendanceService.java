@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
 import org.example.domain.attendance.Attendance;
+import org.example.domain.attendance.controller.request.UpdateAttendanceDto;
+import org.example.domain.attendance.controller.request.UpdateAttendanceRequest;
 import org.example.domain.attendance.repository.AttendanceRepository;
 import org.example.domain.attendance_request.AttendanceRequest;
 import org.example.domain.attendance_request.repository.AttendanceRequestRepository;
@@ -49,6 +51,7 @@ import org.springframework.util.StringUtils;
 public class CreateAttendanceService {
 
   private final CoreEmailService coreEmailService;
+  private final CoreAttendanceService coreAttendanceService;
   private final DetailWeekRepository detailWeekRepository;
   private final ListAttendanceRequestProblemRepository listAttendanceRequestProblemRepository;
   private final ListStudyRepository listStudyRepository;
@@ -246,5 +249,15 @@ public class CreateAttendanceService {
         .map(problemNumber -> Integer.parseInt(problemNumber.getText()))
         .limit(limitCount)
         .toList();
+  }
+
+  /**
+   * 정규 스터디 출석부 수정
+   */
+  public void updateAttendanceList(UpdateAttendanceRequest request) {
+    for (UpdateAttendanceDto dto : request.attendanceList()) {
+      Attendance attendance = coreAttendanceService.findById(dto.attendanceId());
+      attendance.updateAttendance(dto.attendanceType());
+    }
   }
 }

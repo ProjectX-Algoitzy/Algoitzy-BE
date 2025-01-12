@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.institution.controller.request.SearchInstitutionRequest;
 import org.example.domain.institution.controller.response.DetailInstitutionResponse;
@@ -34,6 +35,7 @@ public class InstitutionController {
   }
 
   @GetMapping("/{institution-id}")
+  @LimitRegularStudyMember(page = true)
   @Operation(summary = "기관 상세 조회")
   public ApiResponse<DetailInstitutionResponse> getInstitution(
     @PathVariable("institution-id") Long institutionId

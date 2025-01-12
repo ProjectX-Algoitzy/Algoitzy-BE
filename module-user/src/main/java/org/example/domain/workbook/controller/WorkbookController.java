@@ -3,6 +3,7 @@ package org.example.domain.workbook.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.workbook.controller.response.DetailWorkbookResponse;
 import org.example.domain.workbook.service.WorkbookService;
@@ -20,6 +21,7 @@ public class WorkbookController {
   private final WorkbookService workbookService;
 
   @GetMapping("/{workbook-id}")
+  @LimitRegularStudyMember(page = true)
   @Operation(summary = "문제집 상세 조회")
   public ApiResponse<DetailWorkbookResponse> getWorkbook(
     @PathVariable("workbook-id") Long workbookId) {
