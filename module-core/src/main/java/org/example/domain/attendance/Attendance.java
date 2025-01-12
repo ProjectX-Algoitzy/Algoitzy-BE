@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.config.jpa.BooleanToYNConverter;
+import org.example.domain.attendance.enums.AttendanceType;
 import org.example.domain.study_member.StudyMember;
 import org.example.domain.week.Week;
 import org.hibernate.annotations.Comment;
@@ -89,5 +90,13 @@ public class Attendance {
     if (this.blogYN) absentCount--;
     if (this.workbookYN) absentCount--;
     return absentCount;
+  }
+
+  public void updateAttendance(AttendanceType attendanceType) {
+    switch (attendanceType) {
+      case PROBLEM -> this.problemYN = !this.problemYN;
+      case BLOG -> this.blogYN = !this.blogYN;
+      case WORKBOOK -> this.workbookYN = !this.workbookYN;
+    }
   }
 }

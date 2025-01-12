@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface LimitRegularStudyMember {
   boolean notice() default true; // true라면 프론트에서 alert창 띄움
+  boolean page() default false; // true라면 프론트에서 401 페이지 띄움
 }

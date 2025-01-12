@@ -54,7 +54,7 @@ public class BoardController {
   }
 
   @GetMapping("/{board-id}")
-  @LimitRegularStudyMember
+  @LimitRegularStudyMember(page = true)
   @Operation(summary = "최종 저장 게시글 상세 조회")
   public ApiResponse<DetailBoardResponse> getBoard(@PathVariable("board-id") Long boardId) {
     return ApiResponse.onSuccess(boardService.getBoard(boardId));
