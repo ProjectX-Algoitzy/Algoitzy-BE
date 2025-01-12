@@ -18,7 +18,7 @@ public class ListStudyService {
    */
   public ListRegularStudyResponse getRegularStudyList() {
     return ListRegularStudyResponse.builder()
-      .studyList(listStudyRepository.getRegularStudyList())
+      .studyList(listStudyRepository.getRegularStudyList(false))
       .build();
   }
 }

@@ -86,7 +86,7 @@ public class CreateAttendanceService {
 
       log.info("{}주차 출석부 갱신 시작", lastWeek.getValue());
       // 스터디 순회
-      List<ListRegularStudyDto> regularStudyList = listStudyRepository.getRegularStudyList();
+      List<ListRegularStudyDto> regularStudyList = listStudyRepository.getRegularStudyList(true);
       for (ListRegularStudyDto study : regularStudyList) {
         List<StudyMember> studyMemberList = studyMemberRepository.findAllByStudyIdAndStatus(study.getStudyId(), StudyMemberStatus.PASS);
 
