@@ -26,7 +26,7 @@ public class ListStudyRepository {
   /**
    * 정규 스터디 목록 조회
    */
-  public List<ListRegularStudyDto> getRegularStudyList() {
+  public List<ListRegularStudyDto> getRegularStudyList(boolean currentGeneration) {
     Integer maxGeneration = queryFactory
       .select(generation.value.max())
       .from(generation)
@@ -51,8 +51,9 @@ public class ListStudyRepository {
       .from(study)
       .where(
         study.type.eq(StudyType.REGULAR),
-        study.generation.value.eq(maxGeneration)
+        study.generation.value.goe(currentGeneration ? maxGeneration : Integer.valueOf(16)) // 서비스 적용 기수 : 16기
       )
+      .orderBy(study.generation.value.desc())
       .fetch();
   }
 
