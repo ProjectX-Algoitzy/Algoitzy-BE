@@ -96,38 +96,26 @@ public class CreateAttendanceService {
           // 출석 인증 정보 조회
           Optional<AttendanceRequest> optionalAttendanceRequest =
             attendanceRequestRepository.findByWeekAndStudyMember(lastWeek, studyMember);
+          boolean attendanceRequestYn = optionalAttendanceRequest.isPresent();
 
           // 인증 회원
-          if (optionalAttendanceRequest.isPresent()) {
-            AttendanceRequest attendanceRequest = optionalAttendanceRequest.get();
-            int requestCount = listAttendanceRequestProblemRepository.getRequestCount(attendanceRequest);
-            Attendance attendance = Attendance.builder()
-              .studyMember(studyMember)
-              .week(lastWeek)
-              .problemYN(getProblemYN(lastWeek, studyMember, requestCount))
-              .blogYN(StringUtils.hasText(attendanceRequest.getBlogUrl()))
-              .workbookYN(getWorkbookYN(lastWeek, studyMember))
-              .build();
-            attendanceList.add(attendance);
-            // 양방향
-            studyMember.getAttendanceList().add(attendance);
-            continue;
-          }
+          int solvedWorkbookCount = getSolvedWorkbookCount(lastWeek, studyMember);
+          int requestCount = 0;
+          if (attendanceRequestYn)
+            requestCount = listAttendanceRequestProblemRepository.getRequestCount(optionalAttendanceRequest.get());
 
-          // 미인증 회원
           Attendance attendance = Attendance.builder()
             .studyMember(studyMember)
             .week(lastWeek)
-            .problemYN(getProblemYN(lastWeek, studyMember, 0))
-            .blogYN(false)
-            .workbookYN(getWorkbookYN(lastWeek, studyMember))
+            .problemYN(getProblemYN(lastWeek, studyMember, requestCount - solvedWorkbookCount))
+            .blogYN(attendanceRequestYn && StringUtils.hasText(optionalAttendanceRequest.get().getBlogUrl()))
+            .workbookYN(solvedWorkbookCount >= WORKBOOK_MIN_REQUEST_COUNT)
             .build();
           attendanceList.add(attendance);
           // 양방향
           studyMember.getAttendanceList().add(attendance);
 
         }
-
         attendanceRepository.saveAll(attendanceList);
       }
 
@@ -166,10 +154,10 @@ public class CreateAttendanceService {
 
       // 지난주 범위 계산
       LocalDate today = LocalDate.now().minusDays(7);
-      LocalDate nextYear = today.plusYears(1);
+      LocalDate lastYear = today.minusYears(1);
       int startRect = today.getDayOfYear()
         - LocalDate.now().get(ChronoField.DAY_OF_WEEK) + 1;
-      if (rectList.size() >= 2 * ONE_YEAR) startRect += (int) ChronoUnit.DAYS.between(today, nextYear);
+      if (rectList.size() >= 2 * ONE_YEAR) startRect += (int) ChronoUnit.DAYS.between(lastYear, today);
       int lastRect = startRect + 6;
 
       int count = 0;
@@ -213,7 +201,7 @@ public class CreateAttendanceService {
   /**
    * 백준 해결한 문제 번호 크롤링
    */
-  private Boolean getWorkbookYN(Week week, StudyMember studyMember) {
+  private int getSolvedWorkbookCount(Week week, StudyMember studyMember) {
     List<Integer> problemNumberList = getSolvedProblemNumberList(studyMember);
 
     int solvedCount = 0;
@@ -229,7 +217,7 @@ public class CreateAttendanceService {
     }
 
     log.info("{} 모의테스트 풀이 수 : {}", studyMember.getMember().getName(), solvedCount);
-    return solvedCount >= WORKBOOK_MIN_REQUEST_COUNT;
+    return solvedCount;
   }
 
   /**
