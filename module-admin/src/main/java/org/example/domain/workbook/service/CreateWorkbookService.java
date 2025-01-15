@@ -1,17 +1,19 @@
 package org.example.domain.workbook.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
+import org.example.domain.attendance.controller.response.ListAttendanceDto;
 import org.example.domain.problem.Problem;
-import org.example.domain.problem.repository.ListProblemRepository;
+import org.example.domain.problem.repository.ProblemRepository;
 import org.example.domain.problem.service.CoreProblemService;
 import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.repository.StudyRepository;
+import org.example.domain.study_member.repository.ListStudyMemberRepository;
 import org.example.domain.week.Week;
 import org.example.domain.week.repository.DetailWeekRepository;
 import org.example.domain.workbook.Workbook;
@@ -23,6 +25,9 @@ import org.example.domain.workbook_problem.controller.request.CreateWorkbookProb
 import org.example.domain.workbook_problem.repository.WorkbookProblemRepository;
 import org.example.email.enums.EmailType;
 import org.example.email.service.CoreEmailService;
+import org.example.schedule.solved_ac.SolvedAcClient;
+import org.example.schedule.solved_ac.response.problem.ProblemDto;
+import org.example.schedule.solved_ac.response.problem.ProblemResponse;
 import org.example.util.ValueUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,11 +41,17 @@ public class CreateWorkbookService {
   private final CoreWorkbookService coreWorkbookService;
   private final CoreProblemService coreProblemService;
   private final CoreEmailService coreEmailService;
+  private final ListStudyMemberRepository listStudyMemberRepository;
+  private final DetailWeekRepository detailWeekRepository;
+
   private final WorkbookRepository workbookRepository;
   private final StudyRepository studyRepository;
-  private final DetailWeekRepository detailWeekRepository;
-  private final ListProblemRepository listProblemRepository;
   private final WorkbookProblemRepository workbookProblemRepository;
+  private final ProblemRepository problemRepository;
+
+  private final SolvedAcClient solvedAcClient;
+  private static final String SORT = "solved";
+  private static final String DIRECTION = "desc";
 
   @Value("${spring.mail.username}")
   private String koalaEmail;
@@ -63,7 +74,7 @@ public class CreateWorkbookService {
       for (Study study : regularStudyList) {
         List<Problem> problemList;
         if (study.getName().equals(ValueUtils.CODING_TEST_BASIC)) problemList = createBasicWorkbook(currentWeek);
-        else if (study.getName().equals(ValueUtils.CODING_TEST_PREPARE)) problemList = createPrepareWorkbook(currentWeek);
+        else if (study.getName().equals(ValueUtils.CODING_TEST_PREPARE)) problemList = createPrepareWorkbook(currentWeek, study.getId());
         else continue;
 
         // 문제집 생성 및 저장
@@ -104,20 +115,37 @@ public class CreateWorkbookService {
   /**
    * 코딩테스트 심화반
    */
-  private List<Problem> createPrepareWorkbook(Week week) {
-    // 주차별 알고리즘 유형 지정 후 백준 문제 조회
-    List<String> algorithmList = new ArrayList<>();
+  private List<Problem> createPrepareWorkbook(Week week, Long studyId) {
+    // 난이도 설정 쿼리
+    String silverQuery = "*s4..s1 ";
+    String goldQuery = "*g ";
+
+    // 주차별 알고리즘 유형 설정 쿼리
+    StringBuilder query = new StringBuilder();
     switch (week.getValue()) {
-      case 1 -> algorithmList = List.of("bruteforcing", "backtracking");
-      case 2 -> algorithmList = List.of("dp");
-      case 3 -> algorithmList = List.of("simulation", "two_pointer");
-      case 4 -> algorithmList = List.of("binary_search", "prefix_sum");
-      case 5 -> algorithmList = List.of("data_structures");
-      case 6 -> algorithmList = List.of("bfs", "dfs");
-      case 7 -> algorithmList = List.of("dijkstra");
-      case 8 -> algorithmList = List.of("greedy");
+      case 1 -> query.append("(#bruteforcing | #backtracking) -#dfs -#bfs");
+      case 2 -> query.append("#dp");
+      case 3 -> query.append("(#simulation | #two_pointer)");
+      case 4 -> query.append("(#binary_search | #prefix_sum)");
+      case 5 -> query.append("#data_structures");
+      case 6 -> query.append("(#bfs | #dfs)");
+      case 7 -> query.append("#dijkstra");
+      case 8 -> query.append("#greedy");
     }
-    return listProblemRepository.getProblemList(algorithmList);
+
+    // 스터디원이 푼 문제 제외 쿼리
+    List<ListAttendanceDto> studyMemberList = listStudyMemberRepository.getStudyMemberList(studyId);
+    studyMemberList.forEach(dto -> query.append(" -s@").append(dto.getHandle()));
+
+    // solved.ac 요청
+    ProblemResponse silverProblemResponse = solvedAcClient.searchProblems(1, silverQuery + query, SORT, DIRECTION);
+    ProblemResponse goldProblemResponse = solvedAcClient.searchProblems(1, goldQuery + query, SORT, DIRECTION);
+
+    List<Integer> problemNumberList = Stream.concat(
+      silverProblemResponse.getProblemList().stream().limit(3),
+      goldProblemResponse.getProblemList().stream().limit(3)
+    ).map(ProblemDto::getNumber).toList();
+    return problemRepository.findAllById(problemNumberList);
   }
 
   /**
