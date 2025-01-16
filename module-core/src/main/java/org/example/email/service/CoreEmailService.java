@@ -23,6 +23,7 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.interview.Interview;
 import org.example.domain.interview.repository.InterviewRepository;
 import org.example.domain.member.Member;
+import org.example.domain.member.repository.CoreListMemberRepository;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study_member.StudyMember;
 import org.example.domain.study_member.enums.StudyMemberStatus;
@@ -51,6 +52,7 @@ public class CoreEmailService {
   private final PasswordEncoder encoder;
   private final RedisUtils redisUtils;
   private final JavaMailSender mailSender;
+  private final CoreListMemberRepository coreListMemberRepository;
   @Value("${spring.mail.username}")
   private String mailFrom;
   @Value("${url.s3-email}")
@@ -149,6 +151,27 @@ public class CoreEmailService {
       .replace("${name}", studyMember.getMember().getName())
       .replace("${studyName}", studyMember.getStudy().getName());
     send(studyMember.getMember().getEmail(), EmailType.TEMP_PASS.toString(), html);
+  }
+
+  /**
+   * 문의 등록 안내 메일
+   */
+  public void sendInquiryCreatedEmail(Member member) {
+    for (Member admin : coreListMemberRepository.getAdminList()) {
+      String html = htmlToString(s3Url + EmailType.INQUIRY_CREATED.getPath())
+        .replace("${adminName}", admin.getName())
+        .replace("${userName}", member.getName());
+      send(admin.getEmail(), EmailType.INQUIRY_CREATED.toString(), html);
+    }
+  }
+
+  /**
+   * 문의 답변 등록 안내 메일
+   */
+  public void sendInquiryRepliedEmail(Member member) {
+    String html = htmlToString(s3Url + EmailType.INQUIRY_REPLIED.getPath())
+      .replace("${name}", member.getName());
+    send(member.getEmail(), EmailType.INQUIRY_REPLIED.toString(), html);
   }
 
   public void send(String email, String type, String text) {

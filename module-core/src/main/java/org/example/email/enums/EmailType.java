@@ -32,7 +32,11 @@ public enum EmailType {
 
   // 자율 스터디
   TEMP_APPLY("자율 스터디 지원자 안내", "temp-apply.html"),
-  TEMP_PASS("자율 스터디 수락 안내", "temp-pass.html");
+  TEMP_PASS("자율 스터디 수락 안내", "temp-pass.html"),
+
+  // 문의 관련
+  INQUIRY_CREATED("문의 등록 안내", "inquiry-created.html"),
+  INQUIRY_REPLIED("문의 답변 안내", "inquiry-replied.html");
 
 
   private String subject;

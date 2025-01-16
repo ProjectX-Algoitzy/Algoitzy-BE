@@ -55,6 +55,10 @@ public class Inquiry {
   @Column(length = 1000000)
   private String content;
 
+  @Comment("조회수")
+  @Column(columnDefinition = "int default 0")
+  private Integer viewCount;
+
   @Convert(converter = BooleanToYNConverter.class)
   @Column(nullable = false, columnDefinition = "char(1) default 'N'")
   @Comment("답변 여부")
@@ -95,7 +99,7 @@ public class Inquiry {
     this.member = member;
   }
 
-  public void updateBoard(InquiryCategory category, boolean publicYn, String title, String content) {
+  public void updateInquiry(InquiryCategory category, boolean publicYn, String title, String content) {
     this.category = category;
     this.publicYn = publicYn;
     if (StringUtils.hasText(title)) this.title = title;
@@ -106,4 +110,8 @@ public class Inquiry {
     this.publicYn = !this.publicYn;
   }
 
+  public void addViewCount() {
+    if (this.viewCount == null) this.viewCount = 1;
+    else this.viewCount += 1;
+  }
 }
