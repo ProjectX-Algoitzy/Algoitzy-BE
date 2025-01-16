@@ -13,6 +13,9 @@ import org.example.domain.inquiry.controller.request.SearchInquiryRequest;
 import org.example.domain.inquiry.controller.response.DetailInquiryResponse;
 import org.example.domain.inquiry.controller.response.ListInquiryCategoryResponse;
 import org.example.domain.inquiry.controller.response.ListInquiryResponse;
+import org.example.domain.inquiry_reply.controller.request.SearchInquiryReplyRequest;
+import org.example.domain.inquiry_reply.controller.response.ListInquiryReplyResponse;
+import org.example.domain.inquiry_reply.service.InquiryReplyService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController {
 
   private final InquiryService inquiryService;
-//  private final InquiryReplyService inquiryReplyService;
+  private final InquiryReplyService inquiryReplyService;
 
   @GetMapping("/category")
   @Operation(summary = "문의 카테고리 목록 조회")
@@ -63,14 +66,14 @@ public class InquiryController {
     return ApiResponse.onSuccess();
   }
 
-//  @GetMapping("/{inquiry-id}/reply")
-//  @LimitRegularStudyMember(notice = false)
-//  @Operation(summary = "문의 댓글 목록 조회")
-//  public ApiResponse<ListInquiryReplyResponse> getInquiryReplyList(
-//    @PathVariable("inquiry-id") Long inquiryId,
-//    @ParameterObject @ModelAttribute @Valid SearchInquiryReplyRequest request) {
-//    return ApiResponse.onSuccess(replyService.getInquiryReplyList(inquiryId, request));
-//  }
+  @GetMapping("/{inquiry-id}/reply")
+  @LimitRegularStudyMember(notice = false)
+  @Operation(summary = "문의 댓글 목록 조회")
+  public ApiResponse<ListInquiryReplyResponse> getInquiryReplyList(
+    @PathVariable("inquiry-id") Long inquiryId,
+    @ParameterObject @ModelAttribute @Valid SearchInquiryReplyRequest request) {
+    return ApiResponse.onSuccess(inquiryReplyService.getInquiryReplyList(inquiryId, request));
+  }
 
   @PatchMapping("/{inquiry-id}")
   @Operation(summary = "문의 수정")
