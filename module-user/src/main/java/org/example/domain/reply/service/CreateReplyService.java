@@ -95,6 +95,8 @@ public class CreateReplyService {
    */
   public void deleteReply(Long replyId) {
     Reply reply = coreReplyService.findById(replyId);
+    if (!reply.getMember().getEmail().equals(SecurityUtils.getCurrentMemberEmail()))
+      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "타인의 댓글은 삭제할 수 없습니다.");
 
     //***** 하위 댓글이 모두 삭제됐다면 DB에서 삭제 *****//
     boolean childDeleteYn = false;

@@ -29,9 +29,6 @@ public class ListInquiryReplyDto {
   @Schema(description = "내용")
   private String content;
 
-  @Schema(description = "작성자 백준 닉네임")
-  private String handle;
-
   @JsonIgnore
   @Schema(description = "작성자 권한")
   private Role createdRole;

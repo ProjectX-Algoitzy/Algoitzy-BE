@@ -43,6 +43,7 @@ public class ListInquiryReplyService {
     }
 
     childrenReplyList.forEach(reply -> {
+      if (!reply.getCreatedRole().equals(Role.ROLE_USER)) reply.setAdminInfo();
       map.put(reply.getReplyId(), reply);
 
       // 부모 댓글이 존재하면 부모 댓글의 하위 댓글 목록에 추가

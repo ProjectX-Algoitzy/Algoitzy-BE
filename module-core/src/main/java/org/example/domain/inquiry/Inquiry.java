@@ -106,6 +106,10 @@ public class Inquiry {
     if (StringUtils.hasText(content)) this.content = content;
   }
 
+  public void markSolved() {
+    this.solvedYn = true;
+  }
+
   public void updatePublicYn() {
     this.publicYn = !this.publicYn;
   }

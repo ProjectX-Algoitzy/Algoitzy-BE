@@ -13,7 +13,9 @@ import org.example.domain.inquiry_reply.controller.request.CreateInquiryReplyReq
 import org.example.domain.inquiry_reply.controller.request.UpdateInquiryReplyRequest;
 import org.example.domain.inquiry_reply.repository.InquiryReplyRepository;
 import org.example.domain.inquiry_reply.repository.ListInquiryReplyRepository;
+import org.example.domain.member.enums.Role;
 import org.example.domain.member.service.CoreMemberService;
+import org.example.email.service.CoreEmailService;
 import org.example.util.SecurityUtils;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -30,16 +32,22 @@ public class CreateInquiryReplyService {
   private final CoreInquiryReplyService coreInquiryReplyService;
   private final ListInquiryReplyRepository listInquiryReplyRepository;
   private final InquiryReplyRepository inquiryReplyRepository;
+  private final CoreEmailService coreEmailService;
 
   /**
    * 댓글 생성
    */
   public void createInquiryReply(CreateInquiryReplyRequest request) {
-    Inquiry inquiry = coreInquiryService.findById(request.inquiryId());
-    if (!inquiry.getMember().getEmail().equals(SecurityUtils.getCurrentMemberEmail()))
-      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "자신의 문의에만 댓글을 작성할 수 있습니다.");
     if (!StringUtils.hasText(request.content()))
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "내용이 비어있습니다.");
+
+    // 문의 최초 답변 시 메일 발송
+    Inquiry inquiry = coreInquiryService.findById(request.inquiryId());
+    if (!inquiry.getSolvedYn())
+    {
+      inquiry.markSolved();
+      coreEmailService.sendInquiryRepliedEmail(inquiry.getMember());
+    }
 
     inquiryReplyRepository.save(
       InquiryReply.builder()
@@ -60,7 +68,7 @@ public class CreateInquiryReplyService {
     if (reply.getDeleteYn())
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "삭제된 댓글은 수정할 수 없습니다.");
     if (!reply.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail())))
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "타인의 댓글은 수정할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "자신이 남긴 댓글 이외에는 수정할 수 없습니다.");
     if (!StringUtils.hasText(request.content()))
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "내용이 비어있습니다.");
 
@@ -72,8 +80,8 @@ public class CreateInquiryReplyService {
    */
   public void deleteInquiryReply(Long replyId) {
     InquiryReply reply = coreInquiryReplyService.findById(replyId);
-    if (!reply.getMember().getEmail().equals(SecurityUtils.getCurrentMemberEmail()))
-      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "타인의 댓글은 수정할 수 없습니다.");
+    if (reply.getMember().getRole().equals(Role.ROLE_USER))
+      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "사용자의 댓글은 수정할 수 없습니다.");
 
     //***** 하위 댓글이 모두 삭제됐다면 DB에서 삭제 *****//
     boolean childDeleteYn = false;

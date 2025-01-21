@@ -1,9 +1,7 @@
 package org.example.domain.inquiry.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.inquiry.controller.request.CreateInquiryRequest;
 import org.example.domain.inquiry.controller.request.SearchInquiryRequest;
-import org.example.domain.inquiry.controller.request.UpdateInquiryRequest;
 import org.example.domain.inquiry.controller.response.DetailInquiryResponse;
 import org.example.domain.inquiry.controller.response.ListInquiryCategoryResponse;
 import org.example.domain.inquiry.controller.response.ListInquiryResponse;
@@ -15,7 +13,6 @@ public class InquiryService {
 
   private final ListInquiryService listInquiryService;
   private final DetailInquiryService detailInquiryService;
-  private final CreateInquiryService createInquiryService;
 
   /**
    * 문의 카테고리 목록 조회
@@ -38,31 +35,4 @@ public class InquiryService {
     return detailInquiryService.getInquiry(inquiryId);
   }
 
-  /**
-   * 문의 생성
-   */
-  public void createInquiry(CreateInquiryRequest request) {
-    createInquiryService.createInquiry(request);
-  }
-
-  /**
-   * 문의 수정
-   */
-  public void updateInquiry(long inquiryId, UpdateInquiryRequest request) {
-    createInquiryService.updateInquiry(inquiryId, request);
-  }
-
-  /**
-   * 문의 공개 여부 변경
-   */
-  public void updateInquiryPublic(long inquiryId) {
-    createInquiryService.updateInquiryPublic(inquiryId);
-  }
-
-  /**
-   * 문의 삭제
-   */
-  public void deleteInquiry(long inquiryId) {
-    createInquiryService.deleteInquiry(inquiryId);
-  }
 }

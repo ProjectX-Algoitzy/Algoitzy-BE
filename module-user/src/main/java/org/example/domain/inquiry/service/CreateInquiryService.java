@@ -72,13 +72,25 @@ public class CreateInquiryService {
   }
 
   /**
+   * 문의 공개 여부 변경
+   */
+  public void updateInquiryPublic(long inquiryId) {
+    Inquiry inquiry = coreInquiryService.findById(inquiryId);
+    if (!inquiry.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail())))
+      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "자신이 남긴 문의 이외에는 수정할 수 없습니다.");
+
+    inquiry.updatePublicYn();
+  }
+
+  /**
    * 문의 삭제
    */
   public void deleteInquiry(long inquiryId) {
     Inquiry inquiry = coreInquiryService.findById(inquiryId);
-    if (!inquiry.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()))) {
+    if (!inquiry.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail())))
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "자신이 남긴 문의 이외에는 삭제할 수 없습니다.");
-    }
+    if (inquiry.getSolvedYn())
+      throw new GeneralException(ErrorStatus.BAD_REQUEST, "답변이 등록된 문의는 삭제할 수 없습니다.");
 
     inquiryRepository.deleteById(inquiryId);
   }

@@ -62,10 +62,10 @@ public class ListInquiryReplyRepository {
 
   private JPAQuery<ListInquiryReplyDto> selectFields(Long inquiryId) {
     return queryFactory.select(
-      Projections.fields(ListInquiryReplyDto.class,
+      Projections.fields(
+        ListInquiryReplyDto.class,
         inquiryReply.id.as("replyId"),
         inquiryReply.parentId.as("parentReplyId"),
-        inquiryReply.member.handle.as("handle"),
         inquiryReply.member.role.as("createdRole"),
         inquiryReply.member.name.as("createdName"),
         inquiryReply.member.profileUrl,
