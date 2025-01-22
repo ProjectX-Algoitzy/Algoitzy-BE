@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.board.controller.response.ListBoardResponse;
+import org.example.domain.inquiry.controller.response.ListInquiryResponse;
 import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
 import org.example.domain.member.controller.request.LoginRequest;
@@ -88,6 +89,13 @@ public class MemberController {
   public ApiResponse<ListBoardResponse> getMyPageBoard(
     @PathVariable("handle") String handle) {
     return ApiResponse.onSuccess(memberService.getMyPageBoard(handle));
+  }
+
+  @GetMapping("/{handle}/inquiry")
+  @Operation(summary = "마이페이지 문의 정보")
+  public ApiResponse<ListInquiryResponse> getMyPageInquiry(
+    @PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(memberService.getMyPageInquiry(handle));
   }
 
   @GetMapping("/my-info")

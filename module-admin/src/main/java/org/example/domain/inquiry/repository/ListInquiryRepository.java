@@ -108,15 +108,4 @@ public class ListInquiryRepository {
     };
   }
 
-  /**
-   * 마이페이지 게시글 정보
-   */
-  public List<ListInquiryDto> getMyPageInquiry(String handle) {
-    return selectFields()
-      .from(inquiry)
-      .where(inquiry.member.handle.eq(handle))
-      .orderBy(inquiry.createdTime.desc())
-      .fetch();
-  }
-
 }
