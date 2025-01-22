@@ -32,7 +32,8 @@ public class DetailInquiryRepository {
         inquiry.createdTime,
         inquiry.viewCount,
         inquiry.replyList.size().as("replyCount"),
-        inquiry.publicYn
+        inquiry.publicYn,
+        inquiry.solvedYn
       ))
       .from(inquiry)
       .where(inquiry.id.eq(inquiryId))

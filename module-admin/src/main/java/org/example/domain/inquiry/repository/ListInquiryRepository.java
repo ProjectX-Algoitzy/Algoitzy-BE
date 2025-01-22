@@ -65,7 +65,8 @@ public class ListInquiryRepository {
           inquiry.member.name.as("createdName"),
           inquiry.createdTime,
           inquiry.viewCount,
-          inquiry.publicYn
+          inquiry.publicYn,
+          inquiry.solvedYn
         )
       );
   }

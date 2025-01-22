@@ -39,6 +39,9 @@ public class ListInquiryDto {
   @Schema(description = "공개 여부")
   private boolean publicYn;
 
+  @Schema(description = "답변 여부")
+  private boolean solvedYn;
+
   public void updateCategoryName() {
     this.categoryName = InquiryCategory.valueOf(this.categoryCode).getName();
   }
