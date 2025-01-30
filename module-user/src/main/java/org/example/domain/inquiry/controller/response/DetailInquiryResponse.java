@@ -45,6 +45,9 @@ public class DetailInquiryResponse {
   @Schema(description = "문의 내용")
   private String content;
 
+  @Schema(description = "문의 작성자 여부")
+  private boolean myInquiryYn;
+
   @Schema(description = "댓글 수")
   private int replyCount;
 

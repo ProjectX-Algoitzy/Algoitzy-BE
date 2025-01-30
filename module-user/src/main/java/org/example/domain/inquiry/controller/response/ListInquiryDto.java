@@ -36,6 +36,9 @@ public class ListInquiryDto {
   @Schema(description = "조회수")
   private int viewCount;
 
+  @Schema(description = "문의 작성자 여부")
+  private boolean myInquiryYn;
+
   @Schema(description = "공개 여부")
   private boolean publicYn;
 

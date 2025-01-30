@@ -7,6 +7,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.inquiry.controller.response.DetailInquiryResponse;
+import org.example.util.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -31,6 +32,7 @@ public class DetailInquiryRepository {
         inquiry.member.profileUrl,
         inquiry.createdTime,
         inquiry.viewCount,
+        inquiry.member.email.eq(SecurityUtils.getCurrentMemberEmail()).as("myInquiryYn"),
         inquiry.replyList.size().as("replyCount"),
         inquiry.publicYn,
         inquiry.solvedYn

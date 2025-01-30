@@ -14,6 +14,7 @@ import org.example.domain.inquiry.controller.request.SearchInquiryRequest;
 import org.example.domain.inquiry.controller.response.ListInquiryDto;
 import org.example.domain.inquiry.enums.InquiryCategory;
 import org.example.domain.inquiry.enums.InquirySort;
+import org.example.util.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -65,6 +66,7 @@ public class ListInquiryRepository {
           inquiry.member.name.as("createdName"),
           inquiry.createdTime,
           inquiry.viewCount,
+          inquiry.member.email.eq(SecurityUtils.getCurrentMemberEmail()).as("myInquiryYn"),
           inquiry.publicYn,
           inquiry.solvedYn
         )
