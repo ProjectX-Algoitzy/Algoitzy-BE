@@ -60,6 +60,7 @@ public class ListInquiryReplyDto {
 
   public void setAdminInfo() {
     this.createdName = "관리자";
+    this.handle = null;
     this.profileUrl = ValueUtils.ADMIN_PROFILE_IMAGE;
   }
 }

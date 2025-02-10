@@ -8,6 +8,7 @@ import org.example.domain.inquiry.controller.request.CreateInquiryRequest;
 import org.example.domain.inquiry.controller.request.UpdateInquiryRequest;
 import org.example.domain.inquiry.repository.InquiryRepository;
 import org.example.domain.member.Member;
+import org.example.domain.member.enums.Role;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.email.service.CoreEmailService;
 import org.example.util.SecurityUtils;
@@ -34,8 +35,10 @@ public class CreateInquiryService {
     if (!StringUtils.hasText(request.title()) || !StringUtils.hasText(request.content()))
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "제목 또는 내용이 비어있습니다.");
 
-    // 문의 생성
     Member member = coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail());
+    if (!member.getRole().equals(Role.ROLE_USER))
+      throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "관리자는 작성할 수 없습니다.");
+
     inquiryRepository.save(
       Inquiry.builder()
         .title(request.title())
