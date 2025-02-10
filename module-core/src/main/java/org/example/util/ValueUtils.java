@@ -9,6 +9,6 @@ public class ValueUtils {
   public static final String TOKEN_EXPIRED_MESSAGE = "만료된 토큰입니다.";
   public static final String INSTITUTION_VIEW_COUNT_KEY = "institution:view_count:";
   public static final String BOARD_VIEW_COUNT_KEY = "board:view_count:";
-  public static final String ADMIN_PROFILE_IMAGE = "https://kau-koala.s3.ap-northeast-2.amazonaws.com/basic-image/admin-profile-image.jpg";
+  public static final String ADMIN_PROFILE_IMAGE = "https://kau-koala.s3.ap-northeast-2.amazonaws.com/basic-image/admin-profile-image.png";
 
 }
