@@ -8,7 +8,6 @@ import org.example.api_response.ApiResponse;
 import org.example.domain.attendance.controller.request.UpdateAttendanceRequest;
 import org.example.domain.attendance.service.AttendanceService;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,14 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AttendanceController {
 
   private final AttendanceService attendanceService;
-
-  @Deprecated
-  @PostMapping()
-  @Operation(summary = "출석부 갱신")
-  public ApiResponse<Void> createAttendance() {
-    attendanceService.createAttendance();
-    return ApiResponse.onCreate();
-  }
 
   @PatchMapping()
   @Operation(summary = "출석부 수정")

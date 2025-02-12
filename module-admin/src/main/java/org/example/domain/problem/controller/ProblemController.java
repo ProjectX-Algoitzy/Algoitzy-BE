@@ -11,7 +11,6 @@ import org.example.domain.problem.service.ProblemService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,13 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProblemController {
 
   private final ProblemService problemService;
-
-  @PostMapping()
-  @Operation(summary = "백준 문제 저장")
-  public ApiResponse<Void> createProblem() {
-    problemService.createProblem();
-    return ApiResponse.onCreate();
-  }
 
   @GetMapping()
   @Operation(summary = "백준 문제 목록 조회")
