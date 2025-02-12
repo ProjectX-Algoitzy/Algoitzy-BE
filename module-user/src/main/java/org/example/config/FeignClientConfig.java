@@ -3,7 +3,6 @@ package org.example.config;
 import feign.Request;
 import feign.RequestInterceptor;
 import feign.Retryer;
-import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.concurrent.TimeUnit;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,7 @@ public class FeignClientConfig {
   }
 
   @Bean
-  Logger.Level feignLoggerLevel() {
+  Level feignLoggerLevel() {
     return Level.ALL;
   }
 

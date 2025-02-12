@@ -59,4 +59,17 @@ public class DetailWeekRepository {
       )
       .fetchOne();
   }
+
+  public Optional<Week> getLastWeek() {
+    LocalDateTime lastWeek = LocalDateTime.now().minusDays(7);
+    return Optional.ofNullable(
+      queryFactory
+        .selectFrom(week)
+        .where(
+          week.startTime.loe(lastWeek),
+          week.endTime.goe(lastWeek)
+        )
+        .fetchOne()
+    );
+  }
 }
