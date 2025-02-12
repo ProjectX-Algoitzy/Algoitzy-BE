@@ -1,12 +1,6 @@
-
-
 spring:
   config:
     import: application-core.yml
-
-feign:
-  solved-ac:
-    url: https://solved.ac/api/v3
 
 springdoc:
   swagger-ui:

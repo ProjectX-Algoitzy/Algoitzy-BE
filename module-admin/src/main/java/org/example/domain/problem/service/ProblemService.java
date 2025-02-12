@@ -9,15 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProblemService {
 
-  private final CreateProblemService createProblemService;
   private final ListProblemService listProblemService;
-
-  /**
-   * 백준 문제 저장
-   */
-  public void createProblem() {
-    createProblemService.createProblem();
-  }
 
   /**
    * 백준 문제 목록 조회

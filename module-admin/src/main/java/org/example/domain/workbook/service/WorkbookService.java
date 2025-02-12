@@ -15,10 +15,6 @@ public class WorkbookService {
   private final DetailWorkbookService detailWorkbookService;
   private final CreateWorkbookService createWorkbookService;
 
-  public void createAutoWorkbook() {
-    createWorkbookService.createAutoWorkbook();
-  }
-
   /**
    * 정규 스터디 모의테스트 조회
    */
