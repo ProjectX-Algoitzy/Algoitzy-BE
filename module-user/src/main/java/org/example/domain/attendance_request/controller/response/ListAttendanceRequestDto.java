@@ -15,19 +15,21 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "현재 주차 출석 요청 조회 객체")
-public class DetailAttendanceRequestResponse {
+@Schema(description = "출석 인증 내역 목록 조회 DTO")
+public class ListAttendanceRequestDto {
 
   @JsonIgnore
   private Long attendanceRequestId;
+
+  @Schema(description = "주차")
+  private Integer week;
 
   @Setter
   @Default
   @Schema(description = "문제 URL 목록")
   private List<String> problemUrlList = new ArrayList<>();
 
-  @Default
   @Schema(description = "블로그 URL")
-  private String blogUrl = "";
+  private String blogUrl;
 
 }

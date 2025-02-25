@@ -6,7 +6,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.attendance_request.controller.request.CreateAttendanceRequestRequest;
+import org.example.domain.attendance_request.controller.response.ListAttendanceRequestResponse;
 import org.example.domain.attendance_request.service.AttendanceRequestService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +28,13 @@ public class AttendanceRequestController {
   public ApiResponse<Void> createAttendanceRequest(@RequestBody @Valid CreateAttendanceRequestRequest request) {
     attendanceRequestService.createAttendanceRequest(request);
     return ApiResponse.onCreate();
+  }
+
+  @GetMapping("/{study-id}/{handle}")
+  @Operation(summary = "출석 요청 내역 목록 조회")
+  public ApiResponse<ListAttendanceRequestResponse> getAttendanceRequestList(
+    @PathVariable("study-id") Long studyId,
+    @PathVariable("handle") String handle) {
+    return ApiResponse.onSuccess(attendanceRequestService.getAttendanceRequestList(studyId, handle));
   }
 }
