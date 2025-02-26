@@ -68,13 +68,5 @@ public class WorkbookController {
     return ApiResponse.onSuccess();
   }
 
-  @Deprecated
-  @PostMapping("/auto")
-  @Operation(summary = "문제집 자동 생성")
-  public ApiResponse<Void> createAutoWorkbook() {
-    workbookService.createAutoWorkbook();
-    return ApiResponse.onCreate();
-  }
-
 
 }

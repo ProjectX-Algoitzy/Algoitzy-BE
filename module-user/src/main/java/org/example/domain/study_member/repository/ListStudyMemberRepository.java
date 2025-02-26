@@ -11,7 +11,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.attendance.controller.response.ListAttendanceDto;
 import org.example.domain.member.enums.Role;
-import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study_member.controller.response.ListTempStudyMemberDto;
 import org.example.domain.study_member.enums.StudyMemberRole;
@@ -25,16 +24,17 @@ public class ListStudyMemberRepository {
 
   private final JPAQueryFactory queryFactory;
 
-  public List<ListAttendanceDto> getStudyMemberList(Study study) {
+  public List<ListAttendanceDto> getStudyMemberList(Long studyId) {
     return queryFactory
       .select(Projections.fields(
           ListAttendanceDto.class,
-          studyMember.member.name
+          studyMember.member.name,
+          studyMember.member.handle
         )
       )
       .from(studyMember)
       .where(
-        studyMember.study.eq(study),
+        studyMember.study.id.eq(studyId),
         studyMember.status.eq(StudyMemberStatus.PASS)
       )
       .orderBy(
@@ -42,6 +42,7 @@ public class ListStudyMemberRepository {
       )
       .fetch();
   }
+
 
   /**
    * 자율 스터디원 목록 조회

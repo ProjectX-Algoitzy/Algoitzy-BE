@@ -8,9 +8,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.week.Week;
 import org.example.domain.week.controller.response.DetailWeekResponse;
 import org.springframework.stereotype.Repository;
 
@@ -48,28 +46,5 @@ public class DetailWeekRepository {
       .fetchOne();
   }
 
-  public Optional<Week> getLastWeek() {
-    LocalDateTime lastWeek = LocalDateTime.now().minusDays(7);
-    return Optional.ofNullable(
-      queryFactory
-        .selectFrom(week)
-        .where(
-          week.startTime.loe(lastWeek),
-          week.endTime.goe(lastWeek)
-        )
-        .fetchOne()
-    );
-  }
 
-  public Optional<Week> getCurrentWeek() {
-    return Optional.ofNullable(
-      queryFactory
-        .selectFrom(week)
-        .where(
-          week.startTime.loe(LocalDateTime.now()),
-          week.endTime.goe(LocalDateTime.now())
-        )
-        .fetchOne()
-    );
-  }
 }

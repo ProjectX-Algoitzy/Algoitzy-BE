@@ -41,7 +41,7 @@ public class ListAttendanceService {
 
     List<ListAttendanceDto> attendanceList = listAttendanceRepository.getAttendanceList(studyId);
     if (ObjectUtils.isEmpty(attendanceList)) {
-      attendanceList = listStudyMemberRepository.getStudyMemberList(study);
+      attendanceList = listStudyMemberRepository.getStudyMemberList(study.getId());
     }
     return ListAttendanceResponse.builder()
       .attendanceList(attendanceList)

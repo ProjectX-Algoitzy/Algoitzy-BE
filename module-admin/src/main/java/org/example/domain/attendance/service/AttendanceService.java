@@ -12,10 +12,6 @@ public class AttendanceService {
   private final CreateAttendanceService createAttendanceService;
   private final ListAttendanceService listAttendanceService;
 
-  public void createAttendance() {
-    createAttendanceService.createAttendance();
-  }
-
   /**
    * 정규 스터디 출석부 조회
    */

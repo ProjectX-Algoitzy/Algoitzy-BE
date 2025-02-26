@@ -16,8 +16,11 @@ public class ListAttendanceDto {
   @Schema(description = "주차")
   private Integer week;
 
-  @Schema(description = "출석부 목록 응답 DTO")
+  @Schema(description = "이름")
   private String name;
+
+  @Schema(description = "백준 닉네임")
+  private String handle;
 
   @Schema(description = "문제 할당량 충족 여부")
   private Boolean problemYN;

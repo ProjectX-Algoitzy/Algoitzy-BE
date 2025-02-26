@@ -1,27 +1,26 @@
-package org.example.domain.attendance.controller;
+package org.example.domain.problem.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
-import org.example.domain.attendance.service.AttendanceService;
+import org.example.domain.problem.service.ProblemService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/attendance")
 @RequiredArgsConstructor
-@Tag(name = "AttendanceController", description = "[USER] 출석부 관련 API")
-public class AttendanceController {
+@RequestMapping("/problem")
+@Tag(name = "ProblemController", description = "[USER] 문제 관련 API")
+public class ProblemController {
 
-  private final AttendanceService attendanceService;
+  private final ProblemService problemService;
 
-  @Deprecated
   @PostMapping()
-  @Operation(summary = "출석부 갱신")
-  public ApiResponse<Void> createAttendance() {
-    attendanceService.createAttendance();
+  @Operation(summary = "백준 문제 저장")
+  public ApiResponse<Void> createProblem() {
+    problemService.createProblem();
     return ApiResponse.onCreate();
   }
 
