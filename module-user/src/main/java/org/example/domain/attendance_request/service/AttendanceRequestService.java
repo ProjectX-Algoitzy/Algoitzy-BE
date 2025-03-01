@@ -3,6 +3,7 @@ package org.example.domain.attendance_request.service;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.attendance_request.controller.request.CreateAttendanceRequestRequest;
 import org.example.domain.attendance_request.controller.response.DetailAttendanceRequestResponse;
+import org.example.domain.attendance_request.controller.response.ListAttendanceRequestResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,7 @@ public class AttendanceRequestService {
 
   private final CreateAttendanceRequestService createAttendanceRequestService;
   private final DetailAttendanceRequestService detailAttendanceRequestService;
+  private final ListAttendanceRequestService listAttendanceRequestService;
 
   /**
    * 출석 요청 생성
@@ -24,5 +26,12 @@ public class AttendanceRequestService {
    */
   public DetailAttendanceRequestResponse getAttendanceRequest(Long studyId) {
     return detailAttendanceRequestService.getAttendanceRequest(studyId);
+  }
+
+  /**
+   * 출석 요청 내역 목록 조회
+   */
+  public ListAttendanceRequestResponse getAttendanceRequestList(Long studyId, String handle) {
+    return listAttendanceRequestService.getAttendanceRequestList(studyId, handle);
   }
 }
