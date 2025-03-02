@@ -6,6 +6,7 @@ import org.example.api_response.ApiResponse;
 import org.example.util.http_request.Url;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,8 @@ public class HealthCheckController {
 
   private final WebDriver webDriver;
 
-  @GetMapping("/health")
+  @CrossOrigin("*")
+  @GetMapping
   @Operation(hidden = true)
   public String healthCheck() {
     return "I'm healthy";
