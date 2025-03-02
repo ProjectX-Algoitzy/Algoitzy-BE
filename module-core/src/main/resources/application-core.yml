@@ -53,7 +53,7 @@ coolsms:
   fromnumber: ${SMS_FROM}
 
 url:
-  s3-email: https://kau-koala.s3.ap-northeast-2.amazonaws.com/email/
+  s3-email: https://kau-koala-v3.s3.ap-northeast-2.amazonaws.com/email/
 
 logging:
   pattern:
@@ -61,8 +61,8 @@ logging:
 
 s3:
   basic-image:
-    member-profile: https://kau-koala.s3.ap-northeast-2.amazonaws.com/basic-image/profile-image.png
-    study: https://kau-koala.s3.ap-northeast-2.amazonaws.com/basic-image/study-basic.png
+    member-profile: https://kau-koala-v3.s3.ap-northeast-2.amazonaws.com/basic-image/profile-image.png
+    study: https://kau-koala-v3.s3.ap-northeast-2.amazonaws.com/basic-image/study-basic.png
 
 crypto:
   private-key: ${CRYPTO_PRIVATE_KEY}
