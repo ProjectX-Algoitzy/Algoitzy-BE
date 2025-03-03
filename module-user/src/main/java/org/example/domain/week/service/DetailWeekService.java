@@ -24,7 +24,7 @@ public class DetailWeekService {
     DetailWeekResponse week = detailWeekRepository.getWeek();
     if (week == null) {
       Integer generation = generationRepository.findTopByOrderByValueDesc().getValue();
-      throw new GeneralException(ErrorStatus.NOT_FOUND, generation + "기 스터디 진행 기간이 아닙니다.");
+      throw new GeneralException(ErrorStatus.ATTENDANCE_ENDED, generation + "기 스터디 진행 기간이 아닙니다.");
     }
     return week;
   }
