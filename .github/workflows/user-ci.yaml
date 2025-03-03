@@ -47,8 +47,8 @@ jobs:
           # git actions key 값에 오타가 나 있으니 주의할 것
           aws_secret_key: ${{ secrets.AWS_ACION_SECRET_ACCESS_KEY }}
           region: 'ap-northeast-2'
-          application_name: User-prod
-          environment_name: User-prod-env
+          application_name: koala-user-prod
+          environment_name: Koala-user-prod-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}-${{ github.run_id }}
           use_existing_version_if_available: true # 기존 버전 사용 설정
           deployment_package: user-deploy/user-deploy.zip
