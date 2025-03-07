@@ -30,7 +30,13 @@ public enum ErrorStatus implements BaseErrorCode {
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5000"),
     DATA_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5001"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized401"),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "TOKEN_EXPIRED");
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "TOKEN_EXPIRED"),
+
+
+    // 특정 상황
+    ATTENDANCE_ENDED(HttpStatus.NOT_FOUND, "ATTENDANCE_ENDED");
+
+
     private final HttpStatus httpStatus;
     private final String code;
     private String message;
