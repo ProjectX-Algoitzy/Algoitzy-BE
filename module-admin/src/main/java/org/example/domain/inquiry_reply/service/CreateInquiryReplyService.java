@@ -81,7 +81,7 @@ public class CreateInquiryReplyService {
   public void deleteInquiryReply(Long replyId) {
     InquiryReply reply = coreInquiryReplyService.findById(replyId);
     if (reply.getMember().getRole().equals(Role.ROLE_USER))
-      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "사용자의 댓글은 수정할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.UNAUTHORIZED, "사용자의 댓글은 삭제할 수 없습니다.");
 
     //***** 하위 댓글이 모두 삭제됐다면 DB에서 삭제 *****//
     boolean childDeleteYn = false;
