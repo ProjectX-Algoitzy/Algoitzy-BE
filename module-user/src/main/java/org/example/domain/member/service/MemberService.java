@@ -2,6 +2,7 @@ package org.example.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.board.controller.response.ListBoardResponse;
+import org.example.domain.inquiry.controller.response.ListInquiryResponse;
 import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.CreateMemberRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
@@ -104,6 +105,12 @@ public class MemberService {
     return detailMemberService.getMyPageBoard(handle);
   }
 
+  /**
+   * 마이페이지 문의 정보
+   */
+  public ListInquiryResponse getMyPageInquiry(String handle) {
+    return detailMemberService.getMyPageInquiry(handle);
+  }
 
   /**
    * 내 정보 조회

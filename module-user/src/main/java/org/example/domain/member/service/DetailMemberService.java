@@ -10,6 +10,9 @@ import org.example.api_response.status.ErrorStatus;
 import org.example.domain.board.controller.response.ListBoardDto;
 import org.example.domain.board.controller.response.ListBoardResponse;
 import org.example.domain.board.repository.ListBoardRepository;
+import org.example.domain.inquiry.controller.response.ListInquiryDto;
+import org.example.domain.inquiry.controller.response.ListInquiryResponse;
+import org.example.domain.inquiry.repository.ListInquiryRepository;
 import org.example.domain.member.Member;
 import org.example.domain.member.controller.request.CheckPasswordRequest;
 import org.example.domain.member.controller.request.FindEmailRequest;
@@ -37,6 +40,7 @@ public class DetailMemberService {
   private final DetailMemberRepository detailMemberRepository;
   private final ListStudyRepository listStudyRepository;
   private final ListBoardRepository listBoardRepository;
+  private final ListInquiryRepository listInquiryRepository;
   private final MemberRepository memberRepository;
 
   private final PasswordEncoder encoder;
@@ -121,6 +125,18 @@ public class DetailMemberService {
       .build();
   }
 
+  /**
+   * 마이페이지 문의 정보
+   */
+  public ListInquiryResponse getMyPageInquiry(String handle) {
+    List<ListInquiryDto> inquiryList = listInquiryRepository.getMyPageInquiry(handle);
+    inquiryList.forEach(ListInquiryDto::updateCategoryName);
+
+    return ListInquiryResponse.builder()
+      .inquiryList(inquiryList)
+      .totalCount(inquiryList.size())
+      .build();
+  }
 
 
   /**
