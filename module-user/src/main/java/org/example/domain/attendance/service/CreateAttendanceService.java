@@ -3,7 +3,6 @@ package org.example.domain.attendance.service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -154,7 +153,10 @@ public class CreateAttendanceService {
       LocalDate lastYear = today.minusYears(1);
       int startRect = today.getDayOfYear()
         - LocalDate.now().get(ChronoField.DAY_OF_WEEK) + 1;
-      if (rectList.size() >= 2 * ONE_YEAR) startRect += (int) ChronoUnit.DAYS.between(lastYear, today);
+      if (rectList.size() >= 2 * ONE_YEAR) {
+        if (lastYear.isLeapYear()) startRect += ONE_YEAR + 1;
+        else startRect += ONE_YEAR;
+      }
       int lastRect = startRect + 6;
 
       int count = 0;
