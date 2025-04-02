@@ -65,6 +65,8 @@ public class CreateInquiryService {
     Inquiry inquiry = coreInquiryService.findById(inquiryId);
     if (!inquiry.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail())))
       throw new GeneralException(ErrorStatus.UNAUTHORIZED, "자신이 남긴 문의 이외에는 수정할 수 없습니다.");
+    if (inquiry.getSolvedYn())
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "답변이 등록된 문의는 수정할 수 없습니다.");
 
     inquiry.updateInquiry(
       request.category(),
@@ -93,7 +95,7 @@ public class CreateInquiryService {
     if (!inquiry.getMember().equals(coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail())))
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "자신이 남긴 문의 이외에는 삭제할 수 없습니다.");
     if (inquiry.getSolvedYn())
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "답변이 등록된 문의는 삭제할 수 없습니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "답변이 등록된 문의는 삭제할 수 없습니다.");
 
     inquiryRepository.deleteById(inquiryId);
   }
