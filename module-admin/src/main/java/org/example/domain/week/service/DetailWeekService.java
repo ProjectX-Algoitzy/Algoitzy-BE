@@ -21,7 +21,7 @@ public class DetailWeekService {
    * 현재 주차 정보 조회
    */
   public DetailWeekResponse getWeek() {
-    DetailWeekResponse week = detailWeekRepository.getWeek();
+    DetailWeekResponse week = detailWeekRepository.getCurrentWeek();
     if (week == null) {
       Integer generation = generationRepository.findTopByOrderByValueDesc().getValue();
       throw new GeneralException(ErrorStatus.ATTENDANCE_ENDED, generation + "기 스터디 진행 기간이 아닙니다.");

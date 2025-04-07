@@ -4,6 +4,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DateUtils {
@@ -23,5 +25,9 @@ public class DateUtils {
     }
 
     return dayGap + "일 전";
+  }
+
+  public static boolean isWeekend(LocalDate localDate) {
+    return (localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY);
   }
 }
