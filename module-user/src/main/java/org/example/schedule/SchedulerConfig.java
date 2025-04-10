@@ -29,9 +29,9 @@ public class SchedulerConfig {
   }
 
   /**
-   * 매주 금요일 00:00 정규 스터디 문제집 생성
+   * 매주 목요일 00:00 정규 스터디 문제집 생성
    */
-  @Scheduled(cron = "0 0 0 * * FRI")
+  @Scheduled(cron = "0 0 0 * * THU")
   public void createAutoWorkbook() {
     log.info("=========문제집 생성 스케쥴러 실행=========");
     createWorkbookService.createAutoWorkbook();
