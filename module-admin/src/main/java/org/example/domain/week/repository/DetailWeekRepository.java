@@ -21,10 +21,11 @@ public class DetailWeekRepository {
   /**
    * 현재 주차 정보 조회
    */
-  public DetailWeekResponse getWeek() {
+  public DetailWeekResponse getCurrentWeek() {
     return queryFactory
       .select(Projections.fields(
           DetailWeekResponse.class,
+          week.id.as("weekId"),
           Expressions.as(
             JPAExpressions
               .select(

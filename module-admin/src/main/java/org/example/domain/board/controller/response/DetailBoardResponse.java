@@ -60,7 +60,7 @@ public class DetailBoardResponse {
   private boolean myLikeYn;
 
   @Schema(description = "댓글 수")
-  private int replyCount;
+  private long replyCount;
 
   @Schema(description = "최종 저장 여부")
   private boolean saveYn;

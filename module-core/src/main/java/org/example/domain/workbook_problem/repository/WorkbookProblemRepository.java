@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 public interface WorkbookProblemRepository extends JpaRepository<WorkbookProblem, Long> {
 
   @Modifying
-  void deleteByWorkbookIdAndProblemNumber(Long workbookId, Integer number);
+  void deleteByWorkbookAndProblemNumber(Workbook workbook, Integer number);
 
   Optional<WorkbookProblem> findByWorkbookAndProblem(Workbook workbook, Problem problem);
 }

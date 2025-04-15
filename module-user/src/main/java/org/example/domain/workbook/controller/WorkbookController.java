@@ -20,6 +20,13 @@ public class WorkbookController {
 
   private final WorkbookService workbookService;
 
+  @GetMapping("/auto")
+  @Operation(summary = "정규 스터디 문제집 생성(Scheduler 오류 시 실행)")
+  public ApiResponse<Void> createAutoWorkbook() {
+    workbookService.createAutoWorkbook();
+    return ApiResponse.onCreate();
+  }
+
   @GetMapping("/{workbook-id}")
   @LimitRegularStudyMember(page = true)
   @Operation(summary = "문제집 상세 조회")

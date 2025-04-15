@@ -9,8 +9,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WorkbookService {
 
+  private final CreateWorkbookService createWorkbookService;
   private final ListWorkbookService listWorkbookService;
   private final DetailWorkbookService detailWorkbookService;
+
+  /**
+   * 정규 스터디 모의테스트 생성
+   */
+  public void createAutoWorkbook() {
+    createWorkbookService.createAutoWorkbook();
+  }
 
   /**
    * 정규 스터디 모의테스트 조회

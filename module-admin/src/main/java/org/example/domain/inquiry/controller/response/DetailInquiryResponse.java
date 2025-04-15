@@ -43,7 +43,7 @@ public class DetailInquiryResponse {
   private String content;
 
   @Schema(description = "댓글 수")
-  private int replyCount;
+  private long replyCount;
 
   @Schema(description = "공개 여부")
   private boolean publicYn;

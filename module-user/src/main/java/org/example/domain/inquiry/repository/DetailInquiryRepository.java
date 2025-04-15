@@ -2,8 +2,11 @@ package org.example.domain.inquiry.repository;
 
 
 import static org.example.domain.inquiry.QInquiry.inquiry;
+import static org.example.domain.inquiry_reply.QInquiryReply.inquiryReply;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.inquiry.controller.response.DetailInquiryResponse;
@@ -33,7 +36,14 @@ public class DetailInquiryRepository {
         inquiry.createdTime,
         inquiry.viewCount,
         inquiry.member.email.eq(SecurityUtils.getCurrentMemberEmail()).as("myInquiryYn"),
-        inquiry.replyList.size().as("replyCount"),
+        Expressions.as(
+          JPAExpressions
+            .select(inquiryReply.count())
+            .from(inquiryReply)
+            .where(
+              inquiryReply.inquiry.eq(inquiry),
+              inquiryReply.deleteYn.isFalse())
+        , "replyCount"),
         inquiry.publicYn,
         inquiry.solvedYn
       ))

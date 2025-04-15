@@ -36,6 +36,9 @@ public class CreateStudyService {
    * 정규 스터디 생성
    */
   public void createRegularStudy(CreateRegularStudyRequest request) {
+    if (!StringUtils.hasText(request.name()) || !StringUtils.hasText(request.content()))
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이름 또는 내용이 비어있습니다.");
+
     if (studyRepository.findByNameAndTypeIs(request.name(), StudyType.REGULAR).isPresent()) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "동일한 이름의 정규 스터디가 존재합니다.");
     }
@@ -56,6 +59,9 @@ public class CreateStudyService {
    * 스터디 수정
    */
   public void updateStudy(Long studyId, UpdateStudyRequest request) {
+    if (!StringUtils.hasText(request.name()) || !StringUtils.hasText(request.content()))
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이름 또는 내용이 비어있습니다.");
+
     Study study = coreStudyService.findById(studyId);
     if (study.getType().equals(StudyType.TEMP)) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "자율 스터디는 수정할 수 없습니다.");
