@@ -32,7 +32,7 @@ public class CreateInstitutionService {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "주차 선택은 필수입니다.");
 
     if (institutionRepository.findByName(request.name()).isPresent()) {
-      throw new GeneralException(ErrorStatus.BAD_REQUEST, "이미 존재하는 기관명입니다.");
+      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 존재하는 기관명입니다.");
     }
 
     institutionRepository.save(
