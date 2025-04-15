@@ -1,5 +1,6 @@
 package org.example.domain.week.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "현재 주차 정보 응답 객체")
 public class DetailWeekResponse {
+
+  @JsonIgnore
+  private long weekId;
 
   @Schema(description = "현재 기수")
   private int generation;

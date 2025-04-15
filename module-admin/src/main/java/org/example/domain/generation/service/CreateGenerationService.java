@@ -89,6 +89,7 @@ public class CreateGenerationService {
     memberRepository.initBlockYN();
     List<Study> regularStudyList = listStudyRepository.getOldGenerationStudyList(StudyType.REGULAR);
     for (Study oldStudy : regularStudyList) {
+      oldStudy.end();
       Study newStudy = Study.builder()
         .profileUrl(oldStudy.getProfileUrl())
         .name(oldStudy.getName())

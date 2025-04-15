@@ -2,6 +2,7 @@ package org.example.domain.board.repository;
 
 import static org.example.domain.board.QBoard.board;
 import static org.example.domain.board_like.QBoardLike.boardLike;
+import static org.example.domain.reply.QReply.reply;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
@@ -47,7 +48,14 @@ public class DetailBoardRepository {
                 boardLike.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               ).exists()
             , "myLikeYn"),
-          board.replyList.size().as("replyCount"),
+          Expressions.as(
+            JPAExpressions
+              .select(reply.count())
+              .from(reply)
+              .where(
+                reply.board.eq(board),
+                reply.deleteYn.isFalse())
+            , "replyCount"),
           board.saveYn,
           board.fixYn,
           board.deleteYn
