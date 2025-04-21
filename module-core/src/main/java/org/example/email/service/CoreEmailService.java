@@ -14,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Duration;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,7 @@ import org.example.domain.member.repository.CoreListMemberRepository;
 import org.example.domain.member.service.CoreMemberService;
 import org.example.domain.study_member.StudyMember;
 import org.example.domain.study_member.enums.StudyMemberStatus;
+import org.example.domain.study_member.repository.DetailStudyMemberRepository;
 import org.example.domain.study_member.repository.StudyMemberRepository;
 import org.example.email.controller.request.SendEmailRequest;
 import org.example.email.controller.request.ValidateEmailRequest;
@@ -47,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CoreEmailService {
 
   private final CoreMemberService coreMemberService;
+  private final DetailStudyMemberRepository detailStudyMemberRepository;
   private final StudyMemberRepository studyMemberRepository;
   private final InterviewRepository interviewRepository;
   private final PasswordEncoder encoder;
@@ -212,15 +213,11 @@ public class CoreEmailService {
    * 전형 단계 갱신
    */
   private void changeStatus(SendEmailRequest request, Member member) {
-    List<StudyMember> studyMemberList = studyMemberRepository.findAllByMember(member);
-    Optional<StudyMember> optionalStudyMember = studyMemberList.stream()
-      .filter(studyMember -> studyMember.getStatus().getOrder() == valueOf(request.type()).getOrder() - 1)
-      .findFirst();
-    if (optionalStudyMember.isEmpty()) {
+    StudyMember studyMember = detailStudyMemberRepository.getStudyMember(member);
+    if (studyMember.getStatus().getOrder() != valueOf(request.type()).getOrder() - 1) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "전형 단계를 확인해주세요.");
     }
 
-    StudyMember studyMember = optionalStudyMember.get();
     studyMember.updateStatus(valueOf(request.type()));
   }
 
