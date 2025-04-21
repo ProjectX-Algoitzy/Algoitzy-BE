@@ -214,7 +214,7 @@ public class CoreEmailService {
    */
   private void changeStatus(SendEmailRequest request, Member member) {
     StudyMember studyMember = detailStudyMemberRepository.getStudyMember(member);
-    if (studyMember.getStatus().getOrder() == valueOf(request.type()).getOrder() - 1) {
+    if (studyMember.getStatus().getOrder() != valueOf(request.type()).getOrder() - 1) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "전형 단계를 확인해주세요.");
     }
 
