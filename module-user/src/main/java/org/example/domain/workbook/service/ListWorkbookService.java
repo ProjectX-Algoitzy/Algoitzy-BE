@@ -1,7 +1,6 @@
 package org.example.domain.workbook.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -52,12 +51,6 @@ public class ListWorkbookService {
     if (studyMemberRepository.findByStudyAndMemberAndStatus(study, member, StudyMemberStatus.PASS).isEmpty()
       && member.getRole().equals(Role.ROLE_USER)) {
       throw new GeneralException(ErrorStatus.NOTICE_UNAUTHORIZED, "스터디원만 열람할 수 있습니다.");
-    }
-
-    if (DateUtils.isWeekend(LocalDate.now())) {
-      return ListWorkbookResponse.builder()
-        .workbookList(new ArrayList<>())
-        .build();
     }
 
     List<ListWorkbookDto> workbookList = listWorkbookRepository.getWorkbookList(study);
