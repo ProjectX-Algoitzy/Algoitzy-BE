@@ -1,5 +1,6 @@
 package org.example.domain.curriculum.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
@@ -7,6 +8,7 @@ import org.example.domain.curriculum.Curriculum;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
 import org.example.domain.curriculum.controller.request.UpdateCurriculumRequest;
 import org.example.domain.curriculum.repository.CurriculumRepository;
+import org.example.domain.curriculum.repository.ListCurriculumRepository;
 import org.example.domain.study.Study;
 import org.example.domain.study.enums.StudyType;
 import org.example.domain.study.service.CoreStudyService;
@@ -21,6 +23,7 @@ public class CreateCurriculumService {
 
   private final CoreCurriculumService coreCurriculumService;
   private final CoreStudyService coreStudyService;
+  private final ListCurriculumRepository listCurriculumRepository;
   private final CurriculumRepository curriculumRepository;
 
   /**
@@ -37,14 +40,23 @@ public class CreateCurriculumService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "자율 스터디는 커리큘럼을 생성할 수 없습니다.");
     }
 
+    List<Curriculum> curriculumList = listCurriculumRepository.getCurriculumListOver(request.studyId(), request.week());
+    int newOrderNumber = (curriculumList.isEmpty() ? 1 : curriculumList.get(0).getOrderNumber() + 1);
+    for (int i = 1; i < curriculumList.size(); i++) {
+      Curriculum curriculum = curriculumList.get(i);
+      curriculum.increaseOrderNumber();
+    }
+
     curriculumRepository.save(
       Curriculum.builder()
         .study(study)
         .title(request.title())
         .week(request.week())
         .content(request.content())
+        .orderNumber(newOrderNumber)
         .build()
     );
+
   }
 
   /**

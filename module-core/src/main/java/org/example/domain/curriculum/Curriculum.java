@@ -49,6 +49,9 @@ public class Curriculum {
   @Column(length = 1000000)
   private String content;
 
+  @Comment("순서")
+  private Integer orderNumber;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdTime;
@@ -64,11 +67,12 @@ public class Curriculum {
   private String updatedBy;
 
   @Builder
-  public Curriculum(Study study, String title, Integer week, String content) {
+  public Curriculum(Study study, String title, Integer week, String content, Integer orderNumber) {
     this.study = study;
     this.title = title;
     this.week = week;
     this.content = content;
+    this.orderNumber = orderNumber;
   }
 
   public void update(Study study, String title, Integer week, String content) {
@@ -76,5 +80,9 @@ public class Curriculum {
     if (StringUtils.hasText(title)) this.title = title;
     if (week != null) this.week = week;
     if (StringUtils.hasText(content)) this.content = content;
+  }
+
+  public void increaseOrderNumber() {
+    this.orderNumber++;
   }
 }

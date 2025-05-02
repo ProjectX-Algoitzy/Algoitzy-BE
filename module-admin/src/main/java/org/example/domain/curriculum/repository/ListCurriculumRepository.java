@@ -9,6 +9,8 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.domain.curriculum.Curriculum;
+import org.example.domain.curriculum.QCurriculum;
 import org.example.domain.curriculum.controller.response.ListCurriculumDto;
 import org.springframework.stereotype.Repository;
 
@@ -43,6 +45,25 @@ public class ListCurriculumRepository {
         curriculum.week.asc(),
         curriculum.id.asc()
       )
+      .fetch();
+  }
+
+  public List<Curriculum> getCurriculumListOver(Long studyId, int week) {
+
+    return queryFactory
+      .selectFrom(curriculum)
+      .where(
+        curriculum.study.id.eq(studyId),
+        curriculum.orderNumber.goe(
+          JPAExpressions
+            .select(curriculum.orderNumber.max())
+            .from(curriculum)
+            .where(
+              curriculum.study.id.eq(studyId),
+              curriculum.week.eq(week))
+        )
+      )
+      .orderBy(curriculum.orderNumber.asc())
       .fetch();
   }
 }
