@@ -51,9 +51,11 @@ public class ListBoardService {
     for (ListBoardDto board : boardList) {
       board.updateCategory(board.getCategory());
 
-      // 정규 스터디 참여 이력 없으면 작성자 이름 미노출
-      if (!detailStudyMemberRepository.isRegularStudyMember()
-        && coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()).getRole().equals(Role.ROLE_USER)) {
+      // 비로그인 or 정규 스터디 참여 이력 없으면 작성자 이름 미노출
+      String currentMemberEmail = SecurityUtils.getCurrentMemberEmail();
+      if (!SecurityUtils.isLoggedIn() ||
+        (!detailStudyMemberRepository.isRegularStudyMember()
+          && coreMemberService.findByEmail(currentMemberEmail).getRole().equals(Role.ROLE_USER))) {
         board.blindCreatedName();
       }
     }
