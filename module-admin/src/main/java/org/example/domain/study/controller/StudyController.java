@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.api_response.ApiResponse;
 import org.example.domain.attendance.controller.response.ListAttendanceResponse;
 import org.example.domain.attendance.service.AttendanceService;
+import org.example.domain.curriculum.controller.request.ReorderCurriculumRequest;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
 import org.example.domain.curriculum.service.CurriculumService;
 import org.example.domain.member.controller.request.SearchMemberRequest;
@@ -96,6 +97,15 @@ public class StudyController {
     @PathVariable("study-id") Long studyId
   ) {
     return ApiResponse.onSuccess(curriculumService.getCurriculumList(studyId));
+  }
+
+  @PatchMapping("/{study-id}/curriculum/reorder")
+  @Operation(summary = "정규 스터디 커리큘럼 순서 변경")
+  public ApiResponse<Void> reorderCurriculum(
+    @PathVariable("study-id") Long studyId,
+    @RequestBody @Valid ReorderCurriculumRequest request) {
+    curriculumService.reorderCurriculum(studyId, request);
+    return ApiResponse.onSuccess();
   }
 
   @GetMapping("/{study-id}/attendance")
