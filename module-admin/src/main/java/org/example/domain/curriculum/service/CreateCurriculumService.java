@@ -40,12 +40,11 @@ public class CreateCurriculumService {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "자율 스터디는 커리큘럼을 생성할 수 없습니다.");
     }
 
+    // 요청 주차의 이후의 모든 커리큘럼 조회
     List<Curriculum> curriculumList = listCurriculumRepository.getCurriculumListOver(request.studyId(), request.week());
-    int newOrderNumber = (curriculumList.isEmpty() ? 1 : curriculumList.get(0).getOrderNumber() + 1);
-    for (int i = 1; i < curriculumList.size(); i++) {
-      Curriculum curriculum = curriculumList.get(i);
-      curriculum.increaseOrderNumber();
-    }
+
+    int newOrderNumber = getNewOrderNumber(curriculumList, study);
+    curriculumList.forEach(Curriculum::increaseOrderNumber); // 순서 재조정
 
     curriculumRepository.save(
       Curriculum.builder()
@@ -76,12 +75,28 @@ public class CreateCurriculumService {
         throw new GeneralException(ErrorStatus.BAD_REQUEST, "자율 스터디는 커리큘럼을 생성할 수 없습니다.");
       }
     }
+
+    int newOrderNumber = curriculum.getOrderNumber(); // 주차 변경 없으면 기존 순서 유지
+    if (!curriculum.getWeek().equals(request.week())) { // 주차 변경 시 순서 재조정
+      // 요청 주차의 이후의 모든 커리큘럼 조회
+      List<Curriculum> curriculumList = listCurriculumRepository.getCurriculumListOver(request.studyId(), request.week());
+      newOrderNumber = getNewOrderNumber(curriculumList, study);
+      curriculumList.forEach(Curriculum::increaseOrderNumber);
+    }
+
     curriculum.update(
       study,
       request.title(),
       request.week(),
-      request.content()
+      request.content(),
+      newOrderNumber
     );
+  }
+
+  private int getNewOrderNumber(List<Curriculum> curriculumList, Study study) {
+    return curriculumList.isEmpty() ?
+      curriculumRepository.findMaxOrderNumberByStudy(study) + 1 :
+      curriculumList.get(0).getOrderNumber();
   }
 
   /**

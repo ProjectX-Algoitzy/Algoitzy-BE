@@ -10,7 +10,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.curriculum.Curriculum;
-import org.example.domain.curriculum.QCurriculum;
 import org.example.domain.curriculum.controller.response.ListCurriculumDto;
 import org.springframework.stereotype.Repository;
 
@@ -43,7 +42,7 @@ public class ListCurriculumRepository {
       .where(curriculum.study.id.eq(studyId))
       .orderBy(
         curriculum.week.asc(),
-        curriculum.id.asc()
+        curriculum.orderNumber.asc()
       )
       .fetch();
   }
@@ -56,11 +55,11 @@ public class ListCurriculumRepository {
         curriculum.study.id.eq(studyId),
         curriculum.orderNumber.goe(
           JPAExpressions
-            .select(curriculum.orderNumber.max())
+            .select(curriculum.orderNumber.min())
             .from(curriculum)
             .where(
               curriculum.study.id.eq(studyId),
-              curriculum.week.eq(week))
+              curriculum.week.gt(week))
         )
       )
       .orderBy(curriculum.orderNumber.asc())

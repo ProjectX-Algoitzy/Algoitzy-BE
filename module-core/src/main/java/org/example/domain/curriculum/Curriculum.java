@@ -75,11 +75,12 @@ public class Curriculum {
     this.orderNumber = orderNumber;
   }
 
-  public void update(Study study, String title, Integer week, String content) {
+  public void update(Study study, String title, Integer week, String content, Integer orderNumber) {
     if (study != null) this.study = study;
     if (StringUtils.hasText(title)) this.title = title;
     if (week != null) this.week = week;
     if (StringUtils.hasText(content)) this.content = content;
+    if (orderNumber != null) this.orderNumber = orderNumber;
   }
 
   public void increaseOrderNumber() {
