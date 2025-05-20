@@ -34,13 +34,6 @@ public class CurriculumController {
     return ApiResponse.onCreate();
   }
 
-//  @GetMapping()
-//  @Operation(summary = "커리큘럼 목록 조회")
-//  public ApiResponse<ListCurriculumResponse> getCurriculumList(
-//    @ParameterObject @ModelAttribute @Valid SearchCurriculumRequest request) {
-//    return ApiResponse.onSuccess(curriculumService.getCurriculumList(request));
-//  }
-
   @GetMapping("/{curriculum-id}")
   @Operation(summary = "커리큘럼 상세 조회")
   public ApiResponse<DetailCurriculumResponse> getCurriculum(@PathVariable("curriculum-id") Long curriculumId) {
