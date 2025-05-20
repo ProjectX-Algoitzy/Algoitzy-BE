@@ -7,6 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtils {
 
+  private static final String ANONYMOUS_USER = "anonymousUser";
+
   private static Authentication getAuthentication() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || authentication.getName() == null) {
@@ -18,5 +20,9 @@ public class SecurityUtils {
   public static String getCurrentMemberEmail() {
     Authentication authentication = getAuthentication();
     return authentication.getName();
+  }
+
+  public static boolean isLoggedIn() {
+    return !getCurrentMemberEmail().equals(ANONYMOUS_USER);
   }
 }

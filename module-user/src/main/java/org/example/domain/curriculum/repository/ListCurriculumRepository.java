@@ -31,7 +31,7 @@ public class ListCurriculumRepository {
       .where(curriculum.study.id.eq(studyId))
       .orderBy(
         curriculum.week.asc(),
-        curriculum.id.asc()
+        curriculum.orderNumber.asc()
       )
       .fetch();
   }

@@ -2,6 +2,7 @@ package org.example.domain.curriculum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.curriculum.controller.request.CreateCurriculumRequest;
+import org.example.domain.curriculum.controller.request.ReorderCurriculumRequest;
 import org.example.domain.curriculum.controller.request.UpdateCurriculumRequest;
 import org.example.domain.curriculum.controller.response.DetailCurriculumResponse;
 import org.example.domain.curriculum.controller.response.ListCurriculumResponse;
@@ -48,5 +49,12 @@ public class CurriculumService {
    */
   public void deleteCurriculum(Long curriculumId) {
     createCurriculumService.deleteCurriculum(curriculumId);
+  }
+
+  /**
+   * 커리큘럼 순서 변경
+   */
+  public void reorderCurriculum(Long studyId, ReorderCurriculumRequest request) {
+    createCurriculumService.reorderCurriculum(studyId, request);
   }
 }
