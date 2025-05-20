@@ -2,6 +2,7 @@ package org.example.domain.curriculum.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -99,7 +100,7 @@ public class CreateCurriculumService {
 
   private int getNewOrderNumber(List<Curriculum> curriculumList, Study study) {
     return curriculumList.isEmpty() ?
-      curriculumRepository.findMaxOrderNumberByStudy(study) + 1 :
+      Optional.ofNullable(curriculumRepository.findMaxOrderNumberByStudy(study)).orElse(0) + 1 :
       curriculumList.get(0).getOrderNumber();
   }
 
