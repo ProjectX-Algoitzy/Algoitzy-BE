@@ -103,7 +103,7 @@ public class CreateAttendanceService {
           Attendance attendance = Attendance.builder()
             .studyMember(studyMember)
             .week(lastWeek)
-            .problemYN(getProblemYN(lastWeek, studyMember, requestCount - solvedWorkbookCount))
+            .problemYN(getProblemYN(lastWeek, studyMember, requestCount - Math.min(WORKBOOK_MIN_REQUEST_COUNT, solvedWorkbookCount)))
             .blogYN(attendanceRequestYn && StringUtils.hasText(optionalAttendanceRequest.get().getBlogUrl()))
             .workbookYN(solvedWorkbookCount >= WORKBOOK_MIN_REQUEST_COUNT)
             .build();
