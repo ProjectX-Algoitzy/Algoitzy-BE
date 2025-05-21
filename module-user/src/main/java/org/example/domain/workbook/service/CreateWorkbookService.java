@@ -1,8 +1,11 @@
 package org.example.domain.workbook.service;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.api_response.exception.GeneralException;
 import org.example.api_response.status.ErrorStatus;
@@ -111,36 +114,91 @@ public class CreateWorkbookService {
    * 코딩테스트 심화반
    */
   private List<Problem> createPrepareWorkbook(Week week, Long studyId) {
+    List<ListAttendanceDto> studyMemberList = listStudyMemberRepository.getStudyMemberList(studyId);
+    final int MAX_MEMBER_PER_QUERY = 10;
+    int queryCount = (int) Math.ceil((double) studyMemberList.size() / MAX_MEMBER_PER_QUERY);
+
     // 난이도 설정 쿼리
     String silverQuery = "*s4..s1 ";
     String goldQuery = "*g ";
 
     // 주차별 알고리즘 유형 설정 쿼리
-    StringBuilder query = new StringBuilder();
-    switch (week.getValue()) {
-      case 1 -> query.append("(#bruteforcing | #backtracking) -#dfs -#bfs");
-      case 2 -> query.append("#dp");
-      case 3 -> query.append("(#simulation | #two_pointer)");
-      case 4 -> query.append("(#binary_search | #prefix_sum)");
-      case 5 -> query.append("#data_structures");
-      case 6 -> query.append("(#bfs | #dfs)");
-      case 7 -> query.append("#dijkstra");
-      case 8 -> query.append("#greedy");
-    }
+    String algorithmQuery = getAlgorithmQuery(week);
 
     // 스터디원이 푼 문제 제외 쿼리
-    List<ListAttendanceDto> studyMemberList = listStudyMemberRepository.getStudyMemberList(studyId);
-    studyMemberList.forEach(dto -> query.append(" -s@").append(dto.getHandle()));
+    List<StringBuilder> queryList = new ArrayList<>();
+    for (int count = 0; count < queryCount; count++) {
+      queryList.add(new StringBuilder(algorithmQuery));
+      for (int i = 0; i < MAX_MEMBER_PER_QUERY; i++) {
+        int idx = count * MAX_MEMBER_PER_QUERY + i;
+        if (idx >= studyMemberList.size()) break;
+
+        queryList.get(count).append(" -s@").append(studyMemberList.get(idx));
+      }
+    }
 
     // solved.ac 요청
-    ProblemResponse silverProblemResponse = solvedAcClient.searchProblems(1, silverQuery + query, SORT, DIRECTION);
-    ProblemResponse goldProblemResponse = solvedAcClient.searchProblems(1, goldQuery + query, SORT, DIRECTION);
+    List<Set<Integer>> silverProblemSetList = new ArrayList<>();
+    List<Set<Integer>> goldProblemSetList = new ArrayList<>();
+    for (int count = 0; count < queryCount; count++) {
+      ProblemResponse silverProblemResponsePage1 = solvedAcClient.searchProblems(1, silverQuery + queryList.get(count), SORT, DIRECTION);
+      ProblemResponse silverProblemResponsePage2 = solvedAcClient.searchProblems(2, silverQuery + queryList.get(count), SORT, DIRECTION);
+      ProblemResponse goldProblemResponsePage1 = solvedAcClient.searchProblems(1, goldQuery + queryList.get(count), SORT, DIRECTION);
+      ProblemResponse goldProblemResponsePage2 = solvedAcClient.searchProblems(2, goldQuery + queryList.get(count), SORT, DIRECTION);
 
-    List<Integer> problemNumberList = Stream.concat(
-      silverProblemResponse.getProblemList().stream().limit(3),
-      goldProblemResponse.getProblemList().stream().limit(3)
-    ).map(ProblemDto::getNumber).toList();
-    return problemRepository.findAllById(problemNumberList);
+      Set<Integer> silverPage1 = silverProblemResponsePage1.getProblemList().stream().map(ProblemDto::getNumber)
+        .collect(Collectors.toCollection(LinkedHashSet::new));
+      Set<Integer> silverPage2 = silverProblemResponsePage2.getProblemList().stream().map(ProblemDto::getNumber)
+        .collect(Collectors.toCollection(LinkedHashSet::new));
+      Set<Integer> goldPage1 = goldProblemResponsePage1.getProblemList().stream().map(ProblemDto::getNumber)
+        .collect(Collectors.toCollection(LinkedHashSet::new));
+      Set<Integer> goldPage2 = goldProblemResponsePage2.getProblemList().stream().map(ProblemDto::getNumber)
+        .collect(Collectors.toCollection(LinkedHashSet::new));
+
+      Set<Integer> silverProblemSet = new LinkedHashSet<>();
+      silverProblemSet.addAll(silverPage1);
+      silverProblemSet.addAll(silverPage2);
+      silverProblemSetList.add(silverProblemSet);
+
+      Set<Integer> goldProblemSet = new LinkedHashSet<>();
+      goldProblemSet.addAll(goldPage1);
+      goldProblemSet.addAll(goldPage2);
+      goldProblemSetList.add(goldProblemSet);
+    }
+
+    List<Integer> result = new ArrayList<>();
+    if (!silverProblemSetList.isEmpty()) {
+      Set<Integer> silverResultSet = new LinkedHashSet<>(silverProblemSetList.get(0));
+      for (int i = 1; i < silverProblemSetList.size(); i++) {
+        silverResultSet.retainAll(silverProblemSetList.get(i));
+      }
+      result.addAll(silverResultSet.stream().limit(3).toList());
+    }
+
+    if (!goldProblemSetList.isEmpty()) {
+      Set<Integer> goldResultSet = new LinkedHashSet<>(goldProblemSetList.get(0));
+      for (int i = 1; i < goldProblemSetList.size(); i++) {
+        goldResultSet.retainAll(goldProblemSetList.get(i));
+      }
+      result.addAll(goldResultSet.stream().limit(3).toList());
+    }
+
+    return problemRepository.findAllById(result);
+  }
+
+  private String getAlgorithmQuery(Week week) {
+    String algorithmQuery = "";
+    switch (week.getValue()) {
+      case 1 -> algorithmQuery = "(#bruteforcing | #backtracking) -#dfs -#bfs";
+      case 2 -> algorithmQuery = "#dp";
+      case 3 -> algorithmQuery = "(#simulation | #two_pointer)";
+      case 4 -> algorithmQuery = "(#binary_search | #prefix_sum)";
+      case 5 -> algorithmQuery = "#data_structures";
+      case 6 -> algorithmQuery = "(#bfs | #dfs)";
+      case 7 -> algorithmQuery = "#dijkstra";
+      case 8 -> algorithmQuery = "#greedy";
+    }
+    return algorithmQuery;
   }
 
 }
