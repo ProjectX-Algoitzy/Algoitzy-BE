@@ -133,7 +133,7 @@ public class CreateWorkbookService {
         int idx = count * MAX_MEMBER_PER_QUERY + i;
         if (idx >= studyMemberList.size()) break;
 
-        queryList.get(count).append(" -s@").append(studyMemberList.get(idx));
+        queryList.get(count).append(" -s@").append(studyMemberList.get(idx).getHandle());
       }
     }
 
