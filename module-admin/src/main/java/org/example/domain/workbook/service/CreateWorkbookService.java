@@ -88,14 +88,18 @@ public class CreateWorkbookService {
    */
   public void deleteWorkbookProblem(Long workbookId, Integer problemNumber) {
     Workbook workbook = coreWorkbookService.findById(workbookId);
-    DetailWeekResponse currentWeek = detailWeekRepository.getCurrentWeek();
-    if (workbook.getStudy().getEndYN() || // 종료된 스터디 삭제 불가
-      !(workbook.getWeek().getId().equals(currentWeek.getWeekId()) // 현재 주차의 문제집이면서
-        && !DateUtils.isWeekend(LocalDate.now()) // 주말이 아니면서
-        && !workbook.getStudy().getEndYN() // 진행 중이면 삭제 가능
+
+    // 정규 스터디 문제집
+    if (workbook.getStudy() != null) {
+      DetailWeekResponse currentWeek = detailWeekRepository.getCurrentWeek();
+      if (workbook.getStudy().getEndYN() || // 종료된 스터디 삭제 불가
+        !(workbook.getWeek().getId().equals(currentWeek.getWeekId()) // 현재 주차의 문제집 &
+          && !DateUtils.isWeekend(LocalDate.now()) // 평일 &
+          && !workbook.getStudy().getEndYN() // 스터디 진행 중
+        )
       )
-    )
-      throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "스터디원에게 공개된 문제는 삭제할 수 없습니다.");
+        throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "스터디원에게 공개된 문제는 삭제할 수 없습니다.");
+    }
 
     workbookProblemRepository.deleteByWorkbookAndProblemNumber(workbook, problemNumber);
   }
