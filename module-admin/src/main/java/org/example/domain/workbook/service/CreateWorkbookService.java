@@ -51,15 +51,26 @@ public class CreateWorkbookService {
    */
   public void createWorkbookProblem(Long workbookId, CreateWorkbookProblemRequest request) {
     Workbook workbook = coreWorkbookService.findById(workbookId);
+    // 기관 문제집
+    if (workbook.getStudy() == null) {
+      addWorkbookProblem(workbook, request);
+      return;
+    }
+
+    // 정규 스터디 문제집
     DetailWeekResponse currentWeek = detailWeekRepository.getCurrentWeek();
     if (workbook.getStudy().getEndYN() || // 종료된 스터디 수정 불가
-      !(workbook.getWeek().getId().equals(currentWeek.getWeekId()) // 현재 주차의 문제집이면서
-        && !DateUtils.isWeekend(LocalDate.now()) // 주말이 아니면서
-        && !workbook.getStudy().getEndYN() // 진행 중이면 수정 가능
+      !(workbook.getWeek().getId().equals(currentWeek.getWeekId()) // 현재 주차의 문제집 &
+        && !DateUtils.isWeekend(LocalDate.now()) // 평일 &
+        && !workbook.getStudy().getEndYN() // 스터디 진행 중
       )
     )
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "스터디원에게 공개된 문제는 수정할 수 없습니다.");
 
+    addWorkbookProblem(workbook, request);
+  }
+
+  private void addWorkbookProblem(Workbook workbook, CreateWorkbookProblemRequest request) {
     Problem problem = coreProblemService.findByNumber(request.number());
     if (workbookProblemRepository.findByWorkbookAndProblem(workbook, problem).isPresent()) {
       throw new GeneralException(ErrorStatus.NOTICE_BAD_REQUEST, "이미 문제집에 포함된 문제입니다.");
