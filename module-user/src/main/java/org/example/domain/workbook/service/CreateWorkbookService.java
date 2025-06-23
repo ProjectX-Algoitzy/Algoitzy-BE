@@ -138,6 +138,11 @@ public class CreateWorkbookService {
     }
 
     // solved.ac 요청
+    List<Integer> result = getProblemListFromSolvedAc(queryCount, silverQuery, goldQuery, queryList);
+    return problemRepository.findAllById(result);
+  }
+
+  public List<Integer> getProblemListFromSolvedAc(int queryCount, String silverQuery, String goldQuery, List<StringBuilder> queryList) {
     List<Set<Integer>> silverProblemSetList = new ArrayList<>();
     List<Set<Integer>> goldProblemSetList = new ArrayList<>();
     for (int count = 0; count < queryCount; count++) {
@@ -182,8 +187,7 @@ public class CreateWorkbookService {
       }
       result.addAll(goldResultSet.stream().limit(3).toList());
     }
-
-    return problemRepository.findAllById(result);
+    return result;
   }
 
   private String getAlgorithmQuery(Week week) {

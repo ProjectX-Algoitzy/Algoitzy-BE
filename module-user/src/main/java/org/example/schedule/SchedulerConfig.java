@@ -3,6 +3,7 @@ package org.example.schedule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.attendance.service.CreateAttendanceService;
+import org.example.domain.challenge_problem.service.CreateChallengeProblemService;
 import org.example.domain.problem.service.CreateProblemService;
 import org.example.domain.workbook.service.CreateWorkbookService;
 import org.example.schedule.service.CreateViewCountService;
@@ -18,6 +19,7 @@ public class SchedulerConfig {
   private final CreateWorkbookService createWorkbookService;
   private final CreateAttendanceService createAttendanceService;
   private final CreateViewCountService createViewCountService;
+  private final CreateChallengeProblemService createChallengeProblemService;
 
   /**
    * 매주 수요일 00:00 백준 문제 저장
@@ -53,5 +55,14 @@ public class SchedulerConfig {
   public void syncViewCount() {
     log.info("=========조회수 동기화 스케쥴러 실행=========");
     createViewCountService.syncViewCount();
+  }
+
+  /**
+   * 매일 00:10 챌린지 문제 생성
+   */
+  @Scheduled(cron = "0 10 0 * * *")
+  public void createChallengeProblem() {
+    log.info("=========Daily Challenge 문제 생성=========");
+    createChallengeProblemService.createChallengeProblem();
   }
 }
