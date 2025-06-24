@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,6 +53,9 @@ public class ChallengeJoinLog {
   @Comment("코드 길이")
   private Integer codeLength;
 
+  @Comment("제출 시각")
+  private LocalDateTime submitTime;
+
   @Enumerated(value = EnumType.STRING)
   @Comment("언어")
   private LanguageType languageType;
@@ -66,12 +70,25 @@ public class ChallengeJoinLog {
 
   @Builder
   public ChallengeJoinLog(ChallengeProblem challengeProblem, Member member,
-    Integer executionTime, Integer memory, Integer codeLength, LanguageType languageType) {
+    Integer executionTime, Integer memory, Integer codeLength, LanguageType languageType,
+    LocalDateTime submitTime) {
     this.challengeProblem = challengeProblem;
     this.member = member;
     this.executionTime = executionTime;
     this.memory = memory;
     this.codeLength = codeLength;
     this.languageType = languageType;
+    this.submitTime = submitTime;
+  }
+
+  @Override
+  public String toString() {
+    return "ChallengeJoinLog{" +
+      "executionTime=" + executionTime +
+      ", memory=" + memory +
+      ", codeLength=" + codeLength +
+      ", submitTime=" + submitTime +
+      ", languageType=" + languageType +
+      '}';
   }
 }
