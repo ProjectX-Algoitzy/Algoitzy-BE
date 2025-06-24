@@ -1,10 +1,12 @@
 package org.example.schedule;
 
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.attendance.service.CreateAttendanceService;
 import org.example.domain.challenge_join_log.service.CreateChallengeJoinLogService;
 import org.example.domain.challenge_problem.service.CreateChallengeProblemService;
+import org.example.domain.challenge_reward.service.CreateChallengeRewardService;
 import org.example.domain.problem.service.CreateProblemService;
 import org.example.domain.workbook.service.CreateWorkbookService;
 import org.example.schedule.service.CreateViewCountService;
@@ -22,6 +24,7 @@ public class SchedulerConfig {
   private final CreateViewCountService createViewCountService;
   private final CreateChallengeProblemService createChallengeProblemService;
   private final CreateChallengeJoinLogService createChallengeJoinLogService;
+  private final CreateChallengeRewardService createChallengeRewardService;
 
   /**
    * 매주 수요일 00:00 백준 문제 저장
@@ -73,6 +76,11 @@ public class SchedulerConfig {
    */
   @Scheduled(cron = "0 0 * * * *")
   public void createChallengeJoinLog() {
+    if (LocalTime.now().getHour() == 0) {
+      log.info("=========Daily Challenge 결과 정산=========");
+      createChallengeRewardService.createChallengeReward();
+      return;
+    }
     log.info("=========Daily Challenge 기록 갱신=========");
     createChallengeJoinLogService.createChallengeJoinLog();
   }

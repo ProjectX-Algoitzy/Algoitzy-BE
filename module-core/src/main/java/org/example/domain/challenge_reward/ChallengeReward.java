@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.domain.challenge_problem.ChallengeProblem;
 import org.example.domain.member.Member;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,6 +30,10 @@ public class ChallengeReward {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "date")
+  private ChallengeProblem challengeProblem;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
   private Member member;
 
@@ -37,7 +42,8 @@ public class ChallengeReward {
   private LocalDateTime createdTime;
 
   @Builder
-  public ChallengeReward(Member member) {
+  public ChallengeReward(ChallengeProblem challengeProblem, Member member) {
+    this.challengeProblem = challengeProblem;
     this.member = member;
   }
 }

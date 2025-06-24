@@ -33,8 +33,6 @@ public class CreateChallengeJoinLogService {
   private final WebDriver webDriver;
 
   public void createChallengeJoinLog() {
-    // todo 00:00에는 전날 정산
-
     ChallengeProblem challengeProblem = coreChallengeProblemService.findById(LocalDate.now());
     challengeJoinLogRepository.deleteByChallengeProblem(challengeProblem);
 
