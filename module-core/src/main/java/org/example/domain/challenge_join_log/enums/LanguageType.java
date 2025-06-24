@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum LanguageType {
-  CPP(1000),
-  PYTHON(1001),
+  CPP(1001),
+  PYTHON(1003),
   JAVA(1002);
 
   private final int baekjoonCode;

@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -81,14 +80,4 @@ public class ChallengeJoinLog {
     this.submitTime = submitTime;
   }
 
-  @Override
-  public String toString() {
-    return "ChallengeJoinLog{" +
-      "executionTime=" + executionTime +
-      ", memory=" + memory +
-      ", codeLength=" + codeLength +
-      ", submitTime=" + submitTime +
-      ", languageType=" + languageType +
-      '}';
-  }
 }
