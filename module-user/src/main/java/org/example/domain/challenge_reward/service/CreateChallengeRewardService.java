@@ -29,7 +29,7 @@ public class CreateChallengeRewardService {
   private final CoreChallengeProblemService coreChallengeProblemService;
 
   /**
-   * 챌린지 보상 생성3
+   * 챌린지 보상 생성
    */
   public void createChallengeReward() {
     List<ChallengeJoinLog> challengeJoinLogList = new ArrayList<>();
@@ -47,7 +47,7 @@ public class CreateChallengeRewardService {
     for (Member member : rewardTargetMemberSet) {
       ChallengeReward challengeReward = challengeRewardRepository.save(
         ChallengeReward.builder()
-          .challengeProblem(coreChallengeProblemService.findById(LocalDate.now().minusDays(1)))
+//          .challengeProblem(coreChallengeProblemService.findById(LocalDate.now().minusDays(1)))
           .member(member)
           .build()
       );

@@ -1,6 +1,7 @@
 package org.example.domain.challenge_reward_log;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -12,10 +13,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.config.jpa.IntegerListToStringConverter;
 import org.example.domain.attendance.Attendance;
 import org.example.domain.attendance.enums.AttendanceType;
 import org.example.domain.challenge_reward.ChallengeReward;
@@ -46,6 +49,10 @@ public class ChallengeRewardLog {
   @Comment("갱신 출석부 유형")
   private AttendanceType attendanceType;
 
+  @Convert(converter = IntegerListToStringConverter.class)
+  @Comment("1등한 문제 목록")
+  private List<Integer> problemList;
+
   @Comment("갱신 후 보상 개수")
   private Long rewardCount;
 
@@ -58,9 +65,11 @@ public class ChallengeRewardLog {
   private String createdBy;
 
   @Builder
-  public ChallengeRewardLog(ChallengeReward challengeReward, Attendance attendance, Long rewardCount) {
+  public ChallengeRewardLog(ChallengeReward challengeReward, Attendance attendance,
+    List<Integer> problemList, Long rewardCount) {
     this.challengeReward = challengeReward;
     this.attendance = attendance;
+    this.problemList = problemList;
     this.rewardCount = rewardCount;
   }
 }
