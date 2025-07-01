@@ -65,9 +65,11 @@ public class ChallengeRewardLog {
   private String createdBy;
 
   @Builder
-  public ChallengeRewardLog(Member member, Attendance attendance, List<Integer> problemList, Long rewardCount) {
+  public ChallengeRewardLog(Member member, Attendance attendance, AttendanceType attendanceType,
+    List<Integer> problemList, Long rewardCount) {
     this.member = member;
     this.attendance = attendance;
+    this.attendanceType = attendanceType;
     this.problemList = problemList;
     this.rewardCount = rewardCount;
   }
