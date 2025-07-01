@@ -12,4 +12,6 @@ public interface ChallengeWinnerRepository extends JpaRepository<ChallengeWinner
   List<ChallengeWinner> findChallengeWinnerByMember(Member member);
 
   void deleteChallengeWinnerByMember(Member member);
+
+  long countChallengeWinnerByMember(Member member);
 }
