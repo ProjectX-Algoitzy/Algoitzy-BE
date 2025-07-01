@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 import org.example.config.jpa.IntegerListToStringConverter;
 import org.example.domain.attendance.Attendance;
 import org.example.domain.attendance.enums.AttendanceType;
-import org.example.domain.challenge_reward.ChallengeReward;
+import org.example.domain.member.Member;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,8 +38,8 @@ public class ChallengeRewardLog {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "challenge_reward_id")
-  private ChallengeReward challengeReward;
+  @JoinColumn(name = "member_id")
+  private Member member;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "attendance_id")
@@ -65,9 +65,8 @@ public class ChallengeRewardLog {
   private String createdBy;
 
   @Builder
-  public ChallengeRewardLog(ChallengeReward challengeReward, Attendance attendance,
-    List<Integer> problemList, Long rewardCount) {
-    this.challengeReward = challengeReward;
+  public ChallengeRewardLog(Member member, Attendance attendance, List<Integer> problemList, Long rewardCount) {
+    this.member = member;
     this.attendance = attendance;
     this.problemList = problemList;
     this.rewardCount = rewardCount;

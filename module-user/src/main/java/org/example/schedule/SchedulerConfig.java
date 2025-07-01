@@ -76,12 +76,12 @@ public class SchedulerConfig {
    */
   @Scheduled(cron = "0 0 * * * *")
   public void createChallengeJoinLog() {
+    log.info("=========Daily Challenge 기록 갱신=========");
+    createChallengeJoinLogService.createChallengeJoinLog();
+
     if (LocalTime.now().getHour() == 0) {
       log.info("=========Daily Challenge 결과 정산=========");
       createChallengeRewardService.createChallengeReward();
-      return;
     }
-    log.info("=========Daily Challenge 기록 갱신=========");
-    createChallengeJoinLogService.createChallengeJoinLog();
   }
 }

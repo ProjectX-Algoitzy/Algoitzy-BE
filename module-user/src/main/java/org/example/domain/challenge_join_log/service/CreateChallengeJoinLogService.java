@@ -66,7 +66,9 @@ public class CreateChallengeJoinLogService {
         submitTimeList.get(i).getAttribute("data-original-title"),
         DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm:ss")
       );
+
       // 오늘 푼 문제만 인정
+      if (submitTime.getHour() == 0 && !submitTime.toLocalDate().equals(LocalDate.now().minusDays(1))) continue;
       if (!submitTime.toLocalDate().equals(LocalDate.now())) continue;
 
       challengeJoinLogList.add(
