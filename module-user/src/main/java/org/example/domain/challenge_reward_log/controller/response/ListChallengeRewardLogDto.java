@@ -11,7 +11,6 @@ import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.domain.attendance.Attendance;
 import org.example.domain.attendance.enums.AttendanceType;
 import org.example.domain.challenge_reward_log.enums.ChallengeRewardLogType;
 
@@ -34,11 +33,16 @@ public class ListChallengeRewardLogDto {
   private List<Integer> problemList = new ArrayList<>();
 
   @JsonIgnore
-  private Attendance attendance;
+  private String studyName;
+
+  @JsonIgnore
+  private Integer generation;
+
+  @JsonIgnore
+  private Integer week;
 
   @JsonIgnore
   private AttendanceType attendanceType;
-
 
   @Schema(description = "획득/사용일")
   private LocalDateTime logDate;

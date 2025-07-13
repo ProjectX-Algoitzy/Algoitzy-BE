@@ -35,7 +35,9 @@ public class ListChallengeRewardLogRepository {
           ListChallengeRewardLogDto.class,
           challengeRewardLog.logType.stringValue().as("logType"),
           challengeRewardLog.problemList,
-          challengeRewardLog.attendance,
+          study.name.as("studyName"),
+          generation.value.as("generation"),
+          week.value.as("week"),
           challengeRewardLog.attendanceType,
           challengeRewardLog.createdTime.as("logDate"),
           challengeRewardLog.rewardCount
@@ -43,15 +45,16 @@ public class ListChallengeRewardLogRepository {
       )
       .from(challengeRewardLog)
       .innerJoin(member).on(challengeRewardLog.member.eq(member))
-      .innerJoin(attendance).on(challengeRewardLog.attendance.eq(attendance))
-      .innerJoin(week).on(attendance.week.eq(week))
-      .innerJoin(studyMember).on(attendance.studyMember.eq(studyMember))
-      .innerJoin(study).on(studyMember.study.eq(study))
-      .innerJoin(generation).on(study.generation.eq(generation))
+      .leftJoin(attendance).on(challengeRewardLog.attendance.eq(attendance))
+      .leftJoin(studyMember).on(attendance.studyMember.eq(studyMember))
+      .leftJoin(study).on(studyMember.study.eq(study))
+      .leftJoin(generation).on(study.generation.eq(generation))
+      .leftJoin(week).on(attendance.week.eq(week))
       .where(
         member.email.eq(SecurityUtils.getCurrentMemberEmail()),
         logTypeEq(request.logType())
       )
+      .orderBy(challengeRewardLog.createdTime.desc())
       .fetch();
   }
 

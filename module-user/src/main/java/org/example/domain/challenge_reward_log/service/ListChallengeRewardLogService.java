@@ -7,7 +7,6 @@ import org.example.domain.challenge_reward_log.controller.response.ListChallenge
 import org.example.domain.challenge_reward_log.controller.response.ListChallengeRewardLogResponse;
 import org.example.domain.challenge_reward_log.enums.ChallengeRewardLogType;
 import org.example.domain.challenge_reward_log.repository.ListChallengeRewardLogRepository;
-import org.example.domain.study.Study;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +26,11 @@ public class ListChallengeRewardLogService {
 
       // 사용 이력
       if (dto.getLogType().equals(ChallengeRewardLogType.USED.name())) {
-        Study study = dto.getAttendance().getStudyMember().getStudy();
         dto.setContent(
-          study.getGeneration().getValue().toString() + "기 "
-          + study.getName() + " "
-          + dto.getAttendance().getWeek().getValue() + "주차 "
-          + dto.getAttendanceType().getValue()
+          dto.getGeneration() + "기 "
+            + dto.getStudyName() + " "
+            + dto.getWeek() + "주차 "
+            + dto.getAttendanceType().getValue()
         );
       }
 
