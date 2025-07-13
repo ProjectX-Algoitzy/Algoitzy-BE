@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 import org.example.config.jpa.IntegerListToStringConverter;
 import org.example.domain.attendance.Attendance;
 import org.example.domain.attendance.enums.AttendanceType;
+import org.example.domain.challenge_reward_log.enums.ChallengeRewardLogType;
 import org.example.domain.member.Member;
 import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -46,6 +46,10 @@ public class ChallengeRewardLog {
   private Attendance attendance;
 
   @Enumerated(value = EnumType.STRING)
+  @Comment("이력 유형")
+  private ChallengeRewardLogType logType;
+
+  @Enumerated(value = EnumType.STRING)
   @Comment("갱신 출석부 유형")
   private AttendanceType attendanceType;
 
@@ -60,15 +64,12 @@ public class ChallengeRewardLog {
   @Column(updatable = false)
   private LocalDateTime createdTime;
 
-  @CreatedBy
-  @Column(updatable = false)
-  private String createdBy;
-
   @Builder
-  public ChallengeRewardLog(Member member, Attendance attendance, AttendanceType attendanceType,
-    List<Integer> problemList, Long rewardCount) {
+  public ChallengeRewardLog(Member member, Attendance attendance, ChallengeRewardLogType logType,
+    AttendanceType attendanceType, List<Integer> problemList, Long rewardCount) {
     this.member = member;
     this.attendance = attendance;
+    this.logType = logType;
     this.attendanceType = attendanceType;
     this.problemList = problemList;
     this.rewardCount = rewardCount;

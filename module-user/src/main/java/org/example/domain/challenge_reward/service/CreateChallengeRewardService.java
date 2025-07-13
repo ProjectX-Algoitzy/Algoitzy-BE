@@ -22,6 +22,7 @@ import org.example.domain.challenge_reward.controller.request.UseChallengeReward
 import org.example.domain.challenge_reward.repository.ChallengeRewardRepository;
 import org.example.domain.challenge_reward.repository.CreateChallengeRewardRepository;
 import org.example.domain.challenge_reward_log.ChallengeRewardLog;
+import org.example.domain.challenge_reward_log.enums.ChallengeRewardLogType;
 import org.example.domain.challenge_reward_log.repository.ChallengeRewardLogRepository;
 import org.example.domain.challenge_winner.ChallengeWinner;
 import org.example.domain.challenge_winner.repository.ChallengeWinnerRepository;
@@ -86,6 +87,7 @@ public class CreateChallengeRewardService {
           ChallengeRewardLog.builder()
             .member(member)
             .problemList(problemList)
+            .logType(ChallengeRewardLogType.ACQUIRED)
             .rewardCount(challengeRewardRepository.countChallengeRewardByMember(member))
             .build()
         );
@@ -125,6 +127,7 @@ public class CreateChallengeRewardService {
       challengeRewardLogList.add(
         ChallengeRewardLog.builder()
           .member(member)
+          .logType(ChallengeRewardLogType.USED)
           .attendance(attendance)
           .attendanceType(dto.attendanceType())
           .rewardCount(--rewardCount)
