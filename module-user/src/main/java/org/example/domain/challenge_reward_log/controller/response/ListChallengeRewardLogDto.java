@@ -21,6 +21,9 @@ import org.example.domain.challenge_reward_log.enums.ChallengeRewardLogType;
 @Schema(description = "챌린지 보상 이력 목록 응답 DTO")
 public class ListChallengeRewardLogDto {
 
+  @Schema(description = "보상 이력 ID")
+  private long logId;
+
   @Schema(description = "보상 이력 유형")
   private String logType;
 

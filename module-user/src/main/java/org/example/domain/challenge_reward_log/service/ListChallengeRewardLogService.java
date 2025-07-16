@@ -39,6 +39,7 @@ public class ListChallengeRewardLogService {
 
     return ListChallengeRewardLogResponse.builder()
       .rewardLogList(rewardLogList)
+      .totalCount(rewardLogList.size())
       .build();
   }
 }

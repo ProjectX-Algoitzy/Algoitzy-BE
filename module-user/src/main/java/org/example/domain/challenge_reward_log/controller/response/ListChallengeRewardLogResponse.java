@@ -17,4 +17,7 @@ public class ListChallengeRewardLogResponse {
   @Schema(description = "보상 이력 목록")
   private List<ListChallengeRewardLogDto> rewardLogList;
 
+  @Schema(description = "총 이력 수")
+  private long totalCount;
+
 }

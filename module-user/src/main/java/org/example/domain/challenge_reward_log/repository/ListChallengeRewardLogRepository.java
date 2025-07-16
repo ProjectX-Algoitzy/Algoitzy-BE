@@ -33,6 +33,7 @@ public class ListChallengeRewardLogRepository {
       .select(
         Projections.fields(
           ListChallengeRewardLogDto.class,
+          challengeRewardLog.id.as("logId"),
           challengeRewardLog.logType.stringValue().as("logType"),
           challengeRewardLog.problemList,
           study.name.as("studyName"),
