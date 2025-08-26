@@ -52,7 +52,7 @@ public class CreateChallengeJoinLogService {
   /**
    * 백준 채점 현황 크롤링
    */
-  private ChallengeJoinLog crawlLog(Member member, ChallengeProblem challengeProblem, LanguageType languageType) {
+  public ChallengeJoinLog crawlLog(Member member, ChallengeProblem challengeProblem, LanguageType languageType) {
     webDriver.get(Url.BAEKJOON_STATUS.getBaekjoonStatusUrl(challengeProblem.getProblem().getNumber(), member.getHandle(), languageType));
     List<WebElement> memoryList = webDriver.findElements(By.className("memory"));
     if (memoryList.isEmpty()) return null;

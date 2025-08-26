@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.domain.problem.Level;
@@ -26,5 +27,6 @@ public class DetailChallengeProblemResponse {
   private String levelImageUrl;
 
   @Schema(description = "알고리즘 유형 목록")
+  @Default
   private List<String> algorithmList = new ArrayList<>();
 }
