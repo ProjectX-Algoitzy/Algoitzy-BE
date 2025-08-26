@@ -5,11 +5,9 @@ import static org.example.domain.challenge_problem.QChallengeProblem.challengePr
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.challenge_join_log.ChallengeJoinLog;
 import org.example.domain.challenge_join_log.enums.LanguageType;
-import org.example.domain.challenge_problem.QChallengeProblem;
 import org.example.domain.member.Member;
 import org.springframework.stereotype.Repository;
 

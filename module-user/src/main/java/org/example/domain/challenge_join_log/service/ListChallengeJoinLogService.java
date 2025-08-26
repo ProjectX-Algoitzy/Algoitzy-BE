@@ -1,10 +1,7 @@
 package org.example.domain.challenge_join_log.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.challenge_join_log.controller.response.ListChallengeJoinLogDto;
 import org.example.domain.challenge_join_log.controller.response.ListChallengeJoinLogResponse;
