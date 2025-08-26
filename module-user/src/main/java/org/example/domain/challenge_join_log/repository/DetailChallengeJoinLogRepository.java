@@ -1,6 +1,7 @@
 package org.example.domain.challenge_join_log.repository;
 
 import static org.example.domain.challenge_join_log.QChallengeJoinLog.challengeJoinLog;
+import static org.example.domain.challenge_problem.QChallengeProblem.challengeProblem;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.challenge_join_log.ChallengeJoinLog;
 import org.example.domain.challenge_join_log.enums.LanguageType;
+import org.example.domain.challenge_problem.QChallengeProblem;
 import org.example.domain.member.Member;
 import org.springframework.stereotype.Repository;
 
@@ -34,14 +36,14 @@ public class DetailChallengeJoinLogRepository {
       .fetchOne();
   }
 
-  public boolean isJoinedMember(Member member) {
-    LocalDate now = LocalDate.now();
-    return queryFactory
+  public boolean isJoinedMember(Member member, LocalDate date) {
+    return !queryFactory
       .selectFrom(challengeJoinLog)
+      .innerJoin(challengeProblem).on(challengeJoinLog.challengeProblem.eq(challengeProblem))
       .where(
-        challengeJoinLog.createdTime.between(now.atStartOfDay(), now.atTime(LocalTime.MAX)),
+        challengeProblem.date.eq(date),
         challengeJoinLog.member.eq(member)
       )
-      .fetchOne() != null;
+      .fetch().isEmpty();
   }
 }

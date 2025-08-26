@@ -35,7 +35,7 @@ public class DetailChallengeService {
 
     // 챌린지 참여 이력에 있다면 true
     Member member = optionalMember.get();
-    boolean joinYn = detailChallengeJoinLogRepository.isJoinedMember(member);
+    boolean joinYn = detailChallengeJoinLogRepository.isJoinedMember(member, LocalDate.now());
     if (joinYn) return true;
 
     // 챌린지 참여 이력에 크롤링 후 판단
