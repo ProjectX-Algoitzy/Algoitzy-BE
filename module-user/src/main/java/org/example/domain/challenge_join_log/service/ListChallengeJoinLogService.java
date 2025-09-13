@@ -1,6 +1,7 @@
 package org.example.domain.challenge_join_log.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.challenge_join_log.controller.response.ListChallengeJoinLogDto;
@@ -26,6 +27,7 @@ public class ListChallengeJoinLogService {
    * 챌린지 이력 목록 조회
    */
   public ListChallengeJoinLogResponse getChallengeJoinLogList() {
+    boolean loginYn = SecurityUtils.isLoggedIn();
     List<ListChallengeJoinLogDto> joinLogList = listChallengeJoinLogRepository.getChallengeJoinLogList();
 
     long totalCount = joinLogList.stream()
@@ -33,34 +35,36 @@ public class ListChallengeJoinLogService {
       .toList().size();
 
     // 최근 일주일 내 참여 안 한 요일은 노출 X
-    for (int i = 6; i >= 0; i--) {
-      boolean joinYn = detailChallengeJoinLogRepository.isJoinedMember(
-        coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()),
-        LocalDate.now().minusDays(i)
-      );
+    if (loginYn) {
+      for (int i = 6; i >= 0; i--) {
+        boolean joinYn = detailChallengeJoinLogRepository.isJoinedMember(
+          coreMemberService.findByEmail(SecurityUtils.getCurrentMemberEmail()),
+          LocalDate.now().minusDays(i)
+        );
 
-      if (!joinYn) {
-        int minusDay = i;
-        joinLogList = joinLogList.stream()
-          .filter(log -> !log.getDate().equals(LocalDate.now().minusDays(minusDay)))
-          .toList();
+        if (!joinYn) {
+          int minusDay = i;
+          joinLogList = joinLogList.stream()
+            .filter(log -> !log.getDate().equals(LocalDate.now().minusDays(minusDay)))
+            .toList();
+        }
+      }
+
+      // 날짜와 언어별로 순위 책정
+      int rank = 1;
+      LanguageType type = null;
+      LocalDate date = null;
+      for (ListChallengeJoinLogDto dto : joinLogList) {
+        if (!dto.getDate().equals(date)) rank = 1;
+        else if (dto.getLanguageType() != type) rank = 1;
+        date = dto.getDate();
+        type = dto.getLanguageType();
+        dto.setRank(rank++);
       }
     }
 
-    // 날짜와 언어별로 순위 책정
-    int rank = 1;
-    LanguageType type = null;
-    LocalDate date = null;
-    for (ListChallengeJoinLogDto dto : joinLogList) {
-      if (!dto.getDate().equals(date)) rank = 1;
-      else if (dto.getLanguageType() != type) rank = 1;
-      date = dto.getDate();
-      type = dto.getLanguageType();
-      dto.setRank(rank++);
-    }
-
     return ListChallengeJoinLogResponse.builder()
-      .joinLogList(joinLogList)
+      .joinLogList(loginYn ? joinLogList : new ArrayList<>())
       .totalCount(totalCount)
       .build();
   }
