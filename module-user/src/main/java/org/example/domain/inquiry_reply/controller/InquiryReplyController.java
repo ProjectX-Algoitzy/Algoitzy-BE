@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.inquiry_reply.controller.request.CreateInquiryReplyRequest;
 import org.example.domain.inquiry_reply.controller.request.UpdateInquiryReplyRequest;
@@ -26,7 +25,6 @@ public class InquiryReplyController {
     private final InquiryReplyService inquiryReplyService;
 
     @PostMapping
-    @LimitRegularStudyMember(notice = false)
     @Operation(summary = "문의 댓글/대댓글 생성")
     public ApiResponse<Void> createInquiryReply(
       @RequestBody @Valid CreateInquiryReplyRequest request) {
