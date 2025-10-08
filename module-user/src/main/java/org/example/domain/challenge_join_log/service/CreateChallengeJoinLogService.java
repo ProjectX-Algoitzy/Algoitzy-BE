@@ -67,9 +67,10 @@ public class CreateChallengeJoinLogService {
         DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm:ss")
       );
 
-      // 오늘 푼 문제만 인정
-      if (submitTime.getHour() == 0 && !submitTime.toLocalDate().equals(LocalDate.now().minusDays(1))) continue;
-      if (!submitTime.toLocalDate().equals(LocalDate.now())) continue;
+      // 현재 시각이 00시라면 어제 푼 문제만, 아니라면 오늘 푼 문제만 인정
+      LocalDateTime now = LocalDateTime.now();
+      LocalDate targetDate = now.getHour() == 0 ? now.toLocalDate().minusDays(1) : now.toLocalDate();
+      if (!submitTime.toLocalDate().equals(targetDate)) continue;
 
       challengeJoinLogList.add(
         ChallengeJoinLog.builder()
