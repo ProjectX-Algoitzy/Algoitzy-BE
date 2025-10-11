@@ -33,7 +33,9 @@ public class CreateChallengeJoinLogService {
   private final WebDriver webDriver;
 
   public void createChallengeJoinLog() {
-    ChallengeProblem challengeProblem = coreChallengeProblemService.findById(LocalDate.now());
+    LocalDateTime now = LocalDateTime.now();
+    LocalDate targetDate = now.getHour() == 0 ? now.toLocalDate().minusDays(1) : now.toLocalDate();
+    ChallengeProblem challengeProblem = coreChallengeProblemService.findById(targetDate);
     challengeJoinLogRepository.deleteByChallengeProblem(challengeProblem);
 
     List<Member> memberList = memberRepository.findAll();
