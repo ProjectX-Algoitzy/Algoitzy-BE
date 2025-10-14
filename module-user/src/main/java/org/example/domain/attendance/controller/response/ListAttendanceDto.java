@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "출석부 목록 응답 DTO")
 public class ListAttendanceDto {
 
+  @Schema(description = "출석부 ID")
+  private long attendanceId;
+
   @Schema(description = "주차")
   private Integer week;
 
@@ -30,4 +33,13 @@ public class ListAttendanceDto {
 
   @Schema(description = "모의테스트 여부")
   private Boolean workbookYN;
+
+  @Schema(description = "문제 할당량 보상 사용 여부")
+  private Boolean problemRewardYn;
+
+  @Schema(description = "블로그 포스팅 보상 사용 여부")
+  private Boolean blogRewardYn;
+
+  @Schema(description = "모의테스트 보상 사용 여부")
+  private Boolean workbookRewardYn;
 }

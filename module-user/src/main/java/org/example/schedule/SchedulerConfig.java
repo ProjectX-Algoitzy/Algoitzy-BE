@@ -1,8 +1,12 @@
 package org.example.schedule;
 
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.attendance.service.CreateAttendanceService;
+import org.example.domain.challenge_join_log.service.CreateChallengeJoinLogService;
+import org.example.domain.challenge_problem.service.CreateChallengeProblemService;
+import org.example.domain.challenge_reward.service.CreateChallengeRewardService;
 import org.example.domain.problem.service.CreateProblemService;
 import org.example.domain.workbook.service.CreateWorkbookService;
 import org.example.schedule.service.CreateViewCountService;
@@ -18,6 +22,9 @@ public class SchedulerConfig {
   private final CreateWorkbookService createWorkbookService;
   private final CreateAttendanceService createAttendanceService;
   private final CreateViewCountService createViewCountService;
+  private final CreateChallengeProblemService createChallengeProblemService;
+  private final CreateChallengeJoinLogService createChallengeJoinLogService;
+  private final CreateChallengeRewardService createChallengeRewardService;
 
   /**
    * 매주 수요일 00:00 백준 문제 저장
@@ -53,5 +60,28 @@ public class SchedulerConfig {
   public void syncViewCount() {
     log.info("=========조회수 동기화 스케쥴러 실행=========");
     createViewCountService.syncViewCount();
+  }
+
+  /**
+   * 매일 00:10 챌린지 문제 생성
+   */
+  @Scheduled(cron = "0 10 0 * * *")
+  public void createChallengeProblem() {
+    log.info("=========Daily Challenge 문제 생성=========");
+    createChallengeProblemService.createChallengeProblem();
+  }
+
+  /**
+   * 매 정각 챌린지 기록 갱신
+   */
+  @Scheduled(cron = "0 0 * * * *")
+  public void createChallengeJoinLog() {
+    log.info("=========Daily Challenge 기록 갱신=========");
+    createChallengeJoinLogService.createChallengeJoinLog();
+
+    if (LocalTime.now().getHour() == 0) {
+      log.info("=========Daily Challenge 결과 정산=========");
+      createChallengeRewardService.createChallengeReward();
+    }
   }
 }
