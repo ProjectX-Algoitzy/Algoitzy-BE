@@ -144,7 +144,8 @@ public class DetailStudyRepository {
                 studyMember.study.eq(study),
                 studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail())
               )
-            , "memberRole")
+            , "memberRole"),
+          study.endYN.as("endYn")
         )
       )
       .from(study)

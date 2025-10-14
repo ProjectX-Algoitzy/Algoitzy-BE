@@ -108,6 +108,7 @@ public class CreateGenerationService {
             .title(oldCurriculum.getTitle())
             .week(oldCurriculum.getWeek())
             .content(oldCurriculum.getContent())
+            .orderNumber(oldCurriculum.getOrderNumber())
             .build()
         );
       }
