@@ -1,5 +1,6 @@
 package org.example.domain.member.repository;
 
+import static org.example.domain.generation.QGeneration.generation;
 import static org.example.domain.member.QMember.member;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
@@ -27,6 +28,11 @@ public class DetailMemberRepository {
    * 로그인 멤버 정보
    */
   public MemberInfoResponse getLoginMemberInfo() {
+    Integer maxGeneration = queryFactory
+      .select(generation.value.max())
+      .from(generation)
+      .fetchOne();
+
     return queryFactory
       .select(Projections.fields(
         MemberInfoResponse.class,
@@ -42,7 +48,18 @@ public class DetailMemberRepository {
               studyMember.status.eq(StudyMemberStatus.PASS),
               studyMember.study.type.eq(StudyType.REGULAR)
             ).exists()
-          , "regularStudyMemberYn")
+          , "regularStudyMemberYn"),
+        Expressions.as(
+          JPAExpressions
+            .select(studyMember.study.id.max())
+            .from(studyMember)
+            .where(
+              studyMember.member.email.eq(SecurityUtils.getCurrentMemberEmail()),
+              studyMember.status.eq(StudyMemberStatus.PASS),
+              studyMember.study.type.eq(StudyType.REGULAR),
+              studyMember.study.generation.value.eq(maxGeneration)
+            )
+          , "regularStudyId")
       ))
       .from(member)
       .where(member.email.eq(SecurityUtils.getCurrentMemberEmail()))

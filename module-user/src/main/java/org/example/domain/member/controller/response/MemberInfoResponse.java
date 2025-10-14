@@ -45,4 +45,7 @@ public class MemberInfoResponse {
   @Setter
   @Schema(description = "정규 스터디 참여 여부")
   private boolean regularStudyMemberYn;
+
+  @Schema(description = "참여 중인 정규 스터디 ID")
+  private Long regularStudyId;
 }
