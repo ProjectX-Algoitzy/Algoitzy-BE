@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.aop.LimitRegularStudyMember;
 import org.example.api_response.ApiResponse;
 import org.example.domain.inquiry.controller.request.UpdateInquiryRequest;
 import org.example.domain.inquiry.service.InquiryService;
@@ -44,7 +43,6 @@ public class InquiryController {
   }
 
   @GetMapping
-  @LimitRegularStudyMember(page = true)
   @Operation(summary = "문의 목록 조회")
   public ApiResponse<ListInquiryResponse> getInquiryCategoryList(
     @ParameterObject @ModelAttribute @Valid SearchInquiryRequest request) {
@@ -52,14 +50,12 @@ public class InquiryController {
   }
 
   @GetMapping("/{inquiry-id}")
-  @LimitRegularStudyMember(page = true)
   @Operation(summary = "문의 상세 조회")
   public ApiResponse<DetailInquiryResponse> getInquiry(@PathVariable("inquiry-id") Long inquiryId) {
     return ApiResponse.onSuccess(inquiryService.getInquiry(inquiryId));
   }
 
   @PostMapping
-  @LimitRegularStudyMember(notice = false)
   @Operation(summary = "문의 생성")
   public ApiResponse<Void> createInquiry(
     @RequestBody @Valid CreateInquiryRequest request) {
@@ -68,7 +64,6 @@ public class InquiryController {
   }
 
   @GetMapping("/{inquiry-id}/reply")
-  @LimitRegularStudyMember(notice = false)
   @Operation(summary = "문의 댓글 목록 조회")
   public ApiResponse<ListInquiryReplyResponse> getInquiryReplyList(
     @PathVariable("inquiry-id") Long inquiryId,

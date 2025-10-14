@@ -45,6 +45,8 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/sign-up/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/email/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/sms/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/challenge/check-join")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/challenge-join-log")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/health/**")).permitAll()
             .requestMatchers(HttpMethod.GET, "/board").permitAll()
             // 랜딩 페이지

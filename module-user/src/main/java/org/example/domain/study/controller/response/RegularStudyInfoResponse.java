@@ -37,4 +37,7 @@ public class RegularStudyInfoResponse {
 
   @Schema(description = "스터디원 역할")
   private String memberRole;
+  
+  @Schema(description = "스터디 종료 여부")
+  private boolean endYn;
 }

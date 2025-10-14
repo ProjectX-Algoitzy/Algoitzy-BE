@@ -1,13 +1,16 @@
 package org.example.domain.attendance.repository;
 
 import static org.example.domain.attendance.QAttendance.attendance;
+import static org.example.domain.challenge_reward_log.QChallengeRewardLog.challengeRewardLog;
 import static org.example.domain.study_member.QStudyMember.studyMember;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.attendance.controller.response.ListAttendanceDto;
+import org.example.domain.attendance.enums.AttendanceType;
 import org.example.domain.study_member.enums.StudyMemberStatus;
 import org.springframework.stereotype.Repository;
 
@@ -22,12 +25,31 @@ public class ListAttendanceRepository {
       .select(
         Projections.fields(
           ListAttendanceDto.class,
+          attendance.id.as("attendanceId"),
           attendance.week.value.as("week"),
           studyMember.member.name,
           studyMember.member.handle,
           attendance.problemYN,
           attendance.blogYN,
-          attendance.workbookYN
+          attendance.workbookYN,
+          JPAExpressions.selectOne()
+            .from(challengeRewardLog)
+            .where(
+              challengeRewardLog.attendance.eq(attendance),
+              challengeRewardLog.attendanceType.eq(AttendanceType.PROBLEM)
+            ).exists().as("problemRewardYn"),
+          JPAExpressions.selectOne()
+            .from(challengeRewardLog)
+            .where(
+              challengeRewardLog.attendance.eq(attendance),
+              challengeRewardLog.attendanceType.eq(AttendanceType.BLOG)
+            ).exists().as("blogRewardYn"),
+          JPAExpressions.selectOne()
+            .from(challengeRewardLog)
+            .where(
+              challengeRewardLog.attendance.eq(attendance),
+              challengeRewardLog.attendanceType.eq(AttendanceType.WORKBOOK)
+            ).exists().as("workbookRewardYn")
         )
       )
       .from(attendance)
