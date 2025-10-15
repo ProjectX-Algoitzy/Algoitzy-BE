@@ -32,7 +32,9 @@ public class ListChallengeJoinLogService {
 
     long totalCount = joinLogList.stream()
       .filter(log -> log.getDate().equals(LocalDate.now()))
-      .toList().size();
+      .map(ListChallengeJoinLogDto::getEmail)
+      .distinct()
+      .count();
 
     // 최근 일주일 내 참여 안 한 요일은 노출 X
     if (loginYn) {
