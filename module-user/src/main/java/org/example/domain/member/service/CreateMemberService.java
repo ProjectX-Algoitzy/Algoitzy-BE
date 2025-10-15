@@ -1,6 +1,7 @@
 package org.example.domain.member.service;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api_response.exception.GeneralException;
@@ -84,7 +85,8 @@ public class CreateMemberService {
     }
 
     ResponseEntity<String> response = HttpRequest.getRequest(Url.BAEKJOON_USER.getBaekjoonUserUrl(request.handle()), String.class);
-    if (!response.getStatusCode().is2xxSuccessful()) {
+    if (!Pattern.compile("^[A-Za-z0-9_]{3,20}$").matcher(request.handle()).matches() ||
+      !response.getStatusCode().is2xxSuccessful()) {
       throw new GeneralException(ErrorStatus.BAD_REQUEST, "백준 닉네임이 유효하지 않습니다.");
     }
   }
